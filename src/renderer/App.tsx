@@ -1,50 +1,37 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
-
-const Hello = () => {
-  return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
-  );
-};
+import { MemoryRouter as Routes, Route } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
+import Container from '@mui/material/Container';
+import NavegacionContainer from './components/Navegacion/NavegacionContainer';
+import AnalisisContainer from './components/Analisis/AnalisisContainer';
+import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
+import LoginContainer from './components/Login/LoginContainer';
+import PacientesContainer from './components/Pacientes/PacientesContainer';
+import VerPacienteContainer from './components/VerPaciente/VerPacienteContainer';
+import { useCustomSelector } from '../redux/hooks';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
-  );
+  const isLogged = useCustomSelector((state) => state.login.isLogged);
+  console.log(isLogged);
+  if (isLogged) {
+    return (
+      <div>
+        <NavegacionContainer />
+        <CssBaseline />
+        <Container maxWidth={false}>
+          <br />
+          <Routes>
+            <Route path="/" element={<PacientesContainer />} />
+            <Route path="/analisis" element={<AnalisisContainer />} />
+            <Route path="/verPaciente" element={<VerPacienteContainer />} />
+            <Route
+              path="/probarSensores"
+              element={<ProbarSensoresContainer />}
+            />
+          </Routes>
+        </Container>
+      </div>
+    );
+  }
+  return <LoginContainer />;
 }

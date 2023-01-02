@@ -1,9 +1,21 @@
 import { createRoot } from 'react-dom/client';
+import { HashRouter } from 'react-router-dom';
+import { StrictMode } from 'react';
+import { Provider } from 'react-redux';
+import { store as CustomStore } from '../redux/store';
 import App from './App';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
-root.render(<App />);
+root.render(
+  <StrictMode>
+    <HashRouter>
+      <Provider store={CustomStore}>
+        <App />
+      </Provider>
+    </HashRouter>
+  </StrictMode>
+);
 
 // calling IPC exposed from preload script
 window.electron.ipcRenderer.once('ipc-example', (arg) => {

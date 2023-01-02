@@ -21,3 +21,14 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
 });
+
+function selectPaciente() {
+  ipcRenderer.send('selectPaciente');
+}
+
+const indexBridge = {
+  selectPaciente,
+  selectP: (callback: any) => ipcRenderer.on('selectP', callback),
+};
+
+contextBridge.exposeInMainWorld('Bridge', indexBridge);

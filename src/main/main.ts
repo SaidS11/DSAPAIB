@@ -12,6 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import { Pool } from 'pg';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -135,3 +136,24 @@ app
     });
   })
   .catch(console.log);
+const credenciales = {
+  user: 'postgres',
+  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
+  database: 'ModularDB',
+  password: '219748227',
+};
+
+const pool = new Pool(credenciales);
+
+async function prueba2() {
+  const query = await pool.query('select * from paciente');
+  console.log(query.rows);
+  return query.rows;
+}
+// prueba2();
+
+ipcMain.on('selectPaciente', async (event) => {
+  const resp = await prueba2();
+  console.log(resp);
+  mainWindow?.webContents.send('selectP', resp);
+});
