@@ -67,6 +67,7 @@ const configuration: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.type': '"main"',
     }),
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
   ],
 
   /**

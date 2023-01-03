@@ -123,6 +123,7 @@ const configuration: webpack.Configuration = {
             manifest: require(manifest),
             sourceType: 'var',
           }),
+          new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
         ]),
 
     new webpack.NoEmitOnErrorsPlugin(),

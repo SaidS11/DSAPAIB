@@ -140,6 +140,7 @@ const configuration: webpack.Configuration = {
     new webpack.DefinePlugin({
       'process.type': '"renderer"',
     }),
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
   ],
 };
 

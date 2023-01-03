@@ -5,6 +5,7 @@
     "module": "commonjs",
     "lib": ["dom", "es2021"],
     "typeRoots": ["src/@types"],
+    "types": ["node"],
     "jsx": "react-jsx",
     "strict": true,
     "sourceMap": true,

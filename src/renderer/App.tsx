@@ -1,4 +1,4 @@
-import { MemoryRouter as Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import NavegacionContainer from './components/Navegacion/NavegacionContainer';

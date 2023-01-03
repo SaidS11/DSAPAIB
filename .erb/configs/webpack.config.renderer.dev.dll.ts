@@ -71,6 +71,7 @@ const configuration: webpack.Configuration = {
         },
       },
     }),
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
   ],
 };
 

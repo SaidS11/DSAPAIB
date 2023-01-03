@@ -53,6 +53,7 @@ const configuration: webpack.Configuration = {
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
+    new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
   ],
 
   /**
