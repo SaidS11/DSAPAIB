@@ -31,7 +31,7 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Análisis" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('analisis')}>
+              <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
                 Crear Analisis
               </NavDropdown.Item>
               <NavDropdown.Item>Predicción</NavDropdown.Item>
