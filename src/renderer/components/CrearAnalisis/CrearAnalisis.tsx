@@ -8,6 +8,7 @@ const CrearAnalisis = () => {
       <section className="display-center">
         <h1>Crear Análisis</h1>
       </section>
+      <div className='display-center'>
       <form className="analisis-form" action="">
         <section className="display-flex">
           <h4>Nombre:</h4>
@@ -34,7 +35,11 @@ const CrearAnalisis = () => {
           </select>
         </section>
       </form>
-      <Button className="green-button">Ir a Inicio</Button>
+      </div>
+      <section className='display-center'>
+        <Button className='green-button' style={{marginTop: '10px', fontSize: '20px'}} >Crear</Button>
+      </section>
+      
     </div>
   );
 };

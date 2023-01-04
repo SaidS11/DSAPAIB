@@ -7,6 +7,7 @@ import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresC
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
 import VerPacienteContainer from './components/VerPaciente/VerPacienteContainer';
+import CrearConfiguracionContainer from './components/CrearConfiguracion/CrearConfiguracionContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -24,6 +25,10 @@ export default function App() {
             <Route path="/" element={<PacientesContainer />} />
             <Route path="/crearAnalisis" element={<CrearAnalisisContainer />} />
             <Route path="/verPaciente" element={<VerPacienteContainer />} />
+            <Route
+              path="/CrearConfiguracion"
+              element={<CrearConfiguracionContainer />}
+            />
             <Route
               path="/probarSensores"
               element={<ProbarSensoresContainer />}
