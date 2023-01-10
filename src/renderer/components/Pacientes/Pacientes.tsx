@@ -25,14 +25,12 @@ interface PacientesContentProps {
     col4: string;
     col5: string;
   }>;
+  onClickRow: (arg0: any) => void;
 }
 
 const Pacientes = (props: PacientesContentProps) => {
-  const { filterInput, setFilterInput, options } = props;
+  const { filterInput, setFilterInput, options, onClickRow } = props;
 
-  const onClickRow = (element: any) => {
-    console.log(element);
-  };
   // const classes = useClasses(TableStyles);
   const {
     getTableProps,

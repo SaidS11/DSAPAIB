@@ -1,59 +1,57 @@
-// import { Client } from "pg";
+// eslint-disable-next-line import/no-named-as-default
+import { useState } from 'react';
+import { setIsLoading } from '../../../redux/slices/StatusSlice';
 // eslint-disable-next-line import/no-named-as-default
 import Login from './Login';
-// import { Pool } from "pg";
-// import { useNavigate } from "react-router-dom";
+import ModalDatos from './ModalDatos';
 import { useCustomDispatch } from '../../../redux/hooks';
 import { setIsLogged } from '../../../redux/slices/LoginSlice';
 
 const LoginContainer = () => {
   // const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
+  const doctor = 'isrroman';
+  const passw = 'Isrogo_2000';
+  /* let doctor = '';
+  let passw = ''; */
+  const [open, setOpen] = useState(false);
+  const toggleModal = () => {
+    setOpen(!open);
+  };
 
   async function loadData() {
-    window.Bridge.selectPaciente();
+    appDispatch(setIsLoading(true));
+    window.Bridge.loggearDoctor(doctor, passw);
   }
+  window.Bridge.loggearD((event: any, resp: any) => {
+    if (resp.length > 0) {
+      console.log('si es', resp);
+      appDispatch(setIsLogged(true));
+      appDispatch(setIsLoading(false));
+    } else {
+      toggleModal();
+    }
+  });
   const onClickLogin = () => {
-    // navigate("/base");
-    appDispatch(setIsLogged(true));
+    // Get user
+    /* const usDocument = document.getElementById('user') as HTMLInputElement | null;
+    const passDocument = document.getElementById('password') as HTMLInputElement | null;
+    console.log(usDocument?.value)
+    console.log(passDocument?.value)
+    if (usDocument !== null){
+      doctor = usDocument.value
+    }
+    if (passDocument !== null){
+      passw = passDocument.value
+    } */
     loadData();
   };
-
-  /* const credenciales = {
-    user: "postgres",
-    host: "modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com",
-    database: "ModularDB",
-    password: "219748227",
-  };
-  const pool = new Pool(credenciales);
-
-  async function prueba2() {
-    const query = await pool.query("select * from paciente");
-    console.log(query.rows);
-  }
-  void prueba2();
- */
-  /* const client = new Client({
-    user: "postgres",
-    host: "modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com",
-    database: "ModularDB",
-    password: "219748227",
-    port: 5432,
-    ssl: { rejectUnauthorized: false },
-  });
-  client.connect();
-  client
-    .query("select * from paciente")
-    .then((response) => {
-      console.log(response.rows);
-      client.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      client.end();
-    }); */
-
-  return <Login onClickLogin={onClickLogin} />;
+  return (
+    <div>
+      <Login onClickLogin={onClickLogin} />
+      {open && <ModalDatos toggleModal={toggleModal} open={open} />}
+    </div>
+  );
 };
 
 export default LoginContainer;

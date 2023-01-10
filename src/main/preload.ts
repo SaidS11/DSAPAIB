@@ -22,13 +22,28 @@ contextBridge.exposeInMainWorld('electron', {
   },
 });
 
-function selectPaciente() {
-  ipcRenderer.send('selectPaciente');
+function loggearDoctor(user: string, pass: string) {
+  ipcRenderer.send('loggearDoctor', user, pass);
+}
+function selectPaciente(
+  nombre: string,
+  apellidoP: string,
+  apellidoM: string,
+  email: string
+) {
+  ipcRenderer.send('selectPaciente', nombre, apellidoP, apellidoM, email);
+}
+function selectPacientes() {
+  ipcRenderer.send('selectPacientes');
 }
 
 const indexBridge = {
+  loggearDoctor,
+  loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
   selectPaciente,
   selectP: (callback: any) => ipcRenderer.on('selectP', callback),
+  selectPacientes,
+  selectPs: (callback: any) => ipcRenderer.on('selectPs', callback),
 };
 
 contextBridge.exposeInMainWorld('Bridge', indexBridge);

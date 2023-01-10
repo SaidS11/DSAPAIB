@@ -145,15 +145,61 @@ const credenciales = {
 
 const pool = new Pool(credenciales);
 
-async function prueba2() {
-  const query = await pool.query('select * from paciente');
+async function iniciarSesion(user: string, pass: string) {
+  const query = await pool.query(
+    ' SELECT usuario FROM doctor WHERE usuario = $1 AND password = crypt($2, password) ',
+    [user, pass]
+  );
   console.log(query.rows);
   return query.rows;
 }
 // prueba2();
 
-ipcMain.on('selectPaciente', async (event) => {
-  const resp = await prueba2();
+ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
+  const resp = await iniciarSesion(user, pass);
   console.log(resp);
-  mainWindow?.webContents.send('selectP', resp);
+  mainWindow?.webContents.send('loggearD', resp);
+});
+
+async function selectPacienteF(
+  nombre: string,
+  apellidoP: string,
+  apellidoM: string,
+  email: string
+) {
+  const query = await pool.query(
+    ' select * from paciente where nombre = $1 and apellido_paterno = $2 and apellido_materno = $3 and email = $4 ',
+    [nombre, apellidoP, apellidoM, email]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+// prueba2();
+
+ipcMain.on(
+  'selectPaciente',
+  async (
+    event,
+    nombre: string,
+    apellidoP: string,
+    apellidoM: string,
+    email: string
+  ) => {
+    const resp = await selectPacienteF(nombre, apellidoP, apellidoM, email);
+    console.log(resp);
+    mainWindow?.webContents.send('selectP', resp);
+  }
+);
+
+async function selectPacientes() {
+  const query = await pool.query(' select * from paciente  ');
+  console.log(query.rows);
+  return query.rows;
+}
+// prueba2();
+
+ipcMain.on('selectPacientes', async (event) => {
+  const resp = await selectPacientes();
+  console.log(resp);
+  mainWindow?.webContents.send('selectPs', resp);
 });

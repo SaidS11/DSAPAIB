@@ -55,3 +55,19 @@
 .fourth-input {
   margin-left: 42%;
 }
+
+.btnBlueAnalisis {
+  border: 1px solid #ccc;
+  background-color: #4372ca;
+  color: white;
+  min-width: initial;
+  height: 30px;
+  border-radius: 0;
+  padding: 0px 10px;
+  min-height: initial;
+  line-height: initial;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  margin-left: 10px;
+  text-transform: unset;
+}

@@ -176,3 +176,43 @@ const TableStylesList = makeStyles(() =>
 
 export default TableStylesList;
  */
+
+const styleButton = {
+  border: '1px solid #ccc',
+  backgroundColor: '#4372ca',
+  color: 'white',
+  minWidth: 'initial',
+  height: '30px',
+  borderRadius: '10',
+  padding: '0px 10px',
+  minHeight: 'initial',
+  lineHeight: 'initial',
+  marginTop: '3px',
+  marginBottom: '3px',
+  marginLeft: '10px',
+  textTransform: 'unset',
+  '&:hover': {
+    color: '#4372ca',
+  },
+};
+
+export const styleButtonBigger = {
+  border: '1px solid #ccc',
+  backgroundColor: '#4372ca',
+  color: 'white',
+  minWidth: 'initial',
+  height: '40px',
+  borderRadius: '10',
+  padding: '0px 10px',
+  minHeight: 'initial',
+  lineHeight: 'initial',
+  marginTop: '3px',
+  marginBottom: '3px',
+  marginLeft: '10px',
+  textTransform: 'unset',
+  '&:hover': {
+    color: '#4372ca',
+  },
+};
+
+export default styleButton;
