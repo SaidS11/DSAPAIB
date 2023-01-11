@@ -20,7 +20,7 @@ const CrearAnalisis = () => {
         </section>
         <section className="display-flex">
           <h4>Protocolo Adquisición:</h4>
-          <select className="third-input">
+          <select className="third-input-protocolo">
             <option value="1">Protocolo 1</option>
             <option value="2">Protocolo 2</option>
             <option value="0">Añadir Protocolo</option>
@@ -28,7 +28,7 @@ const CrearAnalisis = () => {
         </section>
         <section className="display-flex">
           <h4>Modelo:</h4>
-          <select className="fourth-input">
+          <select className="fourth-input-modelo">
             <option value="1">Modelo 1</option>
             <option value="2">Modelo 2</option>
             <option value="0">Añadir Modelo</option>

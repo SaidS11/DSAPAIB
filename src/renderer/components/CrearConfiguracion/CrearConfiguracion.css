@@ -13,16 +13,16 @@
   margin-top: -1px;
 }
 
-#more-margin-left {
-  margin-left: 293px;
+#more-margin-left-spo2 {
+  margin-left: 384px;
 }
 
 #more-margin-left-gsr {
-  margin-left: 305px;
+  margin-left: 397px;
 }
 
 #more-margin-right-temperature {
-  margin-left: 221px;
+  margin-left: 314px;
 }
 
 .analisis-form {
@@ -63,8 +63,8 @@
   max-height: 150px;
 }
 
-.third-input {
-  margin-left: 35%;
+.third-input-canales {
+  margin-left: 38%;
   width: auto;
 }
 
@@ -73,7 +73,7 @@
 }
 
 #labelsi {
-  margin-left: 360px;
+  margin-left: 450px;
 }
 
 #labelno {
@@ -81,7 +81,7 @@
 }
 
 .first-radio {
-  margin-left: 190px;
+  margin-left: 280px;
 }
 
 .second-radio {

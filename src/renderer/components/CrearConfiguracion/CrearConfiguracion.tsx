@@ -21,7 +21,7 @@ const CrearAnalisis = () => {
             </section>
             <section className="display-flex">
               <h4>Canales {variable}:</h4>
-              <select className="third-input">
+              <select className="third-input-canales">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -47,7 +47,7 @@ const CrearAnalisis = () => {
             <section className="display-flex" id='less-margin-top'>
               <h4>SPO2:</h4>
               <form>
-              <input id='more-margin-left' className='first-radio' type="radio" /> 
+              <input id='more-margin-left-spo2' className='first-radio' type="radio" /> 
               <input className='second-radio' type="radio" />
               </form>
             </section>
