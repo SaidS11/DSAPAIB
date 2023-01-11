@@ -4,10 +4,12 @@ import Container from '@mui/material/Container';
 import React from 'react';
 import NavegacionContainer from './components/Navegacion/NavegacionContainer';
 import CrearAnalisisContainer from './components/CrearAnalisis/CrearAnalisisContainer';
+import VerAnalisisContainer from './components/VerAnalisis/VerAnalisisContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
 import VerPacienteContainer from './components/VerPaciente/VerPacienteContainer';
+import CrearConfiguracionContainer from './components/CrearConfiguracion/CrearConfiguracionContainer';
 import Loading from './components/Loading/Loading';
 import AgregarPacienteContainer from './components/AgregarPaciente/AgregarPacienteContainer';
 import EscogerConfiguracionContainer from './components/EscogerConfiguracion/EscogerConfiguracionContainer';
@@ -47,9 +49,14 @@ export default function App() {
             <Route path="/videoDemo" element={<VideoDemoContainer />} />
             <Route path="/video" element={<VideoContainer />} />
             <Route
+              path="/CrearConfiguracion"
+              element={<CrearConfiguracionContainer />}
+            />
+            <Route
               path="/probarSensores"
               element={<ProbarSensoresContainer />}
             />
+            <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
           </Routes>
           <>{loading && <Loading />}</>
         </Container>
