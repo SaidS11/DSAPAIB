@@ -10,13 +10,22 @@ import {
 } from 'react-table';
 // import TableStylesList from "./TableStylesList";
 import Button from '@mui/material/Button';
+import styleButton from './ButtonStyle';
 
+interface Cols {
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+  col5: string;
+}
 interface VerPacienteProps {
   options: TableOptions<{ col1: string }>;
+  datosArray: Cols[];
 }
 
 const VerPaciente = (props: VerPacienteProps) => {
-  const { options } = props;
+  const { options, datosArray } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -28,41 +37,43 @@ const VerPaciente = (props: VerPacienteProps) => {
   };
   return (
     <div>
-      <section className="display-center">
-        <h1>Paciente</h1>
-      </section>
-      <section className="display-flex">
-        <h5>Nombres(s):</h5>
-        <h5 className="second-item">Carlos Said</h5>
-      </section>
-      <section className="display-flex">
-        <h5>Apellido Paterno:</h5>
-        <h5 className="second-item">Silva</h5>
-      </section>
-      <section className="display-flex">
-        <h5>Apellido Materno:</h5>
-        <h5 className="second-item">Chacon</h5>
-      </section>
-      <section className="display-flex">
-        <h5>Sexo:</h5>
-        <h5 className="second-item">Masculino</h5>
-      </section>
-      <section className="display-flex">
-        <h5>Fecha de Nacimiento:</h5>
-        <h5 className="second-item">15/12/2000</h5>
-      </section>
-      <section className="display-flex">
-        <h5>Peso:</h5>
-        <h5 className="second-item">40 kg</h5>
-        <h5 style={{ paddingLeft: '10px' }}>Estatura:</h5>
-        <h5 className="second-item">1.50 metros</h5>
-      </section>
+      <div style={{}}>
+        <section className="display-center">
+          <h1>Paciente</h1>
+        </section>
+        <section className="display-flex">
+          <h5>Nombres(s):</h5>
+          <h5 className="second-item">{datosArray[0].col1}</h5>
+        </section>
+        <section className="display-flex">
+          <h5>Apellido Paterno:</h5>
+          <h5 className="second-item">{datosArray[0].col2}</h5>
+        </section>
+        <section className="display-flex">
+          <h5>Apellido Materno:</h5>
+          <h5 className="second-item">{datosArray[0].col3}</h5>
+        </section>
+        <section className="display-flex">
+          <h5>Sexo:</h5>
+          <h5 className="second-item">Masculino</h5>
+        </section>
+        <section className="display-flex">
+          <h5>Fecha de Nacimiento:</h5>
+          <h5 className="second-item">{datosArray[0].col4}</h5>
+        </section>
+        <section className="display-flex">
+          <h5>Peso:</h5>
+          <h5 className="second-item">40 kg</h5>
+          <h5 style={{ paddingLeft: '10px' }}>Estatura:</h5>
+          <h5 className="second-item">1.50 metros</h5>
+        </section>
+      </div>
       <br />
       <div
         style={{
           width: '100%',
           overflow: 'auto',
-          maxHeight: '35vh',
+          maxHeight: '20vh',
         }}
       >
         <table {...getTableProps()} className="tableCustom">
@@ -102,9 +113,9 @@ const VerPaciente = (props: VerPacienteProps) => {
       </div>
       <br />
       <section className="display-center">
-        <Button className="btnBlue">Ir a Inicio</Button>
-        <Button className="btnBlue">Captura</Button>
-        <Button className="btnBlue">Analisis</Button>
+        <Button sx={styleButton}>Ir a Inicio</Button>
+        <Button sx={styleButton}>Captura</Button>
+        <Button sx={styleButton}>Analisis</Button>
       </section>
     </div>
   );

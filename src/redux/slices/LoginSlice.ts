@@ -4,10 +4,12 @@ import { RootState } from '../store';
 
 export interface IStatus {
   isLogged: boolean;
+  loggedUser: string;
 }
 
 const initialState: IStatus = {
   isLogged: false,
+  loggedUser: '',
 };
 
 export const LoginSlice = createSlice({
@@ -17,9 +19,13 @@ export const LoginSlice = createSlice({
     setIsLogged: (state, action: PayloadAction<IStatus['isLogged']>) => {
       state.isLogged = action.payload;
     },
+    setLoggedUser: (state, action: PayloadAction<IStatus['loggedUser']>) => {
+      state.loggedUser = action.payload;
+    },
   },
 });
 
-export const { setIsLogged } = LoginSlice.actions;
+export const { setIsLogged, setLoggedUser } = LoginSlice.actions;
 export const selectIsLogged = (state: RootState) => state.login.isLogged;
+export const selectLoggedUser = (state: RootState) => state.login.loggedUser;
 export default LoginSlice.reducer;

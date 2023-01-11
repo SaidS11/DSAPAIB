@@ -21,6 +21,7 @@ export const Login = (props: LoginProps) => {
                 type="text"
                 name="username"
                 placeholder="username"
+                id="user"
               />
               <br />
               <br />
@@ -30,6 +31,7 @@ export const Login = (props: LoginProps) => {
                 type="password"
                 name="password"
                 placeholder="password"
+                id="password"
               />
             </form>
             <br />

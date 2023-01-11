@@ -2,7 +2,22 @@
 import './CrearAnalisis.css';
 import Button from '@mui/material/Button';
 
-const CrearAnalisis = () => {
+export interface CrearAnalisisProps {
+  onClickUpload: () => void;
+}
+
+const CrearAnalisis = (props: CrearAnalisisProps) => {
+  const { onClickUpload } = props;
+  const numOfPlots = () => {
+    const plots = [];
+    // eslint-disable-next-line no-plusplus
+    for(let i = 0; i < 5; i++) {
+      plots.push(
+        <option value={`${i}`}>{i}</option>
+      )
+    }
+    return plots;
+  }
   return (
     <div>
       <section className="display-center">
@@ -20,10 +35,8 @@ const CrearAnalisis = () => {
         </section>
         <section className="display-flex">
           <h4>Protocolo Adquisición:</h4>
-          <select className="third-input-protocolo">
-            <option value="1">Protocolo 1</option>
-            <option value="2">Protocolo 2</option>
-            <option value="0">Añadir Protocolo</option>
+          <select className="third-input">
+            {numOfPlots()}
           </select>
         </section>
         <section className="display-flex">
@@ -39,7 +52,13 @@ const CrearAnalisis = () => {
       <section className='display-center'>
         <Button className='green-button' style={{marginTop: '10px', fontSize: '20px'}} >Crear</Button>
       </section>
-      
+      <br />
+      <section className="display-center">
+        <input type="file" id="file-upload"  />
+      </section>
+      <section className="display-center">
+        <Button className="green-button" onClick={onClickUpload} >Ir a Inicio</Button>
+      </section>
     </div>
   );
 };
