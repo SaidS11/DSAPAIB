@@ -1,0 +1,89 @@
+.display-center {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.display-flex {
+  display: flex;
+  margin-top: 30px;
+  margin-left: 3%;
+}
+
+#less-margin-top {
+  margin-top: -1px;
+}
+
+#more-margin-left-spo2 {
+  margin-left: 384px;
+}
+
+#more-margin-left-gsr {
+  margin-left: 397px;
+}
+
+#more-margin-right-temperature {
+  margin-left: 314px;
+}
+
+.analisis-form {
+  border: 1px solid gray;
+  border-radius: 2%;
+  /*margin-left: 29%;*/
+  width: 900px;
+  padding-bottom: 1%;
+}
+
+/*@media (max-width: 1030px) {
+    .analisis-form {
+      margin-left: 20%;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .analisis-form {
+      margin-left: 10%;
+    }
+  }
+  
+  @media (max-width: 820px) {
+    .analisis-form {
+      margin-left: 0%;
+    }
+  }*/
+
+.first-input {
+  margin-left: 18%;
+  width: 60%;
+}
+
+.second-input {
+  margin-left: 13%;
+  width: 60%;
+  min-height: 150px;
+  max-height: 150px;
+}
+
+.third-input-canales {
+  margin-left: 38%;
+  width: auto;
+}
+
+.fourth-input {
+  margin-left: 42%;
+}
+
+#labelsi {
+  margin-left: 450px;
+}
+
+#labelno {
+  margin-left: 100px;
+}
+
+.first-radio {
+  margin-left: 280px;
+}
+
+.second-radio {
+  margin-left: 115px;
+}

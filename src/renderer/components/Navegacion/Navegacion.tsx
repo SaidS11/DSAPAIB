@@ -36,7 +36,7 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
               <NavDropdown.Item>Predicción</NavDropdown.Item>
               <NavDropdown.Item>Entrenamiento</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('analisis')}>
+              <NavDropdown.Item onClick={() => onClickNav('verAnalisis')}>
                 Ver Análisis
               </NavDropdown.Item>
             </NavDropdown>
@@ -52,7 +52,11 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item>Agregar</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Configuraciones" id="collasible-nav-dropdown">
-              <NavDropdown.Item>Agregar Configuración</NavDropdown.Item>
+              <NavDropdown.Item
+                onClick={() => onClickNav('crearConfiguracion')}
+              >
+                Crear Configuración
+              </NavDropdown.Item>
               <NavDropdown.Item>Ver Configuraciones</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Modelo" id="collasible-nav-dropdown">
