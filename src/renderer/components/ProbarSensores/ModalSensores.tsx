@@ -28,11 +28,11 @@ export interface ModalProps {
 }
 export default function ModalSensores(props: ModalProps) {
   const { toggleModal, open, setSensoresSelected } = props;
-  const [age, setAge] = React.useState('');
+  const [sensores, setSensores] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     const num = parseInt(event.target.value, 10);
-    setAge(event.target.value as string);
+    setSensores(event.target.value as string);
     setSensoresSelected(num);
   };
   /*   const [open, setOpen] = React.useState(false);
@@ -57,7 +57,7 @@ export default function ModalSensores(props: ModalProps) {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={age}
+              value={sensores}
               label="Sensores"
               onChange={handleChange}
             >
