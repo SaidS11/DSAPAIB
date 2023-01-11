@@ -11,6 +11,11 @@ import PacientesContainer from './components/Pacientes/PacientesContainer';
 import VerPacienteContainer from './components/VerPaciente/VerPacienteContainer';
 import CrearConfiguracionContainer from './components/CrearConfiguracion/CrearConfiguracionContainer';
 import Loading from './components/Loading/Loading';
+import AgregarPacienteContainer from './components/AgregarPaciente/AgregarPacienteContainer';
+import EscogerConfiguracionContainer from './components/EscogerConfiguracion/EscogerConfiguracionContainer';
+import ColocacionMuestraContainer from './components/ColocacionMuestra/ColocacionMuestraContainer';
+import VideoDemoContainer from './components/VideoDemo/VideoDemoContainer';
+import VideoContainer from './components/Video/VideoContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -29,6 +34,20 @@ export default function App() {
             <Route path="/" element={<PacientesContainer />} />
             <Route path="/crearAnalisis" element={<CrearAnalisisContainer />} />
             <Route path="/verPaciente" element={<VerPacienteContainer />} />
+            <Route
+              path="/agregarPaciente"
+              element={<AgregarPacienteContainer />}
+            />
+            <Route
+              path="/escogerConfiguracion"
+              element={<EscogerConfiguracionContainer />}
+            />
+            <Route
+              path="/colocacionMuestra"
+              element={<ColocacionMuestraContainer />}
+            />
+            <Route path="/videoDemo" element={<VideoDemoContainer />} />
+            <Route path="/video" element={<VideoContainer />} />
             <Route
               path="/CrearConfiguracion"
               element={<CrearConfiguracionContainer />}

@@ -215,4 +215,42 @@ export const styleButtonBigger = {
   },
 };
 
+export const styleButtonBiggerRed = {
+  border: '1px solid #ccc',
+  backgroundColor: '#d90429',
+  color: 'white',
+  minWidth: 'initial',
+  height: '40px',
+  borderRadius: '10',
+  padding: '0px 10px',
+  minHeight: 'initial',
+  lineHeight: 'initial',
+  marginTop: '3px',
+  marginBottom: '3px',
+  marginLeft: '10px',
+  textTransform: 'unset',
+  '&:hover': {
+    color: '#4372ca',
+  },
+};
+
+export const styleButtonBiggerGreen = {
+  border: '1px solid #ccc',
+  backgroundColor: '#70e000',
+  color: 'white',
+  minWidth: 'initial',
+  height: '40px',
+  borderRadius: '10',
+  padding: '0px 10px',
+  minHeight: 'initial',
+  lineHeight: 'initial',
+  marginTop: '3px',
+  marginBottom: '3px',
+  marginLeft: '10px',
+  textTransform: 'unset',
+  '&:hover': {
+    color: '#4372ca',
+  },
+};
+
 export default styleButton;

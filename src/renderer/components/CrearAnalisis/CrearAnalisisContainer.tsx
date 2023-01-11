@@ -44,6 +44,7 @@ const CrearAnalisisContainer = () => {
         Bucket: 'piediabe-modular',
         Key: filePath,
         Body: file,
+        ACL: 'public-read',
       };
       s3.upload(params, function (err: any, res: any) {
         if (err) {
