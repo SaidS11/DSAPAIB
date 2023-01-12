@@ -1,34 +1,21 @@
-/* eslint-disable no-plusplus */
 /* eslint-disable prettier/prettier */
-import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
-import {
-  styleButtonBiggerGreen,
+import styleButton, {
+  styleButtonBiggerRed
 } from '../VerPaciente/ButtonStyle';
+import './VerConfiguracionDetalle.css';
 
-export interface CrearConfigProps {
+export interface VerConfiguracionDetalleProps {
   onClickNav: () => void;
 }
 
-const CrearAnalisis = (props: CrearConfigProps) => {
+const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
   const { onClickNav } = props;
   const variable = "EMG's"
-  
-  const numofEmgs = () => {
-    const emgs = [];
-
-    for(let i=1; i<=8; i++) {
-      emgs.push(
-        <option value={`${i}`}>{`${i}`}</option>
-      )
-    }
-    return emgs;
-  }
-
     return (
         <div>
           <section className="display-center">
-            <h1>Crear Configuración</h1>
+            <h1>Configuración</h1>
           </section>
           <div className='display-center'>
           <form className="analisis-form" action="">
@@ -43,7 +30,14 @@ const CrearAnalisis = (props: CrearConfigProps) => {
             <section className="display-flex">
               <h4>Canales {variable}:</h4>
               <select className="third-input-canales">
-                {numofEmgs()}
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
               </select>
             </section>
             <section className='display-flex'> 
@@ -81,15 +75,24 @@ const CrearAnalisis = (props: CrearConfigProps) => {
               <input className='second-radio' type="radio" name="temperatura" value="no"/>
               </form>
             </section>
-
+            <section className="display-flexVerDetalle" id='less-margin-top'>
+              <h4>Video:</h4>
+              <h4>nombrevideo</h4>
+              <Button sx={styleButton} >Ver</Button>
+            </section>
+            <section className="display-flexVerDetalle" id='less-margin-top'>
+              <h4>Imagen:</h4>
+              <h4>nombreImg</h4>
+              <Button sx={styleButton} >Ver</Button>
+            </section>
           </form>
           </div>
           <section className='display-center'>
-            <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickNav} >Continuar</Button>
+            <Button sx={styleButtonBiggerRed} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickNav} >Continuar</Button>
           </section>
           
         </div>
       );
 };
 
-export default CrearAnalisis;
+export default VerConfiguracionDetalle;

@@ -3,11 +3,6 @@
   justify-content: center;
   display: flex;
 }
-.display-flex {
-  display: flex;
-  margin-top: 30px;
-  margin-left: 3%;
-}
 
 #less-margin-top {
   margin-top: -1px;

@@ -1,96 +1,104 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
-import VerAnalisis from './VerConfiguracion';
+import VerConfiguracion from './VerConfiguracion';
+
+// import { useNavigate } from "react-router-dom";
 
 const VerConfiguracionContainer = () => {
-    interface Cols {
-        col1: string;
-      }
-      const data = React.useMemo(
-        (): Cols[] => [
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-    
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-    
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-          {
-            col1: 'Configuracion 1',
-          },
-          {
-            col1: 'Configuracion 2',
-          },
-        ],
-        []
-      );
-      const columns: Array<Column<{ col1: string }>> = React.useMemo(
-        () => [
-          {
-            Header: 'Configuracion',
-            accessor: 'col1',
-          },
-        ],
-        []
-      );
-      const options: TableOptions<{
-        col1: string;
-      }> = {
-        data,
-        columns,
-      };
+  const navigate = useNavigate();
+  interface Cols {
+    col1: string;
+  }
+  const data = React.useMemo(
+    (): Cols[] => [
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
 
-  return <VerAnalisis options={options}/>;
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+      {
+        col1: 'Registro 1',
+      },
+      {
+        col1: 'Registro 2',
+      },
+    ],
+    []
+  );
+  const columns: Array<Column<{ col1: string }>> = React.useMemo(
+    () => [
+      {
+        Header: 'Configuraciones',
+        accessor: 'col1',
+      },
+    ],
+    []
+  );
+  const options: TableOptions<{
+    col1: string;
+  }> = {
+    data,
+    columns,
+  };
+  const onClickRow = (element: any) => {
+    console.log(element);
+    console.log(element.cells);
+    navigate('/verConfiguracionDetalle');
+  };
+
+  return <VerConfiguracion options={options} onClickRow={onClickRow} />;
 };
 
 export default VerConfiguracionContainer;

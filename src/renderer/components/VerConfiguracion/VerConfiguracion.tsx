@@ -1,22 +1,29 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-key */
-import './VerConfiguracion.css';
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
-    useTable,
-    TableOptions,
-    useSortBy,
-    useFilters,
-    HeaderGroup,
-  } from 'react-table';
-import '../../../../assets/Iconos/style.css';
+  useTable,
+  TableOptions,
+  useSortBy,
+  useFilters,
+  HeaderGroup,
+} from 'react-table';
+// import TableStylesList from "./TableStylesList";
 
-  interface VerConfiguracionProps {
-    options: TableOptions<{ col1: string }>;
-  }
+interface Cols {
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+  col5: string;
+}
+interface VerConfiguracionProps {
+  options: TableOptions<{ col1: string }>;
+  onClickRow: (arg0: any) => void;
+}
 
 const VerConfiguracion = (props: VerConfiguracionProps) => {
-    const { options } = props;
+  const { options, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -26,28 +33,25 @@ const VerConfiguracion = (props: VerConfiguracionProps) => {
     }
     return <span className="icon-arrow-long-down" />;
   };
-    return (
-        <div className=''>
-            <div className='display-flex-analisis'>
-            <h2>Seleccione una Configuracion de la lista o agregue una nueva:</h2>
-            <section style={{ marginLeft: 'auto' }}>
-            <span className="icon-user-plus" />
-            </section>
-            </div>
-             
-             <div className='display-flex-analisis'>
-             <h3>Busqueda: </h3> 
-             <input className='more-margin-right' type="text" placeholder='Nombre de Configuracion'/>
-             </div>
-             <br />
-      <div 
+  return (
+    <div>
+      <div style={{}}>
+        <section className="display-center">
+          <h1>Configuraciones</h1>
+        </section>
+        <section className="display-center">
+          <h4>Seleccione una de la lista para ver más detalles:</h4>
+        </section>
+      </div>
+      <br />
+      <div
         style={{
           width: '100%',
           overflow: 'auto',
           maxHeight: '60vh',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id='table'>
+        <table {...getTableProps()} className="tableCustom">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -69,6 +73,7 @@ const VerConfiguracion = (props: VerConfiguracionProps) => {
               return (
                 <tr
                   {...row.getRowProps()}
+                  onClick={() => onClickRow(row)}
                   className={
                     row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
                   }
@@ -82,10 +87,8 @@ const VerConfiguracion = (props: VerConfiguracionProps) => {
           </tbody>
         </table>
       </div>
-      <br />
-        </div>
-       
-    );
-}
+    </div>
+  );
+};
 
 export default VerConfiguracion;

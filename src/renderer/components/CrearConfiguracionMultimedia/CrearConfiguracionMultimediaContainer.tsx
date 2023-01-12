@@ -31,8 +31,40 @@ const CrearConfiguracionMultimediaContainer = () => {
     const videoObj = document.getElementById(
       'video-upload'
     ) as HTMLInputElement | null;
+  
     if (imgObj !== null && videoObj!== null) {
-      appDispatch(setIsLoading(true));
+      if (imgObj.value !== '' && videoObj.value!== '') {
+        console.log(imgObj.value)
+        appDispatch(setIsLoading(true));
+        const s3 = new AWS.S3({
+          apiVersion: '2006-03-01',
+          params: { Bucket: bucketName },
+        });
+        const { files } = imgObj;
+        const file = files![0];
+        const fileName = file.name;
+        const filePath = `Imagenes/${loggedUser}/${fileName}`;
+        const params = {
+          Bucket: 'piediabe-modular',
+          Key: filePath,
+          Body: file,
+          ACL: 'public-read',
+        };
+        s3.upload(params, function (err: any, res: any) {
+          if (err) {
+            appDispatch(setIsLoading(false));
+            alert(err);
+          } else {
+            appDispatch(setIsLoading(false));
+            alert('Successfully uploaded data to myBucket/myKey');
+          }
+        });
+      }
+      else {
+        console.log('nada');
+        alert('Seleccione los archivos');
+      }
+      /* appDispatch(setIsLoading(true));
       const s3 = new AWS.S3({
         apiVersion: '2006-03-01',
         params: { Bucket: bucketName },
@@ -55,7 +87,7 @@ const CrearConfiguracionMultimediaContainer = () => {
           appDispatch(setIsLoading(false));
           alert('Successfully uploaded data to myBucket/myKey');
         }
-      });
+      }); */
     }
     else {
       alert('Seleccione los archivos');
