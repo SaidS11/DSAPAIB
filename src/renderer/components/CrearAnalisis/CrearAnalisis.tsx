@@ -34,7 +34,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
           <textarea className="second-input" />
         </section>
         <section className="display-flex">
-          <h4>Protocolo Adquisición:</h4>
+          <h4>Protocol Adquisición:</h4>
           <select className="third-input">
             {numOfPlots()}
           </select>
