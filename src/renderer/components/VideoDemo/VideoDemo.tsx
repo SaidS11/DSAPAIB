@@ -13,7 +13,7 @@ import {
 import ProbarSensores from '../ProbarSensores/ProbarSensores';
 import './VideoDemo.css';
 
-export interface ColocacionProps {
+export interface VideoDemoProps {
   onClickNav: () => void;
   url: string;
   onClickProbar: () => void;
@@ -21,7 +21,7 @@ export interface ColocacionProps {
   probando: boolean;
 }
 
-const VideoDemo = (props: ColocacionProps) => {
+const VideoDemo = (props: VideoDemoProps) => {
   const { onClickNav, url, onClickProbar, onClickDetener, probando } = props;
   // const navigate = useNavigate();
 

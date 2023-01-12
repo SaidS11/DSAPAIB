@@ -35,7 +35,9 @@ function Navegacion(props: NavProps) {
                 Crear Analisis
               </NavDropdown.Item>
               <NavDropdown.Item>Predicción</NavDropdown.Item>
-              <NavDropdown.Item>Entrenamiento</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('resultadoEntrenar')}>
+                Entrenamiento
+              </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('verAnalisis')}>
                 Ver Análisis
               </NavDropdown.Item>
@@ -65,7 +67,9 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('verPaciente')}>
                 Ver Modelos
               </NavDropdown.Item>
-              <NavDropdown.Item>Implementación</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('caracterizar')}>
+                Implementación
+              </NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

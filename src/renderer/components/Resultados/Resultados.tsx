@@ -11,43 +11,39 @@ import {
   styleButtonBigger,
 } from '../VerPaciente/ButtonStyle';
 import ProbarSensores from '../ProbarSensores/ProbarSensores';
-import './Video.css';
+import './Resultados.css';
 
-export interface VideoProps {
+export interface ResultadosProps {
   onClickNav: () => void;
-  url: string;
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
 }
 
-const Video = (props: VideoProps) => {
-  const { onClickNav, url, onClickProbar, onClickDetener, probando } = props;
+const Resultados = (props: ResultadosProps) => {
+  const { onClickNav, onClickProbar, onClickDetener, probando } = props;
+  // const navigate = useNavigate();
+
   return (
     <div>
       <section className="display-center">
-        <h1>Captura de Datos</h1>
+        <h1>Resultados</h1>
       </section>
       <section className="display-center">
-        <h3>La captura comenzara cuando comience el video</h3>
-      </section>
-      <section className="display-center">
-        <video id="myVideo" controls width="50%">
-          <source id="video_src" src={url} type="video/mp4" />
-          Lo siento
-        </video>
-      </section>
-      <section className="display-center">
-        <Button sx={styleButtonBiggerRed} onClick={onClickNav}>
-          Cancelar
-        </Button>
+        <h3>Analice o guarde los resultados</h3>
       </section>
       <section>
         <ProbarSensores sensoresSelected={8} />
       </section>
+      <section className="display-center">
+        <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
+          Guardar Registro
+        </Button>
+        <Button sx={styleButtonBiggerRed}>Cancelar</Button>
+      </section>
+      <br />
     </div>
   );
 };
 
-// <div className="countdown"></div>
-export default Video;
+export default Resultados;

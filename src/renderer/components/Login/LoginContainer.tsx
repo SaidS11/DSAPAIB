@@ -5,7 +5,7 @@ import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import Login from './Login';
 import ModalDatos from './ModalDatos';
 import { useCustomDispatch } from '../../../redux/hooks';
-import { setIsLogged } from '../../../redux/slices/LoginSlice';
+import { setIsLogged, setLoggedUser } from '../../../redux/slices/LoginSlice';
 
 const LoginContainer = () => {
   // const navigate = useNavigate();
@@ -25,8 +25,9 @@ const LoginContainer = () => {
   }
   window.Bridge.loggearD((event: any, resp: any) => {
     if (resp.length > 0) {
-      console.log('si es', resp);
+      console.log('si es', resp[0].usuario);
       appDispatch(setIsLogged(true));
+      appDispatch(setLoggedUser(resp[0].usuario));
       appDispatch(setIsLoading(false));
     } else {
       toggleModal();
