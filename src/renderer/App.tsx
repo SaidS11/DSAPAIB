@@ -21,6 +21,7 @@ import ResultadosContainer from './components/Resultados/ResultadosContainer';
 import CaracterizarContainer from './components/Caracterizar/CaracterizarContainer';
 import ResultadoEntrenarContainer from './components/ResultadoEntrenar/ResultadoEntrenarContainer';
 import CrearConfiguracionMultimediaContainer from './components/CrearConfiguracionMultimedia/CrearConfiguracionMultimediaContainer';
+import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -50,6 +51,10 @@ export default function App() {
             <Route
               path="/resultadoEntrenar"
               element={<ResultadoEntrenarContainer />}
+            />
+            <Route
+              path="/verConfiguracion"
+              element={<VerConfiguracionContainer />}
             />
             <Route path="/caracterizar" element={<CaracterizarContainer />} />
             <Route path="/resultados" element={<ResultadosContainer />} />
