@@ -5,11 +5,11 @@ import {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
 
-export interface CraerConfigProps {
+export interface CrearConfigProps {
   onClickNav: () => void;
 }
 
-const CrearAnalisis = (props: CraerConfigProps) => {
+const CrearAnalisis = (props: CrearConfigProps) => {
   const { onClickNav } = props;
   const variable = "EMG's"
     return (
