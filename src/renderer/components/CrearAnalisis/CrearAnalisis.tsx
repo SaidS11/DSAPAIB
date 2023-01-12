@@ -1,13 +1,16 @@
 /* eslint-disable prettier/prettier */
 import './CrearAnalisis.css';
 import Button from '@mui/material/Button';
+import {
+  styleButtonBiggerGreen,
+} from '../VerPaciente/ButtonStyle';
+
 
 export interface CrearAnalisisProps {
   onClickUpload: () => void;
 }
 
-const CrearAnalisis = (props: CrearAnalisisProps) => {
-  const { onClickUpload } = props;
+const CrearAnalisis = () => {
   const numOfPlots = () => {
     const plots = [];
     // eslint-disable-next-line no-plusplus
@@ -50,15 +53,9 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
       </form>
       </div>
       <section className='display-center'>
-        <Button className='green-button' style={{marginTop: '10px', fontSize: '20px'}} >Crear</Button>
+        <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} >Crear</Button>
       </section>
       <br />
-      <section className="display-center">
-        <input type="file" id="file-upload"  />
-      </section>
-      <section className="display-center">
-        <Button className="green-button" onClick={onClickUpload} >Ir a Inicio</Button>
-      </section>
     </div>
   );
 };

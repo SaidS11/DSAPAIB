@@ -16,6 +16,11 @@ import EscogerConfiguracionContainer from './components/EscogerConfiguracion/Esc
 import ColocacionMuestraContainer from './components/ColocacionMuestra/ColocacionMuestraContainer';
 import VideoDemoContainer from './components/VideoDemo/VideoDemoContainer';
 import VideoContainer from './components/Video/VideoContainer';
+import ResultadosAnalisisContainer from './components/ResultadosAnalisis/ResultadosAnalisisContainer';
+import ResultadosContainer from './components/Resultados/ResultadosContainer';
+import CaracterizarContainer from './components/Caracterizar/CaracterizarContainer';
+import ResultadoEntrenarContainer from './components/ResultadoEntrenar/ResultadoEntrenarContainer';
+import CrearConfiguracionMultimediaContainer from './components/CrearConfiguracionMultimedia/CrearConfiguracionMultimediaContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -39,8 +44,22 @@ export default function App() {
               element={<AgregarPacienteContainer />}
             />
             <Route
+              path="/resultadosAnalisis"
+              element={<ResultadosAnalisisContainer />}
+            />
+            <Route
+              path="/resultadoEntrenar"
+              element={<ResultadoEntrenarContainer />}
+            />
+            <Route path="/caracterizar" element={<CaracterizarContainer />} />
+            <Route path="/resultados" element={<ResultadosContainer />} />
+            <Route
               path="/escogerConfiguracion"
               element={<EscogerConfiguracionContainer />}
+            />
+            <Route
+              path="/crearConfigMultimedia"
+              element={<CrearConfiguracionMultimediaContainer />}
             />
             <Route
               path="/colocacionMuestra"

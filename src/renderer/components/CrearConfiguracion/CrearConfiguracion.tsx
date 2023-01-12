@@ -1,8 +1,16 @@
 /* eslint-disable prettier/prettier */
 import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
+import {
+  styleButtonBiggerGreen,
+} from '../VerPaciente/ButtonStyle';
 
-const CrearAnalisis = () => {
+export interface CraerConfigProps {
+  onClickNav: () => void;
+}
+
+const CrearAnalisis = (props: CraerConfigProps) => {
+  const { onClickNav } = props;
   const variable = "EMG's"
     return (
         <div>
@@ -39,39 +47,39 @@ const CrearAnalisis = () => {
             <section className="display-flex" id='less-margin-top'>
               <h4>Ritmo Cardiaco:</h4>
               <form>
-              <input className='first-radio' type="radio" /> 
-              <input className='second-radio' type="radio" />
+              <input className='first-radio' type="radio" name="ritmo" value="si"/> 
+              <input className='second-radio' type="radio" name="ritmo" value="no"/>
               </form>
             </section>
 
             <section className="display-flex" id='less-margin-top'>
               <h4>SPO2:</h4>
               <form>
-              <input id='more-margin-left-spo2' className='first-radio' type="radio" /> 
-              <input className='second-radio' type="radio" />
+              <input id='more-margin-left-spo2' className='first-radio' type="radio" name="spo2" value="si"/> 
+              <input className='second-radio' type="radio" name="spo2" value="no"/>
               </form>
             </section>
 
             <section className="display-flex" id='less-margin-top'>
               <h4>GSR:</h4>
               <form>
-              <input id='more-margin-left-gsr' className='first-radio' type="radio" /> 
-              <input className='second-radio' type="radio" />
+              <input id='more-margin-left-gsr' className='first-radio' type="radio" name="gsr" value="si"/> 
+              <input className='second-radio' type="radio" name="gsr" value="no"/>
               </form>
             </section>
 
             <section className="display-flex" id='less-margin-top'>
               <h4>Temperatura:</h4>
               <form>
-              <input id='more-margin-right-temperature' className='first-radio' type="radio" /> 
-              <input className='second-radio' type="radio" />
+              <input id='more-margin-right-temperature' className='first-radio' type="radio" name="temperatura" value="si"/> 
+              <input className='second-radio' type="radio" name="temperatura" value="no"/>
               </form>
             </section>
 
           </form>
           </div>
           <section className='display-center'>
-            <Button className='green-button' style={{marginTop: '10px', fontSize: '20px'}} >Crear</Button>
+            <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickNav} >Continuar</Button>
           </section>
           
         </div>

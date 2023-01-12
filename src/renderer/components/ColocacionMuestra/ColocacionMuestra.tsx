@@ -24,7 +24,7 @@ const ColocacionMuestra = (props: ColocacionProps) => {
     const num = parseInt(event.target.value, 10);
     setProtocolo(event.target.value as string);
   };
-
+  // Agregar carga de imagen setload
   return (
     <div>
       <section className="display-center">
