@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-key */
-import './VerAnalisis.css';
+import './VerConfiguracion.css';
 import {
     useTable,
     TableOptions,
@@ -11,11 +11,11 @@ import {
   } from 'react-table';
 import '../../../../assets/Iconos/style.css';
 
-  interface VerAnalisisProps {
+  interface VerConfiguracionProps {
     options: TableOptions<{ col1: string }>;
   }
 
-const VerAnalisis = (props: VerAnalisisProps) => {
+const VerConfiguracion = (props: VerConfiguracionProps) => {
     const { options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -29,7 +29,7 @@ const VerAnalisis = (props: VerAnalisisProps) => {
     return (
         <div className=''>
             <div className='display-flex-analisis'>
-            <h2>Seleccione un Analisis de la lista o agregue uno nuevo:</h2>
+            <h2>Seleccione una Configuracion de la lista o agregue una nueva:</h2>
             <section style={{ marginLeft: 'auto' }}>
             <span className="icon-user-plus" />
             </section>
@@ -37,7 +37,7 @@ const VerAnalisis = (props: VerAnalisisProps) => {
              
              <div className='display-flex-analisis'>
              <h3>Busqueda: </h3> 
-             <input className='more-margin-right' type="text" placeholder='Nombre de Analisis'/>
+             <input className='more-margin-right' type="text" placeholder='Nombre de Configuracion'/>
              </div>
              <br />
       <div 
@@ -88,4 +88,4 @@ const VerAnalisis = (props: VerAnalisisProps) => {
     );
 }
 
-export default VerAnalisis;
+export default VerConfiguracion;

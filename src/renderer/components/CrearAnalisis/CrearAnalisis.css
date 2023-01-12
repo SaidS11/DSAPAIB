@@ -42,11 +42,6 @@
   max-height: 150px;
 }
 
-.third-input-protocolo {
-  margin-left: 27%;
-  width: auto;
-}
-
 .fourth-input-modelo {
   margin-left: 45%;
 }
@@ -65,4 +60,9 @@
   margin-bottom: 3px;
   margin-left: 10px;
   text-transform: unset;
+}
+
+.sensores-crear-analisis {
+  margin-left: 280px;
+  width: auto;
 }
