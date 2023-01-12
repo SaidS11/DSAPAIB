@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable prettier/prettier */
 import './CrearAnalisis.css';
 import Button from '@mui/material/Button';
@@ -11,15 +12,26 @@ export interface CrearAnalisisProps {
 }
 
 const CrearAnalisis = () => {
-  const numOfPlots = () => {
+  const numOfSensors = () => {
     const plots = [];
     // eslint-disable-next-line no-plusplus
-    for(let i = 0; i < 5; i++) {
+    for(let i = 1; i <= 8; i++) {
       plots.push(
         <option value={`${i}`}>{i}</option>
       )
     }
     return plots;
+  }
+
+  const numofModels = () => {
+    const models = [];
+
+    for(let i=1; i<=3; i++) {
+      models.push(
+        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
+      )
+    }
+    return models;
   }
   return (
     <div>
@@ -38,16 +50,14 @@ const CrearAnalisis = () => {
         </section>
         <section className="display-flex">
           <h4>Protocolo Adquisición:</h4>
-          <select className="third-input">
-            {numOfPlots()}
+          <select className='sensores-crear-analisis'>
+            {numOfSensors()}
           </select>
         </section>
         <section className="display-flex">
           <h4>Modelo:</h4>
           <select className="fourth-input-modelo">
-            <option value="1">Modelo 1</option>
-            <option value="2">Modelo 2</option>
-            <option value="0">Añadir Modelo</option>
+            {numofModels()}
           </select>
         </section>
       </form>

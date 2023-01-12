@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable prettier/prettier */
 import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
@@ -12,6 +13,18 @@ export interface CrearConfigProps {
 const CrearAnalisis = (props: CrearConfigProps) => {
   const { onClickNav } = props;
   const variable = "EMG's"
+  
+  const numofEmgs = () => {
+    const emgs = [];
+
+    for(let i=1; i<=8; i++) {
+      emgs.push(
+        <option value={`${i}`}>{`${i}`}</option>
+      )
+    }
+    return emgs;
+  }
+
     return (
         <div>
           <section className="display-center">
@@ -30,14 +43,7 @@ const CrearAnalisis = (props: CrearConfigProps) => {
             <section className="display-flex">
               <h4>Canales {variable}:</h4>
               <select className="third-input-canales">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
+                {numofEmgs()}
               </select>
             </section>
             <section className='display-flex'> 

@@ -11,11 +11,11 @@ import {
   } from 'react-table';
 import '../../../../assets/Iconos/style.css';
 
-  interface VerPacienteProps {
+  interface VerAnalisisProps {
     options: TableOptions<{ col1: string }>;
   }
 
-const VerAnalisis = (props: VerPacienteProps) => {
+const VerAnalisis = (props: VerAnalisisProps) => {
     const { options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
