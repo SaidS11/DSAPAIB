@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-key */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
   useTable,
   TableOptions,
@@ -8,11 +9,6 @@ import {
   HeaderGroup,
 } from 'react-table';
 // import TableStylesList from "./TableStylesList";
-import Button from '@mui/material/Button';
-import {
-  styleButtonBiggerGreen,
-  styleButtonBiggerRed,
-} from '../VerPaciente/ButtonStyle';
 
 interface Cols {
   col1: string;
@@ -23,10 +19,11 @@ interface Cols {
 }
 interface VerConfiguracionProps {
   options: TableOptions<{ col1: string }>;
+  onClickRow: (arg0: any) => void;
 }
 
 const VerConfiguracion = (props: VerConfiguracionProps) => {
-  const { options } = props;
+  const { options, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -76,6 +73,7 @@ const VerConfiguracion = (props: VerConfiguracionProps) => {
               return (
                 <tr
                   {...row.getRowProps()}
+                  onClick={() => onClickRow(row)}
                   className={
                     row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
                   }

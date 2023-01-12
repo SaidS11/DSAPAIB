@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
 import VerConfiguracion from './VerConfiguracion';
 
 // import { useNavigate } from "react-router-dom";
 
 const VerConfiguracionContainer = () => {
+  const navigate = useNavigate();
   interface Cols {
     col1: string;
   }
@@ -90,7 +92,13 @@ const VerConfiguracionContainer = () => {
     data,
     columns,
   };
-  return <VerConfiguracion options={options} />;
+  const onClickRow = (element: any) => {
+    console.log(element);
+    console.log(element.cells);
+    navigate('/verConfiguracionDetalle');
+  };
+
+  return <VerConfiguracion options={options} onClickRow={onClickRow} />;
 };
 
 export default VerConfiguracionContainer;

@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 // eslint-disable-next-line import/no-named-as-default
 import Login from './Login';
+import Loading from '../Loading/Loading';
 import ModalDatos from './ModalDatos';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLogged, setLoggedUser } from '../../../redux/slices/LoginSlice';
 
 const LoginContainer = () => {
@@ -15,6 +16,7 @@ const LoginContainer = () => {
   /* let doctor = '';
   let passw = ''; */
   const [open, setOpen] = useState(false);
+  const loading = useCustomSelector((state) => state.status.isLoading);
   const toggleModal = () => {
     setOpen(!open);
   };
@@ -51,6 +53,7 @@ const LoginContainer = () => {
     <div>
       <Login onClickLogin={onClickLogin} />
       {open && <ModalDatos toggleModal={toggleModal} open={open} />}
+      {loading && <Loading />}
     </div>
   );
 };
