@@ -8,19 +8,25 @@ import {
 
 
 export interface CrearAnalisisProps {
-  onClickUpload: () => void;
+  data: any;
 }
 
-const CrearAnalisis = () => {
-  const numOfSensors = () => {
+const CrearAnalisis = (props: CrearAnalisisProps) => {
+  const { data } = props;
+  const setProtocols = () => {
     const plots = [];
-    // eslint-disable-next-line no-plusplus
-    for(let i = 1; i <= 8; i++) {
-      plots.push(
-        <option value={`${i}`}>{i}</option>
-      )
+    if (data.length > 1) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < data.length; i++) {
+        console.log('datos recibidios', data[i]);
+        plots.push(
+          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+        )
+      }
+      return plots;
     }
-    return plots;
+    return <option value={1}>1</option>;
+    
   }
 
   const numofModels = () => {
@@ -51,7 +57,7 @@ const CrearAnalisis = () => {
         <section className="display-flex">
           <h4>Protocolo Adquisición:</h4>
           <select className='sensores-crear-analisis'>
-            {numOfSensors()}
+            {setProtocols()}
           </select>
         </section>
         <section className="display-flex">

@@ -1,9 +1,3 @@
-.display-center {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
 .display-flex-analisis {
   display: flex;
   margin-left: 0px;

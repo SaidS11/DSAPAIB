@@ -153,7 +153,6 @@ async function iniciarSesion(user: string, pass: string) {
   console.log(query.rows);
   return query.rows;
 }
-// prueba2();
 
 ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
   const resp = await iniciarSesion(user, pass);
@@ -174,7 +173,6 @@ async function selectPacienteF(
   console.log(query.rows);
   return query.rows;
 }
-// prueba2();
 
 ipcMain.on(
   'selectPaciente',
@@ -196,10 +194,281 @@ async function selectPacientes() {
   console.log(query.rows);
   return query.rows;
 }
-// prueba2();
 
 ipcMain.on('selectPacientes', async (event) => {
   const resp = await selectPacientes();
   console.log(resp);
   mainWindow?.webContents.send('selectPs', resp);
+});
+
+async function insertPaciente(
+  usario: string,
+  email: string,
+  telefono: string,
+  fechaNacimiento: any,
+  nombre: string,
+  apellidoP: string,
+  apellidoM: string
+) {
+  const query = await pool.query(
+    ' insert into paciente (usuario, email, telefono, fecha_nacimiento, nombre, apellido_paterno, apellido_materno) values ($1, $2, $3, $4, $5, $6, $7)  ',
+    [usario, email, telefono, fechaNacimiento, nombre, apellidoP, apellidoM]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on(
+  'insertPaciente',
+  async (
+    event,
+    usario: string,
+    email: string,
+    telefono: string,
+    fechaNacimiento: any,
+    nombre: string,
+    apellidoP: string,
+    apellidoM: string
+  ) => {
+    const resp = await insertPaciente(
+      usario,
+      email,
+      telefono,
+      fechaNacimiento,
+      nombre,
+      apellidoP,
+      apellidoM
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertP', resp);
+  }
+);
+
+async function selectProtocolos() {
+  const query = await pool.query(' select nombre from protocolo_adquisicion  ');
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectProtocolos', async (event) => {
+  const resp = await selectProtocolos();
+  console.log(resp);
+  mainWindow?.webContents.send('selectPrs', resp);
+});
+
+async function selectConfiguracionNombre(nombre: string) {
+  const query = await pool.query(
+    ' select configuracion from protocolo_adquisicion where nombre = $1 ',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectConfiguracionNombre', async (event, nombre: string) => {
+  const resp = await selectConfiguracionNombre(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectCN', resp);
+});
+
+async function selectMultimediaConfig(nombre: string) {
+  const query = await pool.query(
+    ' select * from multimedia where configuracion = $1 ',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectMultimediaConfig', async (event, nombre: string) => {
+  const resp = await selectMultimediaConfig(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectMC', resp);
+});
+
+async function insertRegistro(
+  datosCrudos: any,
+  fecha: any,
+  pacienteNombre: string,
+  protocoloNombre: string
+) {
+  const query = await pool.query(
+    ' insert into registro (datos_crudos, fecha, paciente, protocolo_adquisicion) values($1, $2, $3, $4)  ',
+    [datosCrudos, fecha, pacienteNombre, protocoloNombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+// prueba2();
+
+ipcMain.on(
+  'insertRegistro',
+  async (
+    event,
+    datosCrudos: any,
+    fecha: any,
+    pacienteNombre: string,
+    protocoloNombre: string
+  ) => {
+    const resp = await insertRegistro(
+      datosCrudos,
+      fecha,
+      pacienteNombre,
+      protocoloNombre
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertR', resp);
+  }
+);
+
+async function selectConfiguracion() {
+  const query = await pool.query(' select nombre from configuracion ');
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectConfiguracion', async (event) => {
+  const resp = await selectConfiguracion();
+  console.log(resp);
+  mainWindow?.webContents.send('selectC', resp);
+});
+
+async function insertConfiguracion(
+  configuracionNombre: string,
+  configuracionGsr: any,
+  configuracionSpo2: any,
+  configuracionRitmoCardiaco: any,
+  configuracionEmgs: any,
+  configuracionTemperatura: any,
+  configuracionSubido: any,
+  configuracionDescripcion: string
+) {
+  const query = await pool.query(
+    ' insert into configuracion values($1, $2, $3, $4, $5, $6, $7, $8)  ',
+    [
+      configuracionNombre,
+      configuracionGsr,
+      configuracionSpo2,
+      configuracionRitmoCardiaco,
+      configuracionEmgs,
+      configuracionTemperatura,
+      configuracionSubido,
+      configuracionDescripcion,
+    ]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on(
+  'insertConfiguracion',
+  async (
+    event,
+    configuracionNombre: string,
+    configuracionGsr: any,
+    configuracionSpo2: any,
+    configuracionRitmoCardiaco: any,
+    configuracionEmgs: any,
+    configuracionTemperatura: any,
+    configuracionSubido: any,
+    configuracionDescripcion: string
+  ) => {
+    const resp = await insertConfiguracion(
+      configuracionNombre,
+      configuracionGsr,
+      configuracionSpo2,
+      configuracionRitmoCardiaco,
+      configuracionEmgs,
+      configuracionTemperatura,
+      configuracionSubido,
+      configuracionDescripcion
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertC', resp);
+  }
+);
+
+async function insertProtocolo(
+  protocoloAdquisicionNombre: string,
+  protocoloAdquisicionDoctor: string,
+  protocoloAdquisicionConfiguracion: string,
+  protocoloAdquisicionDescripcion: string
+) {
+  const query = await pool.query(
+    ' insert into protocolo_adquisicion values($1, $2, $3, $4)  ',
+    [
+      protocoloAdquisicionNombre,
+      protocoloAdquisicionDoctor,
+      protocoloAdquisicionConfiguracion,
+      protocoloAdquisicionDescripcion,
+    ]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+// prueba2();
+
+ipcMain.on(
+  'insertProtocolo',
+  async (
+    event,
+    protocoloAdquisicionNombre: string,
+    protocoloAdquisicionDoctor: string,
+    protocoloAdquisicionConfiguracion: string,
+    protocoloAdquisicionDescripcion: string
+  ) => {
+    const resp = await insertProtocolo(
+      protocoloAdquisicionNombre,
+      protocoloAdquisicionDoctor,
+      protocoloAdquisicionConfiguracion,
+      protocoloAdquisicionDescripcion
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertPro', resp);
+  }
+);
+
+async function selectRegistrosProtocolo(nombre: string) {
+  const query = await pool.query(
+    ' select paciente from registro where protocolo_adquisicion = $1 ',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectRegistrosProtocolo', async (event, nombre: string) => {
+  const resp = await selectRegistrosProtocolo(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectRP', resp);
+});
+
+async function selectProtocoloDetalle(nombre: string) {
+  const query = await pool.query(
+    ' select * from protocolo_adquisicion where nombre = $1 ',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectProtocoloDetalle', async (event, nombre: string) => {
+  const resp = await selectProtocoloDetalle(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectPD', resp);
+});
+
+async function selectConfiguracionDetalle(nombre: string) {
+  const query = await pool.query(
+    ' select * from configuracion where nombre = $1 ',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectConfiguracionDetalle', async (event, nombre: string) => {
+  const resp = await selectConfiguracionDetalle(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectCD', resp);
 });

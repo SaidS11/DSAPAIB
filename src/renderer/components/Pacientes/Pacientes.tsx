@@ -26,10 +26,12 @@ interface PacientesContentProps {
     col5: string;
   }>;
   onClickRow: (arg0: any) => void;
+  onClickNavigate: () => void;
 }
 
 const Pacientes = (props: PacientesContentProps) => {
-  const { filterInput, setFilterInput, options, onClickRow } = props;
+  const { filterInput, setFilterInput, options, onClickRow, onClickNavigate } =
+    props;
 
   // const classes = useClasses(TableStyles);
   const {
@@ -66,7 +68,13 @@ const Pacientes = (props: PacientesContentProps) => {
           <h2> Seleccione un paciente de la lista o agregue uno</h2>
         </section>
         <section style={{ marginLeft: 'auto' }}>
-          <span className="icon-user-plus" />
+          <span
+            className="icon-user-plus"
+            onClick={onClickNavigate}
+            onKeyDown={onClickNavigate}
+            role="presentation"
+            style={{ cursor: 'pointer' }}
+          />
         </section>
       </div>
       <div style={{ display: 'flex' }}>

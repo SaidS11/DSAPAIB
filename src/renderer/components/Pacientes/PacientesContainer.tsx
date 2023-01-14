@@ -12,6 +12,9 @@ import Pacientes from './Pacientes';
 
 const PacientesContainer = () => {
   const navigate = useNavigate();
+  const onClickNavigate = () => {
+    navigate('/agregarPaciente');
+  };
   function obtenerFecha(fecha: Date) {
     const month = fecha.getUTCMonth() + 1; // months from 1-12
     const day = fecha.getUTCDate();
@@ -145,6 +148,7 @@ const PacientesContainer = () => {
       setFilterInput={setFilterInput}
       options={options}
       onClickRow={onClickRow}
+      onClickNavigate={onClickNavigate}
     />
   );
 };

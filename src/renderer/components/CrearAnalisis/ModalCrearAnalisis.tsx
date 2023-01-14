@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
+import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 const style = {
   position: 'absolute' as const,
@@ -17,11 +18,10 @@ const style = {
   color: 'white',
 };
 export interface ModalProps {
-  toggleModal: () => void;
   open: boolean;
 }
 export default function ModalDatos(props: ModalProps) {
-  const { toggleModal, open } = props;
+  const { open } = props;
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
@@ -30,15 +30,14 @@ export default function ModalDatos(props: ModalProps) {
     <div>
       <Modal
         open={open}
-        onClose={toggleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Añada por lo menos un modelo
+            Añada por lo menos un modelo y un protocolo
           </Typography>
-            <Button>Añadir Modelo</Button>
+            <Button sx={styleButtonBiggerGreen}>Añadir Modelo</Button>
         </Box>
       </Modal>
     </div>

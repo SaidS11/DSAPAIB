@@ -10,7 +10,6 @@ export interface CrearProtocoloProps {
 
 const CrearProtocolo = (props: CrearProtocoloProps) => {
   const { onClickNav } = props;
-  const variable = "EMG's"
     return (
         <div>
           <section className="display-center">
@@ -27,7 +26,7 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
               <textarea className="second-input" />
             </section>
             <section className="display-flex">
-              <h4>Canales {variable}:</h4>
+              <h4>Configuración:</h4>
               <select className="third-input-canales">
                 <option value="1">1</option>
                 <option value="2">2</option>
