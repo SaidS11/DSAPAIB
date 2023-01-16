@@ -5,6 +5,9 @@ import React from 'react';
 import NavegacionContainer from './components/Navegacion/NavegacionContainer';
 import CrearAnalisisContainer from './components/CrearAnalisis/CrearAnalisisContainer';
 import VerAnalisisContainer from './components/VerAnalisis/VerAnalisisContainer';
+import VerAnalisis2Container from './components/VerAnalisis2/VerAnalisis2Container';
+import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisisEntrenamiento/ComenzarAnalisisEntrenamientoContainer';
+import PrediccionContainer from './components/Prediccion/PrediccionContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
@@ -22,9 +25,9 @@ import ResultadosContainer from './components/Resultados/ResultadosContainer';
 import CaracterizarContainer from './components/Caracterizar/CaracterizarContainer';
 import ResultadoEntrenarContainer from './components/ResultadoEntrenar/ResultadoEntrenarContainer';
 import CrearConfiguracionMultimediaContainer from './components/CrearConfiguracionMultimedia/CrearConfiguracionMultimediaContainer';
-import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
 import VerConfiguracionDetalleContainer from './components/VerConfiguracionDetalle/VerConfiguracionDetalleContainer';
 import CrearProtocoloContainer from './components/CrearProtocolo/CrearProtocoloContainer';
+import VerInicioContainer from './components/VerInicio/VerInicioContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -40,6 +43,7 @@ export default function App() {
         <Container maxWidth={false}>
           <br />
           <Routes>
+            <Route path="/verInicio" element={<VerInicioContainer />} />
             <Route path="/" element={<PacientesContainer />} />
             <Route path="/crearAnalisis" element={<CrearAnalisisContainer />} />
             <Route path="/verPaciente" element={<VerPacienteContainer />} />

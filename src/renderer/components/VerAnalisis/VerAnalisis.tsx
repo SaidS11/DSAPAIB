@@ -28,17 +28,13 @@ const VerAnalisis = (props: VerAnalisisProps) => {
   };
     return (
         <div className=''>
-            <div className='display-flex-analisis'>
-            <h2>Seleccione un Analisis de la lista o agregue uno nuevo:</h2>
-            <section style={{ marginLeft: 'auto' }}>
-            <span className="icon-user-plus" />
-            </section>
+            <div className='display-center'>
+            <h1>Analisis</h1>
             </div>
              
-             <div className='display-flex-analisis'>
-             <h3>Busqueda: </h3> 
-             <input className='more-margin-right' type="text" placeholder='Nombre de Analisis'/>
-             </div>
+            <section className="display-center">
+          <h4>Seleccione uno de la lista para ver más detalles:</h4>
+        </section>
              <br />
       <div 
         style={{

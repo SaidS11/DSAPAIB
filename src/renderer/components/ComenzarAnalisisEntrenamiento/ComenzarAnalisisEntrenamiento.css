@@ -1,0 +1,17 @@
+@media (max-width: 1130px) {
+  #comenzarAnalisisEntrenamiento {
+    margin-right: 300%;
+  }
+}
+
+@media (max-width: 900px) {
+  #comenzarAnalisisEntrenamiento {
+    margin-left: 10%;
+  }
+}
+
+@media (max-width: 820px) {
+  #comenzarAnalisisEntrenamiento {
+    margin-left: 0%;
+  }
+}

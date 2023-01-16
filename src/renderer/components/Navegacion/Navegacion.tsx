@@ -18,7 +18,9 @@ function Navegacion(props: NavProps) {
       variant="dark"
     >
       <Container style={{ margin: '0px' }}>
-        <Navbar.Brand href="#home">Modular</Navbar.Brand>
+        <Navbar.Brand onClick={() => onClickNav('verInicio')}>
+          Modular
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
