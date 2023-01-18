@@ -32,8 +32,10 @@ import CrearConfiguracionMultimediaContainer from './components/CrearConfiguraci
 import VerConfiguracionDetalleContainer from './components/VerConfiguracionDetalle/VerConfiguracionDetalleContainer';
 import CrearProtocoloContainer from './components/CrearProtocolo/CrearProtocoloContainer';
 import VerInicioContainer from './components/VerInicio/VerInicioContainer';
+import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);

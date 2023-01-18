@@ -34,10 +34,11 @@ const VerConfiguracionContainer = () => {
   // Load Data for the rows
   async function loadData() {
     console.log('Fui llamado');
-    appDispatch(setIsLoading(true));
-    window.Bridge.selectConfiguracion();
+    // appDispatch(setIsLoading(true));
+    // window.Bridge.selectConfiguracion();
+    window.electron.ipcRenderer.selectConfiguracion();
   }
-  window.Bridge.selectC((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectC((event: any, resp: any) => {
     console.log('llamada dentro');
     if (resp.length > 0) {
       console.log('si es', resp);
@@ -57,6 +58,12 @@ const VerConfiguracionContainer = () => {
   useEffect(() => {
     console.log('updated lista config');
     loadData();
+    /* const fetch = async () => {
+      const respP = await loadData();
+      return respP;
+    }
+    const resP2 = fetch()
+    console.log('Esta es la reso', resP2); */
   }, []);
   /* useEffect(() => {
     console.log('updated');

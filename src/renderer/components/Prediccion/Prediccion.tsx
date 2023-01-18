@@ -35,74 +35,66 @@ const Prediccion = (
       <div className="display-center">
         <h1>Análisis Predicción</h1>
       </div>
-      <div
-        id="comenzarAnalisisEntrenamiento"
-        style={{
-          marginLeft: '26%',
-          width: '850px',
-          paddingLeft: '40px',
-          borderRadius: '5px',
-          paddingBottom: '35px',
-        }}
-      >
-        <div style={{ display: 'flex', marginTop: '50px' }}>
-          <h3>Nombre: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '350px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Analisis T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Descripción: </h3>{' '}
-          <textarea
-            style={{
-              marginLeft: '300px',
-              width: '300px',
-              maxHeight: '100px',
-              minHeight: '100px',
-            }}
-            disabled
-          />
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Protocolo Adquisición: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '178px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Protocolo T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Modelo: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '357px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Modelo T
-          </h3>
-        </div>
+      <div className='display-center'>
+        <form className="analisis-form" action="">
+          <section className="display-flex">
+            <h3>Nombre: </h3>{' '}
+            <h3
+              style={{
+                marginLeft: '350px',
+                border: '1px solid black',
+                width: '300px',
+                paddingLeft: '5px',
+                borderRadius: '5px',
+              }}
+            >
+              Analisis T
+            </h3>
+          </section>
+          <section className="display-flex">
+            <h3>Descripción: </h3>{' '}
+            <textarea
+              style={{
+                marginLeft: '300px',
+                width: '300px',
+                maxHeight: '100px',
+                minHeight: '100px',
+              }}
+              disabled
+            />
+          </section>
+          <section className="display-flex">
+            <h3>Protocolo Adquisición: </h3>{' '}
+            <h3
+              style={{
+                marginLeft: '178px',
+                border: '1px solid black',
+                width: '300px',
+                paddingLeft: '5px',
+                borderRadius: '5px',
+              }}
+            >
+              Protocolo T
+            </h3>
+          </section>
+          <section className="display-flex">
+            <h3>Modelo: </h3>{' '}
+            <h3
+              style={{
+                marginLeft: '357px',
+                border: '1px solid black',
+                width: '300px',
+                paddingLeft: '5px',
+                borderRadius: '5px',
+              }}
+            >
+              Modelo T
+            </h3>
+          </section>
+        
+      <div className='display-center'>
+          <h2>Pacientes:</h2>
       </div>
-        <div className='display-center'>
-            <h2>Pacientes:</h2>
-        </div>
       <div
         style={{
           width: '90%',
@@ -157,6 +149,8 @@ const Prediccion = (
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
           Comenzar
         </Button>
+      </div>
+      </form>
       </div>
     </div>
   );
