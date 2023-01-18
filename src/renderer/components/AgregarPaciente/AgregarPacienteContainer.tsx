@@ -52,14 +52,14 @@ const AgregarPacienteContainer = () => {
   });
 
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
-    appDispatch(setIsLoading(true));
+    // appDispatch(setIsLoading(true));
     e.preventDefault();
-    // navigate('/escogerConfiguracion');
+    navigate('/escogerConfiguracion');
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const data = Object.fromEntries(new FormData(form).entries());
     // console.log('la data', data);
-    insertData(data);
+    // insertData(data);
   };
   return (
     <div>

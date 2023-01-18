@@ -1,22 +1,30 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-key */
-import './VerAnalisis.css';
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
-    useTable,
-    TableOptions,
-    useSortBy,
-    useFilters,
-    HeaderGroup,
-  } from 'react-table';
-import '../../../../assets/Iconos/style.css';
+  useTable,
+  TableOptions,
+  useSortBy,
+  useFilters,
+  HeaderGroup,
+} from 'react-table';
+// import TableStylesList from "./TableStylesList";
 
-  interface VerAnalisisProps {
-    options: TableOptions<{ col1: string }>;
-  }
+interface Cols {
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+  col5: string;
+}
+interface VerModelosProps {
+  options: TableOptions<{ col1: string }>;
+  onClickRow: (arg0: any) => void;
+}
 
-const VerAnalisis = (props: VerAnalisisProps) => {
-    const { options } = props;
+const VerModelos = (props: VerModelosProps) => {
+  const { options, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -26,24 +34,25 @@ const VerAnalisis = (props: VerAnalisisProps) => {
     }
     return <span className="icon-arrow-long-down" />;
   };
-    return (
-        <div className=''>
-            <div className='display-center'>
-            <h1>Analisis</h1>
-            </div>
-             
-            <section className="display-center">
+  return (
+    <div>
+      <div style={{}}>
+        <section className="display-center">
+          <h1>Modelos</h1>
+        </section>
+        <section className="display-center">
           <h4>Seleccione uno de la lista para ver más detalles:</h4>
         </section>
-             <br />
-      <div 
+      </div>
+      <br />
+      <div
         style={{
           width: '100%',
           overflow: 'auto',
           maxHeight: '60vh',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id='table'>
+        <table {...getTableProps()} className="tableCustom">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -65,6 +74,7 @@ const VerAnalisis = (props: VerAnalisisProps) => {
               return (
                 <tr
                   {...row.getRowProps()}
+                  onClick={() => onClickRow(row)}
                   className={
                     row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
                   }
@@ -78,10 +88,8 @@ const VerAnalisis = (props: VerAnalisisProps) => {
           </tbody>
         </table>
       </div>
-      <br />
-        </div>
-       
-    );
-}
+    </div>
+  );
+};
 
-export default VerAnalisis;
+export default VerModelos;

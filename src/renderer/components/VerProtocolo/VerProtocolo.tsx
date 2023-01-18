@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-key */
-import './VerAnalisis.css';
+import './VerProtocolo.css';
 import {
     useTable,
     TableOptions,
@@ -11,11 +11,11 @@ import {
   } from 'react-table';
 import '../../../../assets/Iconos/style.css';
 
-  interface VerAnalisisProps {
+  interface VerProtocoloProps {
     options: TableOptions<{ col1: string }>;
   }
 
-const VerAnalisis = (props: VerAnalisisProps) => {
+const VerProtocolo = (props: VerProtocoloProps) => {
     const { options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -29,7 +29,7 @@ const VerAnalisis = (props: VerAnalisisProps) => {
     return (
         <div className=''>
             <div className='display-center'>
-            <h1>Analisis</h1>
+            <h1>Protocolo</h1>
             </div>
              
             <section className="display-center">
@@ -84,4 +84,4 @@ const VerAnalisis = (props: VerAnalisisProps) => {
     );
 }
 
-export default VerAnalisis;
+export default VerProtocolo;
