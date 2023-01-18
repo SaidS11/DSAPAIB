@@ -19,10 +19,12 @@ export interface VideoProps {
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
+  sensores: number;
 }
 
 const Video = (props: VideoProps) => {
-  const { onClickNav, url, onClickProbar, onClickDetener, probando } = props;
+  const { onClickNav, url, onClickProbar, onClickDetener, probando, sensores } =
+    props;
   return (
     <div>
       <section className="display-center">
@@ -43,7 +45,7 @@ const Video = (props: VideoProps) => {
         </Button>
       </section>
       <section>
-        <ProbarSensores sensoresSelected={8} />
+        <ProbarSensores sensoresSelected={sensores} />
       </section>
     </div>
   );

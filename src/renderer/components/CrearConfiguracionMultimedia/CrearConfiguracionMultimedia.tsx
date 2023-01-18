@@ -6,12 +6,12 @@ import {
 } from '../VerPaciente/ButtonStyle';
 
 export interface CraerConfigMultiProps {
-  onClickNav: () => void;
+  onClickBack: () => void;
   onClickUpload: () => void;
 }
 
 const CrearConfiguracionMultimedia = (props: CraerConfigMultiProps) => {
-  const { onClickNav,onClickUpload } = props;
+  const { onClickBack, onClickUpload } = props;
   const variable = "EMG's"
     return (
         <div>
@@ -25,20 +25,20 @@ const CrearConfiguracionMultimedia = (props: CraerConfigMultiProps) => {
             <h3>Video:</h3>
           </section>
           <section className="display-center">
-            <input type="file" id="file-upload"  />
+            <input type="file" id="video-upload" accept='.mp4, .mov, .avi, .mkv, .webm, .wmv' />
           </section>
           <section className="display-center">
             <h3>Imagen:</h3>
           </section>
           <section className="display-center">
-            <input type="file" id="video-upload"  />
+            <input type="file" id="file-upload" accept='.jpg, .png, .jpeg' />
           </section>
           <br />
           <section className='display-center'>
             <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickUpload}>Crear</Button>
           </section>
           <section className='display-center'>
-            <Button sx={styleButtonBiggerRed} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickUpload}>Cancelar</Button>
+            <Button sx={styleButtonBiggerRed} style={{marginTop: '10px', fontSize: '20px'}} onClick={onClickBack}>Cancelar</Button>
           </section>
           
         </div>

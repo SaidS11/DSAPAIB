@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-inner-declarations */
 /* eslint-disable prettier/prettier */
 import AWS from 'aws-sdk';
 import { useNavigate } from 'react-router-dom';
@@ -20,9 +22,14 @@ const CrearConfiguracionMultimediaContainer = () => {
   const navigate = useNavigate();
   const loggedUser = useCustomSelector((state) => state.login.loggedUser);
   console.log('key to upload ', loggedUser)
+  const primerConfig = useCustomSelector((state) => state.config.configPrimerPaso);
+  console.log(primerConfig);
   const appDispatch = useCustomDispatch();
-  const onClickNav = () => {
-    // navigate('/escogerConfiguracion');
+  let fileImagenDB = '';
+  let fileVideoDB = '';
+
+  const onClickBack = () => {
+    navigate('/CrearConfiguracion');
   };
   const onClickUpload = () => {
     const imgObj = document.getElementById(
@@ -40,10 +47,12 @@ const CrearConfiguracionMultimediaContainer = () => {
           apiVersion: '2006-03-01',
           params: { Bucket: bucketName },
         });
-        const { files } = imgObj;
+        // Image
+        let { files } = imgObj;
         const file = files![0];
         const fileName = file.name;
         const filePath = `Imagenes/${loggedUser}/${fileName}`;
+        fileImagenDB = `https://piediabe-modular.s3.us-west-1.amazonaws.com/Imagenes/${loggedUser}/${fileName}`
         const params = {
           Bucket: 'piediabe-modular',
           Key: filePath,
@@ -52,11 +61,32 @@ const CrearConfiguracionMultimediaContainer = () => {
         };
         s3.upload(params, function (err: any, res: any) {
           if (err) {
+            alert(err);
+          } else {
+            alert('Successfully uploaded data img');
+          }
+        });
+        // Video
+        files = videoObj.files;
+        const fileVideo = files![0];
+        const fileNameVideo = fileVideo.name;
+        const filePathVideo = `Videos/${loggedUser}/${fileNameVideo}`;
+        fileVideoDB = `https://piediabe-modular.s3.us-west-1.amazonaws.com/Videos/${loggedUser}/${fileNameVideo}`
+        const paramsVideo = {
+          Bucket: 'piediabe-modular',
+          Key: filePathVideo,
+          Body: fileVideo,
+          ACL: 'public-read',
+        };
+        s3.upload(paramsVideo, function (err: any, res: any) {
+          if (err) {
             appDispatch(setIsLoading(false));
             alert(err);
           } else {
             appDispatch(setIsLoading(false));
-            alert('Successfully uploaded data to myBucket/myKey');
+            alert('Successfully uploaded data Video');
+            insertConf(primerConfig);
+            
           }
         });
       }
@@ -64,6 +94,34 @@ const CrearConfiguracionMultimediaContainer = () => {
         console.log('nada');
         alert('Seleccione los archivos');
       }
+      
+      async function insertConf(data: any) {
+        appDispatch(setIsLoading(true));
+        window.Bridge.insertConfiguracion(data.nombreConfig, data.gsr, data.spo2, data.ritmo, data.canales, data.temperatura, "1", data.descripcion );
+      }
+      window.Bridge.insertC((event: any, resp: any) => {
+        if (resp.length > 0) {
+          console.log('si es', resp);
+        } else {
+          console.log('nada');
+        }
+        appDispatch(setIsLoading(false));
+        insertFiles(fileVideoDB, fileImagenDB, primerConfig);
+      });
+
+      async function insertFiles(link_video: string, link_img: string, data: any) {
+        appDispatch(setIsLoading(true));
+        window.Bridge.insertMultimedia("Multimedia", link_video, link_img, "1", data.nombreConfig );
+      }
+      window.Bridge.insertM((event: any, resp: any) => {
+        if (resp.length > 0) {
+          console.log('si es', resp);
+        } else {
+          console.log('nada');
+        }
+        appDispatch(setIsLoading(false));
+        navigate('/verConfiguracion');
+      });
       /* appDispatch(setIsLoading(true));
       const s3 = new AWS.S3({
         apiVersion: '2006-03-01',
@@ -93,7 +151,7 @@ const CrearConfiguracionMultimediaContainer = () => {
       alert('Seleccione los archivos');
     }
   };
-  return <CrearConfiguracionMultimedia onClickNav={onClickNav} onClickUpload={onClickUpload} />;
+  return <CrearConfiguracionMultimedia onClickBack={onClickBack} onClickUpload={onClickUpload} />;
 };
 
 export default CrearConfiguracionMultimediaContainer;

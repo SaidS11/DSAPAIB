@@ -10,7 +10,6 @@ import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
 import VerPacienteContainer from './components/VerPaciente/VerPacienteContainer';
 import CrearConfiguracionContainer from './components/CrearConfiguracion/CrearConfiguracionContainer';
-import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
 import Loading from './components/Loading/Loading';
 import AgregarPacienteContainer from './components/AgregarPaciente/AgregarPacienteContainer';
 import EscogerConfiguracionContainer from './components/EscogerConfiguracion/EscogerConfiguracionContainer';

@@ -3,7 +3,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-import React from 'react';
 import {
   styleButtonBigger,
   styleButtonBiggerRed,
@@ -13,18 +12,35 @@ import './EscogerConfiguracion.css';
 
 export interface LoginProps {
   onClickNav: () => void;
+  onClickBack: () => void;
+  onClickAdd: () => void;
+  data: any;
+  protocolo: any;
+  setProtocolo: any;
 }
 
 const EscogerConfiguracion = (props: LoginProps) => {
-  const { onClickNav } = props;
+  const { onClickNav, onClickBack, data, onClickAdd, protocolo, setProtocolo } =
+    props;
   // const navigate = useNavigate();
-  const [protocolo, setProtocolo] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    const num = parseInt(event.target.value, 10);
     setProtocolo(event.target.value as string);
   };
-
+  const setProtocols = () => {
+    const plots = [];
+    if (data.length > 1) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < data.length; i++) {
+        console.log('datos recibidios', data[i]);
+        plots.push(
+          <MenuItem value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
+        );
+      }
+      return plots;
+    }
+    return <option value={1}>1</option>;
+  };
   return (
     <div>
       <section className="display-center">
@@ -44,9 +60,9 @@ const EscogerConfiguracion = (props: LoginProps) => {
               value={protocolo}
               label="Protocolo"
               onChange={handleChange}
+              required
             >
-              <MenuItem value="Masculino">Masculino</MenuItem>
-              <MenuItem value="Femenino">Femenino</MenuItem>
+              {setProtocols()}
             </Select>
           </FormControl>
         </section>
@@ -54,13 +70,17 @@ const EscogerConfiguracion = (props: LoginProps) => {
       </section>
       <br />
       <section className="display-center space-divEscoger">
-        <Button sx={styleButtonBigger}>Agregar Protocolo</Button>
+        <Button sx={styleButtonBigger} onClick={onClickAdd}>
+          Agregar Protocolo
+        </Button>
       </section>
       <section className="display-center">
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
           Confirmar
         </Button>
-        <Button sx={styleButtonBiggerRed}>Regresar</Button>
+        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+          Regresar
+        </Button>
       </section>
     </div>
   );

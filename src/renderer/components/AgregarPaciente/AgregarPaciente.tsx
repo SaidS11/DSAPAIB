@@ -97,7 +97,6 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
             type="date"
             id="fechaNacimiento"
             name="fechaNacimiento"
-            value="2000-07-22"
             min="1900-01-01"
             max="2022-12-31"
             required

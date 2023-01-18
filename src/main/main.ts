@@ -323,13 +323,13 @@ ipcMain.on(
 
 async function selectConfiguracion() {
   const query = await pool.query(' select nombre from configuracion ');
-  console.log(query.rows);
+  console.log('Estas son las rows', query.rows);
   return query.rows;
 }
 
 ipcMain.on('selectConfiguracion', async (event) => {
   const resp = await selectConfiguracion();
-  console.log(resp);
+  console.log('Esta es la resp', resp);
   mainWindow?.webContents.send('selectC', resp);
 });
 
@@ -385,6 +385,43 @@ ipcMain.on(
     );
     console.log(resp);
     mainWindow?.webContents.send('insertC', resp);
+  }
+);
+
+async function insertMultimedia(
+  multimediaNombre: string,
+  link_video: any,
+  link_imagen: any,
+  subido: any,
+  configuracion: string
+) {
+  const query = await pool.query(
+    ' insert into multimedia values($1, $2, $3, $4, $5)  ',
+    [multimediaNombre, link_video, link_imagen, subido, configuracion]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on(
+  'insertMultimedia',
+  async (
+    event,
+    multimediaNombre: string,
+    link_video: any,
+    link_imagen: any,
+    subido: any,
+    configuracion: string
+  ) => {
+    const resp = await insertMultimedia(
+      multimediaNombre,
+      link_video,
+      link_imagen,
+      subido,
+      configuracion
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertM', resp);
   }
 );
 

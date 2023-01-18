@@ -4,12 +4,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import LoginSlice from './slices/LoginSlice';
 import PacienteSlice from './slices/PacienteSlice';
 import StatusSlice from './slices/StatusSlice';
+import ConfiguracionSlice from './slices/ConfiguracionSlice';
 
 export const store = configureStore({
   reducer: {
     login: LoginSlice,
     datos: PacienteSlice,
     status: StatusSlice,
+    config: ConfiguracionSlice,
   },
 });
 

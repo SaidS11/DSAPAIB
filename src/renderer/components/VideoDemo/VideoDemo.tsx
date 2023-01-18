@@ -18,11 +18,21 @@ export interface VideoDemoProps {
   url: string;
   onClickProbar: () => void;
   onClickDetener: () => void;
+  onClickBack: () => void;
   probando: boolean;
+  sensores: number;
 }
 
 const VideoDemo = (props: VideoDemoProps) => {
-  const { onClickNav, url, onClickProbar, onClickDetener, probando } = props;
+  const {
+    onClickNav,
+    url,
+    onClickProbar,
+    onClickDetener,
+    onClickBack,
+    probando,
+    sensores,
+  } = props;
   // const navigate = useNavigate();
 
   return (
@@ -53,12 +63,14 @@ const VideoDemo = (props: VideoDemoProps) => {
             <Button sx={styleButtonBigger} onClick={onClickProbar}>
               Captura de Sensores
             </Button>
-            <Button sx={styleButtonBiggerRed}>Regresar</Button>
+            <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+              Regresar
+            </Button>
           </>
         )}
       </section>
       <section>
-        <ProbarSensores sensoresSelected={8} />
+        <ProbarSensores sensoresSelected={sensores} />
       </section>
     </div>
   );

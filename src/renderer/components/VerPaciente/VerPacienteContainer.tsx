@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
 import { useCustomSelector } from '../../../redux/hooks';
 import VerPaciente from './VerPaciente';
@@ -8,6 +9,7 @@ import VerPaciente from './VerPaciente';
 const VerPacienteContainer = () => {
   const usuario = useCustomSelector((state) => state.datos.usuarioPaciente);
   const datosArray = useCustomSelector((state) => state.datos.datosPaciente);
+  const navigate = useNavigate();
   console.log('user', usuario);
   console.log('DatosArray', datosArray[0]);
   interface Cols {
@@ -95,7 +97,16 @@ const VerPacienteContainer = () => {
     data,
     columns,
   };
-  return <VerPaciente options={options} datosArray={datosArray} />;
+  const onClickCaptura = () => {
+    navigate('/escogerConfiguracion');
+  };
+  return (
+    <VerPaciente
+      options={options}
+      datosArray={datosArray}
+      onClickCaptura={onClickCaptura}
+    />
+  );
 };
 
 export default VerPacienteContainer;

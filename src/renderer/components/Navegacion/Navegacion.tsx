@@ -52,7 +52,9 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item>Ver Protocolo</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Pacientes" id="collasible-nav-dropdown">
-              <NavDropdown.Item>Buscar</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('')}>
+                Buscar
+              </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('agregarPaciente')}>
                 Agregar
               </NavDropdown.Item>

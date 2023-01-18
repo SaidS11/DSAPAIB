@@ -12,11 +12,12 @@ import './ColocacionMuestra.css';
 
 export interface ColocacionProps {
   onClickNav: () => void;
+  onClickBack: () => void;
   url: string;
 }
 
 const ColocacionMuestra = (props: ColocacionProps) => {
-  const { onClickNav, url } = props;
+  const { onClickNav, onClickBack, url } = props;
   // const navigate = useNavigate();
   const [protocolo, setProtocolo] = React.useState('');
 
@@ -40,7 +41,9 @@ const ColocacionMuestra = (props: ColocacionProps) => {
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
           Confirmar
         </Button>
-        <Button sx={styleButtonBiggerRed}>Regresar</Button>
+        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+          Regresar
+        </Button>
       </section>
     </div>
   );

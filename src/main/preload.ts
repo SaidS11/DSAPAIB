@@ -85,7 +85,7 @@ function insertRegistro(
 }
 
 function selectConfiguracion() {
-  ipcRenderer.send('selectMulselectConfiguraciontimediaConfig');
+  ipcRenderer.send('selectConfiguracion');
 }
 
 function insertConfiguracion(
@@ -108,6 +108,23 @@ function insertConfiguracion(
     configuracionTemperatura,
     configuracionSubido,
     configuracionDescripcion
+  );
+}
+
+function insertMultimedia(
+  multimediaNombre: string,
+  link_video: any,
+  link_imagen: any,
+  subido: any,
+  configuracion: string
+) {
+  ipcRenderer.send(
+    'insertMultimedia',
+    multimediaNombre,
+    link_video,
+    link_imagen,
+    subido,
+    configuracion
   );
 }
 
@@ -152,13 +169,15 @@ const indexBridge = {
   selectConfiguracionNombre,
   selectCN: (callback: any) => ipcRenderer.on('selectCN', callback),
   selectMultimediaConfig,
-  selectmC: (callback: any) => ipcRenderer.on('selectMC', callback),
+  selectMC: (callback: any) => ipcRenderer.on('selectMC', callback),
   insertRegistro,
   insertR: (callback: any) => ipcRenderer.on('insertR', callback),
   selectConfiguracion,
   selectC: (callback: any) => ipcRenderer.on('selectC', callback),
   insertConfiguracion,
   insertC: (callback: any) => ipcRenderer.on('insertC', callback),
+  insertMultimedia,
+  insertM: (callback: any) => ipcRenderer.on('insertM', callback),
   insertProtocolo,
   insertPro: (callback: any) => ipcRenderer.on('insertPro', callback),
   selectRegistrosProtocolo,
