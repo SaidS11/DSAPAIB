@@ -36,7 +36,9 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
                 Crear Analisis
               </NavDropdown.Item>
-              <NavDropdown.Item>Predicción</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('verPrediccion')}>
+                Predicción
+              </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('resultadoEntrenar')}>
                 Entrenamiento
               </NavDropdown.Item>
@@ -51,7 +53,9 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('crearProtocolo')}>
                 Crear Protocolo
               </NavDropdown.Item>
-              <NavDropdown.Item>Ver Protocolo</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('verProtocolo')}>
+                Ver Protocolo
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Pacientes" id="collasible-nav-dropdown">
               <NavDropdown.Item>Buscar</NavDropdown.Item>
@@ -70,8 +74,10 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Modelo" id="collasible-nav-dropdown">
-              <NavDropdown.Item>Ver Modelos</NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('caracterizar')}>
+              <NavDropdown.Item onClick={() => onClickNav('verModelos')}>
+                Ver Modelos
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('verImplementacion')}>
                 Implementación
               </NavDropdown.Item>
             </NavDropdown>

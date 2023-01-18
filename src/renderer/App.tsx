@@ -8,6 +8,11 @@ import VerAnalisisContainer from './components/VerAnalisis/VerAnalisisContainer'
 import VerAnalisis2Container from './components/VerAnalisis2/VerAnalisis2Container';
 import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisisEntrenamiento/ComenzarAnalisisEntrenamientoContainer';
 import PrediccionContainer from './components/Prediccion/PrediccionContainer';
+import VerProtocoloContainer from './components/VerProtocolo/VerProtocoloContainer';
+import VerProtocolo2Container from './components/VerProtocolo2/VerProtocolo2Container';
+import VerModelosContainer from './components/VerModelos/VerModelosContainer';
+import VerModeloContainer from './components/VerModelo/VerModeloContainer';
+import VerImplementacionContainer from './components/VerImplementacion/VerImplementacionContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
@@ -71,12 +76,17 @@ export default function App() {
               path="/crearProtocolo"
               element={<CrearProtocoloContainer />}
             />
-            <Route path="/caracterizar" element={<CaracterizarContainer />} />
+            <Route
+              path="/verImplementacion"
+              element={<VerImplementacionContainer />}
+            />
+            <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
             <Route path="/resultados" element={<ResultadosContainer />} />
             <Route
               path="/escogerConfiguracion"
               element={<EscogerConfiguracionContainer />}
             />
+            <Route path="/verPrediccion" element={<PrediccionContainer />} />
             <Route
               path="/crearConfigMultimedia"
               element={<CrearConfiguracionMultimediaContainer />}
@@ -100,6 +110,7 @@ export default function App() {
               path="/verConfiguracion"
               element={<VerConfiguracionContainer />}
             />
+            <Route path="/verModelos" element={<VerModelosContainer />} />
           </Routes>
           <>{loading && <Loading />}</>
         </Container>
