@@ -29,116 +29,41 @@ const VerImplementacion = (
     }
     return <span className="icon-arrow-long-down" />;
   };
+  const numofModels = () => {
+    const models = [];
 
+    // eslint-disable-next-line no-plusplus
+    for(let i=1; i<=3; i++) {
+      models.push(
+        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
+      )
+    }
+    return models;
+  }
   return (
     <div>
       <div className="display-center">
         <h1>Implementación</h1>
       </div>
-      <div
-        id="comenzarAnalisisEntrenamiento"
-        style={{
-          marginLeft: '26%',
-          width: '850px',
-          paddingLeft: '40px',
-          borderRadius: '5px',
-          paddingBottom: '35px',
-        }}
-      >
-        <div style={{ display: 'flex', marginTop: '50px' }}>
-          <h3>Nombre: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '350px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Implementacion T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Descripción: </h3>{' '}
-          <textarea
-            style={{
-              marginLeft: '300px',
-              width: '300px',
-              maxHeight: '100px',
-              minHeight: '100px',
-            }}
-            disabled
-          />
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Modelo: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '355px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Modelo T
-          </h3>
-        </div>
-      </div>
-      <div className="display-center">
-        <h3 style={{ fontWeight: '600' }}>Filtros: </h3>
-      </div>
-      <div
-        style={{
-          width: '90%',
-          overflow: 'auto',
-          maxHeight: '60vh',
-          marginLeft: '80px',
-        }}
-      >
-        <table {...getTableProps()} className="tableCustom" id="table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
-      </div>
-      <br />
-      <div className="display-center">
-        <h3 style={{ fontWeight: '600' }}>Parametros: </h3>
+      <div className='display-center'>
+        <form className="analisis-form" action="" style={{ width: "70%" }}>
+          <section className="display-flex">
+            <h3>Nombre: </h3>{' '}
+            <input className="first-input" type="text"  name="nombrePrediccion" required />
+          </section>
+          <section className="display-flex">
+            <h3>Descripción: </h3>{' '}
+            <textarea className="second-input" name="descripcion" required/>
+          </section>
+          <section className="display-flex">
+            <h3>Modelo: </h3>{' '}
+            <select className="fourth-input-modelo">
+              {numofModels()}
+            </select>
+          </section>
+        
+      <div className='display-center'>
+          <h2>Filtros:</h2>
       </div>
       <div
         style={{
@@ -194,6 +119,8 @@ const VerImplementacion = (
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
           Comenzar
         </Button>
+      </div>
+      </form>
       </div>
     </div>
   );

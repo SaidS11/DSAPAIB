@@ -14,15 +14,43 @@ import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface PrediccionProps {
   options: TableOptions<{ col1: string }>;
+  data: any;
 }
 
 const Prediccion = (
   props: PrediccionProps
 ) => {
-  const { options } = props;
+  const { options, data } = props;
+  const setProtocols = () => {
+    const plots = [];
+    if (data.length > 1) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < data.length; i++) {
+        console.log('datos recibidios', data[i]);
+        plots.push(
+          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+        )
+      }
+      return plots;
+    }
+    return <option value={1}>1</option>;
+    
+  }
+  const numofModels = () => {
+    const models = [];
+
+    // eslint-disable-next-line no-plusplus
+    for(let i=1; i<=3; i++) {
+      models.push(
+        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
+      )
+    }
+    return models;
+  }
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
+  
   const sortedColumn = (column: HeaderGroup<{ col1: string }>) => {
     if (column.isSortedDesc ?? false) {
       return <span className="icon-arrow-long-up" />;
@@ -36,60 +64,26 @@ const Prediccion = (
         <h1>Análisis Predicción</h1>
       </div>
       <div className='display-center'>
-        <form className="analisis-form" action="">
+        <form className="analisis-form" action="" style={{ width: "70%" }}>
           <section className="display-flex">
             <h3>Nombre: </h3>{' '}
-            <h3
-              style={{
-                marginLeft: '350px',
-                border: '1px solid black',
-                width: '300px',
-                paddingLeft: '5px',
-                borderRadius: '5px',
-              }}
-            >
-              Analisis T
-            </h3>
+            <input className="first-input" type="text"  name="nombrePrediccion" required />
           </section>
           <section className="display-flex">
             <h3>Descripción: </h3>{' '}
-            <textarea
-              style={{
-                marginLeft: '300px',
-                width: '300px',
-                maxHeight: '100px',
-                minHeight: '100px',
-              }}
-              disabled
-            />
+            <textarea className="second-input" name="descripcion" required/>
           </section>
           <section className="display-flex">
             <h3>Protocolo Adquisición: </h3>{' '}
-            <h3
-              style={{
-                marginLeft: '178px',
-                border: '1px solid black',
-                width: '300px',
-                paddingLeft: '5px',
-                borderRadius: '5px',
-              }}
-            >
-              Protocolo T
-            </h3>
+            <select className="third-input-canales" name="protcolo" required>
+              {setProtocols()}
+            </select>
           </section>
           <section className="display-flex">
             <h3>Modelo: </h3>{' '}
-            <h3
-              style={{
-                marginLeft: '357px',
-                border: '1px solid black',
-                width: '300px',
-                paddingLeft: '5px',
-                borderRadius: '5px',
-              }}
-            >
-              Modelo T
-            </h3>
+            <select className="fourth-input-modelo">
+              {numofModels()}
+            </select>
           </section>
         
       <div className='display-center'>
