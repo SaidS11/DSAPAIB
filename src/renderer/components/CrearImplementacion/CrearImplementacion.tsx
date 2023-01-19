@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import './VerImplementacion.css';
+import './CrearImplementacion.css';
 import Button from '@mui/material/Button';
 import {
   useTable,
@@ -12,12 +12,12 @@ import {
 } from 'react-table';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
-interface VerImplementacionProps {
+interface CrearImplementacionProps {
   options: TableOptions<{ col1: string }>;
 }
 
-const VerImplementacion = (
-  props: VerImplementacionProps
+const CrearImplementacion = (
+  props: CrearImplementacionProps
 ) => {
   const { options } = props;
   // const classes = TableStylesList();
@@ -84,6 +84,9 @@ const VerImplementacion = (
           >
             Modelo T
           </h3>
+          <select >
+            <option>Protocolo 1</option>
+          </select>
         </div>
       </div>
       <div className="display-center">
@@ -192,11 +195,11 @@ const VerImplementacion = (
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Regresar
+          Comenzar
         </Button>
       </div>
     </div>
   );
 };
 
-export default VerImplementacion;
+export default CrearImplementacion;
