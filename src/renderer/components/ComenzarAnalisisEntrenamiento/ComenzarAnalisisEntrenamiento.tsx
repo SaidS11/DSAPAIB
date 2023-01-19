@@ -33,85 +33,42 @@ const ComenzarAnalisisEntrenamiento = (
   return (
     <div>
       <div className="display-center">
-        <h1>Análisis</h1>
+        <h1>Entrenamiento</h1>
       </div>
-      <div
-        id="comenzarAnalisisEntrenamiento"
-        style={{
-          marginLeft: '26%',
-          width: '850px',
-          paddingLeft: '40px',
-          borderRadius: '5px',
-          paddingBottom: '35px',
-        }}
-      >
-        <div style={{ display: 'flex', marginTop: '50px' }}>
-          <h3>Nombre: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '350px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Analisis T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Descripción: </h3>{' '}
-          <textarea
-            style={{
-              marginLeft: '300px',
-              width: '300px',
-              maxHeight: '100px',
-              minHeight: '100px',
-            }}
-            disabled
-          />
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Protocolo Adquisición: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '178px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Protocolo T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Modelo: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '357px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Modelo T
-          </h3>
-        </div>
+      <div className='display-center'>
+        <form className="analisis-form" action="" style={{ width: "70%" }}>
+          <section className="display-flex">
+            <h3>Nombre: </h3>{' '}
+            <input className="first-input" type="text"  name="nombrePrediccion" required />
+          </section>
+          <section className="display-flex">
+            <h3>Descripción: </h3>{' '}
+            <textarea className="second-input" name="descripcion" required/>
+          </section>
+          <section className="display-flex">
+            <h3>Protocolo Adquisicion: </h3>{' '}
+            <select className="fourth-input-modelo">
+              {}
+            </select>
+          </section>
+          <section className="display-flex">
+            <h3>Modelo: </h3>{' '}
+            <select className="fourth-input-modelo">
+              {}
+            </select>
+          </section>
+        
+      <div className='display-center'>
+          <h2>Parametros de la seleccion:</h2>
       </div>
-      <div className="display-center">
-        <h4 style={{ fontWeight: '600' }}>Parametros de Selección: </h4>
-      </div>
-      <br />
-      <div style={{ marginLeft: '28%', display: 'flex' }}>
-        <h4>Sexo: </h4>
-        <select style={{ marginLeft: '1%' }}>
+      <section className="display-flexAgregar">
+          <h4>Sexo: </h4>
+          <select>
           <option>Hombre</option>
           <option>Mujer</option>
-        </select>
-        <h4 style={{ marginLeft: '30%' }}>Edad: </h4>
-        <select style={{ marginLeft: '1%' }}>
+          </select>
+          <h4>Edad (años): </h4>
+          <select>
           <option>10 a 15</option>
           <option>15 a 20</option>
           <option>20 a 25</option>
@@ -121,13 +78,9 @@ const ComenzarAnalisisEntrenamiento = (
           <option>40 a 45</option>
           <option>45 a 50</option>
           <option>Más de 50</option>
-        </select>
-        <h5 style={{ marginTop: '5px', marginLeft: '5px' }}>años</h5>
-      </div>
-      <br />
-      <div className='display-center'>
-        <h3>Pacientes:</h3>
-      </div>
+          </select>
+        </section>
+        <br />
       <div
         style={{
           width: '90%',
@@ -180,8 +133,10 @@ const ComenzarAnalisisEntrenamiento = (
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Comenzar
+          Regresar
         </Button>
+      </div>
+      </form>
       </div>
     </div>
   );

@@ -62,6 +62,10 @@ export default function App() {
               element={<ResultadosAnalisisContainer />}
             />
             <Route
+              path="/entrenar"
+              element={<ComenzarAnalisisEntrenamientoContainer />}
+            />
+            <Route
               path="/resultadoEntrenar"
               element={<ResultadoEntrenarContainer />}
             />
@@ -81,7 +85,7 @@ export default function App() {
               path="/verImplementacion"
               element={<VerImplementacionContainer />}
             />
-            <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
+            <Route path="/verProtocolo" element={<VerProtocolo2Container />} />
             <Route path="/resultados" element={<ResultadosContainer />} />
             <Route
               path="/escogerConfiguracion"
@@ -106,7 +110,7 @@ export default function App() {
               path="/probarSensores"
               element={<ProbarSensoresContainer />}
             />
-            <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
+            <Route path="/verAnalisis" element={<VerAnalisis2Container />} />
             <Route
               path="/verConfiguracion"
               element={<VerConfiguracionContainer />}
