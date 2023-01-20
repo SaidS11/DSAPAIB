@@ -4,7 +4,9 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import styleButton from '../VerPaciente/ButtonStyle';
+import { styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
+import { setFailUpload } from '../../../redux/slices/StatusSlice';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 
 const style = {
   position: 'absolute' as const,
@@ -12,20 +14,23 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: '#7fe706',
+  bgcolor: '#d0312d',
   boxShadow: 24,
   p: 4,
   textAlign: 'center',
   color: 'white',
 };
 
-export default function CargaExitosaModal() {
+export default function ErrorCrear() {
   const [open, setOpen] = useState(true);
+  const msg = useCustomSelector((state) => state.status.errorDetails)
+  const appDispatch = useCustomDispatch();
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
   const toggleModal = () => {
     setOpen(!open);
+    appDispatch(setFailUpload(false));
   };
   return (
     <div>
@@ -37,9 +42,12 @@ export default function CargaExitosaModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            La carga ha sido exitosa
+            Error al agregar
           </Typography>
-          <Button sx={styleButton} onClick={toggleModal}>Continuar</Button>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {msg}
+          </Typography>
+            <Button sx={styleButtonBiggerRed} onClick={toggleModal}>Continuar</Button>
         </Box>
       </Modal>
     </div>

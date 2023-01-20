@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
+import { useState } from 'react';
 import { styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
 
 const style = {
@@ -17,19 +18,20 @@ const style = {
   textAlign: 'center',
   color: 'white',
 };
-export interface ModalProps {
-  open: boolean;
-}
-export default function ModalDatos(props: ModalProps) {
-  const { open } = props;
+
+export default function ErrorModal() {
+  const [open, setOpen] = useState(true);
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
-
+  const toggleModal = () => {
+    setOpen(!open);
+  };
   return (
     <div>
       <Modal
         open={open}
+        onClose={toggleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -37,7 +39,7 @@ export default function ModalDatos(props: ModalProps) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Ha ocurrido un error en la carga
           </Typography>
-            <Button sx={styleButtonBiggerRed}>Continuar</Button>
+            <Button sx={styleButtonBiggerRed} onClick={toggleModal}>Continuar</Button>
         </Box>
       </Modal>
     </div>

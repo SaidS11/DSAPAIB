@@ -431,17 +431,22 @@ async function insertProtocolo(
   protocoloAdquisicionConfiguracion: string,
   protocoloAdquisicionDescripcion: string
 ) {
-  const query = await pool.query(
-    ' insert into protocolo_adquisicion values($1, $2, $3, $4)  ',
-    [
-      protocoloAdquisicionNombre,
-      protocoloAdquisicionDoctor,
-      protocoloAdquisicionConfiguracion,
-      protocoloAdquisicionDescripcion,
-    ]
-  );
-  console.log(query.rows);
-  return query.rows;
+  try {
+    const query = await pool.query(
+      ' insert into protocolo_adquisicion values($1, $2, $3, $4)  ',
+      [
+        protocoloAdquisicionNombre,
+        protocoloAdquisicionDoctor,
+        protocoloAdquisicionConfiguracion,
+        protocoloAdquisicionDescripcion,
+      ]
+    );
+    console.log(query.rows);
+    return query.rows;
+  } catch (e: any) {
+    console.log('errorr', e);
+    return [0, e.detail];
+  }
 }
 // prueba2();
 

@@ -33,6 +33,8 @@ import VerConfiguracionDetalleContainer from './components/VerConfiguracionDetal
 import CrearProtocoloContainer from './components/CrearProtocolo/CrearProtocoloContainer';
 import VerInicioContainer from './components/VerInicio/VerInicioContainer';
 import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
+import CreadoExitosamente from './components/Modales/CreadoExitosamente';
+import ErrorCrear from './components/Modales/ErrorCrear';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -40,6 +42,8 @@ import './App.css';
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
   const loading = useCustomSelector((state) => state.status.isLoading);
+  const subidaExitosa = useCustomSelector((state) => state.status.isUploaded);
+  const subidaFallo = useCustomSelector((state) => state.status.failUpload);
   console.log(isLogged);
   if (isLogged) {
     return (
@@ -114,6 +118,8 @@ export default function App() {
             <Route path="/verModelos" element={<VerModelosContainer />} />
           </Routes>
           <>{loading && <Loading />}</>
+          <>{subidaExitosa && <CreadoExitosamente />}</>
+          <>{subidaFallo && <ErrorCrear />}</>
         </Container>
       </div>
     );

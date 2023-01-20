@@ -90,7 +90,12 @@ const VerAnalisisContainer = () => {
         columns,
       };
 
-  return <VerAnalisis options={options}/>;
+
+  return (
+    <div>
+      <VerAnalisis options={options}/>
+    </div>
+  );
 };
 
 export default VerAnalisisContainer;

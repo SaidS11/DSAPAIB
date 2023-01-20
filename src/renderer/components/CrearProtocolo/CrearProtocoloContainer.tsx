@@ -2,9 +2,10 @@
 /* eslint-disable prettier/prettier */
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setIsLoading, setIsUploaded, setFailUpload, setErrorDetails } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import CrearProtocolo from './CrearProtocolo';
+import CreadoExitosamente from '../Modales/CreadoExitosamente';
 
 const CrearProtocoloContainer = () => {
   const navigate = useNavigate();
@@ -30,13 +31,23 @@ const CrearProtocoloContainer = () => {
     window.Bridge.insertProtocolo(dataP.nombreProtocolo, doctor, dataP.config, dataP.descripcion);
   }
   window.Bridge.insertPro((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('si es', resp);
-      setData(resp);
+    console.log('Esta es mi resp', resp)
+    if (resp[0] === 0) {
+      console.log('Despacho error', resp[1]);
+      appDispatch(setFailUpload(true));
+      appDispatch(setIsLoading(false));
+      appDispatch(setErrorDetails(resp[1]))
     } else {
-      console.log('nada');
+      console.log('No despacho error');
+      if (resp.length > 0) {
+        console.log('si es', resp);
+        setData(resp);
+      } else {
+        console.log('nada');
+      }
+      appDispatch(setIsLoading(false));
+      appDispatch(setIsUploaded(true));
     }
-    appDispatch(setIsLoading(false));
   });
 
   const onClickCrear = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +67,11 @@ const CrearProtocoloContainer = () => {
     loadData();
   }, []);
 
-  return <CrearProtocolo onClickCrear={onClickCrear} data={data}/>;
+  return (
+    <div>
+      <CrearProtocolo onClickCrear={onClickCrear} data={data}/>
+    </div>
+  );
 };
 
 export default CrearProtocoloContainer;

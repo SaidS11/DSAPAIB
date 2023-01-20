@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import styleButton from '../VerPaciente/ButtonStyle';
+import { setIsUploaded } from '../../../redux/slices/StatusSlice';
+import { useCustomDispatch } from '../../../redux/hooks';
 
 const style = {
   position: 'absolute' as const,
@@ -19,13 +21,15 @@ const style = {
   color: 'white',
 };
 
-export default function CargaExitosaModal() {
+export default function CreadoExitosamente() {
   const [open, setOpen] = useState(true);
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
+  const appDispatch = useCustomDispatch();
   const toggleModal = () => {
     setOpen(!open);
+    appDispatch(setIsUploaded(false));
   };
   return (
     <div>
@@ -37,7 +41,7 @@ export default function CargaExitosaModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            La carga ha sido exitosa
+            Creacion Exitosa
           </Typography>
           <Button sx={styleButton} onClick={toggleModal}>Continuar</Button>
         </Box>
