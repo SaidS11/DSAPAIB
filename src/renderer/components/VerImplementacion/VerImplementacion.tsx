@@ -117,7 +117,7 @@ const VerImplementacion = (
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Comenzar
+          Regresar
         </Button>
       </div>
       </form>

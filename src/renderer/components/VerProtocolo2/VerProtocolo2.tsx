@@ -35,61 +35,24 @@ const VerProtocolo2 = (
       <div className="display-center">
         <h1>Protocolo</h1>
       </div>
-      <div
-        id="comenzarAnalisisEntrenamiento"
-        style={{
-          marginLeft: '26%',
-          width: '850px',
-          paddingLeft: '40px',
-          borderRadius: '5px',
-          paddingBottom: '35px',
-        }}
-      >
-        <div style={{ display: 'flex', marginTop: '50px' }}>
-          <h3>Nombre: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '350px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Analisis T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Descripción: </h3>{' '}
-          <textarea
-            style={{
-              marginLeft: '300px',
-              width: '300px',
-              maxHeight: '100px',
-              minHeight: '100px',
-            }}
-            disabled
-          />
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Configuracion: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '270px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Protocolo T
-          </h3>
-        </div>
+      <div className='display-center'>
+        <form className="analisis-form" action="" style={{ width: "70%" }}>
+          <section className="display-flex">
+            <h3>Nombre: </h3>{' '}
+            <input className="first-input" type="text"  name="nombrePrediccion" required />
+          </section>
+          <section className="display-flex">
+            <h3>Descripción: </h3>{' '}
+            <textarea className="second-input" name="descripcion" required/>
+          </section>
+          <section className="display-flex">
+            <h3>Configuracion: </h3>{' '}
+            <input className="first-input" type="text"  name="nombrePrediccion" required />
+          </section>
+        <br />
+      <div className='display-center'>
+          <h2>Protocolos:</h2>
       </div>
-      <div className="display-center">
-        <h3 style={{ fontWeight: '600' }}>Registros: </h3>
-      </div>
-      <br />
       <div
         style={{
           width: '90%',
@@ -142,8 +105,10 @@ const VerProtocolo2 = (
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
         <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Comenzar
+          Regresar
         </Button>
+      </div>
+      </form>
       </div>
     </div>
   );

@@ -39,7 +39,7 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('verPrediccion')}>
                 Predicción
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('resultadoEntrenar')}>
+              <NavDropdown.Item onClick={() => onClickNav('entrenar')}>
                 Entrenamiento
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('verAnalisis')}>
