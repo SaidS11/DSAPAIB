@@ -18,7 +18,10 @@ function Navegacion(props: NavProps) {
       variant="dark"
     >
       <Container style={{ margin: '0px' }}>
-        <Navbar.Brand onClick={() => onClickNav('verInicio')}>
+        <Navbar.Brand
+          style={{ cursor: 'pointer' }}
+          onClick={() => onClickNav('')}
+        >
           Modular
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -58,7 +61,7 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Pacientes" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('')}>
+              <NavDropdown.Item onClick={() => onClickNav('buscarPaciente')}>
                 Buscar
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('agregarPaciente')}>

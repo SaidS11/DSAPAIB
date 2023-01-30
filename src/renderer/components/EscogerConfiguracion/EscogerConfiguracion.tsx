@@ -14,14 +14,22 @@ export interface LoginProps {
   onClickNav: () => void;
   onClickBack: () => void;
   onClickAdd: () => void;
+  onClickVer: () => void;
   data: any;
   protocolo: any;
   setProtocolo: any;
 }
 
 const EscogerConfiguracion = (props: LoginProps) => {
-  const { onClickNav, onClickBack, data, onClickAdd, protocolo, setProtocolo } =
-    props;
+  const {
+    onClickNav,
+    onClickBack,
+    onClickVer,
+    data,
+    onClickAdd,
+    protocolo,
+    setProtocolo,
+  } = props;
   // const navigate = useNavigate();
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -66,7 +74,9 @@ const EscogerConfiguracion = (props: LoginProps) => {
             </Select>
           </FormControl>
         </section>
-        <Button sx={styleButtonBigger}>Ver</Button>
+        <Button sx={styleButtonBigger} onClick={onClickVer}>
+          Ver
+        </Button>
       </section>
       <br />
       <section className="display-center space-divEscoger">

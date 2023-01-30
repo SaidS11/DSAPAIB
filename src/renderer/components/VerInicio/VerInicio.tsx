@@ -2,7 +2,14 @@
 import './VerInicio.css';
 import Button from '@mui/material/Button';
 
-export const Inicio = () => {
+interface InicioProps {
+  onClickPacientes: () => void;
+  onClickProtocolo: () => void;
+  onClickAnalisis: () => void;
+}
+
+export const Inicio = (props: InicioProps) => {
+    const { onClickPacientes, onClickProtocolo, onClickAnalisis } = props;
     return (
       <div style={{marginTop: '3%'}}>
       <div className='display-center'>
@@ -22,15 +29,15 @@ export const Inicio = () => {
       </div>
       <br />
       <div className='display-center'>
-        <Button style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Pacientes</Button>
+        <Button onClick={onClickPacientes} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Pacientes</Button>
       </div>
       <br />
       <div className='display-center'>
-        <Button style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Protocolo</Button>
+        <Button onClick={onClickProtocolo} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Protocolo</Button>
       </div>
       <br />
       <div className='display-center'>
-        <Button style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Análisis</Button>
+        <Button onClick={onClickAnalisis} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Análisis</Button>
       </div>
       <div className='display-center'>
         <h5 style={{marginTop: '3%'}}>Universidad de Guadalajara 2023</h5>

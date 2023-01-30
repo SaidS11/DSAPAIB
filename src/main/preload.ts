@@ -11,6 +11,22 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectConfiguracion');
     },
     selectC: (callback: any) => ipcRenderer.on('selectC', callback),
+    selectMultimediaConfig(nombre: string) {
+      ipcRenderer.send('selectMultimediaConfig', nombre);
+    },
+    selectMC: (callback: any) => ipcRenderer.on('selectMC', callback),
+    selectConfiguracionNombre(nombre: string) {
+      ipcRenderer.send('selectConfiguracionNombre', nombre);
+    },
+    selectCN: (callback: any) => ipcRenderer.on('selectCN', callback),
+    selectConfiguracionDetalle(nombre: string) {
+      ipcRenderer.send('selectConfiguracionDetalle', nombre);
+    },
+    selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
+    funPython(nombre: string) {
+      ipcRenderer.send('funPython', nombre);
+    },
+    funP: (callback: any) => ipcRenderer.on('funP', callback),
     on(channel: Channels, func: (...args: unknown[]) => void) {
       const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
         func(...args);

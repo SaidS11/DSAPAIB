@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import styleButton from '../VerPaciente/ButtonStyle';
+import { setIsUploadedS3 } from '../../../redux/slices/StatusSlice';
+import { useCustomDispatch } from '../../../redux/hooks';
 
 const style = {
   position: 'absolute' as const,
@@ -21,11 +23,13 @@ const style = {
 
 export default function CargaExitosaModal() {
   const [open, setOpen] = useState(true);
+  const appDispatch = useCustomDispatch();
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
   const toggleModal = () => {
     setOpen(!open);
+    appDispatch(setIsUploadedS3(false));
   };
   return (
     <div>

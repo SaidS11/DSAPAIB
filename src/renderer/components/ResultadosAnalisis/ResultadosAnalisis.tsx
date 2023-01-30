@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,10 +20,19 @@ export interface ResultadosAnalisisProps {
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
+  precision: string;
+  analisis: any;
 }
 
 const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
-  const { onClickNav, onClickProbar, onClickDetener, probando } = props;
+  const {
+    onClickNav,
+    onClickProbar,
+    onClickDetener,
+    probando,
+    precision,
+    analisis,
+  } = props;
   // const navigate = useNavigate();
 
   return (
@@ -33,7 +44,7 @@ const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
         <h3>Analice o guarde los resultados</h3>
       </section>
       <section>
-        <ProbarSensores sensoresSelected={8} />
+        <img src={require('../../../pythonScripts/Tree.png')} width="100%" />
       </section>
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>
@@ -45,15 +56,15 @@ const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
         </section>
         <section className="display-flexResultadosA">
           <h5>Protocolo:</h5>
-          <h5>Protocolo 1</h5>
+          <h5>{analisis.protocolo}</h5>
         </section>
         <section className="display-flexResultadosA">
           <h5>Modelo Usado:</h5>
-          <h5>Modelo 1</h5>
+          <h5>{analisis.modelo}</h5>
         </section>
         <section className="display-flexResultadosA">
           <h5>Precisión:</h5>
-          <h5>99.9%</h5>
+          <h5>{precision}%</h5>
         </section>
         <section className="display-center">
           <Button sx={styleButtonBigger} onClick={onClickProbar}>

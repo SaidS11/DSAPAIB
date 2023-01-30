@@ -10068,6 +10068,11 @@
     "is-buffer" "^2.0.3"
     "to-uint8" "^1.4.1"
 
+"python-shell@^3.0.1":
+  "integrity" "sha512-TWeotuxe1auhXa5bGRScxnc2J+0r41NBntSa6RYZtMBLtAEsvCboKrEbW6DvASosWQepVkhZZlT3B5Ei766G+Q=="
+  "resolved" "https://registry.npmjs.org/python-shell/-/python-shell-3.0.1.tgz"
+  "version" "3.0.1"
+
 "qs@6.9.7":
   "integrity" "sha512-IhMFgUmuNpyRfxA90umL7ByLlgRXu6tIfKPpF5TmcfRLlLCckfP/g3IQmju6jjpu+Hh8rA+2p6A27ZSPOOHdKw=="
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.9.7.tgz"

@@ -70,7 +70,7 @@ const VerImplementacion = (
           width: '90%',
           overflow: 'auto',
           maxHeight: '60vh',
-          marginLeft: '80px',
+          marginLeft: '50px',
         }}
       >
         <table {...getTableProps()} className="tableCustom" id="table">

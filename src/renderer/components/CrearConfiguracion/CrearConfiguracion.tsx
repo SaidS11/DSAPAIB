@@ -81,7 +81,7 @@ const CrearAnalisis = (props: CrearConfigProps) => {
             </section>
           </form>
           </div>
-          
+          <br />
         </div>
       );
 };

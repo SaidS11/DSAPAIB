@@ -35,6 +35,8 @@ import VerInicioContainer from './components/VerInicio/VerInicioContainer';
 import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
 import CreadoExitosamente from './components/Modales/CreadoExitosamente';
 import ErrorCrear from './components/Modales/ErrorCrear';
+import ErrorModal from './components/Modales/ErrorModal';
+import CargaExitosaModal from './components/Modales/CargaExitosaModal';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -44,6 +46,10 @@ export default function App() {
   const loading = useCustomSelector((state) => state.status.isLoading);
   const subidaExitosa = useCustomSelector((state) => state.status.isUploaded);
   const subidaFallo = useCustomSelector((state) => state.status.failUpload);
+  const subidaExitosaS3 = useCustomSelector(
+    (state) => state.status.isUploadedS3
+  );
+  const subidaFalloS3 = useCustomSelector((state) => state.status.failUploadS3);
   console.log(isLogged);
   if (isLogged) {
     return (
@@ -53,8 +59,8 @@ export default function App() {
         <Container maxWidth={false}>
           <br />
           <Routes>
-            <Route path="/verInicio" element={<VerInicioContainer />} />
-            <Route path="/" element={<PacientesContainer />} />
+            <Route path="/" element={<VerInicioContainer />} />
+            <Route path="/buscarPaciente" element={<PacientesContainer />} />
             <Route path="/crearAnalisis" element={<CrearAnalisisContainer />} />
             <Route path="/verPaciente" element={<VerPacienteContainer />} />
             <Route
@@ -89,7 +95,11 @@ export default function App() {
               path="/verImplementacion"
               element={<VerImplementacionContainer />}
             />
-            <Route path="/verProtocolo" element={<VerProtocolo2Container />} />
+            <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
+            <Route
+              path="/verProtocoloDetalle"
+              element={<VerProtocolo2Container />}
+            />
             <Route path="/resultados" element={<ResultadosContainer />} />
             <Route
               path="/escogerConfiguracion"
@@ -114,7 +124,8 @@ export default function App() {
               path="/probarSensores"
               element={<ProbarSensoresContainer />}
             />
-            <Route path="/verAnalisis" element={<VerAnalisis2Container />} />
+            <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
+            <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
             <Route
               path="/verConfiguracion"
               element={<VerConfiguracionContainer />}
@@ -124,6 +135,8 @@ export default function App() {
           <>{loading && <Loading />}</>
           <>{subidaExitosa && <CreadoExitosamente />}</>
           <>{subidaFallo && <ErrorCrear />}</>
+          <>{subidaExitosaS3 && <CargaExitosaModal />}</>
+          <>{subidaFalloS3 && <ErrorModal />}</>
         </Container>
       </div>
     );

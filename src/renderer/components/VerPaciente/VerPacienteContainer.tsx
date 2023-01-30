@@ -100,11 +100,15 @@ const VerPacienteContainer = () => {
   const onClickCaptura = () => {
     navigate('/escogerConfiguracion');
   };
+  const onClickIrInicio = () => {
+    navigate('/');
+  };
   return (
     <VerPaciente
       options={options}
       datosArray={datosArray}
       onClickCaptura={onClickCaptura}
+      onClickIrInicio={onClickIrInicio}
     />
   );
 };

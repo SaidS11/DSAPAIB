@@ -40,7 +40,8 @@ export const PacienteSlice = createSlice({
 });
 
 export const { setUsuarioPaciente, setDatosPaciente } = PacienteSlice.actions;
-export const selectIsLogged = (state: RootState) => state.datos.usuarioPaciente;
+export const selectUsuarioPaciente = (state: RootState) =>
+  state.datos.usuarioPaciente;
 export const selectDatosPaciente = (state: RootState) =>
   state.datos.datosPaciente;
 export default PacienteSlice.reducer;

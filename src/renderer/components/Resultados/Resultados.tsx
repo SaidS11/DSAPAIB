@@ -18,10 +18,12 @@ export interface ResultadosProps {
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
+  sensores: any;
 }
 
 const Resultados = (props: ResultadosProps) => {
-  const { onClickNav, onClickProbar, onClickDetener, probando } = props;
+  const { onClickNav, onClickProbar, onClickDetener, probando, sensores } =
+    props;
   // const navigate = useNavigate();
 
   return (
@@ -33,7 +35,7 @@ const Resultados = (props: ResultadosProps) => {
         <h3>Analice o guarde los resultados</h3>
       </section>
       <section>
-        <ProbarSensores sensoresSelected={8} />
+        <ProbarSensores sensoresSelected={sensores} />
       </section>
       <section className="display-center">
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>

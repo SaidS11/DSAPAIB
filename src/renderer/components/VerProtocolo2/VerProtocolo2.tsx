@@ -14,12 +14,15 @@ import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface VerProtocolo2Props {
   options: TableOptions<{ col1: string }>;
+  resp: any;
+  onClickIrRegresar: () => void;
+  largo: any;
 }
 
 const VerProtocolo2 = (
   props: VerProtocolo2Props
 ) => {
-  const { options } = props;
+  const { options, resp, onClickIrRegresar, largo } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -38,30 +41,32 @@ const VerProtocolo2 = (
       <div className='display-center'>
         <form className="analisis-form" action="" style={{ width: "70%" }}>
           <section className="display-flex">
-            <h3>Nombre: </h3>{' '}
-            <input className="first-input" type="text"  name="nombrePrediccion" required />
+            <h3>Nombre: </h3>
+            <input className="first-input" type="text"  name="nombrePrediccion" value={resp[0].nombre} required disabled />
           </section>
           <section className="display-flex">
-            <h3>Descripción: </h3>{' '}
-            <textarea className="second-input" name="descripcion" required/>
+            <h3>Descripción: </h3>
+            <textarea className="second-input" name="descripcion" value={resp[0].descripcion === null ? "..." : resp[0].descripcion} required disabled />
           </section>
-          <section className="display-flex">
-            <h3>Configuracion: </h3>{' '}
-            <input className="first-input" type="text"  name="nombrePrediccion" required />
+          <section className="display-flex" style = {{ marginRight: "20%" }}>
+            <h3>Configuracion: </h3>
+            <select className="third-input-canales">
+                <option value={`${resp[0].configuracion}`}>{resp[0].configuracion}</option>
+            </select>
           </section>
         <br />
       <div className='display-center'>
-          <h2>Protocolos:</h2>
+          <h2>Registros asociados al protocolo:</h2>
       </div>
       <div
         style={{
           width: '90%',
           overflow: 'auto',
           maxHeight: '60vh',
-          marginLeft: '80px',
+          marginLeft: '55px',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id="table">
+        <table {...getTableProps()} className="tableCustom">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -98,13 +103,13 @@ const VerProtocolo2 = (
       </div>
       <div className="display-center" style={{ marginTop: '10px' }}>
         <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
+        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{largo}</h5>
       </div>
       <div
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
+        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickIrRegresar}>
           Regresar
         </Button>
       </div>

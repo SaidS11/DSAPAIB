@@ -4,7 +4,7 @@
 import AWS from 'aws-sdk';
 import { useNavigate } from 'react-router-dom';
 import CrearConfiguracionMultimedia from './CrearConfiguracionMultimedia';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setFailUploadS3, setIsLoading, setIsUploadedS3 } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch , useCustomSelector } from '../../../redux/hooks';
 
 const bucketName = 'piediabe-modular';
@@ -61,9 +61,11 @@ const CrearConfiguracionMultimediaContainer = () => {
         };
         s3.upload(params, function (err: any, res: any) {
           if (err) {
-            alert(err);
+            // alert(err);
+            appDispatch(setFailUploadS3(true));
           } else {
-            alert('Successfully uploaded data img');
+            // alert('Successfully uploaded data img');
+            appDispatch(setIsUploadedS3(true));
           }
         });
         // Video
@@ -81,10 +83,12 @@ const CrearConfiguracionMultimediaContainer = () => {
         s3.upload(paramsVideo, function (err: any, res: any) {
           if (err) {
             appDispatch(setIsLoading(false));
-            alert(err);
+            // alert(err);
+            appDispatch(setFailUploadS3(true));
           } else {
             appDispatch(setIsLoading(false));
-            alert('Successfully uploaded data Video');
+            appDispatch(setIsUploadedS3(true));
+            // alert('Successfully uploaded data Video');
             insertConf(primerConfig);
             
           }

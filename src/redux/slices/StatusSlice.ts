@@ -7,6 +7,7 @@ export interface IStatus {
   isUploaded: boolean;
   isUploadedS3: boolean;
   failUpload: boolean;
+  failUploadS3: boolean;
   errorDetails: string;
 }
 
@@ -15,6 +16,7 @@ const initialState: IStatus = {
   isUploaded: false,
   isUploadedS3: false,
   failUpload: false,
+  failUploadS3: false,
   errorDetails: '',
 };
 
@@ -37,6 +39,12 @@ export const StatusSlice = createSlice({
     setFailUpload: (state, action: PayloadAction<IStatus['failUpload']>) => {
       state.failUpload = action.payload;
     },
+    setFailUploadS3: (
+      state,
+      action: PayloadAction<IStatus['failUploadS3']>
+    ) => {
+      state.failUploadS3 = action.payload;
+    },
     setErrorDetails: (
       state,
       action: PayloadAction<IStatus['errorDetails']>
@@ -51,6 +59,7 @@ export const {
   setIsUploaded,
   setIsUploadedS3,
   setFailUpload,
+  setFailUploadS3,
   setErrorDetails,
 } = StatusSlice.actions;
 export const selectIsLoading = (state: RootState) => state.status.isLoading;
@@ -58,6 +67,8 @@ export const selectIsUploaded = (state: RootState) => state.status.isUploaded;
 export const selectIsUploadedS3 = (state: RootState) =>
   state.status.isUploadedS3;
 export const selectFailUpload = (state: RootState) => state.status.failUpload;
+export const selectFailUploadS3 = (state: RootState) =>
+  state.status.failUploadS3;
 export const selectErrorDetails = (state: RootState) =>
   state.status.errorDetails;
 export default StatusSlice.reducer;

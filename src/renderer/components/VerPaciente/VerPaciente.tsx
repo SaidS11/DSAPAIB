@@ -23,10 +23,11 @@ interface VerPacienteProps {
   options: TableOptions<{ col1: string }>;
   datosArray: Cols[];
   onClickCaptura: () => void;
+  onClickIrInicio: () => void;
 }
 
 const VerPaciente = (props: VerPacienteProps) => {
-  const { options, datosArray, onClickCaptura } = props;
+  const { options, datosArray, onClickCaptura, onClickIrInicio } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -114,12 +115,15 @@ const VerPaciente = (props: VerPacienteProps) => {
       </div>
       <br />
       <section className="display-center">
-        <Button sx={styleButton}>Ir a Inicio</Button>
+        <Button sx={styleButton} onClick={onClickIrInicio}>
+          Ir a Inicio
+        </Button>
         <Button sx={styleButton} onClick={onClickCaptura}>
           Captura
         </Button>
         <Button sx={styleButton}>Analisis</Button>
       </section>
+      <br />
     </div>
   );
 };

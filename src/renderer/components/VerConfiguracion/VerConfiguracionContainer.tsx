@@ -34,7 +34,7 @@ const VerConfiguracionContainer = () => {
   // Load Data for the rows
   async function loadData() {
     console.log('Fui llamado');
-    // appDispatch(setIsLoading(true));
+    appDispatch(setIsLoading(true));
     // window.Bridge.selectConfiguracion();
     window.electron.ipcRenderer.selectConfiguracion();
   }
@@ -91,9 +91,9 @@ const VerConfiguracionContainer = () => {
   // Load Data from the row clicked
   // Load Data from the row clicked (multimedia Data)
   async function loadDataMultimedia(nameConf: string) {
-    window.Bridge.selectMultimediaConfig(nameConf);
+    window.electron.ipcRenderer.selectMultimediaConfig(nameConf);
   }
-  window.Bridge.selectMC((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('esta es la multimedia', resp);
       appDispatch(setConfigMultimedia(resp));
@@ -105,9 +105,9 @@ const VerConfiguracionContainer = () => {
   });
   async function loadDataDetalle(nameConf: string) {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectConfiguracionDetalle(nameConf);
+    window.electron.ipcRenderer.selectConfiguracionDetalle(nameConf);
   }
-  window.Bridge.selectCD((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('Este es el datelle click', resp);
       appDispatch(setConfigDetalle(resp));

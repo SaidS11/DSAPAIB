@@ -11,12 +11,13 @@ import {
   } from 'react-table';
 import '../../../../assets/Iconos/style.css';
 
-  interface VerProtocoloProps {
-    options: TableOptions<{ col1: string }>;
-  }
+interface VerProtocoloProps {
+  options: TableOptions<{ col1: string }>;
+  onClickRow: (arg0: any) => void;
+}
 
 const VerProtocolo = (props: VerProtocoloProps) => {
-    const { options } = props;
+  const { options, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -43,7 +44,7 @@ const VerProtocolo = (props: VerProtocoloProps) => {
           maxHeight: '60vh',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id='table'>
+        <table {...getTableProps()} className="tableCustom">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -65,6 +66,7 @@ const VerProtocolo = (props: VerProtocoloProps) => {
               return (
                 <tr
                   {...row.getRowProps()}
+                  onClick={() => onClickRow(row)}
                   className={
                     row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
                   }

@@ -9,10 +9,11 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { Pool } from 'pg';
+import { PythonShell } from 'python-shell';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -210,12 +211,17 @@ async function insertPaciente(
   apellidoP: string,
   apellidoM: string
 ) {
-  const query = await pool.query(
-    ' insert into paciente (usuario, email, telefono, fecha_nacimiento, nombre, apellido_paterno, apellido_materno) values ($1, $2, $3, $4, $5, $6, $7)  ',
-    [usario, email, telefono, fechaNacimiento, nombre, apellidoP, apellidoM]
-  );
-  console.log(query.rows);
-  return query.rows;
+  try {
+    const query = await pool.query(
+      ' insert into paciente (usuario, email, telefono, fecha_nacimiento, nombre, apellido_paterno, apellido_materno) values ($1, $2, $3, $4, $5, $6, $7)  ',
+      [usario, email, telefono, fechaNacimiento, nombre, apellidoP, apellidoM]
+    );
+    console.log(query.rows);
+    return query.rows;
+  } catch (e: any) {
+    console.log('errorr', e);
+    return [0, e.detail];
+  }
 }
 
 ipcMain.on(
@@ -513,4 +519,82 @@ ipcMain.on('selectConfiguracionDetalle', async (event, nombre: string) => {
   const resp = await selectConfiguracionDetalle(nombre);
   console.log(resp);
   mainWindow?.webContents.send('selectCD', resp);
+});
+
+/* const options = {}
+const shellTest = new PythonShell('testing.py', options)
+
+shellTest.on('message', function (message: any) {
+  console.log(message);
+  return message;
+ }); */
+
+/* const funPython = async () => {
+  console.log("Llamada");
+  let res;
+  await PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
+      if(err){
+        console.log("err", err)
+        return "Error"
+      }
+      else {
+        console.log(results![0]);
+        res = results![0]
+        console.log("Finished")
+        return results;
+      }
+    }
+  )
+  console.log("Esta es la res", res);
+  return res;
+}; */
+/* const funPython = PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
+      if(err){
+        console.log("err", err)
+        return "Error"
+      }
+      else {
+        console.log(results![0]);
+        // res = results![0]
+        console.log("Finished")
+        return results;
+      }
+    }
+  ) */
+ipcMain.on('funPython', async (event, palabra: string) => {
+  const options = {
+    // scriptPath: "../pythonScripts/",
+    args: [palabra],
+  };
+  console.log('Llamado 2');
+  // const location = require("../pythonScripts/testing.py")
+  // console.log("DIRRRRRRRRRRR", __dirname);
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+  // console.log("REadyyy", direcFinal);
+  /* const resp = await funPython;
+  console.log(resp);
+  mainWindow?.webContents.send('funP', resp); */
+  // PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
+  try {
+    PythonShell.run(
+      `${direcFinal}/pythonScripts/testing.py`,
+      options,
+      function (err, results) {
+        if (err) {
+          console.log('err', err);
+          // return "Error"
+        } else {
+          console.log(results);
+          // res = results![0]
+          console.log('Finisheddd');
+          mainWindow?.webContents.send('funP', results![0]);
+        }
+      }
+    );
+  } catch (e: any) {
+    console.log('Error', e);
+  }
 });

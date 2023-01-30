@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   setConfigMultimedia,
   setConfigCompleta,
+  setProtocoloNombre,
 } from '../../../redux/slices/ConfiguracionSlice';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch } from '../../../redux/hooks';
@@ -18,7 +19,7 @@ const EscogerConfiguracionContainer = () => {
   let nameConfig = '';
   console.log('protocolo', protocolo);
   const appDispatch = useCustomDispatch();
-
+  appDispatch(setProtocoloNombre(protocolo));
   // Get All the data from the config
   async function loadConfCompleta(name: string) {
     appDispatch(setIsLoading(true));
@@ -40,10 +41,10 @@ const EscogerConfiguracionContainer = () => {
     // console.log('load multi', data);
     appDispatch(setIsLoading(true));
     nameConfig = dataP[0].configuracion;
-    window.Bridge.selectMultimediaConfig(dataP[0].configuracion);
+    window.electron.ipcRenderer.selectMultimediaConfig(dataP[0].configuracion);
     /* loadConfCompleta(data[0].configuracion); */
   }
-  window.Bridge.selectMC((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('Esta es la multimedia', resp);
     } else {
@@ -57,9 +58,9 @@ const EscogerConfiguracionContainer = () => {
   // Get data from selected Protocol
   async function loadConf() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectConfiguracionNombre(protocolo);
+    window.electron.ipcRenderer.selectConfiguracionNombre(protocolo);
   }
-  window.Bridge.selectCN((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectCN((event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('Esta es la config', resp);
       setData(resp);
@@ -83,6 +84,9 @@ const EscogerConfiguracionContainer = () => {
   };
   const onClickAdd = () => {
     navigate('/crearProtocolo');
+  };
+  const onClickVer = () => {
+    navigate('/verProtocolo');
   };
 
   // Load Protocols
@@ -110,6 +114,7 @@ const EscogerConfiguracionContainer = () => {
         onClickNav={onClickNav}
         onClickBack={onClickBack}
         onClickAdd={onClickAdd}
+        onClickVer={onClickVer}
         data={data}
         protocolo={protocolo}
         setProtocolo={setProtocolo}

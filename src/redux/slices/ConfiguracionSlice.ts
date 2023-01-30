@@ -9,6 +9,9 @@ export interface IStatus {
   configMultimedia: Object;
   configPrimerPaso: Object;
   configCompleta: Object;
+  protocoloDetalle: Object;
+  protocoloNombre: string;
+  analisisParams: Object;
 }
 
 const initialState: IStatus = {
@@ -17,6 +20,9 @@ const initialState: IStatus = {
   configMultimedia: {},
   configPrimerPaso: {},
   configCompleta: {},
+  protocoloDetalle: {},
+  protocoloNombre: '',
+  analisisParams: {},
 };
 
 export const ConfiguracionSlice = createSlice({
@@ -50,6 +56,24 @@ export const ConfiguracionSlice = createSlice({
     ) => {
       state.configCompleta = action.payload;
     },
+    setProtocoloDetalle: (
+      state,
+      action: PayloadAction<IStatus['protocoloDetalle']>
+    ) => {
+      state.protocoloDetalle = action.payload;
+    },
+    setProtocoloNombre: (
+      state,
+      action: PayloadAction<IStatus['protocoloNombre']>
+    ) => {
+      state.protocoloNombre = action.payload;
+    },
+    setAnalisisParams: (
+      state,
+      action: PayloadAction<IStatus['analisisParams']>
+    ) => {
+      state.analisisParams = action.payload;
+    },
   },
 });
 
@@ -59,6 +83,9 @@ export const {
   setConfigMultimedia,
   setConfigPrimerPaso,
   setConfigCompleta,
+  setProtocoloDetalle,
+  setProtocoloNombre,
+  setAnalisisParams,
 } = ConfiguracionSlice.actions;
 export const selectConfigName = (state: RootState) => state.config.configName;
 export const selectConfigDetalle = (state: RootState) =>
@@ -69,4 +96,10 @@ export const selectConfigPrimerPaso = (state: RootState) =>
   state.config.configPrimerPaso;
 export const selectConfigCompleta = (state: RootState) =>
   state.config.configCompleta;
+export const selectProtocoloDetalle = (state: RootState) =>
+  state.config.protocoloDetalle;
+export const selectProtocoloNombre = (state: RootState) =>
+  state.config.protocoloNombre;
+export const selectAnalisisParams = (state: RootState) =>
+  state.config.analisisParams;
 export default ConfiguracionSlice.reducer;
