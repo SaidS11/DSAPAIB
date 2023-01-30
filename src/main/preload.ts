@@ -182,7 +182,7 @@ function selectConfiguracionDetalle(nombre: string) {
 }
 
 function sensores() {
-  ipcRenderer.send('senso');
+  ipcRenderer.send('sensores');
 }
 
 const indexBridge = {
