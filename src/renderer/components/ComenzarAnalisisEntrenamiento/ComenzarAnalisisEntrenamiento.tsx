@@ -14,12 +14,13 @@ import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface ComenzarAnalisisEntrenamientoProps {
   options: TableOptions<{ col1: string }>;
+  onClickNav: any
 }
 
 const ComenzarAnalisisEntrenamiento = (
   props: ComenzarAnalisisEntrenamientoProps
 ) => {
-  const { options } = props;
+  const { options, onClickNav } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -132,7 +133,7 @@ const ComenzarAnalisisEntrenamiento = (
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
+        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickNav}>
           Regresar
         </Button>
       </div>

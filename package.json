@@ -116,6 +116,7 @@
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/system": "^5.11.2",
     "@reduxjs/toolkit": "^1.9.1",
+    "@serialport/parser-readline": "^10.5.0",
     "aws-sdk": "^2.1290.0",
     "bootstrap": "^5.2.3",
     "electron-debug": "^3.2.0",
@@ -131,6 +132,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.0",
     "react-table": "^7.8.0",
+    "serialport": "^10.5.0",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {

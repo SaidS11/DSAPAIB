@@ -90,8 +90,17 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
         data,
         columns,
       };
-
-  return <ComenzarAnalisisEntrenamiento options={options}/>;
+      async function loadSensores() {
+        console.log('Getting message');
+        window.Bridge.sensores();
+      }
+      window.Bridge.senso((event: any, resp: any) => {
+        console.log(resp);
+      });
+      const onClickNav = () => {
+        loadSensores()
+      };
+  return <ComenzarAnalisisEntrenamiento options={options} onClickNav={onClickNav}/>;
 };
 
 export default ComenzarAnalisisEntrenamientoContainer;

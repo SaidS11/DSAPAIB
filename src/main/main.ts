@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable radix */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -14,6 +16,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { Pool } from 'pg';
 import { PythonShell } from 'python-shell';
+import { SerialPort } from 'serialport';
+import { ReadlineParser } from '@serialport/parser-readline';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -519,6 +523,41 @@ ipcMain.on('selectConfiguracionDetalle', async (event, nombre: string) => {
   const resp = await selectConfiguracionDetalle(nombre);
   console.log(resp);
   mainWindow?.webContents.send('selectCD', resp);
+});
+
+const serialPort = new SerialPort({
+  path: 'COM5',
+  baudRate: 9600,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+});
+
+async function sensores() {
+  const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+
+  let buffer = '';
+  let sum = 0;
+  let gsrAverage = 0;
+  let hr = 0;
+  parser.on('data', (chunk: any) => {
+    for (let i = 0; i < 10; i++) {
+      buffer += chunk;
+      console.log(buffer);
+      sum += parseInt(buffer);
+    }
+    gsrAverage = sum / 10;
+    console.log('Gsr Average', gsrAverage);
+    hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    console.log('GSR', hr);
+  });
+  return hr;
+}
+
+ipcMain.on('sensores', async (event) => {
+  const resp = await sensores();
+  console.log(resp);
+  mainWindow?.webContents.send('senso', resp);
 });
 
 /* const options = {}

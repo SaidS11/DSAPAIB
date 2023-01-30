@@ -181,9 +181,15 @@ function selectConfiguracionDetalle(nombre: string) {
   ipcRenderer.send('selectConfiguracionDetalle', nombre);
 }
 
+function sensores() {
+  ipcRenderer.send('senso');
+}
+
 const indexBridge = {
   loggearDoctor,
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
+  sensores,
+  senso: (callback: any) => ipcRenderer.on('senso', callback),
   selectPaciente,
   selectP: (callback: any) => ipcRenderer.on('selectP', callback),
   selectPacientes,
