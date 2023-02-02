@@ -10,15 +10,18 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface VerImplementacionProps {
   options: TableOptions<{ col1: string }>;
 }
 
-const VerImplementacion = (
-  props: VerImplementacionProps
-) => {
+const VerImplementacion = (props: VerImplementacionProps) => {
   const { options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -33,94 +36,111 @@ const VerImplementacion = (
     const models = [];
 
     // eslint-disable-next-line no-plusplus
-    for(let i=1; i<=3; i++) {
-      models.push(
-        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
-      )
+    for (let i = 1; i <= 3; i++) {
+      models.push(<option value={`Modelo${i}`}>{`Modelo ${i}`}</option>);
     }
     return models;
-  }
+  };
+  const [tipo,setTipo] = useState("");
+  const handleChange = (event: SelectChangeEvent) => {
+    const word = event.target.value;
+    setTipo(word);
+    console.log(word);
+  };
+
   return (
     <div>
       <div className="display-center">
         <h1>Implementación</h1>
       </div>
-      <div className='display-center'>
-        <form className="analisis-form" action="" style={{ width: "70%" }}>
+      <div className="display-center">
+        <form className="analisis-form" action="" style={{ width: '70%' }}>
           <section className="display-flex">
             <h3>Nombre: </h3>{' '}
-            <input className="first-input" type="text"  name="nombrePrediccion" required />
+            <input
+              className="first-input"
+              type="text"
+              name="nombrePrediccion"
+              required
+            />
           </section>
           <section className="display-flex">
             <h3>Descripción: </h3>{' '}
-            <textarea className="second-input" name="descripcion" required/>
+            <textarea className="second-input" name="descripcion" required />
           </section>
           <section className="display-flex">
             <h3>Modelo: </h3>{' '}
-            <select className="fourth-input-modelo">
-              {numofModels()}
-            </select>
+            <select className="fourth-input-modelo">{numofModels()}</select>
           </section>
-        
-      <div className='display-center'>
-          <h2>Filtros:</h2>
-      </div>
-      <div
-        style={{
-          width: '90%',
-          overflow: 'auto',
-          maxHeight: '60vh',
-          marginLeft: '50px',
-        }}
-      >
-        <table {...getTableProps()} className="tableCustom" id="table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
-      </div>
-      <div
-        className="display-center"
-        style={{ marginTop: '5px', marginBottom: '30px' }}
-      >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Regresar
-        </Button>
-      </div>
-      </form>
+
+          <section className="display-flex">
+            <FormControl fullWidth style={{ marginRight: ' 30px' }}>
+              <InputLabel id="demo-simple-select-label">
+                Procesamiento
+              </InputLabel>
+              <Select onChange={handleChange}>
+                <MenuItem value="arbolesDecision">Arboles de Decision</MenuItem>
+                <MenuItem value="KNN">KNN</MenuItem>
+                <MenuItem value="SVM">SVM</MenuItem>
+              </Select>
+            </FormControl>
+          </section>
+          {tipo === "arbolesDecision" && <><h1>Arbol</h1><section>
+            <section className="display-flex">
+              <h3>Profundidad: </h3>{' '}
+              <input
+                className="first-input"
+                type="text"
+                name="nombrePrediccion"
+                required
+                style={{ width: '40%' }} />
+            </section>
+            <section className="display-flex">
+              <h3>Estado Aleatorio: </h3>{' '}
+              <input
+                className="first-input"
+                type="text"
+                name="nombrePrediccion"
+                required
+                style={{ width: '40%' }} />
+            </section>
+            <br />
+          </section></>}
+          
+          {tipo === "KNN" && <><h1>KNN</h1><section className="display-flex">
+            <h3>Vecinos: </h3>{' '}
+            <input
+              className="first-input"
+              type="text"
+              name="nombrePrediccion"
+              required
+              style={{ width: '30%' }} />
+          </section></>}
+
+            {tipo === "SVM" && <section>
+              <h1>SVM</h1>
+              <section className="display-flex">
+                <h3>Kernel: </h3>{' '}
+                <input
+                  className="first-input"
+                  type="text"
+                  name="nombrePrediccion"
+                  required
+                  style={{ width: '30%' }} />
+              </section>
+              <br />
+            </section>}
+
+            <br />
+          <div
+            className="display-center"
+            style={{ marginTop: '5px', marginBottom: '30px' }}
+          >
+              <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
+                Agregar
+              </Button>
+            </div>
+        </form>
       </div>
     </div>
   );
