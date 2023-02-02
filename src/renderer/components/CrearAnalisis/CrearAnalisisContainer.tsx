@@ -19,7 +19,7 @@ const CrearAnalisisContainer = () => {
     window.electron.ipcRenderer.funPython('Tree');
   }
   window.electron.ipcRenderer.funP((event: any, resp: any) => {
-    // console.log('Esta es', resp);
+    console.log('Esta es', resp);
     appDispatch(setPythonResponse(resp));
     appDispatch(setIsLoading(false));
     navigate('/resultadosAnalisis');

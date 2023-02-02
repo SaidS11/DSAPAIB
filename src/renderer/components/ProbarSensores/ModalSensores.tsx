@@ -33,6 +33,7 @@ export default function ModalSensores(props: ModalProps) {
 
   const handleChange = (event: SelectChangeEvent) => {
     const num = parseInt(event.target.value, 10);
+    console.log(num);
     setSensores(event.target.value as string);
     setSensoresSelected(num);
   };

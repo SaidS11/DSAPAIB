@@ -15,8 +15,19 @@ const ResultadosAnalisisContainer = () => {
   console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
   console.log('Parsed', parsedResp);
-  const precision = parsedResp[0].substring(2, 4);
+  const comprobacion = parsedResp[1].substring(0, 1);
+  let precision = '0';
+  if (comprobacion === '1') {
+    precision = '100';
+  } else {
+    precision = parsedResp[1].substring(2, 4);
+  }
+  console.log('preci', precision);
+  /* if (precision === '00') {
+    precision = `${parsedResp[1].substring(1, 1)}00`;
+  } */
   console.log('presicion', precision);
+  const tipo = parsedResp[0];
   const onClickNav = () => {
     navigate('/video');
   };
@@ -40,6 +51,7 @@ const ResultadosAnalisisContainer = () => {
         probando={probando}
         precision={precision}
         analisis={analisis}
+        tipo={tipo}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import numpy as np
 # import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+import scikitplot as skplt
 from pandas.plotting import parallel_coordinates
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn import metrics
@@ -43,12 +44,15 @@ def classificationTree():
     # print(script_dir)
     #plt.savefig(my_path + "Tree.png")
     plt.savefig(os.path.join(script_dir, "Tree.png"))
+    skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
+    plt.savefig(os.path.join(script_dir,"Confusion.png"))
     # print(my_path)
-    print("{:.3f}".format(metrics.accuracy_score(prediction,y_test))+"|"+ "Hola")
-    sys.stdout.flush() 
+    print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+"|"+ "Hola")
+    sys.stdout.flush()
+
 def classKNN():
     # or load through local csv
-    data = pd.read_csv('data.csv')
+    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
     # number of instances in each class
     data.groupby('species').size()
     train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
@@ -62,11 +66,15 @@ def classKNN():
     mod_5nn=KNeighborsClassifier(n_neighbors=5) 
     mod_5nn.fit(X_train,y_train)
     prediction=mod_5nn.predict(X_test)
-    print("{:.3f}".format(metrics.accuracy_score(prediction,y_test)))
+    script_dir = os.path.dirname(__file__)
+    skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
+    plt.savefig(os.path.join(script_dir,"Confusion.png"))
+    print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test)))
     sys.stdout.flush() 
+
 def classSVM():
     # or load through local csv
-    data = pd.read_csv('data.csv')
+    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
     # number of instances in each class
     data.groupby('species').size()
     train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
@@ -80,14 +88,17 @@ def classSVM():
     # for SVC, may be impractical beyond tens of thousands of samples
     linear_svc = SVC(kernel='linear').fit(X_train, y_train)
     prediction=linear_svc.predict(X_test)
-    print("{:.3f}".format(metrics.accuracy_score(prediction,y_test)))
+    script_dir = os.path.dirname(__file__)
+    skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
+    plt.savefig(os.path.join(script_dir,"Confusion.png"))
+    print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test)))
     sys.stdout.flush() 
 
 if __name__ == '__main__':
     first = sys.argv[1]
     if (first == "Tree"):
         classificationTree()
-    if(first == "Red"):
+    if(first == "KNN"):
         classKNN()
     if(first == "SVM"):
         classSVM()

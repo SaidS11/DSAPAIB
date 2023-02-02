@@ -22,6 +22,7 @@ export interface ResultadosAnalisisProps {
   probando: boolean;
   precision: string;
   analisis: any;
+  tipo: string;
 }
 
 const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
@@ -32,6 +33,7 @@ const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
     probando,
     precision,
     analisis,
+    tipo,
   } = props;
   // const navigate = useNavigate();
 
@@ -43,8 +45,14 @@ const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
-      <section>
-        <img src={require('../../../pythonScripts/Tree.png')} width="100%" />
+      <section className="display-center">
+        {tipo === 'Tree' && (
+          <img src={require('../../../pythonScripts/Tree.png')} width="50%" />
+        )}
+        <img
+          src={require('../../../pythonScripts/Confusion.png')}
+          width="50%"
+        />
       </section>
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>

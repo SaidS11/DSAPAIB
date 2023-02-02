@@ -40,6 +40,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
     }
     return models;
   }
+  const ejemplo = false;
   return (
     <div>
       <section className="display-center">
@@ -66,6 +67,11 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
           <select className="fourth-input-modelo" name="modelo" required>
             {numofModels()}
           </select>
+        </section>
+        <section>
+        {ejemplo &&
+        <h2>Hola amigos</h2>
+        }
         </section>
         <section className='display-center'>
           <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Crear
