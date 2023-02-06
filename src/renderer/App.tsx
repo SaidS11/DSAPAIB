@@ -10,8 +10,8 @@ import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisi
 import PrediccionContainer from './components/Prediccion/PrediccionContainer';
 import VerProtocoloContainer from './components/VerProtocolo/VerProtocoloContainer';
 import VerProtocolo2Container from './components/VerProtocolo2/VerProtocolo2Container';
-import VerModelosContainer from './components/VerModelos/VerModelosContainer';
-import VerModeloContainer from './components/VerModelo/VerModeloContainer';
+import VerModelosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
+import VerAlgoritmoContainer from './components/VerAlgoritmo/VerAlgoritmoContainer';
 import VerImplementacionContainer from './components/VerImplementacion/VerImplementacionContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
