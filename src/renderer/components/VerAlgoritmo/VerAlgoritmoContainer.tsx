@@ -2,7 +2,7 @@
 /* eslint-disable import/no-cycle */
 import React from 'react';
 import { TableOptions, Column } from 'react-table';
-import VerProtocolo2 from './VerModelo';
+import VerProtocolo2 from './VerAlgoritmo';
 
 const VerModeloContainer = () => {
     interface Cols {

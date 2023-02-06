@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
-import VerConfiguracion from './VerModelos';
+import VerConfiguracion from './VerAlgoritmos';
 
 // import { useNavigate } from "react-router-dom";
 
@@ -14,66 +14,66 @@ const VerModelosContainer = () => {
   const data = React.useMemo(
     (): Cols[] => [
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
-      },
-
-      {
-        col1: 'Modelos 1',
-      },
-      {
-        col1: 'Modelos 2',
-      },
-      {
-        col1: 'Modelos 1',
-      },
-      {
-        col1: 'Modelos 2',
-      },
-      {
-        col1: 'Modelos 1',
-      },
-      {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
 
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
       },
       {
-        col1: 'Modelos 1',
+        col1: 'Algoritmo 1',
       },
       {
-        col1: 'Modelos 2',
+        col1: 'Algoritmo 2',
+      },
+      {
+        col1: 'Algoritmo 1',
+      },
+      {
+        col1: 'Algoritmo 2',
+      },
+
+      {
+        col1: 'Algoritmo 1',
+      },
+      {
+        col1: 'Algoritmo 2',
+      },
+      {
+        col1: 'Algoritmo 1',
+      },
+      {
+        col1: 'Algoritmo 2',
       },
     ],
     []

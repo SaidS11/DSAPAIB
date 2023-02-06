@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import './VerModelo.css';
+import './VerAlgoritmo.css';
 import Button from '@mui/material/Button';
 import {
   useTable,

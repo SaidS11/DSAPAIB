@@ -54,7 +54,7 @@ const CrearImplementacion = (
   return (
     <div>
       <div className="display-center">
-        <h1>Implementación</h1>
+        <h1>Modelo</h1>
       </div>
       <div className="display-center">
         <form className="analisis-form" action="" style={{ width: '70%' }}>
@@ -88,7 +88,7 @@ const CrearImplementacion = (
               </Select>
             </FormControl>
           </section>
-          {tipo === "arbolesDecision" && <><h1>Arbol</h1><section>
+          {tipo === "arbolesDecision" && <><section>
             <section className="display-flex">
               <h3>Profundidad: </h3>{' '}
               <input
@@ -110,7 +110,7 @@ const CrearImplementacion = (
             <br />
           </section></>}
           
-          {tipo === "KNN" && <><h1>KNN</h1><section className="display-flex">
+          {tipo === "KNN" && <><section className="display-flex">
             <h3>Vecinos: </h3>{' '}
             <input
               className="first-input"
@@ -121,7 +121,6 @@ const CrearImplementacion = (
           </section></>}
 
             {tipo === "SVM" && <section>
-              <h1>SVM</h1>
               <section className="display-flex">
                 <h3>Kernel: </h3>{' '}
                 <input
