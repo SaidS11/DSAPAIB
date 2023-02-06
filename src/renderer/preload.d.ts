@@ -4,6 +4,7 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        selectC(): unknown;
         funP(arg0: (event: any, resp: any) => void): unknown;
         funPython(name: string): unknown;
         selectCD(arg0: (event: any, resp: any) => void): unknown;
@@ -12,7 +13,7 @@ declare global {
         selectConfiguracionNombre(protocolo: string): unknown;
         selectMC(arg0: (event: any, resp: any) => void): unknown;
         selectMultimediaConfig(configuracion: any): unknown;
-        selectC(arg0: (event: any, resp: any) => void): unknown;
+        // selectC(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracion(): unknown;
         sendMessage(channel: Channels, args: unknown[]): void;
         on(

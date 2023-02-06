@@ -21,7 +21,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
       for(let i = 0; i < data.length; i++) {
         // console.log('datos recibidios', data[i]);
         plots.push(
-          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+          <option  key={i} value={`${data[i].nombre}`}>{data[i].nombre}</option>
         )
       }
       return plots;
@@ -35,12 +35,11 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
 
     for(let i=1; i<=3; i++) {
       models.push(
-        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
+        <option key={i} value={`Modelo${i}`}>{`Modelo ${i}`}</option>
       )
     }
     return models;
   }
-  const ejemplo = false;
   return (
     <div>
       <section className="display-center">
@@ -67,11 +66,6 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
           <select className="fourth-input-modelo" name="modelo" required>
             {numofModels()}
           </select>
-        </section>
-        <section>
-        {ejemplo &&
-        <h2>Hola amigos</h2>
-        }
         </section>
         <section className='display-center'>
           <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Crear

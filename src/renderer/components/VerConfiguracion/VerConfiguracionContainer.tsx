@@ -12,6 +12,9 @@ import { useCustomDispatch } from '../../../redux/hooks';
 import VerConfiguracion from './VerConfiguracion';
 
 // import { useNavigate } from "react-router-dom";
+interface Config {
+  nombre: string;
+}
 
 const VerConfiguracionContainer = () => {
   const navigate = useNavigate();
@@ -36,9 +39,25 @@ const VerConfiguracionContainer = () => {
     console.log('Fui llamado');
     appDispatch(setIsLoading(true));
     // window.Bridge.selectConfiguracion();
-    window.electron.ipcRenderer.selectConfiguracion();
+    // window.electron.ipcRenderer.selectConfiguracion();
+    const resp: Config[] =
+      (await window.electron.ipcRenderer.selectC()) as Array<Config>;
+    console.log('Esta es', resp);
+    if (resp.length > 0) {
+      console.log('si es', resp);
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < resp.length; i++) {
+        datarRetrieved.push({
+          col1: resp[i].nombre,
+        });
+      }
+      setData(datarRetrieved);
+    } else {
+      console.log('nada');
+    }
+    appDispatch(setIsLoading(false));
   }
-  window.electron.ipcRenderer.selectC((event: any, resp: any) => {
+  /* window.electron.ipcRenderer.selectC((event: any, resp: any) => {
     console.log('llamada dentro');
     if (resp.length > 0) {
       console.log('si es', resp);
@@ -53,7 +72,7 @@ const VerConfiguracionContainer = () => {
       console.log('nada');
     }
     appDispatch(setIsLoading(false));
-  });
+  }); */
   console.log('estoy rendereando antes de detalle');
   useEffect(() => {
     console.log('updated lista config');

@@ -13,7 +13,8 @@ const CrearAnalisisContainer = () => {
   const [data, setData] = useState({});
   const appDispatch = useCustomDispatch();
   const navigate = useNavigate();
-  async function loadMessage() {
+
+  async function preAn() {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
     window.electron.ipcRenderer.funPython('Tree');
@@ -22,18 +23,15 @@ const CrearAnalisisContainer = () => {
     console.log('Esta es', resp);
     appDispatch(setPythonResponse(resp));
     appDispatch(setIsLoading(false));
-    navigate('/resultadosAnalisis');
+    navigate('/preAnalisis');
   });
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
-    // appDispatch(setIsLoading(true));
     e.preventDefault();
-    /* navigate('/escogerConfiguracion'); */
     const form = document.querySelector('form') as HTMLFormElement | undefined;
-    // console.log('el form', form);
     const dataF = Object.fromEntries(new FormData(form).entries());
     console.log('la data', dataF);
     appDispatch(setAnalisisParams(dataF));
-    loadMessage();
+    preAn();
   };
 
   async function loadData() {

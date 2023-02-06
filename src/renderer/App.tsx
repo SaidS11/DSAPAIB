@@ -33,6 +33,7 @@ import VerConfiguracionDetalleContainer from './components/VerConfiguracionDetal
 import CrearProtocoloContainer from './components/CrearProtocolo/CrearProtocoloContainer';
 import VerInicioContainer from './components/VerInicio/VerInicioContainer';
 import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
+import PreAnalisisContainer from './components/PreAnalisis/PreAnalisisContainer';
 import CreadoExitosamente from './components/Modales/CreadoExitosamente';
 import ErrorCrear from './components/Modales/ErrorCrear';
 import ErrorModal from './components/Modales/ErrorModal';
@@ -79,6 +80,7 @@ export default function App() {
               path="/resultadoEntrenar"
               element={<ResultadoEntrenarContainer />}
             />
+            <Route path="/preAnalisis" element={<PreAnalisisContainer />} />
             <Route
               path="/verConfiguracion"
               element={<VerConfiguracionContainer />}

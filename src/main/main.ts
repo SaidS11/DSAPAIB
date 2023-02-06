@@ -336,12 +336,13 @@ async function selectConfiguracion() {
   console.log('Estas son las rows', query.rows);
   return query.rows;
 }
+ipcMain.handle('selectConfiguracion', selectConfiguracion);
 
-ipcMain.on('selectConfiguracion', async (event) => {
+/* ipcMain.on('selectConfiguracion', async (event) => {
   const resp = await selectConfiguracion();
   console.log('Esta es la resp', resp);
   mainWindow?.webContents.send('selectC', resp);
-});
+}); */
 
 async function insertConfiguracion(
   configuracionNombre: string,
@@ -600,7 +601,7 @@ shellTest.on('message', function (message: any) {
       }
     }
   ) */
-ipcMain.on('funPython', async (event, palabra: string) => {
+ipcMain.handle('analisisPython', async (event, palabra: string) => {
   const options = {
     // scriptPath: "../pythonScripts/",
     args: [palabra],
@@ -619,7 +620,7 @@ ipcMain.on('funPython', async (event, palabra: string) => {
   // PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
   try {
     PythonShell.run(
-      `${direcFinal}/pythonScripts/testing.py`,
+      `${direcFinal}/pythonScripts/analisis.py`,
       options,
       function (err, results) {
         if (err) {
@@ -629,7 +630,34 @@ ipcMain.on('funPython', async (event, palabra: string) => {
           console.log(results);
           // res = results![0]
           console.log('Finisheddd');
-          mainWindow?.webContents.send('funP', results![0]);
+          mainWindow?.webContents.send('analisisP', results![0]);
+        }
+      }
+    );
+  } catch (e: any) {
+    console.log('Error', e);
+  }
+});
+
+ipcMain.handle('preAnalisisPython', async (event, palabra: string) => {
+  const options = {
+    args: [palabra],
+  };
+  console.log('Llamado 2');
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+  try {
+    PythonShell.run(
+      `${direcFinal}/pythonScripts/testing.py`,
+      options,
+      function (err, results) {
+        if (err) {
+          console.log('err', err);
+        } else {
+          console.log(results);
+          mainWindow?.webContents.send('preAnalisisP', results![0]);
         }
       }
     );
