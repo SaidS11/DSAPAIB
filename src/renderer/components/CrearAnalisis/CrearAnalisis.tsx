@@ -40,6 +40,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
     }
     return models;
   }
+  
   return (
     <div>
       <section className="display-center">
