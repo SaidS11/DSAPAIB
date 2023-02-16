@@ -33,7 +33,7 @@ const ComenzarAnalisisEntrenamiento = (
     }
     return <span className="icon-arrow-long-down" />;
   };
-
+  
   const setProtocols = () => {
     const plots = [];
     if (data.length > 0) {
@@ -91,6 +91,19 @@ const ComenzarAnalisisEntrenamiento = (
             {numofModels()}
             </select>
           </section>
+          <section className="display-flex">
+            <h3>Numero de Iteraciones: </h3>{' '}
+            <select className="fourth-input-modelo" name="iteraciones" required>
+              {numofModels()}
+            </select>
+          </section>
+          <section className="display-flex">
+            <h3>Porcentaje de Datos de Prueba: </h3>{' '}
+            <select name="porcentaje" required style={{marginLeft:'150px'}}>
+              {numofModels2()}
+            </select>
+          </section>
+          <br />
         
       <div className='display-center'>
           <h2>Parametros de la seleccion:</h2>

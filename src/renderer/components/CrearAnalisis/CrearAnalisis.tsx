@@ -44,6 +44,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
     }
     return <option value={1}>1</option>;
   }
+  
   return (
     <div>
       <section className="display-center">
