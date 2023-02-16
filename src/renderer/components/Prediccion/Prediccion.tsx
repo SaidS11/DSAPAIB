@@ -15,15 +15,18 @@ import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 interface PrediccionProps {
   options: TableOptions<{ col1: string }>;
   data: any;
+  dataM: any;
+  onClickNav: any
+  onClickStop: any
 }
 
 const Prediccion = (
   props: PrediccionProps
 ) => {
-  const { options, data } = props;
+  const { options, data, dataM, onClickNav, onClickStop } = props;
   const setProtocols = () => {
     const plots = [];
-    if (data.length > 1) {
+    if (data.length > 0) {
       // eslint-disable-next-line no-plusplus
       for(let i = 0; i < data.length; i++) {
         console.log('datos recibidios', data[i]);
@@ -38,14 +41,17 @@ const Prediccion = (
   }
   const numofModels = () => {
     const models = [];
-
-    // eslint-disable-next-line no-plusplus
-    for(let i=1; i<=3; i++) {
-      models.push(
-        <option value={`Modelo${i}`}>{`Modelo ${i}`}</option>
-      )
+    if (dataM.length >= 1) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < dataM.length; i++) {
+        // console.log('datos recibidios', data[i]);
+        models.push(
+          <option  key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</option>
+        )
+      }
+      return models;
     }
-    return models;
+    return <option value={1}>1</option>;
   }
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -75,7 +81,7 @@ const Prediccion = (
           </section>
           <section className="display-flex">
             <h3>Protocolo Adquisición: </h3>{' '}
-            <select className="third-input-canales" name="protcolo" required>
+            <select className='sensores-crear-analisis' name="protocolo" required>
               {setProtocols()}
             </select>
           </section>
@@ -140,8 +146,11 @@ const Prediccion = (
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
+        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickNav}>
           Comenzar
+        </Button>
+        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickStop}>
+          Parar
         </Button>
       </div>
       </form>

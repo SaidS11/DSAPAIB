@@ -4,9 +4,26 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        selectImplementacionNombreIA(name: string): unknown;
+        selectImplemenIA( // selectC(arg0: (event: any, resp: any) => void): unknown;
+          arg0: (event: any, resp: any) => void
+        ): unknown;
+        selectImplementacionPorNombre(arg0: string): unknown;
+        selectImplementacionPorN(
+          arg0: (event: any, resp: any) => void
+        ): unknown;
+        selectModNom(): unknown;
+        selectAIA(): unknown;
+        preAnalisisPython(): unknown;
+        preAnalisisP(arg0: (event: any, resp: any) => void): unknown;
         selectC(): unknown;
-        funP(arg0: (event: any, resp: any) => void): unknown;
-        funPython(name: string): unknown;
+        analisisP(arg0: (event: any, resp: any) => void): unknown;
+        analisisPython(
+          type: string,
+          typeIA: string,
+          params: string,
+          nombre: string
+        ): unknown;
         selectCD(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracionDetalle(nameConf: string): unknown;
         selectCN(arg0: (event: any, resp: any) => void): unknown;

@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 
-import './VerImplementacion.css';
 import Button from '@mui/material/Button';
 import {
   useTable,
@@ -17,21 +16,14 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
-interface VerImplementacionProps {
-  options: TableOptions<{ col1: string }>;
+interface CrearImplementacionProps {
+  onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const VerImplementacion = (props: VerImplementacionProps) => {
-  const { options } = props;
-  // const classes = TableStylesList();
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(options, useFilters, useSortBy);
-  const sortedColumn = (column: HeaderGroup<{ col1: string }>) => {
-    if (column.isSortedDesc ?? false) {
-      return <span className="icon-arrow-long-up" />;
-    }
-    return <span className="icon-arrow-long-down" />;
-  };
+const CrearModelo = (
+  props: CrearImplementacionProps
+) => {
+  const { onClickNav } = props;
   const numofModels = () => {
     const models = [];
 
@@ -41,7 +33,7 @@ const VerImplementacion = (props: VerImplementacionProps) => {
     }
     return models;
   };
-  const [tipo,setTipo] = useState("");
+  const [tipo, setTipo] = useState("");
   const handleChange = (event: SelectChangeEvent) => {
     const word = event.target.value;
     setTipo(word);
@@ -54,13 +46,13 @@ const VerImplementacion = (props: VerImplementacionProps) => {
         <h1>Modelo</h1>
       </div>
       <div className="display-center">
-        <form className="analisis-form" action="" style={{ width: '70%' }}>
+        <form className="analisis-form" style={{ width: '70%' }}  onSubmit={onClickNav}>
           <section className="display-flex">
             <h3>Nombre: </h3>{' '}
             <input
               className="first-input"
               type="text"
-              name="nombrePrediccion"
+              name="nombreModelo"
               required
             />
           </section>
@@ -68,30 +60,34 @@ const VerImplementacion = (props: VerImplementacionProps) => {
             <h3>Descripción: </h3>{' '}
             <textarea className="second-input" name="descripcion" required />
           </section>
-          <section className="display-flex">
-            <h3>Modelo: </h3>{' '}
-            <select className="fourth-input-modelo">{numofModels()}</select>
+          <section className="display-flexAgregar">
+            <h3>Algoritmo: </h3>{' '}
+            <section className="list-box-sexo" style={{ width: "200px" }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">
+                  Algoritmo
+                </InputLabel>
+                <Select labelId="demo-simple-select-label"
+                    id="demo-simple-select" onChange={handleChange}
+                    name="algoritmo"
+                    value={tipo}
+                    label="Algoritmo"
+                    required
+                    >
+                  <MenuItem value="Arbol de Decisión">Arbol de Decisión</MenuItem>
+                  <MenuItem value="Red Neuronal">Red Neuronal</MenuItem>
+                  <MenuItem value="Maquina de Soporte Vectorial">Maquina de Soporte Vectorial</MenuItem>
+                </Select>
+              </FormControl>
+            </section>
           </section>
-
-          <section className="display-flex">
-            <FormControl fullWidth style={{ marginRight: ' 30px' }}>
-              <InputLabel id="demo-simple-select-label">
-                Procesamiento
-              </InputLabel>
-              <Select onChange={handleChange}>
-                <MenuItem value="arbolesDecision">Arboles de Decision</MenuItem>
-                <MenuItem value="KNN">KNN</MenuItem>
-                <MenuItem value="SVM">SVM</MenuItem>
-              </Select>
-            </FormControl>
-          </section>
-          {tipo === "arbolesDecision" && <><section>
+          {tipo === "Arbol de Decisión" && <><section>
             <section className="display-flex">
               <h3>Profundidad: </h3>{' '}
               <input
                 className="first-input"
-                type="text"
-                name="nombrePrediccion"
+                type="number"
+                name="profundidad"
                 required
                 style={{ width: '40%' }} />
             </section>
@@ -99,31 +95,31 @@ const VerImplementacion = (props: VerImplementacionProps) => {
               <h3>Estado Aleatorio: </h3>{' '}
               <input
                 className="first-input"
-                type="text"
-                name="nombrePrediccion"
+                type="number"
+                name="estado"
                 required
-                style={{ width: '35%' , marginRight: '20%'}} />
+                style={{ width: '40%' }} />
             </section>
             <br />
           </section></>}
           
-          {tipo === "KNN" && <><section className="display-flex">
+          {tipo === "Red Neuronal" && <><section className="display-flex">
             <h3>Vecinos: </h3>{' '}
             <input
               className="first-input"
-              type="text"
-              name="nombrePrediccion"
+              type="number"
+              name="vecinos"
               required
               style={{ width: '30%' }} />
           </section></>}
 
-            {tipo === "SVM" && <section>
+            {tipo === "Maquina de Soporte Vectorial" && <section>
               <section className="display-flex">
                 <h3>Kernel: </h3>{' '}
                 <input
                   className="first-input"
                   type="text"
-                  name="nombrePrediccion"
+                  name="kernel"
                   required
                   style={{ width: '30%' }} />
               </section>
@@ -131,18 +127,16 @@ const VerImplementacion = (props: VerImplementacionProps) => {
             </section>}
 
             <br />
-          <div
-            className="display-center"
-            style={{ marginTop: '5px', marginBottom: '30px' }}
-          >
-              <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-                Agregar
+            <section className='display-center'>
+              <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Crear
+              <input hidden type="submit" />
               </Button>
-            </div>
+            </section>
         </form>
       </div>
+      <br />
     </div>
   );
 };
 
-export default VerImplementacion;
+export default CrearModelo;

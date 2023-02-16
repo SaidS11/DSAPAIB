@@ -8,30 +8,71 @@ import { useCustomDispatch } from '../../../redux/hooks';
 import CrearAnalisis from './CrearAnalisis';
 import ModalCrearAnalisis from './ModalCrearAnalisis';
 
+interface Config {
+  modelo: string;
+}
+
 const CrearAnalisisContainer = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
+  const [dataM, setDataM] = useState({});
   const appDispatch = useCustomDispatch();
   const navigate = useNavigate();
 
-  async function preAn() {
+  // async function preAn() {
+  //   appDispatch(setIsLoading(true));
+  //   console.log('Getting message');
+  //   window.electron.ipcRenderer.preAnalisisPython();
+  // }
+  // window.electron.ipcRenderer.preAnalisisP((event: unknown, resp: string) => {
+  //   console.log('Esta es', resp);
+  //   appDispatch(setPythonResponse(resp));
+  //   appDispatch(setIsLoading(false));
+  //   navigate('/preAnalisis');
+  // });
+  async function startAnalysis(tipo: string, params: string, nombre: string) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.funPython('Tree');
+    window.electron.ipcRenderer.analisisPython('Class', tipo, params, nombre);
   }
-  window.electron.ipcRenderer.funP((event: any, resp: any) => {
+  window.electron.ipcRenderer.analisisP((event: any, resp: any) => {
     console.log('Esta es', resp);
     appDispatch(setPythonResponse(resp));
     appDispatch(setIsLoading(false));
-    navigate('/preAnalisis');
+    navigate('/resultadosAnalisis');
   });
+  async function getParams(params: any) {
+    appDispatch(setIsLoading(true));
+    console.log('Getting message');
+    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.modelo);
+  }
+  window.electron.ipcRenderer.selectImplementacionPorN(
+    (event: any, resp: any) => {
+      console.log('Esta es algo', resp);
+      appDispatch(setIsLoading(false));
+      console.log('Algo', resp[0].algoritmo_ia);
+      const nombre = resp[0].modelo;
+      if (resp[0].algoritmo_ia === 'Arbol de Decisión') {
+        const params = JSON.stringify(resp[0].parametros);
+        startAnalysis('Tree', params, nombre);
+      }
+      if (resp[0].algoritmo_ia === 'Red Neuronal') {
+        const params = JSON.stringify(resp[0].parametros);
+        startAnalysis('KNN', params, nombre);
+      }
+      if (resp[0].algoritmo_ia === 'Maquina de Soporte Vectorial') {
+        const params = JSON.stringify(resp[0].parametros);
+        startAnalysis('SVM', params, nombre);
+      }
+    }
+  );
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
     console.log('la data', dataF);
     appDispatch(setAnalisisParams(dataF));
-    preAn();
+    getParams(dataF);
   };
 
   async function loadData() {
@@ -40,7 +81,7 @@ const CrearAnalisisContainer = () => {
   }
   window.Bridge.selectPrs((event: any, resp: any) => {
     if (resp.length > 0) {
-      // console.log('si es', resp);
+      console.log('si es', resp);
       setData(resp);
     } else {
       // console.log('nada');
@@ -49,14 +90,30 @@ const CrearAnalisisContainer = () => {
     appDispatch(setIsLoading(false));
     // appDispatch(setIsLoading(false));
   });
+  async function loadModels() {
+    console.log('Fui llamado');
+    appDispatch(setIsLoading(true));
+    const resp: Config[] =
+      (await window.electron.ipcRenderer.selectModNom()) as Array<Config>;
+    console.log('Esta es', resp);
+    if (resp.length > 0) {
+      // console.log('si es', resp);
+      setDataM(resp);
+    } else {
+      // console.log('nada');
+      setOpen(true);
+    }
+    appDispatch(setIsLoading(false));
+  }
   useEffect(() => {
     console.log('updated');
     loadData();
+    loadModels();
   }, []);
 
   return (
     <div>
-      <CrearAnalisis data={data} onClickNav={onClickNav} />
+      <CrearAnalisis data={data} dataM={dataM} onClickNav={onClickNav} />
       {open && <ModalCrearAnalisis open={open} />}
     </div>
   );

@@ -8,13 +8,11 @@ import App from './App';
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(
-  <StrictMode>
-    <HashRouter>
-      <Provider store={CustomStore}>
-        <App />
-      </Provider>
-    </HashRouter>
-  </StrictMode>
+  <HashRouter>
+    <Provider store={CustomStore}>
+      <App />
+    </Provider>
+  </HashRouter>
 );
 
 // calling IPC exposed from preload script
@@ -23,3 +21,13 @@ window.electron.ipcRenderer.once('ipc-example', (arg) => {
   console.log(arg);
 });
 window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
+
+// root.render(
+//   <StrictMode>
+//     <HashRouter>
+//       <Provider store={CustomStore}>
+//         <App />
+//       </Provider>
+//     </HashRouter>
+//   </StrictMode>
+// );

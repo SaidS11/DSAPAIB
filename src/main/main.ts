@@ -21,6 +21,8 @@ import { ReadlineParser } from '@serialport/parser-readline';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -86,7 +88,6 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
   });
-
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -149,6 +150,22 @@ const credenciales = {
 };
 
 const pool = new Pool(credenciales);
+
+const uri =
+  'mongodb+srv://ByPona:<password>@clustermodular.vgf3uhd.mongodb.net/?retryWrites=true&w=majority';
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
+client.connect((err: any) => {
+  const collection = client.db('test').collection('devices');
+  // perform actions on the collection object
+  console.log('Conectado MONGUITO');
+  client.close();
+});
+
+console.log('Conectado MONGOOO', client);
 
 async function iniciarSesion(user: string, pass: string) {
   const query = await pool.query(
@@ -254,6 +271,77 @@ ipcMain.on(
   }
 );
 
+async function insertModelo(
+  modelo: string,
+  prueba: string,
+  algoritmo_ia: string,
+  parametros: any
+) {
+  try {
+    const query = await pool.query(
+      ' INSERT INTO implementacion(modelo, prueba, algoritmo_ia, parametros) values ($1,$2,$3,$4)  ',
+      [modelo, prueba, algoritmo_ia, parametros]
+    );
+    console.log(query.rows);
+    return query.rows;
+  } catch (e: any) {
+    console.log('errorr', e);
+    return [0, e.detail];
+  }
+}
+
+ipcMain.on(
+  'insertModelo',
+  async (
+    event,
+    modelo: string,
+    prueba: string,
+    algoritmo_ia: string,
+    parametros: any
+  ) => {
+    const resp = await insertModelo(modelo, prueba, algoritmo_ia, parametros);
+    console.log(resp);
+    mainWindow?.webContents.send('insertMod', resp);
+  }
+);
+
+async function selectImplementacionNombreIA(nombre: string) {
+  const query = await pool.query(
+    ' SELECT * FROM implementacion where algoritmo_ia = $1',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectImplementacionNombreIA', async (event, nombre) => {
+  const resp = await selectImplementacionNombreIA(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectImplemenIA', resp);
+});
+
+async function selectImplementacionPorNombre(nombre: string) {
+  const query = await pool.query(
+    ' SELECT * FROM implementacion where modelo = $1',
+    [nombre]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on('selectImplementacionPorNombre', async (event, nombre) => {
+  const resp = await selectImplementacionPorNombre(nombre);
+  console.log(resp);
+  mainWindow?.webContents.send('selectImplementacionPorN', resp);
+});
+
+async function selectModelosNombre() {
+  const query = await pool.query(' select modelo from implementacion ');
+  console.log('Estas son las rows', query.rows);
+  return query.rows;
+}
+ipcMain.handle('selectModelosNombre', selectModelosNombre);
+
 async function selectProtocolos() {
   const query = await pool.query(' select nombre from protocolo_adquisicion  ');
   console.log(query.rows);
@@ -289,7 +377,7 @@ async function selectMultimediaConfig(nombre: string) {
   console.log(query.rows);
   return query.rows;
 }
-
+// ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) =>);
 ipcMain.on('selectMultimediaConfig', async (event, nombre: string) => {
   const resp = await selectMultimediaConfig(nombre);
   console.log(resp);
@@ -338,6 +426,12 @@ async function selectConfiguracion() {
 }
 ipcMain.handle('selectConfiguracion', selectConfiguracion);
 
+async function selectAlgoritmosIA() {
+  const query = await pool.query(' SELECT * FROM algoritmos_ia ');
+  console.log(query.rows);
+  return query.rows;
+}
+ipcMain.handle('selectAlgoritmosIA', selectAlgoritmosIA);
 /* ipcMain.on('selectConfiguracion', async (event) => {
   const resp = await selectConfiguracion();
   console.log('Esta es la resp', resp);
@@ -516,9 +610,10 @@ async function selectConfiguracionDetalle(nombre: string) {
     ' select * from configuracion where nombre = $1 ',
     [nombre]
   );
-  console.log(query.rows);
+  console.log('consulta', query.rows);
   return query.rows;
 }
+// ipcMain.handle('selectConfiguracionDetalle', () => selectConfiguracionDetalle);
 
 ipcMain.on('selectConfiguracionDetalle', async (event, nombre: string) => {
   const resp = await selectConfiguracionDetalle(nombre);
@@ -533,16 +628,21 @@ const serialPort = new SerialPort({
   stopBits: 1,
   parity: 'none',
 });
-
+const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+// eslint-disable-next-line promise/param-names
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 async function sensores() {
-  const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
-
+  // serialPort.isOpen;
+  serialPort.open();
   let buffer = '';
   let sum = 0;
   let gsrAverage = 0;
   let hr = 0;
-  parser.on('data', (chunk: any) => {
+  console.log('ANTES DEE');
+  parser.on('data', async (chunk: any) => {
+    console.log('SIGOOO');
     for (let i = 0; i < 10; i++) {
+      buffer = '';
       buffer += chunk;
       console.log(buffer);
       sum += parseInt(buffer);
@@ -551,14 +651,70 @@ async function sensores() {
     console.log('Gsr Average', gsrAverage);
     hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
     console.log('GSR', hr);
+    // const resp = await sleep(10000);
+    // console.log("Resp", resp);
   });
   return hr;
 }
 
-ipcMain.on('sensores', async (event) => {
-  const resp = await sensores();
+ipcMain.handle('sensores', async (event) => {
+  // const resp = await sensores();
+  // console.log(resp);
+  if (serialPort.isOpen === false) {
+    serialPort.open();
+  }
+  const buffer = '';
+  const sum = 0;
+  const gsrAverage = 0;
+  const hr = 0;
+  const len = 0;
+  const arrValues: Array<number> = [];
+  console.log('ANTES DEE');
+  parser.on('data', async (chunk: any) => {
+    console.log('SIGOOO');
+    // len+=1;
+    // arrValues.push(parseInt(chunk));
+    // if (len === 10) {
+    //   let sum2 = 0;
+    //   arrValues.map((x) => sum2 += x);
+    //   gsrAverage = sum2 / 10;
+    //   console.log('GSR AVErage', gsrAverage);
+    //   hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    //   console.log('GSR', hr);
+    //   len = 0;
+    //   arrValues.length = 0;
+    //   mainWindow?.webContents.send('senso', hr);
+    // }
+    // for (let i = 0; i < 10; i++) {
+    //   buffer = '';
+    //   buffer += chunk;
+    //   console.log(buffer);
+    //   sum += parseInt(buffer);
+    // }
+    // gsrAverage = sum / 10;
+    // sum = 0;
+    // console.log('Gsr Average', gsrAverage);
+    // hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    // console.log('GSR', hr);
+    // const resp = await sleep(10000);
+    // console.log("Resp", resp);
+    console.log('c', chunk);
+    mainWindow?.webContents.send('senso', hr);
+    // mainWindow?.webContents.send('senso', chunk);
+  });
+});
+
+async function sensoresStop() {
+  // parser.off('data', console.log);
+  console.log('Closing');
+  serialPort.close();
+  // parser.write('\x03')
+}
+
+ipcMain.on('sensoresStop', async (event) => {
+  const resp = await sensoresStop();
   console.log(resp);
-  mainWindow?.webContents.send('senso', resp);
+  mainWindow?.webContents.send('sensoStop', resp);
 });
 
 /* const options = {}
@@ -601,56 +757,65 @@ shellTest.on('message', function (message: any) {
       }
     }
   ) */
-ipcMain.handle('analisisPython', async (event, palabra: string) => {
-  const options = {
-    // scriptPath: "../pythonScripts/",
-    args: [palabra],
-  };
-  console.log('Llamado 2');
-  // const location = require("../pythonScripts/testing.py")
-  // console.log("DIRRRRRRRRRRR", __dirname);
-  const direc = __dirname;
-  const regex = /\//i;
-  const direcParsed = direc.replace(regex, '/');
-  const direcFinal = direcParsed.slice(0, -4);
-  // console.log("REadyyy", direcFinal);
-  /* const resp = await funPython;
+ipcMain.handle(
+  'analisisPython',
+  async (
+    event,
+    tipo: string,
+    tipoIA: string,
+    params: string,
+    nombre: string
+  ) => {
+    const options = {
+      // scriptPath: "../pythonScripts/",
+      args: [tipo, tipoIA, params, nombre],
+    };
+    console.log('Llamado 2');
+    // const location = require("../pythonScripts/testing.py")
+    // console.log("DIRRRRRRRRRRR", __dirname);
+    const direc = __dirname;
+    const regex = /\//i;
+    const direcParsed = direc.replace(regex, '/');
+    const direcFinal = direcParsed.slice(0, -4);
+    // console.log("REadyyy", direcFinal);
+    /* const resp = await funPython;
   console.log(resp);
   mainWindow?.webContents.send('funP', resp); */
-  // PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
-  try {
-    PythonShell.run(
-      `${direcFinal}/pythonScripts/analisis.py`,
-      options,
-      function (err, results) {
-        if (err) {
-          console.log('err', err);
-          // return "Error"
-        } else {
-          console.log(results);
-          // res = results![0]
-          console.log('Finisheddd');
-          mainWindow?.webContents.send('analisisP', results![0]);
+    // PythonShell.run("D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/testing.py", options, function(err, results) {
+    try {
+      PythonShell.run(
+        `${direcFinal}/pythonScripts/analisis.py`,
+        options,
+        function (err, results) {
+          if (err) {
+            console.log('err', err);
+            // return "Error"
+          } else {
+            console.log(results);
+            // res = results![0]
+            console.log('Finisheddd');
+            mainWindow?.webContents.send('analisisP', results![0]);
+          }
         }
-      }
-    );
-  } catch (e: any) {
-    console.log('Error', e);
+      );
+    } catch (e: any) {
+      console.log('Error', e);
+    }
   }
-});
+);
 
-ipcMain.handle('preAnalisisPython', async (event, palabra: string) => {
+ipcMain.handle('preAnalisisPython', async (event) => {
   const options = {
-    args: [palabra],
+    args: ['vacio'],
   };
-  console.log('Llamado 2');
+  console.log('Llamado 3');
   const direc = __dirname;
   const regex = /\//i;
   const direcParsed = direc.replace(regex, '/');
   const direcFinal = direcParsed.slice(0, -4);
   try {
     PythonShell.run(
-      `${direcFinal}/pythonScripts/testing.py`,
+      `${direcFinal}/pythonScripts/preAnalisis.py`,
       options,
       function (err, results) {
         if (err) {

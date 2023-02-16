@@ -20,7 +20,7 @@ const style = {
 export interface ModalProps {
   open: boolean;
 }
-export default function ModalDatos(props: ModalProps) {
+export default function ModalCrearAnalisis(props: ModalProps) {
   const { open } = props;
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);

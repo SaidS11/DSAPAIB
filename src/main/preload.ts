@@ -11,6 +11,14 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectConfiguracion');
     },
     selectC: () => ipcRenderer.invoke('selectConfiguracion'),
+    selectModelosNombre() {
+      ipcRenderer.send('selectModelosNombre');
+    },
+    selectModNom: () => ipcRenderer.invoke('selectModelosNombre'),
+    selectAlgoritmosIA() {
+      ipcRenderer.send('selectAlgoritmosIA');
+    },
+    selectAIA: () => ipcRenderer.invoke('selectAlgoritmosIA'),
     selectMultimediaConfig(nombre: string) {
       ipcRenderer.send('selectMultimediaConfig', nombre);
     },
@@ -19,14 +27,33 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectConfiguracionNombre', nombre);
     },
     selectCN: (callback: any) => ipcRenderer.on('selectCN', callback),
+    selectImplementacionNombreIA(nombre: string) {
+      ipcRenderer.send('selectImplementacionNombreIA', nombre);
+    },
+    selectImplemenIA: (callback: any) =>
+      ipcRenderer.on('selectImplemenIA', callback),
     selectConfiguracionDetalle(nombre: string) {
       ipcRenderer.send('selectConfiguracionDetalle', nombre);
     },
     selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
-    funPython(nombre: string) {
-      ipcRenderer.invoke('analisisPython', nombre);
+    selectImplementacionPorNombre(nombre: string) {
+      ipcRenderer.send('selectImplementacionPorNombre', nombre);
     },
-    funP: (callback: any) => ipcRenderer.on('analisisP', callback),
+    selectImplementacionPorN: (callback: any) =>
+      ipcRenderer.on('selectImplementacionPorN', callback),
+    analisisPython(
+      type: string,
+      typeIA: string,
+      params: string,
+      nombre: string
+    ) {
+      ipcRenderer.invoke('analisisPython', type, typeIA, params, nombre);
+    },
+    analisisP: (callback: any) => ipcRenderer.on('analisisP', callback),
+    preAnalisisPython() {
+      ipcRenderer.invoke('preAnalisisPython');
+    },
+    preAnalisisP: (callback: any) => ipcRenderer.on('preAnalisisP', callback),
     on(channel: Channels, func: (...args: unknown[]) => void) {
       const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
         func(...args);
@@ -81,6 +108,15 @@ function insertPaciente(
     apellidoP,
     apellidoM
   );
+}
+
+function insertModelo(
+  modelo: string,
+  prueba: string,
+  algoritmo_ia: string,
+  parametros: any
+) {
+  ipcRenderer.send('insertModelo', modelo, prueba, algoritmo_ia, parametros);
 }
 
 function selectProtocolos() {
@@ -185,17 +221,28 @@ function sensores() {
   ipcRenderer.send('sensores');
 }
 
+function sensoresStop() {
+  ipcRenderer.send('sensoresStop');
+}
 const indexBridge = {
   loggearDoctor,
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
-  sensores,
+  sensores(nombre: string) {
+    ipcRenderer.invoke('sensores', nombre);
+  },
   senso: (callback: any) => ipcRenderer.on('senso', callback),
+  // sensores,
+  // senso: (callback: any) => ipcRenderer.on('senso', callback),
+  sensoresStop,
+  sensoStop: (callback: any) => ipcRenderer.on('sensoStop', callback),
   selectPaciente,
   selectP: (callback: any) => ipcRenderer.on('selectP', callback),
   selectPacientes,
   selectPs: (callback: any) => ipcRenderer.on('selectPs', callback),
   insertPaciente,
   insertP: (callback: any) => ipcRenderer.on('insertP', callback),
+  insertModelo,
+  insertMod: (callback: any) => ipcRenderer.on('insertMod', callback),
   selectProtocolos,
   selectPrs: (callback: any) => ipcRenderer.on('selectPrs', callback),
   selectConfiguracionNombre,

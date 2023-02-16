@@ -2,39 +2,26 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import React from 'react';
 import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
   styleButtonBigger,
 } from '../VerPaciente/ButtonStyle';
-import ProbarSensores from '../ProbarSensores/ProbarSensores';
 import './ResultadosAnalisis.css';
 
 export interface ResultadosAnalisisProps {
-  onClickNav: () => void;
-  onClickProbar: () => void;
-  onClickDetener: () => void;
-  probando: boolean;
   precision: string;
+  f1: string;
+  recall: string;
   analisis: any;
   tipo: string;
+  toggleModal: any;
+  onClickBack: () => void;
 }
 
 const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
-  const {
-    onClickNav,
-    onClickProbar,
-    onClickDetener,
-    probando,
-    precision,
-    analisis,
-    tipo,
-  } = props;
+  const { precision, f1, recall, analisis, tipo, toggleModal, onClickBack } =
+    props;
   // const navigate = useNavigate();
 
   return (
@@ -74,20 +61,26 @@ const ResultadosAnalisis = (props: ResultadosAnalisisProps) => {
           <h5>Precisión:</h5>
           <h5>{precision}%</h5>
         </section>
+        <section className="display-flexResultadosA">
+          <h5>F1:</h5>
+          <h5>{f1}%</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>Recall:</h5>
+          <h5>{recall}%</h5>
+        </section>
         <section className="display-center">
-          <Button sx={styleButtonBigger} onClick={onClickProbar}>
+          <Button sx={styleButtonBigger} onClick={() => toggleModal('body')}>
             Ver Más
           </Button>
         </section>
       </div>
       <section className="display-center">
-        <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
-          Almacenar Datos
+        <Button sx={styleButtonBiggerGreen}>Almacenar Datos</Button>
+        <Button sx={styleButtonBigger}>Generar Reporte</Button>
+        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+          Cancelar
         </Button>
-        <Button sx={styleButtonBigger} onClick={onClickProbar}>
-          Generar Reporte
-        </Button>
-        <Button sx={styleButtonBiggerRed}>Cancelar</Button>
       </section>
       <br />
     </div>

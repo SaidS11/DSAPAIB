@@ -12,6 +12,8 @@ export interface IStatus {
   protocoloDetalle: Object;
   protocoloNombre: string;
   analisisParams: Object;
+  algoritmoIA: string;
+  modeloDetalle: Object;
 }
 
 const initialState: IStatus = {
@@ -23,6 +25,8 @@ const initialState: IStatus = {
   protocoloDetalle: {},
   protocoloNombre: '',
   analisisParams: {},
+  algoritmoIA: '',
+  modeloDetalle: {},
 };
 
 export const ConfiguracionSlice = createSlice({
@@ -74,6 +78,15 @@ export const ConfiguracionSlice = createSlice({
     ) => {
       state.analisisParams = action.payload;
     },
+    setAlgoritmoIA: (state, action: PayloadAction<IStatus['algoritmoIA']>) => {
+      state.algoritmoIA = action.payload;
+    },
+    setModeloDetalle: (
+      state,
+      action: PayloadAction<IStatus['modeloDetalle']>
+    ) => {
+      state.modeloDetalle = action.payload;
+    },
   },
 });
 
@@ -86,6 +99,8 @@ export const {
   setProtocoloDetalle,
   setProtocoloNombre,
   setAnalisisParams,
+  setAlgoritmoIA,
+  setModeloDetalle,
 } = ConfiguracionSlice.actions;
 export const selectConfigName = (state: RootState) => state.config.configName;
 export const selectConfigDetalle = (state: RootState) =>
