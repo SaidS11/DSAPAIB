@@ -36,7 +36,7 @@ const Video = (props: VideoProps) => {
       <section className="display-center">
         <video id="myVideo" controls width="50%">
           <source id="video_src" src={url} type="video/mp4" />
-          Lo siento
+          Lo siento no puedo cargar el video
         </video>
       </section>
       <section className="display-center">

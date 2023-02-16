@@ -79,10 +79,10 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Algoritmo" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('verModelos')}>
+              <NavDropdown.Item onClick={() => onClickNav('verAlgoritmos')}>
                 Ver Algoritmo
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('verImplementacion')}>
+              <NavDropdown.Item onClick={() => onClickNav('verModelos')}>
                 Ver Modelo
               </NavDropdown.Item>
               <NavDropdown.Item

@@ -38,8 +38,6 @@ const VerConfiguracionContainer = () => {
   async function loadData() {
     console.log('Fui llamado');
     appDispatch(setIsLoading(true));
-    // window.Bridge.selectConfiguracion();
-    // window.electron.ipcRenderer.selectConfiguracion();
     const resp: Config[] =
       (await window.electron.ipcRenderer.selectC()) as Array<Config>;
     console.log('Esta es', resp);
@@ -57,58 +55,11 @@ const VerConfiguracionContainer = () => {
     }
     appDispatch(setIsLoading(false));
   }
-  /* window.electron.ipcRenderer.selectC((event: any, resp: any) => {
-    console.log('llamada dentro');
-    if (resp.length > 0) {
-      console.log('si es', resp);
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < resp.length; i++) {
-        datarRetrieved.push({
-          col1: resp[i].nombre,
-        });
-      }
-      setData(datarRetrieved);
-    } else {
-      console.log('nada');
-    }
-    appDispatch(setIsLoading(false));
-  }); */
   console.log('estoy rendereando antes de detalle');
   useEffect(() => {
     console.log('updated lista config');
     loadData();
-    /* const fetch = async () => {
-      const respP = await loadData();
-      return respP;
-    }
-    const resP2 = fetch()
-    console.log('Esta es la reso', resP2); */
   }, []);
-  /* useEffect(() => {
-    console.log('updated');
-    async function loadData() {
-      appDispatch(setIsLoading(true));
-      window.Bridge.selectConfiguracion();
-    }
-    window.Bridge.selectC((event: any, resp: any) => {
-      if (resp.length > 0) {
-        console.log('si es', resp);
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < resp.length; i++) {
-          datarRetrieved.push({
-            col1: resp[i].nombre,
-          });
-        }
-        setData(datarRetrieved);
-      } else {
-        console.log('nada');
-      }
-      appDispatch(setIsLoading(false));
-    });
-    loadData();
-  }, []) */
-  // Load Data from the row clicked
-  // Load Data from the row clicked (multimedia Data)
   async function loadDataMultimedia(nameConf: string) {
     window.electron.ipcRenderer.selectMultimediaConfig(nameConf);
   }

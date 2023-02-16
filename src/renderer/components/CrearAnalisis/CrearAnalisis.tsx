@@ -9,36 +9,40 @@ import {
 
 export interface CrearAnalisisProps {
   data: any;
+  dataM: any;
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const CrearAnalisis = (props: CrearAnalisisProps) => {
-  const { data, onClickNav } = props;
+  const { data, dataM, onClickNav } = props;
   const setProtocols = () => {
-    const plots = [];
+    const protocols = [];
     if (data.length > 1) {
       // eslint-disable-next-line no-plusplus
       for(let i = 0; i < data.length; i++) {
         // console.log('datos recibidios', data[i]);
-        plots.push(
+        protocols.push(
           <option  key={i} value={`${data[i].nombre}`}>{data[i].nombre}</option>
         )
       }
-      return plots;
+      return protocols;
     }
     return <option value={1}>1</option>;
-    
   }
 
   const numofModels = () => {
     const models = [];
-
-    for(let i=1; i<=3; i++) {
-      models.push(
-        <option key={i} value={`Modelo${i}`}>{`Modelo ${i}`}</option>
-      )
+    if (dataM.length >= 1) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < dataM.length; i++) {
+        // console.log('datos recibidios', data[i]);
+        models.push(
+          <option  key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</option>
+        )
+      }
+      return models;
     }
-    return models;
+    return <option value={1}>1</option>;
   }
   
   return (

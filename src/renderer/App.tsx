@@ -10,9 +10,7 @@ import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisi
 import PrediccionContainer from './components/Prediccion/PrediccionContainer';
 import VerProtocoloContainer from './components/VerProtocolo/VerProtocoloContainer';
 import VerProtocolo2Container from './components/VerProtocolo2/VerProtocolo2Container';
-import VerModelosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
 import VerAlgoritmoContainer from './components/VerAlgoritmo/VerAlgoritmoContainer';
-import VerImplementacionContainer from './components/VerImplementacion/VerImplementacionContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
@@ -41,6 +39,10 @@ import CargaExitosaModal from './components/Modales/CargaExitosaModal';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import CrearImplementacionContainer from './components/CrearModelo/CrearModeloContainer';
+import VerAlgoritmosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
+import VerModeloContainer from './components/VerModelo/VerModeloContainer';
+import VerModelosContainer from './components/VerModelos/VerModelosContainer';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -94,9 +96,11 @@ export default function App() {
               element={<CrearProtocoloContainer />}
             />
             <Route
-              path="/verImplementacion"
-              element={<VerImplementacionContainer />}
+              path="/crearImplementacion"
+              element={<CrearImplementacionContainer />}
             />
+            <Route path="/verModelo" element={<VerModeloContainer />} />
+            <Route path="/verModelos" element={<VerModelosContainer />} />
             <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
             <Route
               path="/verProtocoloDetalle"
@@ -132,7 +136,8 @@ export default function App() {
               path="/verConfiguracion"
               element={<VerConfiguracionContainer />}
             />
-            <Route path="/verModelos" element={<VerModelosContainer />} />
+            <Route path="/verAlgoritmos" element={<VerAlgoritmosContainer />} />
+            <Route path="/verAlgoritmo" element={<VerAlgoritmoContainer />} />
           </Routes>
           <>{loading && <Loading />}</>
           <>{subidaExitosa && <CreadoExitosamente />}</>

@@ -10,16 +10,17 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import { styleButtonBiggerGreen, styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
 
 interface VerModeloProps {
+  nombre: string;
   options: TableOptions<{ col1: string }>;
 }
 
-const VerModelo = (
+const VerAlgoritmo = (
   props: VerModeloProps
 ) => {
-  const { options } = props;
+  const { nombre, options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -32,50 +33,20 @@ const VerModelo = (
 
   return (
     <div>
-      <div className="display-center">
-        <h1>Modelo</h1>
-      </div>
-      <div
-        id="comenzarAnalisisEntrenamiento"
-        style={{
-          marginLeft: '26%',
-          width: '850px',
-          paddingLeft: '40px',
-          borderRadius: '5px',
-          paddingBottom: '35px',
-        }}
-      >
-        <div style={{ display: 'flex', marginTop: '50px' }}>
-          <h3>Nombre: </h3>{' '}
-          <h3
-            style={{
-              marginLeft: '350px',
-              border: '1px solid black',
-              width: '300px',
-              paddingLeft: '5px',
-              borderRadius: '5px',
-            }}
-          >
-            Analisis T
-          </h3>
-        </div>
-        <div style={{ display: 'flex', marginTop: '30px' }}>
-          <h3>Descripción: </h3>{' '}
-          <textarea
-            style={{
-              marginLeft: '300px',
-              width: '300px',
-              maxHeight: '100px',
-              minHeight: '100px',
-            }}
-            disabled
-          />
-        </div>
-      </div>
+    <section className="display-center">
+      <h1>Algoritmo</h1>
+    </section>
+    <div className='display-center'>
+    <form className="analisis-form" action="">
+      <section className="display-flex">
+        <h4>Nombre:</h4>
+        <input className="first-input" type="text" value={nombre} disabled />
+      </section>
+      <section className="display-flex">
+        <h4>Descripción:</h4>
+        <textarea className="second-input" disabled/>
+      </section>
       <br />
-      <div className="display-center">
-        <h3 style={{ fontWeight: '600' }}>Modelo: </h3>
-      </div>
       <div
         style={{
           width: '90%',
@@ -84,7 +55,7 @@ const VerModelo = (
           marginLeft: '80px',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id="table">
+        <table {...getTableProps()} className="tableCustom">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
@@ -119,20 +90,14 @@ const VerModelo = (
           </tbody>
         </table>
       </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
-      </div>
-      <div
-        className="display-center"
-        style={{ marginTop: '5px', marginBottom: '30px' }}
-      >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }}>
-          Crear Implementación
-        </Button>
-      </div>
+    </form>
     </div>
+    <section className='display-center'>
+      <Button sx={styleButtonBiggerRed} style={{marginTop: '10px', fontSize: '20px'}} >Regresar</Button>
+    </section>
+    
+  </div>
   );
 };
 
-export default VerModelo;
+export default VerAlgoritmo;

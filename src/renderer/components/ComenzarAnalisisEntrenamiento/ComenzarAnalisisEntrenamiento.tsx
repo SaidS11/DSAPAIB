@@ -13,14 +13,17 @@ import {
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface ComenzarAnalisisEntrenamientoProps {
+  data: any;
+  dataM: any;
   options: TableOptions<{ col1: string }>;
   onClickNav: any
+  onClickStop: any
 }
 
 const ComenzarAnalisisEntrenamiento = (
   props: ComenzarAnalisisEntrenamientoProps
 ) => {
-  const { options, onClickNav } = props;
+  const { data, dataM, options, onClickNav, onClickStop } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -30,27 +33,35 @@ const ComenzarAnalisisEntrenamiento = (
     }
     return <span className="icon-arrow-long-down" />;
   };
-
+  
+  const setProtocols = () => {
+    const plots = [];
+    if (data.length > 0) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < data.length; i++) {
+        console.log('datos recibidios', data[i]);
+        plots.push(
+          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+        )
+      }
+      return plots;
+    }
+    return <option value={1}>1</option>;
+    
+  }
   const numofModels = () => {
     const models = [];
-
-    for(let i=1; i<=10; i+=1) {
-      models.push(
-        <option key={i} value={i}>{i}</option>
-      )
+    if (dataM.length >= 1) {
+      // eslint-disable-next-line no-plusplus
+      for(let i = 0; i < dataM.length; i++) {
+        // console.log('datos recibidios', data[i]);
+        models.push(
+          <option  key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</option>
+        )
+      }
+      return models;
     }
-    return models;
-  }
-
-  const numofModels2 = () => {
-    const models = [];
-
-    for(let i=1; i<=10; i+=1) {
-      models.push(
-        <option key={i} value={i*10}>{`${i*10}%`}</option>
-      )
-    }
-    return models;
+    return <option value={1}>1</option>;
   }
 
   return (
@@ -59,10 +70,10 @@ const ComenzarAnalisisEntrenamiento = (
         <h1>Entrenamiento</h1>
       </div>
       <div className='display-center'>
-        <form className="analisis-form" action="" style={{ width: "70%" }}>
+        <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
           <section className="display-flex">
             <h3>Nombre: </h3>{' '}
-            <input className="first-input" type="text"  name="nombrePrediccion" required />
+            <input className="first-input" type="text"  name="nombre" required />
           </section>
           <section className="display-flex">
             <h3>Descripción: </h3>{' '}
@@ -70,14 +81,14 @@ const ComenzarAnalisisEntrenamiento = (
           </section>
           <section className="display-flex">
             <h3>Protocolo Adquisicion: </h3>{' '}
-            <select className="fourth-input-modelo">
-              {}
+            <select className="fourth-input-modelo" required name="protocolo">
+            {setProtocols()}
             </select>
           </section>
           <section className="display-flex">
             <h3>Modelo: </h3>{' '}
-            <select className="fourth-input-modelo">
-              {}
+            <select className="fourth-input-modelo" required name="modelo">
+            {numofModels()}
             </select>
           </section>
           <section className="display-flex">
@@ -168,8 +179,11 @@ const ComenzarAnalisisEntrenamiento = (
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickNav}>
-          Regresar
+        <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Comenzar
+          <input hidden type="submit" />
+        </Button>
+        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickStop}>
+          Parar
         </Button>
       </div>
       </form>

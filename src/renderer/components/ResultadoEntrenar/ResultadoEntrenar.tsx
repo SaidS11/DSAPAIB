@@ -18,10 +18,27 @@ export interface ResultadoEntrenarProps {
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
+  onClickBack: () => void;
+  precision: string;
+  f1: string;
+  recall: string;
+  analisis: any;
+  tipo: string;
 }
 
 const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
-  const { onClickNav, onClickProbar, onClickDetener, probando } = props;
+  const {
+    onClickNav,
+    onClickProbar,
+    onClickDetener,
+    probando,
+    onClickBack,
+    precision,
+    f1,
+    recall,
+    analisis,
+    tipo,
+  } = props;
   // const navigate = useNavigate();
 
   return (
@@ -43,17 +60,25 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           <h5>Resultado:</h5>
           <h5>En Riesgo</h5>
         </section>
-        <section className="display-flexResultadosEntr">
+        <section className="display-flexResultadosA">
           <h5>Protocolo:</h5>
-          <h5>Protocolo 1</h5>
+          <h5>{analisis.protocolo}</h5>
         </section>
-        <section className="display-flexResultadosEntr">
+        <section className="display-flexResultadosA">
           <h5>Modelo Usado:</h5>
-          <h5>Modelo 1</h5>
+          <h5>{analisis.modelo}</h5>
         </section>
-        <section className="display-flexResultadosEntr">
+        <section className="display-flexResultadosA">
           <h5>Precisión:</h5>
-          <h5>99.9%</h5>
+          <h5>{precision}%</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>F1:</h5>
+          <h5>{f1}%</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>Recall:</h5>
+          <h5>{recall}%</h5>
         </section>
         <section className="display-center">
           <Button sx={styleButtonBigger} onClick={onClickProbar}>
@@ -65,7 +90,9 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
           Guardar Modelo
         </Button>
-        <Button sx={styleButtonBiggerRed}>Regresar</Button>
+        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+          Regresar
+        </Button>
       </section>
       <br />
     </div>

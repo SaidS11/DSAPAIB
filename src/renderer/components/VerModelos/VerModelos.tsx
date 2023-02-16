@@ -18,12 +18,12 @@ interface Cols {
   col4: string;
   col5: string;
 }
-interface VerAlgoritmosProps {
+interface VerModelosProps {
   options: TableOptions<{ col1: string }>;
   onClickRow: (arg0: any) => void;
 }
 
-const VerAlgoritmos = (props: VerAlgoritmosProps) => {
+const VerModelos = (props: VerModelosProps) => {
   const { options, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -38,7 +38,7 @@ const VerAlgoritmos = (props: VerAlgoritmosProps) => {
     <div>
       <div style={{}}>
         <section className="display-center">
-          <h1>Algoritmo</h1>
+          <h1>Modelos</h1>
         </section>
         <section className="display-center">
           <h4>Seleccione uno de la lista para ver más detalles:</h4>
@@ -92,4 +92,4 @@ const VerAlgoritmos = (props: VerAlgoritmosProps) => {
   );
 };
 
-export default VerAlgoritmos;
+export default VerModelos;

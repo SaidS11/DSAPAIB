@@ -7,17 +7,23 @@ import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import CrearProtocolo from './CrearProtocolo';
 import CreadoExitosamente from '../Modales/CreadoExitosamente';
 
+interface Config {
+  nombre: string;
+}
+
+
 const CrearProtocoloContainer = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const doctor = useCustomSelector((state) => state.login.loggedUser);
   const appDispatch = useCustomDispatch();
-
+  // Load Data for the rows
   async function loadData() {
+    console.log('Fui llamado');
     appDispatch(setIsLoading(true));
-    window.Bridge.selectConfiguracion();
-  }
-  window.Bridge.selectC((event: any, resp: any) => {
+    const resp: Config[] =
+      (await window.electron.ipcRenderer.selectC()) as Array<Config>;
+    console.log('Esta es', resp);
     if (resp.length > 0) {
       console.log('si es', resp);
       setData(resp);
@@ -25,8 +31,7 @@ const CrearProtocoloContainer = () => {
       console.log('nada');
     }
     appDispatch(setIsLoading(false));
-  });
-
+  };
   async function insertData(dataP: any) {
     window.Bridge.insertProtocolo(dataP.nombreProtocolo, doctor, dataP.config, dataP.descripcion);
   }
