@@ -52,21 +52,21 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
       </section>
       <div className='display-center'>
       <form className="analisis-form" onSubmit={onClickNav}>
-        <section className="display-flex">
+        <section className="display-flexAgregar">
           <h4>Nombre:</h4>
           <input className="first-input" type="text" name="nombre" required/>
         </section>
-        <section className="display-flex">
+        <section className="display-flexAgregar">
           <h4>Descripción:</h4>
           <textarea className="second-input" name="descripcion" required/>
         </section>
-        <section className="display-flex">
+        <section className="display-flexAgregar">
           <h4>Protocolo Adquisición:</h4>
           <select className='sensores-crear-analisis' name="protocolo" required>
             {setProtocols()}
           </select>
         </section>
-        <section className="display-flex">
+        <section className="display-flexAgregar">
           <h4>Modelo:</h4>
           <select className="fourth-input-modelo" name="modelo" required>
             {numofModels()}

@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { DialogProps } from '@mui/material/Dialog';
 import React, { useState } from 'react';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
 // eslint-disable-next-line import/no-named-as-default
-import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
-import { setIsLogged } from '../../../redux/slices/LoginSlice';
+import { useCustomSelector } from '../../../redux/hooks';
 import ResultadosAnalisis from './ResultadosAnalisis';
 import ModalVerMas from './ModalVerMas';
 

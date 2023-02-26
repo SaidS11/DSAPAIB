@@ -60,7 +60,8 @@ const VerConfiguracionContainer = () => {
     console.log('updated lista config');
     loadData();
   }, []);
-  async function loadDataMultimedia(nameConf: string) {
+  async function loadDataMultimedia(nameConf: string, resp: any) {
+    appDispatch(setConfigDetalle(resp));
     window.electron.ipcRenderer.selectMultimediaConfig(nameConf);
   }
   window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
@@ -77,14 +78,15 @@ const VerConfiguracionContainer = () => {
     appDispatch(setIsLoading(true));
     window.electron.ipcRenderer.selectConfiguracionDetalle(nameConf);
   }
-  window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectCD(async (event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('Este es el datelle click', resp);
       appDispatch(setConfigDetalle(resp));
     } else {
       console.log('nada en detalle');
     }
-    loadDataMultimedia(resp[0].nombre);
+    // appDispatch(setIsLoading(false));
+    loadDataMultimedia(resp[0].nombre, resp);
   });
 
   const onClickRow = useCallback((element: any) => {

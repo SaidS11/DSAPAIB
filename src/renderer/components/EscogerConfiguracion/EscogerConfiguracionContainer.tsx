@@ -22,10 +22,10 @@ const EscogerConfiguracionContainer = () => {
   appDispatch(setProtocoloNombre(protocolo));
   // Get All the data from the config
   async function loadConfCompleta(name: string) {
-    appDispatch(setIsLoading(true));
-    window.Bridge.selectConfiguracionDetalle(name);
+    // appDispatch(setIsLoading(true));
+    window.electron.ipcRenderer.selectConfiguracionDetalle(name);
   }
-  window.Bridge.selectCD((event: any, resp: any) => {
+  window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
     if (resp.length > 0) {
       console.log('Esta es la config completa', resp);
       appDispatch(setConfigCompleta(resp));
@@ -39,7 +39,7 @@ const EscogerConfiguracionContainer = () => {
   // Get Multimedia to Display
   async function loadMulti(dataP: any) {
     // console.log('load multi', data);
-    appDispatch(setIsLoading(true));
+    // appDispatch(setIsLoading(true));
     nameConfig = dataP[0].configuracion;
     window.electron.ipcRenderer.selectMultimediaConfig(dataP[0].configuracion);
     /* loadConfCompleta(data[0].configuracion); */
@@ -50,7 +50,7 @@ const EscogerConfiguracionContainer = () => {
     } else {
       console.log('nada en MC');
     }
-    appDispatch(setIsLoading(false));
+    // appDispatch(setIsLoading(false));
     appDispatch(setConfigMultimedia(resp));
     loadConfCompleta(nameConfig);
   });
@@ -67,7 +67,7 @@ const EscogerConfiguracionContainer = () => {
     } else {
       console.log('nada en CN');
     }
-    appDispatch(setIsLoading(false));
+    // appDispatch(setIsLoading(false));
     loadMulti(resp);
   });
 

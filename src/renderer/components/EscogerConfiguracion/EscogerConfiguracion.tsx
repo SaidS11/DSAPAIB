@@ -42,7 +42,9 @@ const EscogerConfiguracion = (props: LoginProps) => {
       for (let i = 0; i < data.length; i++) {
         console.log('datos recibidios', data[i]);
         plots.push(
-          <MenuItem value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
+          <MenuItem key={i} value={`${data[i].nombre}`}>
+            {data[i].nombre}
+          </MenuItem>
         );
       }
       return plots;

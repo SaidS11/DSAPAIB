@@ -9,6 +9,7 @@ import Prediccion from './Prediccion';
 
 interface Config {
   modelo: string;
+  algoritmo: string;
 }
 
 const PrediccionContainer = () => {
@@ -139,7 +140,7 @@ const PrediccionContainer = () => {
       window.Bridge.sensores();
     }
     window.Bridge.senso((event: any, resp: any) => {
-      console.log("Los sensores", resp);
+      // console.log("Los sensores", resp);
       // let buffer = '';
       // let sum = 0;
       // let gsrAverage = 0;

@@ -132,10 +132,6 @@ export default function App() {
             />
             <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
             <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
-            <Route
-              path="/verConfiguracion"
-              element={<VerConfiguracionContainer />}
-            />
             <Route path="/verAlgoritmos" element={<VerAlgoritmosContainer />} />
             <Route path="/verAlgoritmo" element={<VerAlgoritmoContainer />} />
           </Routes>

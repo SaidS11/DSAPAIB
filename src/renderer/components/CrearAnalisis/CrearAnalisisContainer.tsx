@@ -10,6 +10,7 @@ import ModalCrearAnalisis from './ModalCrearAnalisis';
 
 interface Config {
   modelo: string;
+  algoritmo: string;
 }
 
 const CrearAnalisisContainer = () => {
@@ -33,7 +34,14 @@ const CrearAnalisisContainer = () => {
   async function startAnalysis(tipo: string, params: string, nombre: string) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.analisisPython('Class', tipo, params, nombre);
+    window.electron.ipcRenderer.analisisPython(
+      'Class',
+      tipo,
+      params,
+      nombre,
+      '0',
+      '0'
+    );
   }
   window.electron.ipcRenderer.analisisP((event: any, resp: any) => {
     console.log('Esta es', resp);
@@ -105,6 +113,16 @@ const CrearAnalisisContainer = () => {
     }
     appDispatch(setIsLoading(false));
   }
+  // async function loadCaracteristicas(params: any) {
+  //   appDispatch(setIsLoading(true));
+  //   console.log('Getting message');
+  //   window.electron.ipcRenderer.selectImplementacionPorNombre(params!.modelo);
+  // }
+  // window.electron.ipcRenderer.selectImplementacionPorN(
+  //   (event: any, resp: any) => {
+  //     console.log('Esta es detalles', resp);
+  //   }
+  // );
   useEffect(() => {
     console.log('updated');
     loadData();

@@ -64,7 +64,7 @@ export default function ModalVerMas(props: ModalProps) {
             />
           </section>
           <section className="display-center">
-            <h1>Informacion Acerca de los Datos</h1>
+            <h1>Información Acerca de los Datos</h1>
           </section>
           <section className="display-center">
             <img

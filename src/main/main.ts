@@ -86,6 +86,8 @@ const createWindow = async () => {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
     },
   });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -336,7 +338,9 @@ ipcMain.on('selectImplementacionPorNombre', async (event, nombre) => {
 });
 
 async function selectModelosNombre() {
-  const query = await pool.query(' select modelo from implementacion ');
+  const query = await pool.query(
+    ' select modelo, algoritmo_ia from implementacion '
+  );
   console.log('Estas son las rows', query.rows);
   return query.rows;
 }
@@ -378,7 +382,7 @@ async function selectMultimediaConfig(nombre: string) {
   return query.rows;
 }
 // ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) =>);
-ipcMain.on('selectMultimediaConfig', async (event, nombre: string) => {
+ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) => {
   const resp = await selectMultimediaConfig(nombre);
   console.log(resp);
   mainWindow?.webContents.send('selectMC', resp);
@@ -615,11 +619,45 @@ async function selectConfiguracionDetalle(nombre: string) {
 }
 // ipcMain.handle('selectConfiguracionDetalle', () => selectConfiguracionDetalle);
 
-ipcMain.on('selectConfiguracionDetalle', async (event, nombre: string) => {
+ipcMain.handle('selectConfiguracionDetalle', async (event, nombre: string) => {
   const resp = await selectConfiguracionDetalle(nombre);
   console.log(resp);
   mainWindow?.webContents.send('selectCD', resp);
 });
+
+async function updateImplementacion(
+  precision: string,
+  desviacion: string,
+  entrenado: string,
+  modelo: string
+) {
+  const query = await pool.query(
+    ' UPDATE implementacion SET precision = $1, desviacion_estandar = $2, entrenado = $3 WHERE modelo = $4',
+    [precision, desviacion, entrenado, modelo]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on(
+  'updateImplementacion',
+  async (
+    event,
+    precision: string,
+    desviacion: string,
+    entrenado: string,
+    modelo: string
+  ) => {
+    const resp = await updateImplementacion(
+      precision,
+      desviacion,
+      entrenado,
+      modelo
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('updateIm', resp);
+  }
+);
 
 const serialPort = new SerialPort({
   path: 'COM5',
@@ -657,7 +695,7 @@ async function sensores() {
   return hr;
 }
 
-ipcMain.handle('sensores', async (event) => {
+ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
   if (serialPort.isOpen === false) {
@@ -670,7 +708,7 @@ ipcMain.handle('sensores', async (event) => {
   const len = 0;
   const arrValues: Array<number> = [];
   console.log('ANTES DEE');
-  parser.on('data', async (chunk: any) => {
+  parser.on('data', (chunk: any) => {
     console.log('SIGOOO');
     // len+=1;
     // arrValues.push(parseInt(chunk));
@@ -699,7 +737,12 @@ ipcMain.handle('sensores', async (event) => {
     // const resp = await sleep(10000);
     // console.log("Resp", resp);
     console.log('c', chunk);
-    mainWindow?.webContents.send('senso', hr);
+    // mainWindow?.webContents.send('senso', chunk);
+    try {
+      event.reply('senso', chunk);
+    } catch (err) {
+      console.log(err);
+    }
     // mainWindow?.webContents.send('senso', chunk);
   });
 });
@@ -764,11 +807,13 @@ ipcMain.handle(
     tipo: string,
     tipoIA: string,
     params: string,
-    nombre: string
+    nombre: string,
+    iteraciones: string,
+    reducedPercentage: string
   ) => {
     const options = {
       // scriptPath: "../pythonScripts/",
-      args: [tipo, tipoIA, params, nombre],
+      args: [tipo, tipoIA, params, nombre, iteraciones, reducedPercentage],
     };
     console.log('Llamado 2');
     // const location = require("../pythonScripts/testing.py")

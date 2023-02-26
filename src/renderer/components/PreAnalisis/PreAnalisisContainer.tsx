@@ -43,10 +43,23 @@ const PreAnalisisContainer = () => {
   //     startAnalysis('SVM');
   //   }
   // });
-  async function startAnalysis(tipo: string, params: string, nombre: string) {
+  async function startAnalysis(
+    tipo: string,
+    params: string,
+    nombre: string,
+    iteraciones: string,
+    reducedPercentage: string
+  ) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.analisisPython('Train', tipo, params, nombre);
+    window.electron.ipcRenderer.analisisPython(
+      'Train',
+      tipo,
+      params,
+      nombre,
+      iteraciones,
+      reducedPercentage
+    );
   }
   window.electron.ipcRenderer.analisisP((event: any, resp: any) => {
     console.log('Esta es', resp);
@@ -64,18 +77,22 @@ const PreAnalisisContainer = () => {
       console.log('Esta es algo', resp);
       appDispatch(setIsLoading(false));
       console.log('Algo', resp[0].algoritmo_ia);
+      const { iteraciones, porcentaje } = paramsArg as any;
+      // const reducedPercentage = parseInt(porcentaje) / 100;
+      // const strPercentage = reducedPercentage.toString();
+      console.log('iteraciones y porc', iteraciones, porcentaje);
       const nombre = resp[0].modelo;
       if (resp[0].algoritmo_ia === 'Arbol de Decisión') {
         const params = JSON.stringify(resp[0].parametros);
-        startAnalysis('Tree', params, nombre);
+        startAnalysis('Tree', params, nombre, iteraciones, porcentaje);
       }
       if (resp[0].algoritmo_ia === 'Red Neuronal') {
         const params = JSON.stringify(resp[0].parametros);
-        startAnalysis('KNN', params, nombre);
+        startAnalysis('KNN', params, nombre, iteraciones, porcentaje);
       }
       if (resp[0].algoritmo_ia === 'Maquina de Soporte Vectorial') {
         const params = JSON.stringify(resp[0].parametros);
-        startAnalysis('SVM', params, nombre);
+        startAnalysis('SVM', params, nombre, iteraciones, porcentaje);
       }
     }
   );

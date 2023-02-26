@@ -4,6 +4,13 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        updateImplementacion(
+          precision: string,
+          desviacion: string,
+          entrenado: string,
+          modelo: string
+        ): unknown;
+        updateIm(arg0: (event: any, resp: any) => void): unknown;
         selectImplementacionNombreIA(name: string): unknown;
         selectImplemenIA( // selectC(arg0: (event: any, resp: any) => void): unknown;
           arg0: (event: any, resp: any) => void
@@ -22,7 +29,9 @@ declare global {
           type: string,
           typeIA: string,
           params: string,
-          nombre: string
+          nombre: string,
+          iteraciones: string,
+          reducedPercentage: string
         ): unknown;
         selectCD(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracionDetalle(nameConf: string): unknown;

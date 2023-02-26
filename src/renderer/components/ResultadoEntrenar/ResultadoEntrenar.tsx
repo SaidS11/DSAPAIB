@@ -22,6 +22,7 @@ export interface ResultadoEntrenarProps {
   precision: string;
   f1: string;
   recall: string;
+  crossParsed: string;
   analisis: any;
   tipo: string;
 }
@@ -36,6 +37,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     precision,
     f1,
     recall,
+    crossParsed,
     analisis,
     tipo,
   } = props;
@@ -50,7 +52,13 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <h3>Analice o guarde los resultados</h3>
       </section>
       <section>
-        <ProbarSensores sensoresSelected={8} />
+        <ProbarSensores
+          sensoresSelected={8}
+          onClickNav={undefined}
+          onClickStop={undefined}
+          dataXParam={undefined}
+          dataYParam={undefined}
+        />
       </section>
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>
@@ -67,6 +75,12 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <section className="display-flexResultadosA">
           <h5>Modelo Usado:</h5>
           <h5>{analisis.modelo}</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>Despues de las iteraciones seleccionadas:</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>{crossParsed}</h5>
         </section>
         <section className="display-flexResultadosA">
           <h5>Precisión:</h5>

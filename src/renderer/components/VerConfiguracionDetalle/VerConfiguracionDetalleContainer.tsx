@@ -22,7 +22,7 @@ const VerConfiguracionDetalleContainer = () => {
   }, []); */
   console.log('estoy rendereando detalle')
   const onClickNav = () => {
-    navigate('/crearConfigMultimedia');
+    navigate('/verConfiguracion');
   };
   // return <div>Hola</div>
   return <VerConfiguracionDetalle onClickNav={onClickNav} resp={resp} multimedia={multimedia} />;

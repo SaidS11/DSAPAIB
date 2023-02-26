@@ -3,19 +3,29 @@ import Plot from 'react-plotly.js';
 import './ProbarSensores.css';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import styleButton from '../VerPaciente/ButtonStyle';
+import styleButton, {
+  styleButtonBiggerGreen,
+} from '../VerPaciente/ButtonStyle';
 
-const ProbarSensores = ({ sensoresSelected }) => {
+const ProbarSensores = ({
+  sensoresSelected,
+  onClickNav,
+  onClickStop,
+  dataXParam,
+  dataYParam,
+}) => {
   // const { onClickAdd } = props;
   /* const dataX = [];
   const dataY = [];
   console.log(dataX); */
+  // const [dataXParam, setDataXParam] = useState([0]);
+  // const [dataYParam, setDataYParam] = useState([0]);
   const [dataX, setDataX] = useState([0]);
   const [dataY, setDataY] = useState([0]);
 
   const trace1 = {
-    x: dataX,
-    y: dataY,
+    x: dataXParam,
+    y: dataYParam,
     type: 'scatter',
   };
 
@@ -180,11 +190,27 @@ const ProbarSensores = ({ sensoresSelected }) => {
         config={{ scrollZoom: true }}
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
+        // Idea de captura, tener almacenado de manera temporal los datos, cuando se presiona el boton se almacenan en un arreglo y hasta el final cuando se guarda se despachan
+        onSelected={(sel) => console.log('Sele', sel)}
         // key={i}
       />
       <section className="display-center">
         <Button onClick={onClickAdd} sx={styleButton}>
           Presioname
+        </Button>
+        <Button
+          sx={styleButtonBiggerGreen}
+          style={{ fontSize: '30px' }}
+          onClick={onClickNav}
+        >
+          Comenzar
+        </Button>
+        <Button
+          sx={styleButtonBiggerGreen}
+          style={{ fontSize: '30px' }}
+          onClick={onClickStop}
+        >
+          Parar
         </Button>
       </section>
     </div>

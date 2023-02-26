@@ -20,7 +20,7 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectAIA: () => ipcRenderer.invoke('selectAlgoritmosIA'),
     selectMultimediaConfig(nombre: string) {
-      ipcRenderer.send('selectMultimediaConfig', nombre);
+      ipcRenderer.invoke('selectMultimediaConfig', nombre);
     },
     selectMC: (callback: any) => ipcRenderer.on('selectMC', callback),
     selectConfiguracionNombre(nombre: string) {
@@ -32,22 +32,47 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectImplemenIA: (callback: any) =>
       ipcRenderer.on('selectImplemenIA', callback),
+    updateImplementacion(
+      precision: string,
+      desviacion: string,
+      entrenado: string,
+      modelo: string
+    ) {
+      ipcRenderer.send(
+        'updateImplementacion',
+        precision,
+        desviacion,
+        entrenado,
+        modelo
+      );
+    },
+    selectImplementacionPorN: (callback: any) =>
+      ipcRenderer.on('selectImplementacionPorN', callback),
     selectConfiguracionDetalle(nombre: string) {
-      ipcRenderer.send('selectConfiguracionDetalle', nombre);
+      ipcRenderer.invoke('selectConfiguracionDetalle', nombre);
     },
     selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
     selectImplementacionPorNombre(nombre: string) {
       ipcRenderer.send('selectImplementacionPorNombre', nombre);
     },
-    selectImplementacionPorN: (callback: any) =>
-      ipcRenderer.on('selectImplementacionPorN', callback),
+    updateIm: (callback: any) => ipcRenderer.on('updateIm', callback),
     analisisPython(
       type: string,
       typeIA: string,
       params: string,
-      nombre: string
+      nombre: string,
+      iteraciones: string,
+      reducedPercentage: string
     ) {
-      ipcRenderer.invoke('analisisPython', type, typeIA, params, nombre);
+      ipcRenderer.invoke(
+        'analisisPython',
+        type,
+        typeIA,
+        params,
+        nombre,
+        iteraciones,
+        reducedPercentage
+      );
     },
     analisisP: (callback: any) => ipcRenderer.on('analisisP', callback),
     preAnalisisPython() {
@@ -228,7 +253,7 @@ const indexBridge = {
   loggearDoctor,
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
   sensores(nombre: string) {
-    ipcRenderer.invoke('sensores', nombre);
+    ipcRenderer.send('sensores', nombre);
   },
   senso: (callback: any) => ipcRenderer.on('senso', callback),
   // sensores,

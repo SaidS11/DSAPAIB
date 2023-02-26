@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
-
 import './ComenzarAnalisisEntrenamiento.css';
 import Button from '@mui/material/Button';
 import {
@@ -10,23 +9,37 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import { useState } from 'react';
+import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
 
 interface ComenzarAnalisisEntrenamientoProps {
   data: any;
   dataM: any;
   options: TableOptions<{ col1: string }>;
-  onClickNav: any
-  onClickStop: any
+  onClickNav: (arg0: any) => void;
+  onClickStop: () => void;
+  toggleModal: any;
+  modelo: any;
+  setModelo: any;
 }
 
 const ComenzarAnalisisEntrenamiento = (
   props: ComenzarAnalisisEntrenamientoProps
 ) => {
-  const { data, dataM, options, onClickNav, onClickStop } = props;
+  const { data, dataM, options, onClickNav, onClickStop, toggleModal, modelo, setModelo } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
+  // const [modelo, setModelo] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    const num = parseInt(event.target.value, 10);
+    setModelo(event.target.value as string);
+  };
   const sortedColumn = (column: HeaderGroup<{ col1: string }>) => {
     if (column.isSortedDesc ?? false) {
       return <span className="icon-arrow-long-up" />;
@@ -56,7 +69,7 @@ const ComenzarAnalisisEntrenamiento = (
       for(let i = 0; i < dataM.length; i++) {
         // console.log('datos recibidios', data[i]);
         models.push(
-          <option  key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</option>
+          <MenuItem key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</MenuItem>
         )
       }
       return models;
@@ -71,37 +84,46 @@ const ComenzarAnalisisEntrenamiento = (
       </div>
       <div className='display-center'>
         <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
-          <section className="display-flex">
-            <h3>Nombre: </h3>{' '}
+          <section className="display-flexAgregar">
+            <h3>Nombre: </h3>
             <input className="first-input" type="text"  name="nombre" required />
           </section>
-          <section className="display-flex">
-            <h3>Descripción: </h3>{' '}
+          <section className="display-flexAgregar">
+            <h3>Descripción: </h3>
             <textarea className="second-input" name="descripcion" required/>
           </section>
-          <section className="display-flex">
-            <h3>Protocolo Adquisicion: </h3>{' '}
+          <section className="display-flexAgregar">
+            <h3>Protocolo Adquisicion: </h3>
             <select className="fourth-input-modelo" required name="protocolo">
             {setProtocols()}
             </select>
           </section>
-          <section className="display-flex">
-            <h3>Modelo: </h3>{' '}
-            <select className="fourth-input-modelo" required name="modelo">
-            {numofModels()}
-            </select>
+          <section className="display-flexAgregar">
+            <h3>Modelo: </h3>
+            <section className="list-box-sexo">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Modelo</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="modelo"
+                  value={modelo}
+                  label="Modelo"
+                  onChange={handleChange}
+                  required
+                >
+                  {numofModels()}
+                </Select>
+              </FormControl>
+            </section>
           </section>
-          <section className="display-flex">
-            <h3>Numero de Iteraciones: </h3>{' '}
-            <select className="fourth-input-modelo" name="iteraciones" required>
-              {numofModels()}
-            </select>
+          <section className="display-flexAgregar">
+            <h3>Numero de Iteraciones: </h3>
+            <input type="number" name="iteraciones" required min="10" max="500" />
           </section>
-          <section className="display-flex">
-            <h3>Porcentaje de Datos de Prueba: </h3>{' '}
-            <select name="porcentaje" required style={{marginLeft:'150px'}}>
-              {numofModels2()}
-            </select>
+          <section className="display-flexAgregar">
+            <h3>Porcentaje de Datos de Prueba: </h3>
+            <input type="number" name="porcentaje" required min="10" max="500" />
           </section>
           <br />
         
@@ -175,14 +197,19 @@ const ComenzarAnalisisEntrenamiento = (
         <h5>Total: </h5>{' '}
         <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
       </div>
+      <div className="display-center" style={{ marginTop: '10px' }}>
+        <Button sx={styleButtonBigger} onClick={() => toggleModal('body')} style={ modelo === '' ? {backgroundColor: "grey", pointerEvents: "none" } : {}}>
+          {modelo === '' ? 'Seleccione registros antes de ver detalles' : 'Información acerca de los datos'}
+        </Button>
+      </div>
       <div
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Comenzar
+        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Comenzar
           <input hidden type="submit" />
         </Button>
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickStop}>
+        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} onClick={onClickStop}>
           Parar
         </Button>
       </div>
