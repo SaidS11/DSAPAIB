@@ -5,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import React from 'react';
+import ReactPlayer from 'react-player';
 import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
@@ -31,13 +32,24 @@ const Video = (props: VideoProps) => {
         <h1>Captura de Datos</h1>
       </section>
       <section className="display-center">
-        <h3>La captura comenzara cuando comience el video</h3>
+        <h3>La captura comenzara cuando se de clic en el boton</h3>
       </section>
       <section className="display-center">
-        <video id="myVideo" controls width="50%">
-          <source id="video_src" src={url} type="video/mp4" />
-          Lo siento no puedo cargar el video
-        </video>
+        <Button
+          sx={styleButtonBiggerGreen}
+          onClick={() => console.log('mostrarvideo')}
+        >
+          Comenzar
+        </Button>
+        <ReactPlayer
+          // controls
+          url={url}
+          width="auto"
+          onEnded={() => onClickNav()}
+          playing
+          // onPlay={() => }
+          // onEnded={() => onClickNav()}
+        />
       </section>
       <section className="display-center">
         <Button sx={styleButtonBiggerRed} onClick={onClickNav}>
@@ -45,7 +57,13 @@ const Video = (props: VideoProps) => {
         </Button>
       </section>
       <section>
-        <ProbarSensores sensoresSelected={sensores} />
+        <ProbarSensores
+          sensoresSelected={sensores}
+          onClickNav={undefined}
+          onClickStop={undefined}
+          dataXParam={undefined}
+          dataYParam={undefined}
+        />
       </section>
     </div>
   );
