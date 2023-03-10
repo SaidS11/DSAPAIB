@@ -70,7 +70,13 @@ const VideoDemo = (props: VideoDemoProps) => {
         )}
       </section>
       <section>
-        <ProbarSensores sensoresSelected={sensores} />
+        <ProbarSensores
+          sensoresSelected={sensores}
+          onClickNav={undefined}
+          onClickStop={undefined}
+          dataXParam={undefined}
+          dataYParam={undefined}
+        />
       </section>
     </div>
   );
