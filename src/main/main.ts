@@ -18,6 +18,7 @@ import { Pool } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
+import { Json } from 'aws-sdk/clients/robomaker';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -153,21 +154,116 @@ const credenciales = {
 
 const pool = new Pool(credenciales);
 
-const uri =
-  'mongodb+srv://ByPona:<password>@clustermodular.vgf3uhd.mongodb.net/?retryWrites=true&w=majority';
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
-client.connect((err: any) => {
-  const collection = client.db('test').collection('devices');
-  // perform actions on the collection object
-  console.log('Conectado MONGUITO');
-  client.close();
+async function conexionPrincipalMongo() {
+  const uri =
+    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  try {
+    await client.connect();
+    console.log('Conexión a MongoDB Atlas exitosa');
+  } catch (error) {
+    console.log('Error al conectar', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function insertarElemento(archivo: Json) {
+  const uri =
+    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  // const query = { ID: 2234 };
+
+  try {
+    await client.connect();
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .insertOne(archivo);
+    console.log(
+      `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
+    );
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+ipcMain.on('loggearDoctor', async () => {
+  await conexionPrincipalMongo();
 });
 
-console.log('Conectado MONGOOO', client);
+async function buscarElemento(query: Json) {
+  const uri =
+    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  // const query = { ID: 2234 };
+
+  try {
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find(query).toArray();
+    console.log(result);
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function seleccionarTodo() {
+  const uri =
+    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  try {
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find({}).toArray();
+    console.log(result);
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function borrarElemento(query: Json) {
+  const uri =
+    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+  const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  try {
+    // const query = { name: 'Ernesto Peña' };
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .deleteOne(query);
+    console.log(`${result.deletedCount} documents deleted`);
+    console.log(result);
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
 
 async function iniciarSesion(user: string, pass: string) {
   const query = await pool.query(
