@@ -34,6 +34,9 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('probarSensores')}>
                 Probar Sensores
               </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => onClickNav('caracterizar')}>
+                Caracterizar
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Análisis" id="collasible-nav-dropdown">
               <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>

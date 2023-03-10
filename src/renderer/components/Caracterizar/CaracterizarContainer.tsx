@@ -1,96 +1,40 @@
-import React from 'react';
-import { TableOptions, Column } from 'react-table';
+import { useState } from 'react';
+import { useCustomDispatch } from 'redux/hooks';
+import { setIsLoading } from 'redux/slices/StatusSlice';
+import { setCantidadSensores } from 'redux/slices/SeñalesSlice';
+import ModalSensores from './ModalSensoresCaracterizar';
 import Caracterizar from './Caracterizar';
 
-// import { useNavigate } from "react-router-dom";
-
 const CaracterizarContainer = () => {
-  interface Cols {
-    col1: string;
-  }
-  const data = React.useMemo(
-    (): Cols[] => [
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-      {
-        col1: 'Registro 1',
-      },
-      {
-        col1: 'Registro 2',
-      },
-    ],
-    []
-  );
-  const columns: Array<Column<{ col1: string }>> = React.useMemo(
-    () => [
-      {
-        Header: 'Señales',
-        accessor: 'col1',
-      },
-    ],
-    []
-  );
-  const options: TableOptions<{
-    col1: string;
-  }> = {
-    data,
-    columns,
+  /* const dataX: Number[] = [];
+  const dataY: Number[] = []; */
+  const onClickAdd = () => {};
+  const [open, setOpen] = useState(false);
+  const arr: any = [];
+  const [sensoresSelected, setSensoresSelected] = useState(2);
+  const appDispatch = useCustomDispatch();
+  const toggleModal = () => {
+    if (sensoresSelected !== 0) {
+      setOpen(!open);
+    } else {
+      alert('Seleccione una cantidad');
+    }
   };
-  return <Caracterizar options={options} />;
+  // return <ProbarSensores onClickAdd={onClickAdd} dataX={dataX} dataY={dataY} />;
+  console.log('Seleccionados', sensoresSelected);
+  appDispatch(setCantidadSensores(sensoresSelected));
+  return (
+    <div>
+      <Caracterizar sensoresSelected={sensoresSelected} />;
+      {open && (
+        <ModalSensores
+          toggleModal={toggleModal}
+          open={open}
+          setSensoresSelected={setSensoresSelected}
+        />
+      )}
+    </div>
+  );
 };
 
 export default CaracterizarContainer;

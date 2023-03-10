@@ -25,7 +25,7 @@ interface CaracterizarProps {
   options: TableOptions<{ col1: string }>;
 }
 
-const Caracterizar = (props: CaracterizarProps) => {
+const CaracterizarTest = (props: CaracterizarProps) => {
   const { options } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -122,4 +122,4 @@ const Caracterizar = (props: CaracterizarProps) => {
   );
 };
 
-export default Caracterizar;
+export default CaracterizarTest;

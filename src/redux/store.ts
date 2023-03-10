@@ -6,6 +6,7 @@ import PacienteSlice from './slices/PacienteSlice';
 import StatusSlice from './slices/StatusSlice';
 import ConfiguracionSlice from './slices/ConfiguracionSlice';
 import ResponsesSlice from './slices/ResponsesSlice';
+import SeñalesSlice from './slices/SeñalesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     status: StatusSlice,
     config: ConfiguracionSlice,
     responses: ResponsesSlice,
+    señales: SeñalesSlice,
   },
 });
 

@@ -18,6 +18,10 @@ import { Pool } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
+import installExtension, {
+  REDUX_DEVTOOLS,
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-installer';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -142,6 +146,9 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+    installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err));
   })
   .catch(console.log);
 const credenciales = {

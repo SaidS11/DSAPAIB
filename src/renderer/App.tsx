@@ -24,10 +24,11 @@ import VideoDemoContainer from './components/VideoDemo/VideoDemoContainer';
 import VideoContainer from './components/Video/VideoContainer';
 import ResultadosAnalisisContainer from './components/ResultadosAnalisis/ResultadosAnalisisContainer';
 import ResultadosContainer from './components/Resultados/ResultadosContainer';
-import CaracterizarContainer from './components/Caracterizar/CaracterizarContainer';
 import ResultadoEntrenarContainer from './components/ResultadoEntrenar/ResultadoEntrenarContainer';
 import CrearConfiguracionMultimediaContainer from './components/CrearConfiguracionMultimedia/CrearConfiguracionMultimediaContainer';
 import VerConfiguracionDetalleContainer from './components/VerConfiguracionDetalle/VerConfiguracionDetalleContainer';
+import CaracterizarContainer from './components/Caracterizar/CaracterizarContainer';
+import CaracterizarParte2Container from './components/CaracterizarParte2/CaracterizarParte2Container';
 import CrearProtocoloContainer from './components/CrearProtocolo/CrearProtocoloContainer';
 import VerInicioContainer from './components/VerInicio/VerInicioContainer';
 import VerConfiguracionContainer from './components/VerConfiguracion/VerConfiguracionContainer';
@@ -63,6 +64,11 @@ export default function App() {
           <br />
           <Routes>
             <Route path="/" element={<VerInicioContainer />} />
+            <Route path="/caracterizar" element={<CaracterizarContainer />} />
+            <Route
+              path="/caracterizar2"
+              element={<CaracterizarParte2Container />}
+            />
             <Route path="/buscarPaciente" element={<PacientesContainer />} />
             <Route path="/crearAnalisis" element={<CrearAnalisisContainer />} />
             <Route path="/verPaciente" element={<VerPacienteContainer />} />

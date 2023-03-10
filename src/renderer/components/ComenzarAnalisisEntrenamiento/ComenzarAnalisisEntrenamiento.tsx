@@ -93,7 +93,7 @@ const ComenzarAnalisisEntrenamiento = (
             <textarea className="second-input" name="descripcion" required/>
           </section>
           <section className="display-flexAgregar">
-            <h3>Protocolo Adquisicion: </h3>
+            <h3>Protocolo Adquisición: </h3>
             <select className="fourth-input-modelo" required name="protocolo">
             {setProtocols()}
             </select>
@@ -128,7 +128,7 @@ const ComenzarAnalisisEntrenamiento = (
           <br />
         
       <div className='display-center'>
-          <h2>Parametros de la seleccion:</h2>
+          <h2>Parámetros de la selección:</h2>
       </div>
       <section className="display-flexAgregar">
           <h4>Sexo: </h4>
@@ -158,7 +158,7 @@ const ComenzarAnalisisEntrenamiento = (
           marginLeft: '80px',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" id="table">
+        <table {...getTableProps()} className="tableCustom" >
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
