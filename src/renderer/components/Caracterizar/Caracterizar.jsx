@@ -3,9 +3,12 @@ import Plot from 'react-plotly.js';
 import './Caracterizar.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { useCustomDispatch } from 'redux/hooks';
-import { setVentanasArray, setVentanasArray2 } from 'redux/slices/SeñalesSlice';
 import { useState } from 'react';
+import { useCustomDispatch } from '../../../redux/hooks';
+import {
+  setVentanasArray,
+  setVentanasArray2,
+} from '../../../redux/slices/SeñalesSlice';
 import styleButton, {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
