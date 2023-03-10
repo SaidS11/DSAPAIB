@@ -38,7 +38,7 @@ const ResultadoEntrenarContainer = () => {
   /* if (precision === '00') {
     precision = `${parsedResp[1].substring(1, 1)}00`;
   } */
-  console.log('presicion', precision);
+  console.log('precision', precision);
   const tipo = parsedResp[0];
   async function updateData() {
     appDispatch(setIsLoading(true));
