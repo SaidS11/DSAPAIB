@@ -93,8 +93,8 @@ const VerConfiguracionContainer = () => {
     console.log(element);
     console.log(element.cells);
     // console.log(element.cells[0].value)
-    appDispatch(setConfigName(element.cells[0].value));
-    loadDataDetalle(element.cells[0].value);
+    // appDispatch(setConfigName(element.cells[0].value));
+    // loadDataDetalle(element.cells[0].value);
   }, []);
   const options: TableOptions<{
     col1: string;

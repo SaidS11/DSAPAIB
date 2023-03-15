@@ -4,11 +4,13 @@ import './Caracterizar.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import {
   setVentanasArray,
   setVentanasArray2,
+  setCantidadSujetos,
 } from '../../../redux/slices/SeñalesSlice';
+import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import styleButton, {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
@@ -25,8 +27,19 @@ const Caracterizar = ({ sensoresSelected }) => {
   const [localUpdater, setLocalUpdater] = useState(false);
   const [colors1, setColors1] = useState(['#00000']);
   const [colors2, setColors2] = useState(['blue']);
+  const [colors3, setColors3] = useState(['yellow']);
+  const [colors4, setColors4] = useState(['green']);
+
   const [ventanasSeñal1, setVentanasSeñal1] = useState([]);
   const [ventanasSeñal2, setVentanasSeñal2] = useState([]);
+  const sujetos = useCustomSelector((state) => state.señales.cantidadSujetos);
+  const ventanaRedux1 = useCustomSelector(
+    (state) => state.señales.ventanasArray
+  );
+  const ventanaRedux2 = useCustomSelector(
+    (state) => state.señales.ventanasArray2
+  );
+
   const navigate = useNavigate();
   // const [curSelected, setCurSelected] = useState(false);
   const appDispatch = useCustomDispatch();
@@ -38,13 +51,15 @@ const Caracterizar = ({ sensoresSelected }) => {
     xaxis: 'x1',
     yaxis: 'y1',
     type: 'scatter',
-    line: { color: 'blue' },
-    marker: { color: colors2 },
+    line: { color: 'black' },
+    marker: { color: colors1 },
     mode: 'markers+lines',
+    name: 'EMG1',
   };
 
   const [dataX2, setDataX2] = useState([0]);
   const [dataY2, setDataY2] = useState([0]);
+
   const trace2 = {
     x: dataX2,
     y: dataY2,
@@ -53,10 +68,11 @@ const Caracterizar = ({ sensoresSelected }) => {
     type: 'scatter',
     // mode: 'lines+markers',
     // mode:'markers',
-    line: { color: 'black' },
-    // Wit each click a push to the colors array must be ,ade to keep adding colors
-    marker: { color: colors1 },
+    line: { color: 'blue' },
+    // With each click a push to the colors array must be added to keep adding colors
+    marker: { color: colors2 },
     mode: 'markers+lines',
+    name: 'EMG2',
   };
 
   const [dataX3, setDataX3] = useState([0]);
@@ -67,6 +83,9 @@ const Caracterizar = ({ sensoresSelected }) => {
     xaxis: 'x3',
     yaxis: 'y3',
     type: 'scatter',
+    line: { color: 'yellow' },
+    marker: { color: colors3 },
+    name: 'EMG3',
   };
 
   const [dataX4, setDataX4] = useState([0]);
@@ -77,6 +96,9 @@ const Caracterizar = ({ sensoresSelected }) => {
     xaxis: 'x4',
     yaxis: 'y4',
     type: 'scatter',
+    line: { color: 'green' },
+    marker: { color: colors3 },
+    name: 'EMG4',
   };
 
   const [dataX5, setDataX5] = useState([0]);
@@ -130,28 +152,27 @@ const Caracterizar = ({ sensoresSelected }) => {
     trace8,
   ];
 
-  console.log('llegaron', sensoresSelected);
-
   let numY = 0;
   let numX = 0;
 
   const onClickAdd = () => {
     numX = dataX.at(-1) + 2;
     numY = dataY.at(-1) + 1;
-    console.log(dataX);
 
     setDataX(dataX.concat(numX));
     setDataY(dataY.concat(numY));
-    setColors2(colors2.concat('blue'));
 
     setDataX2(dataX2.concat(numX + 3));
     setDataY2(dataY2.concat(numY + 1));
+    setColors2(colors2.concat('blue'));
 
     setDataX3(dataX3.concat(numX + 10));
     setDataY3(dataY3.concat(numY));
+    setColors3(colors2.concat('yellow'));
 
     setDataX4(dataX4.concat(numX + 1));
     setDataY4(dataY4.concat(numY));
+    setColors3(colors2.concat('green'));
 
     setDataX5(dataX5.concat(numX + 12));
     setDataY5(dataY5.concat(numY));
@@ -203,10 +224,12 @@ const Caracterizar = ({ sensoresSelected }) => {
     return objGrid;
   };
   let selection = [];
+  let selectedEmg = '';
   const gridLayout = numOfPlots();
   const storeSelections = (segment) => {
     if (segment.points.length > 0) {
       console.log('Sele', segment);
+      selectedEmg = segment.points[0].fullData.name;
       const helperArr = [];
       // console.log("colors before", colorsL)
       segment.points.map((ele) => helperArr.push(ele.pointNumber));
@@ -227,23 +250,41 @@ const Caracterizar = ({ sensoresSelected }) => {
       // setColor1("blue");
     }
   };
-  const onClickShow = () => {
+  const onClickSelect = () => {
     console.log('Selection', selection);
     if (selection.length > 0) {
       const colorsLocal1 = [...colors1];
       const colorsLocal2 = [...colors2];
+      const colorsLocal3 = [...colors3];
+      const colorsLocal4 = [...colors4];
+
       const ventanas1Local = [];
       const ventanas2Local = [];
+      const ventanas3Local = [];
+      const ventanas4Local = [];
+
       console.log('Current Colors', colorsLocal1);
+      console.log('name', selectedEmg);
       for (let i = 0; i < dataX2.length; i += 1) {
         console.log('This is it', selection);
         if (i === selection[0]) {
-          console.log('this is xdata1', dataX[i]);
-          console.log('this is xdata2', dataX2[i]);
-          ventanas1Local.push({ x: dataX[i], y: dataY[i] });
-          ventanas2Local.push({ x: dataX2[i], y: dataY2[i] });
+          if (selectedEmg === 'EMG1') {
+            console.log('this is xdata1', dataX[i]);
+            ventanas1Local.push({ x: dataX[i], y: dataY[i] });
+          } else if (selectedEmg === 'EMG2') {
+            console.log('this is xdata2', dataX2[i]);
+            ventanas2Local.push({ x: dataX2[i], y: dataY2[i] });
+          } else if (selectedEmg === 'EMG3') {
+            console.log('this is xdata3', dataX3[i]);
+            ventanas3Local.push({ x: dataX3[i], y: dataY3[i] });
+          } else if (selectedEmg === 'EMG4') {
+            console.log('this is xdata4', dataX4[i]);
+            ventanas4Local.push({ x: dataX3[i], y: dataY3[i] });
+          }
           colorsLocal1[i] = 'red';
           colorsLocal2[i] = 'red';
+          colorsLocal3[i] = 'red';
+          colorsLocal4[i] = 'red';
           selection.shift();
         }
         if (selection.length === 0) {
@@ -251,19 +292,36 @@ const Caracterizar = ({ sensoresSelected }) => {
         }
       }
       selection.length = 0;
-      console.log('Now i Have', colorsLocal1);
-      setVentanasSeñal1([...ventanasSeñal1, ...ventanas1Local]);
-      setColors1([...colorsLocal1]);
-      setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
-      setColors2([...colorsLocal2]);
+      // console.log('Now i Have', colorsLocal1);
+      if (selectedEmg === 'EMG1') {
+        setVentanasSeñal1([...ventanasSeñal1, ...ventanas1Local]);
+        setColors1([...colorsLocal1]);
+      } else if (selectedEmg === 'EMG2') {
+        setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
+        setColors2([...colorsLocal2]);
+      }
     } else {
       alert('Seleccione una ventana primero');
     }
   };
   const onClickSave = () => {
-    appDispatch(setVentanasArray(ventanasSeñal1));
-    appDispatch(setVentanasArray2(ventanasSeñal2));
-    navigate('/caracterizar2');
+    const localArray1 = [];
+    ventanaRedux1.map((e) => localArray1.push(e));
+    localArray1.push(ventanasSeñal1);
+
+    const localArray2 = [];
+    ventanaRedux2.map((e) => localArray2.push(e));
+    localArray2.push(ventanasSeñal2);
+
+    appDispatch(setVentanasArray(localArray1));
+    appDispatch(setVentanasArray2(localArray2));
+    if (sujetos !== 1) {
+      appDispatch(setCantidadSujetos(sujetos - 1));
+      appDispatch(setIsLoading(true));
+      navigate('/blank');
+    } else {
+      navigate('/caracterizar2');
+    }
   };
   return (
     <div>
@@ -303,7 +361,7 @@ const Caracterizar = ({ sensoresSelected }) => {
         <Button onClick={onClickAdd} sx={styleButton}>
           Presioname
         </Button>
-        <Button sx={styleButton} onClick={onClickShow}>
+        <Button sx={styleButton} onClick={onClickSelect}>
           Confirmar Ventana
         </Button>
       </section>

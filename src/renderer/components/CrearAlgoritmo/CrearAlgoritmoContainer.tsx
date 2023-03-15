@@ -4,7 +4,7 @@ import React from 'react';
 import { TableOptions, Column } from 'react-table';
 import { useCustomDispatch } from '../../../redux/hooks';
 import { setErrorDetails, setFailUpload, setIsLoading, setIsUploaded } from '../../../redux/slices/StatusSlice';
-import CrearModelo from './CrearModelo';
+import CrearAlgoritmo from './CrearAlgoritmo';
 
 const CrearImplementacionContainer = () => {
   const appDispatch = useCustomDispatch();
@@ -57,7 +57,7 @@ const CrearImplementacionContainer = () => {
 
   };
 
-  return <CrearModelo onClickNav={onClickNav}/>;
+  return <CrearAlgoritmo onClickNav={onClickNav}/>;
 };
 
 export default CrearImplementacionContainer;

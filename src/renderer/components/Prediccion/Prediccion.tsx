@@ -39,7 +39,7 @@ const Prediccion = (
     return <option value={1}>1</option>;
     
   }
-  const numofModels = () => {
+  const numOfAlgos = () => {
     const models = [];
     if (dataM.length >= 1) {
       // eslint-disable-next-line no-plusplus
@@ -86,9 +86,9 @@ const Prediccion = (
             </select>
           </section>
           <section className="display-flex">
-            <h3>Modelo: </h3>{' '}
+            <h3>Algoritmo: </h3>{' '}
             <select className="fourth-input-modelo">
-              {numofModels()}
+              {numOfAlgos()}
             </select>
           </section>
         

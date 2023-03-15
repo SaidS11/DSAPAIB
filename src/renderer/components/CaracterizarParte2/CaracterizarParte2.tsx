@@ -107,16 +107,11 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
             control={<Checkbox defaultChecked />}
             label="Ventanas"
           />
-          <FormControlLabel
-            onChange={handleChange}
-            control={<Checkbox />}
-            label="Señal Completa"
-          />
           {/* <FormControlLabel control={<Checkbox />} label="Selecciones por señal" /> */}
           <FormControlLabel
             onChange={handleChange}
             control={<Checkbox />}
-            label="Columnas"
+            label="Características"
           />
         </FormGroup>
       </section>

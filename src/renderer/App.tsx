@@ -37,10 +37,11 @@ import CreadoExitosamente from './components/Modales/CreadoExitosamente';
 import ErrorCrear from './components/Modales/ErrorCrear';
 import ErrorModal from './components/Modales/ErrorModal';
 import CargaExitosaModal from './components/Modales/CargaExitosaModal';
+import Blank from './components/Caracterizar/Blank';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import CrearImplementacionContainer from './components/CrearModelo/CrearModeloContainer';
+import CrearImplementacionContainer from './components/CrearAlgoritmo/CrearAlgoritmoContainer';
 import VerAlgoritmosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
 import VerModeloContainer from './components/VerModelo/VerModeloContainer';
 import VerModelosContainer from './components/VerModelos/VerModelosContainer';
@@ -63,6 +64,8 @@ export default function App() {
         <Container maxWidth={false}>
           <br />
           <Routes>
+            <Route path="/blank" element={<Blank />} />
+
             <Route path="/" element={<VerInicioContainer />} />
             <Route path="/caracterizar" element={<CaracterizarContainer />} />
             <Route

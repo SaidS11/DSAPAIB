@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useCustomDispatch } from 'redux/hooks';
-import { setIsLoading } from 'redux/slices/StatusSlice';
-import { setCantidadSensores } from 'redux/slices/SeñalesSlice';
+import { useCustomDispatch } from '../../../redux/hooks';
+import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setCantidadSensores } from '../../../redux/slices/SeñalesSlice';
 import ModalSensores from './ModalSensoresCaracterizar';
 import Caracterizar from './Caracterizar';
 

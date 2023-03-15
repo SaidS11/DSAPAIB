@@ -41,7 +41,7 @@ const EscogerConfiguracionContainer = () => {
     // console.log('load multi', data);
     // appDispatch(setIsLoading(true));
     nameConfig = dataP[0].configuracion;
-    window.electron.ipcRenderer.selectMultimediaConfig(dataP[0].configuracion);
+    window.electron.ipcRenderer.selectMultimediaConfig(nameConfig);
     /* loadConfCompleta(data[0].configuracion); */
   }
   window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
@@ -67,8 +67,10 @@ const EscogerConfiguracionContainer = () => {
     } else {
       console.log('nada en CN');
     }
+    appDispatch(setIsLoading(false));
+
     // appDispatch(setIsLoading(false));
-    loadMulti(resp);
+    // loadMulti(resp);
   });
 
   const onClickNav = () => {

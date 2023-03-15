@@ -6,6 +6,10 @@ import Login from './Login';
 import Loading from '../Loading/Loading';
 import ModalDatos from './ModalDatos';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
+import {
+  setCantidadSujetos,
+  setCantidadSujetosRespaldo,
+} from '../../../redux/slices/SeñalesSlice';
 import { setIsLogged, setLoggedUser } from '../../../redux/slices/LoginSlice';
 
 const LoginContainer = () => {
@@ -48,6 +52,8 @@ const LoginContainer = () => {
       passw = passDocument.value
     } */
     loadData();
+    appDispatch(setCantidadSujetos(4));
+    appDispatch(setCantidadSujetosRespaldo(4));
   };
   return (
     <div>

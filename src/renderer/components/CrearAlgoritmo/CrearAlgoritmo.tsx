@@ -20,7 +20,7 @@ interface CrearImplementacionProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const CrearModelo = (
+const CrearAlgoritmo = (
   props: CrearImplementacionProps
 ) => {
   const { onClickNav } = props;
@@ -43,7 +43,7 @@ const CrearModelo = (
   return (
     <div>
       <div className="display-center">
-        <h1>Modelo</h1>
+        <h1>Algoritmo</h1>
       </div>
       <div className="display-center">
         <form className="analisis-form" style={{ width: '70%' }}  onSubmit={onClickNav}>
@@ -139,4 +139,4 @@ const CrearModelo = (
   );
 };
 
-export default CrearModelo;
+export default CrearAlgoritmo;

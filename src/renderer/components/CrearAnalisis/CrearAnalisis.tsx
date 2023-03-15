@@ -30,7 +30,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
     return <option value={1}>1</option>;
   }
 
-  const numofModels = () => {
+  const numOfAlgos = () => {
     const models = [];
     if (dataM.length >= 1) {
       // eslint-disable-next-line no-plusplus
@@ -67,9 +67,9 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
           </select>
         </section>
         <section className="display-flexAgregar">
-          <h4>Modelo:</h4>
+          <h4>Algoritmo:</h4>
           <select className="fourth-input-modelo" name="modelo" required>
-            {numofModels()}
+            {numOfAlgos()}
           </select>
         </section>
         <section className='display-center'>

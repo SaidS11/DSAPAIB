@@ -11,12 +11,16 @@ export interface ISeñales {
   ventanasArray: Array<SignalObj>;
   ventanasArray2: Array<SignalObj>;
   cantidadSensores: number;
+  cantidadSujetos: number;
+  cantidadSujetosRespaldo: number;
 }
 
 const initialState: ISeñales = {
   ventanasArray: [],
   ventanasArray2: [],
   cantidadSensores: 0,
+  cantidadSujetos: 0,
+  cantidadSujetosRespaldo: 0,
 };
 
 export const SeñalesSlice = createSlice({
@@ -41,9 +45,26 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.cantidadSensores = action.payload;
     },
+    setCantidadSujetos: (
+      state,
+      action: PayloadAction<ISeñales['cantidadSujetos']>
+    ) => {
+      state.cantidadSujetos = action.payload;
+    },
+    setCantidadSujetosRespaldo: (
+      state,
+      action: PayloadAction<ISeñales['cantidadSujetosRespaldo']>
+    ) => {
+      state.cantidadSujetosRespaldo = action.payload;
+    },
   },
 });
 
-export const { setVentanasArray, setVentanasArray2, setCantidadSensores } =
-  SeñalesSlice.actions;
+export const {
+  setVentanasArray,
+  setVentanasArray2,
+  setCantidadSensores,
+  setCantidadSujetos,
+  setCantidadSujetosRespaldo,
+} = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

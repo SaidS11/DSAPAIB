@@ -1,7 +1,6 @@
-import { HubName } from 'aws-sdk/clients/sagemaker';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TableOptions, Column } from 'react-table';
+import { Column } from 'react-table';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import CaracterizarParte2 from './CaracterizarParte2';
 
@@ -47,13 +46,13 @@ function getElementsAndSum(ventanas: any) {
   ventanas
     .map((element: SignalObj) => {
       Math.abs(element.x);
-      ventanaX1.push(element.x);
       Math.abs(element.y);
+      ventanaX1.push(element.y);
       return element;
     })
     .map((element: SignalObj) => {
       // Calculos solamente con el eje x
-      sumVentana1 += element.x;
+      sumVentana1 += element.y;
       return element;
     });
   return { ventanaX1, sumVentana1 };
@@ -90,7 +89,7 @@ const CaracterizarParte2Container = () => {
   console.log('Sum', sumVentana1);
   const mediaAbsoluta = (sumVentana1 / ventanaSeñal1.length).toString();
   const { ventanaX1: ventanaX2, sumVentana1: sumVentana2 } =
-    getElementsAndSum(ventanaSeñal1);
+    getElementsAndSum(ventanaSeñal2);
   const mediaAbsoluta2 = (sumVentana2 / ventanaSeñal2.length).toString();
   interface Cols {
     col1MediaABS: string;

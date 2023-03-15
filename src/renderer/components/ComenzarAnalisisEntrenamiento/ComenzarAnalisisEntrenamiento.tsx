@@ -62,7 +62,7 @@ const ComenzarAnalisisEntrenamiento = (
     return <option value={1}>1</option>;
     
   }
-  const numofModels = () => {
+  const numOfAlgos = () => {
     const models = [];
     if (dataM.length >= 1) {
       // eslint-disable-next-line no-plusplus
@@ -99,20 +99,20 @@ const ComenzarAnalisisEntrenamiento = (
             </select>
           </section>
           <section className="display-flexAgregar">
-            <h3>Modelo: </h3>
+            <h3>Algoritmo: </h3>
             <section className="list-box-sexo">
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Modelo</InputLabel>
+                <InputLabel id="demo-simple-select-label">Algoritmo</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  name="modelo"
+                  name="algoritmo"
                   value={modelo}
-                  label="Modelo"
+                  label="Algoritmo"
                   onChange={handleChange}
                   required
                 >
-                  {numofModels()}
+                  {numOfAlgos()}
                 </Select>
               </FormControl>
             </section>
