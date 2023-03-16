@@ -32,6 +32,26 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectImplemenIA: (callback: any) =>
       ipcRenderer.on('selectImplemenIA', callback),
+    insertarElementoMongo(json: string) {
+      ipcRenderer.send('insertarElementoMongo', json);
+    },
+    insertarElementoM: (callback: any) =>
+      ipcRenderer.on('insertarElementoM', callback),
+    buscarElementoMongo(json: string) {
+      ipcRenderer.send('buscarElementoMongo', json);
+    },
+    buscarElementoM: (callback: any) =>
+      ipcRenderer.on('buscarElementoM', callback),
+    seleccionarTodoMongo() {
+      ipcRenderer.send('seleccionarTodoMongo');
+    },
+    seleccionarTodoM: (callback: any) =>
+      ipcRenderer.on('seleccionarTodoM', callback),
+    borrarElementoMongo(json: string) {
+      ipcRenderer.send('borrarElementoMongo', json);
+    },
+    borrarElementoM: (callback: any) =>
+      ipcRenderer.on('borrarElementoM', callback),
     updateImplementacion(
       precision: string,
       desviacion: string,

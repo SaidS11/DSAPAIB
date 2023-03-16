@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import { useState } from 'react';
+import { type } from 'os';
+import { json } from 'stream/consumers';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 // eslint-disable-next-line import/no-named-as-default
 import Login from './Login';
@@ -35,6 +37,72 @@ const LoginContainer = () => {
       toggleModal();
     }
   });
+
+  async function insertarElementoMongoFront() {
+    // appDispatch(setIsLoading(true));
+    const document = {
+      name: 'Ernesto Peña',
+      age: 39,
+      hobbies: ['reading', 'running', 'cooking'],
+    };
+    // const cadena = 'hola';
+    const jsonDocument = JSON.stringify(document);
+    console.log(typeof jsonDocument);
+    window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
+  }
+  window.electron.ipcRenderer.insertarElementoM((event: any, resp: any) => {
+    if (resp > 0) {
+      toggleModal();
+    } else {
+      console.log(resp.insertedCount);
+    }
+  });
+
+  async function buscarElementoMongoFront() {
+    // appDispatch(setIsLoading(true));
+    const document = { name: 'John Doe', age: 35 };
+    // const cadena = 'hola';
+    const jsonDocument = JSON.stringify(document);
+    // console.log(typeof jsonDocument);
+    window.electron.ipcRenderer.buscarElementoMongo(jsonDocument);
+  }
+  window.electron.ipcRenderer.buscarElementoM((event: any, resp: any) => {
+    if (resp > 0) {
+      console.log(resp.insertedCount);
+    } else {
+      toggleModal();
+    }
+  });
+
+  async function seleccionarTodoMongoFront() {
+    // appDispatch(setIsLoading(true));
+    // console.log(typeof jsonDocument);
+    window.electron.ipcRenderer.seleccionarTodoMongo();
+  }
+  window.electron.ipcRenderer.seleccionarTodoM((event: any, resp: any) => {
+    if (resp > 0) {
+      console.log(resp.insertedCount);
+    } else {
+      toggleModal();
+    }
+  });
+
+  async function borrarElementoMongoFront() {
+    // appDispatch(setIsLoading(true));
+    const document = { name: 'John Doe', age: 35 };
+    // const cadena = 'hola';
+    const jsonDocument = JSON.stringify(document);
+    // console.log(typeof jsonDocument);
+    window.electron.ipcRenderer.borrarElementoMongo(jsonDocument);
+  }
+  window.electron.ipcRenderer.borrarElementoM((event: any, resp: any) => {
+    if (resp > 0) {
+      console.log(resp.insertedCount);
+    } else {
+      toggleModal();
+    }
+  });
+
   const onClickLogin = () => {
     // Get user
     /* const usDocument = document.getElementById('user') as HTMLInputElement | null;
@@ -48,6 +116,10 @@ const LoginContainer = () => {
       passw = passDocument.value
     } */
     loadData();
+    // insertarElementoMongoFront();
+    // buscarElementoMongoFront();
+    // seleccionarTodoMongoFront();
+    // borrarElementoMongoFront();
   };
   return (
     <div>

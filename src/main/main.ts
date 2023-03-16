@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable radix */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
@@ -152,16 +153,16 @@ const credenciales = {
   password: '219748227',
 };
 
+const uri =
+  'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 const pool = new Pool(credenciales);
 
 async function conexionPrincipalMongo() {
-  const uri =
-    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
   try {
     await client.connect();
     console.log('Conexión a MongoDB Atlas exitosa');
@@ -172,49 +173,34 @@ async function conexionPrincipalMongo() {
   }
 }
 
-async function insertarElemento(archivo: Json) {
-  const uri =
-    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  // const query = { ID: 2234 };
-
+async function insertarElementoMongo(query: string) {
   try {
+    const queryJSON = JSON.parse(query);
     await client.connect();
     const result = await client
       .db('Modular')
       .collection('Señales')
-      .insertOne(archivo);
+      .insertOne(queryJSON);
     console.log(
       `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
     );
+    return result;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
+    return error;
   } finally {
     await client.close();
   }
 }
 
-ipcMain.on('loggearDoctor', async () => {
-  await conexionPrincipalMongo();
-});
-
-async function buscarElemento(query: Json) {
-  const uri =
-    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  // const query = { ID: 2234 };
-
+async function buscarElementoMongo(query: string) {
   try {
+    const queryJSON = JSON.parse(query);
     await client.connect();
     const collection = client.db('Modular').collection('Señales');
-    const result = await collection.find(query).toArray();
+    const result = await collection.find(queryJSON).toArray();
     console.log(result);
+    return result;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
   } finally {
@@ -222,14 +208,7 @@ async function buscarElemento(query: Json) {
   }
 }
 
-async function seleccionarTodo() {
-  const uri =
-    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
+async function seleccionarTodoMongo() {
   try {
     await client.connect();
     const collection = client.db('Modular').collection('Señales');
@@ -242,14 +221,7 @@ async function seleccionarTodo() {
   }
 }
 
-async function borrarElemento(query: Json) {
-  const uri =
-    'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-  const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
+async function borrarElementoMongo(query: string) {
   try {
     // const query = { name: 'Ernesto Peña' };
     const result = await client
@@ -274,10 +246,39 @@ async function iniciarSesion(user: string, pass: string) {
   return query.rows;
 }
 
+// ipcMain.on('loggearDoctor', async () => {
+//   await conexionPrincipalMongo();
+// });
+
 ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
+  await conexionPrincipalMongo();
   const resp = await iniciarSesion(user, pass);
   console.log(resp);
   mainWindow?.webContents.send('loggearD', resp);
+});
+
+ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
+  const resp = await insertarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('insertarElementoM', resp);
+});
+
+ipcMain.on('buscarElementoMongo', async (event, archivo: string) => {
+  const resp = await buscarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('buscarElementoM', resp);
+});
+
+ipcMain.on('seleccionarTodoMongo', async () => {
+  const resp = await seleccionarTodoMongo();
+  console.log(resp);
+  mainWindow?.webContents.send('seleccionarTodoM', resp);
+});
+
+ipcMain.on('borrarElementoMongo', async (event, archivo: string) => {
+  const resp = await borrarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('borrarElementoM', resp);
 });
 
 async function selectPacienteF(
