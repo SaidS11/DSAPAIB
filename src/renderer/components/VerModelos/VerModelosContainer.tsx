@@ -9,7 +9,7 @@ import { setModeloDetalle } from '../../../redux/slices/ConfiguracionSlice';
 
 // import { useNavigate } from "react-router-dom";
 interface Config {
-  modelo: string;
+  nombre: string;
 }
 
 const VerModelosContainer = () => {
@@ -42,7 +42,7 @@ const VerModelosContainer = () => {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < resp.length; i++) {
         datarRetrieved.push({
-          col1: resp[i].modelo,
+          col1: resp[i].nombre,
         });
       }
       setData(datarRetrieved);

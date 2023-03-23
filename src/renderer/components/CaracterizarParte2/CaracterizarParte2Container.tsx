@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Column } from 'react-table';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import CaracterizarParte2 from './CaracterizarParte2';
+import TableContainer from './TableContainer';
 
 interface SignalObj {
   x: number;
@@ -40,22 +41,26 @@ function calcularRms(datos: Array<number>) {
 
   return rms.toFixed(2);
 }
+// Change how element x and element y are stored on the prev array, it shouldn't be like the current form
 function getElementsAndSum(ventanas: any) {
-  const ventanaX1: Array<number> = [];
-  let sumVentana1 = 0;
+  // console.log("recibi esto", ventanas);
+  const ventana: Array<number> = [];
+  let sumVentana = 0;
   ventanas
     .map((element: SignalObj) => {
       Math.abs(element.x);
       Math.abs(element.y);
-      ventanaX1.push(element.y);
+      // console.log("pusheando", element.x);
+      ventana.push(element.x);
       return element;
     })
     .map((element: SignalObj) => {
       // Calculos solamente con el eje x
-      sumVentana1 += element.y;
+      sumVentana += element.x;
       return element;
     });
-  return { ventanaX1, sumVentana1 };
+  // console.log("retornando", ventana, sumVentana);
+  return { ventana, sumVentana };
 }
 const CaracterizarParte2Container = () => {
   const navigate = useNavigate();
@@ -69,153 +74,70 @@ const CaracterizarParte2Container = () => {
   const cantidadSensores = useCustomSelector(
     (state) => state.señales.cantidadSensores
   );
-  console.log('Primera ventana', ventanaSeñal1);
-  console.log('Segunda ventana', ventanaSeñal2);
-  // let sumVentana1 = 0;
-  // const ventanaX1: Array<number> =[];
-  // const ventana1MediaAbsoluta = ventanaSeñal1.map((element: SignalObj) => {
-  //   Math.abs(element.x);
-  //   ventanaX1.push(element.x);
-  //   Math.abs(element.y);
-  //   return element;
-  // }).map((element: SignalObj) => {
-  //   // Calculos solamente con el eje x
-  //   sumVentana1 += element.x;
-  //   return element;
-  // });
-  const { ventanaX1, sumVentana1 } = getElementsAndSum(ventanaSeñal1);
-  console.log('Returned', ventanaX1, sumVentana1);
-  // const {ventanaX2, sumVentana2} = getElementsAndSum(ventanaSeñal2);
-  console.log('Sum', sumVentana1);
-  const mediaAbsoluta = (sumVentana1 / ventanaSeñal1.length).toString();
-  const { ventanaX1: ventanaX2, sumVentana1: sumVentana2 } =
-    getElementsAndSum(ventanaSeñal2);
-  const mediaAbsoluta2 = (sumVentana2 / ventanaSeñal2.length).toString();
-  interface Cols {
-    col1MediaABS: string;
-    col1Mediana: string;
-    col1RMS: string;
-    col2MediaABS: string;
-    col2Mediana: string;
-    col2RMS: string;
-  }
-
-  const data = React.useMemo(
-    (): Cols[] => [
-      {
-        col1MediaABS: mediaAbsoluta,
-        col1Mediana: calcularMediana(ventanaX1 as Array<number>),
-        col1RMS: calcularRms(ventanaX1 as Array<number>),
-        col2MediaABS: mediaAbsoluta2,
-        col2Mediana: calcularMediana(ventanaX2 as Array<number>),
-        col2RMS: calcularRms(ventanaX2 as Array<number>),
-      },
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  const cantidadSujetos = useCustomSelector(
+    (state) => state.señales.cantidadSujetosRespaldo
   );
-  // const getData = (size: number) => {
-  //   const internalData = []
-  //   for (let i = 0; i< size; i+=1) {
-  //     internalData.push({
-  //       col1MediaABS: mediaAbsoluta,
-  //       col2MediaABS: "0",
-  //       col1Mediana: calcularMediana(ventanaX1 as Array<number>),
-  //       col1RMS: calcularRms(ventanaX1 as Array<number>),
-  //       // [`col${i+1}MediaABS`]: mediaAbsoluta,
-  //       // [`col${i+1}Mediana`]: calcularMediana(ventanaX1 as Array<number>),
-  //       // [`col${i+1}RMS`]: calcularRms(ventanaX1 as Array<number>),
-  //     })
-  //   }
-  // }
-  // const data = getData(cantidadSensores);
-  // const columns: Array<Column<{ col1MediaABS: string }>> = React.useMemo(
-  //   () => [
-  //     {
-  //       Header: 'Señal 1',
-  //       columns: [
-  //         {
-  //           Header: 'Media absoluta',
-  //           accessor: "col1MediaABS",
-  //         },
-  //         {
-  //           Header: 'Mediana',
-  //           accessor: "col1Mediana",
-  //         },
-  //         {
-  //           Header: 'RMS',
-  //           accessor: "col1RMS",
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       Header: 'Señal 2',
-  //       columns: [
-  //         {
-  //           Header: 'Media absoluta',
-  //           accessor: "col2MediaABS",
-  //         },
-  //         {
-  //           Header: 'Mediana',
-  //           accessor: "col2Mediana",
-  //         },
-  //         {
-  //           Header: 'RMS',
-  //           accessor: "col2RMS",
-  //         }
-  //       ]
-  //     },
-  //   ],
-  //   []
-  // );
+  console.log('This was stored', ventanaSeñal1);
+  console.log('This was stored 2', ventanaSeñal2);
 
-  const sensoresNames = [
-    'GSR',
-    'Temp',
-    'SP02',
-    'Test1',
-    'Test2',
-    'Test3',
-    'Test4',
-    'Test5',
-  ];
-  const getColumns = (size: number) => {
-    const internalArray: Array<Column> = [];
-    for (let i = 0; i < size; i += 1) {
-      console.log('Itera');
-      internalArray.push({
-        Header: sensoresNames[i],
-        columns: [
-          {
-            Header: 'Media absoluta',
-            accessor: `col${i + 1}MediaABS`,
-          },
-          {
-            Header: 'Mediana',
-            accessor: `col${i + 1}Mediana`,
-          },
-          {
-            Header: 'RMS',
-            accessor: `col${i + 1}RMS`,
-          },
-        ],
-      });
+  const ventanasArray1: any[] = [];
+  const ventanasArray2: any[] = [];
+
+  // for(let i = 0; i < cantidadSujetos; i+=1) {
+  //   const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1[i]);
+  //   const mediaAbsoluta = (sumVentana / ventanaSeñal1[i].length).toString();
+  //   ventanasArray.push([ventana, sumVentana, mediaAbsoluta])
+
+  // }
+  let ventanaAr: any[] = [];
+  let ventanaAr2: any[] = [];
+
+  for (let i = 0; i < cantidadSujetos; i += 1) {
+    const largo = ventanaSeñal1[i].length;
+    ventanaAr = [];
+    for (let c = 0; c < largo; c += 1) {
+      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1[i][c]);
+      const mediaAbsoluta = (
+        sumVentana / ventanaSeñal1[i][c].length
+      ).toString();
+      ventanaAr.push([ventana, sumVentana, mediaAbsoluta]);
     }
-    return internalArray;
-  };
-  const columns = getColumns(cantidadSensores);
-  // const [columns, setColumns] = useState<typeof defColumns> (() => [
-  //   ...defColumns
-  // ])
-  // console.log("Tgese def", defColumns);
-  console.log('these are co', columns);
-  const options = {
-    data,
-    columns,
-  };
+    ventanasArray1.push(ventanaAr);
+  }
+  for (let i = 0; i < cantidadSujetos; i += 1) {
+    const largo = ventanaSeñal2[i].length;
+    ventanaAr2 = [];
+    for (let c = 0; c < largo; c += 1) {
+      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal2[i][c]);
+      const mediaAbsoluta = (
+        sumVentana / ventanaSeñal2[i][c].length
+      ).toString();
+      ventanaAr2.push([ventana, sumVentana, mediaAbsoluta]);
+    }
+    ventanasArray2.push(ventanaAr2);
+  }
+  // console.log("Filled with", ventanasArray1)
+  const componentArray: any[] = [];
+  for (let i = 0; i < cantidadSujetos; i += 1) {
+    componentArray.push(
+      <div>
+        <h3>Sujeto {i + 1}</h3>
+        <TableContainer
+          cantidadSensores={cantidadSensores}
+          numeroDeSujeto={i}
+          ventanasArray={ventanasArray1}
+          ventanasArray2={ventanasArray2}
+        />
+      </div>
+    );
+  }
+  // const componentArray: any[] = []
+  // componentArray.push(
+  //   <h1>Test</h1>
+  // )
   return (
     <div>
-      <CaracterizarParte2 options={options} />
+      <CaracterizarParte2 componentArray={componentArray} />
     </div>
   );
 };

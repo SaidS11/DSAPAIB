@@ -70,7 +70,7 @@ const PreAnalisisContainer = () => {
   async function getParams(params: any) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.modelo);
+    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.nombre);
   }
   window.electron.ipcRenderer.selectImplementacionPorN(
     (event: any, resp: any) => {
@@ -81,7 +81,7 @@ const PreAnalisisContainer = () => {
       // const reducedPercentage = parseInt(porcentaje) / 100;
       // const strPercentage = reducedPercentage.toString();
       console.log('iteraciones y porc', iteraciones, porcentaje);
-      const nombre = resp[0].modelo;
+      const { nombre } = resp[0];
       if (resp[0].algoritmo_ia === 'Arbol de Decisión') {
         const params = JSON.stringify(resp[0].parametros);
         startAnalysis('Tree', params, nombre, iteraciones, porcentaje);

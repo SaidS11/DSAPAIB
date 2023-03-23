@@ -37,7 +37,7 @@ const CrearAnalisis = (props: CrearAnalisisProps) => {
       for(let i = 0; i < dataM.length; i++) {
         // console.log('datos recibidios', data[i]);
         models.push(
-          <option  key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</option>
+          <option  key={i} value={`${dataM[i].nombre}`}>{dataM[i].nombre}</option>
         )
       }
       return models;

@@ -30,7 +30,7 @@ const VerAlgoritmoContainer = () => {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < resp.length; i++) {
           datarRetrieved.push({
-            col1: resp[i].modelo,
+            col1: resp[i].nombre,
           });
         }
         setData(datarRetrieved);

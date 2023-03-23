@@ -19,20 +19,11 @@ import styleButton, {
 import './CaracterizarParte2.css';
 
 export interface CaracterizarParte2Props {
-  options: any;
+  componentArray: any;
 }
 
 const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
-  const { options } = props;
-  // const navigate = useNavigate();
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(options, useFilters, useSortBy);
-  const sortedColumn = (column: any) => {
-    if (column.isSortedDesc ?? false) {
-      return <span className="icon-arrow-long-up" />;
-    }
-    return <span className="icon-arrow-long-down" />;
-  };
+  const { componentArray } = props;
   const [checked, setChecked] = React.useState(true);
 
   const handleChange = (event: any) => {
@@ -48,50 +39,7 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
       <section className="display-center">
         <h3>Resultados de la selección de ventanas</h3>
       </section>
-      <div
-        style={{
-          width: '100%',
-          overflow: 'auto',
-          maxHeight: '60vh',
-        }}
-      >
-        <table {...getTableProps()} className="tableCustom">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                    style={{ textAlign: 'center' }}
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                  style={{ textAlign: 'center', width: '300px' }}
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {...componentArray}
       <section className="display-center" style={{ marginTop: '5%' }}>
         Datos obtenidos tras calcular con las ventanas seleccionadas por cada
         sensor.

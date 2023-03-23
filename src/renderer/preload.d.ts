@@ -33,12 +33,12 @@ declare global {
           iteraciones: string,
           reducedPercentage: string
         ): unknown;
-        selectCD(arg0: (event: any, resp: any) => void): unknown;
+        selectCD(nombre: string): object;
         selectConfiguracionDetalle(nameConf: string): unknown;
         selectCN(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracionNombre(protocolo: string): unknown;
-        selectMC(arg0: (event: any, resp: any) => void): unknown;
         selectMultimediaConfig(configuracion: any): unknown;
+        selectMC(nombre: string): object;
         // selectC(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracion(): unknown;
         sendMessage(channel: Channels, args: unknown[]): void;

@@ -4,12 +4,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 export interface SignalObj {
+  length: number;
   x: number;
   y: number;
 }
 export interface ISeñales {
-  ventanasArray: Array<SignalObj>;
-  ventanasArray2: Array<SignalObj>;
+  ventanasArray: Array<any>;
+  ventanasArray2: Array<any>;
   cantidadSensores: number;
   cantidadSujetos: number;
   cantidadSujetosRespaldo: number;

@@ -74,7 +74,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         </section>
         <section className="display-flexResultadosA">
           <h5>Modelo Usado:</h5>
-          <h5>{analisis.modelo}</h5>
+          <h5>{analisis.nombre}</h5>
         </section>
         <section className="display-flexResultadosA">
           <h5>Despues de las iteraciones seleccionadas:</h5>

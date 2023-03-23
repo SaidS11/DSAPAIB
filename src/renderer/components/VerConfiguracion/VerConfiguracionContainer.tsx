@@ -61,40 +61,55 @@ const VerConfiguracionContainer = () => {
     loadData();
   }, []);
   async function loadDataMultimedia(nameConf: string, resp: any) {
-    appDispatch(setConfigDetalle(resp));
-    window.electron.ipcRenderer.selectMultimediaConfig(nameConf);
+    // appDispatch(setConfigDetalle(resp));
+    const respMulti = await window.electron.ipcRenderer.selectMC(nameConf);
+    return respMulti;
   }
-  window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('esta es la multimedia', resp);
-      appDispatch(setConfigMultimedia(resp));
-      navigate('/verConfiguracionDetalle');
-    } else {
-      console.log('nada en multimedia');
-    }
-    appDispatch(setIsLoading(false));
-  });
+  // window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('esta es la multimedia', resp);
+  //     appDispatch(setConfigMultimedia(resp));
+  //     navigate('/verConfiguracionDetalle');
+  //   } else {
+  //     console.log('nada en multimedia');
+  //   }
+  //   appDispatch(setIsLoading(false));
+  // });
   async function loadDataDetalle(nameConf: string) {
-    appDispatch(setIsLoading(true));
-    window.electron.ipcRenderer.selectConfiguracionDetalle(nameConf);
+    // appDispatch(setIsLoading(true));
+    const resp = await window.electron.ipcRenderer.selectCD(nameConf);
+    return resp;
   }
-  window.electron.ipcRenderer.selectCD(async (event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('Este es el datelle click', resp);
-      appDispatch(setConfigDetalle(resp));
-    } else {
-      console.log('nada en detalle');
-    }
-    // appDispatch(setIsLoading(false));
-    loadDataMultimedia(resp[0].nombre, resp);
-  });
+  // window.electron.ipcRenderer.selectCD(async (event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('Este es el datelle click', resp);
+  //     // appDispatch(setConfigDetalle(resp));
+  //     return resp;
+  //   } else {
+  //     console.log('nada en detalle');
+  //     return 0;
+  //   }
+  // appDispatch(setIsLoading(false));
+  // loadDataMultimedia(resp[0].nombre, resp);
+  // });
 
-  const onClickRow = useCallback((element: any) => {
+  const onClickRow = useCallback(async (element: any) => {
     console.log(element);
     console.log(element.cells);
     // console.log(element.cells[0].value)
-    // appDispatch(setConfigName(element.cells[0].value));
-    // loadDataDetalle(element.cells[0].value);
+    appDispatch(setIsLoading(true));
+    const respuesta = await loadDataDetalle(element.cells[0].value);
+    console.log('this is final resp', respuesta);
+    const respuestaMultimedia = await loadDataMultimedia(
+      respuesta[0].nombre,
+      respuesta
+    );
+    console.log('this is multi', respuestaMultimedia);
+    appDispatch(setConfigName(element.cells[0].value));
+    appDispatch(setConfigDetalle(respuesta));
+    appDispatch(setConfigMultimedia(respuestaMultimedia));
+    appDispatch(setIsLoading(false));
+    navigate('/verConfiguracionDetalle');
   }, []);
   const options: TableOptions<{
     col1: string;

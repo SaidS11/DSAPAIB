@@ -2,6 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
 import { DialogProps } from '@mui/material/Dialog';
+import {
+  setCantidadSujetos,
+  setCantidadSujetosRespaldo,
+  setVentanasArray,
+  setVentanasArray2,
+} from 'redux/slices/SeñalesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
 import { useCustomDispatch } from '../../../redux/hooks';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
@@ -11,7 +17,7 @@ import ModalVerMas from '../ResultadosAnalisis/ModalVerMas';
 // Crear vermas datos y el vermas dejarlo como vermas final, en el datos no se podran ver la confusion o en el tree, regresar await a como estaba
 interface Config {
   modelo: string;
-  alforitmo: string;
+  algoritmo: string;
 }
 
 const ComenzarAnalisisEntrenamientoContainer = () => {
@@ -128,7 +134,10 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     data,
     columns,
   };
-
+  appDispatch(setVentanasArray([]));
+  appDispatch(setVentanasArray2([]));
+  appDispatch(setCantidadSujetos(2));
+  appDispatch(setCantidadSujetosRespaldo(2));
   const onClickStop = () => {
     // stopSensores()
   };

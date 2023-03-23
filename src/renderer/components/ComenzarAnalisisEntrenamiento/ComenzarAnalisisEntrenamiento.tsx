@@ -13,7 +13,6 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { useState } from 'react';
 import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
 
 interface ComenzarAnalisisEntrenamientoProps {
@@ -69,7 +68,7 @@ const ComenzarAnalisisEntrenamiento = (
       for(let i = 0; i < dataM.length; i++) {
         // console.log('datos recibidios', data[i]);
         models.push(
-          <MenuItem key={i} value={`${dataM[i].modelo}`}>{dataM[i].modelo}</MenuItem>
+          <MenuItem key={i} value={`${dataM[i].nombre}`}>{dataM[i].nombre}</MenuItem>
         )
       }
       return models;

@@ -20,9 +20,10 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectAIA: () => ipcRenderer.invoke('selectAlgoritmosIA'),
     selectMultimediaConfig(nombre: string) {
-      ipcRenderer.invoke('selectMultimediaConfig', nombre);
+      ipcRenderer.send('selectMultimediaConfig', nombre);
     },
-    selectMC: (callback: any) => ipcRenderer.on('selectMC', callback),
+    selectMC: (callback: any) =>
+      ipcRenderer.invoke('selectMultimediaConfig', callback),
     selectConfiguracionNombre(nombre: string) {
       ipcRenderer.send('selectConfiguracionNombre', nombre);
     },
@@ -49,9 +50,10 @@ contextBridge.exposeInMainWorld('electron', {
     selectImplementacionPorN: (callback: any) =>
       ipcRenderer.on('selectImplementacionPorN', callback),
     selectConfiguracionDetalle(nombre: string) {
-      ipcRenderer.invoke('selectConfiguracionDetalle', nombre);
+      ipcRenderer.send('selectConfiguracionDetalle', nombre);
     },
-    selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
+    selectCD: (callback: any) =>
+      ipcRenderer.invoke('selectConfiguracionDetalle', callback),
     selectImplementacionPorNombre(nombre: string) {
       ipcRenderer.send('selectImplementacionPorNombre', nombre);
     },

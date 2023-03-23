@@ -50,7 +50,7 @@ const VerModelo = (props: VerModeloProps) => {
               className="first-input"
               type="text"
               name="nombreModelo"
-              value={resp.modelo}
+              value={resp.nombre}
               required
               disabled
             />

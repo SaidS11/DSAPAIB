@@ -156,36 +156,48 @@ const Caracterizar = ({ sensoresSelected }) => {
   let numX = 0;
 
   const onClickAdd = () => {
-    numX = dataX.at(-1) + 2;
-    numY = dataY.at(-1) + 1;
+    for (let i = 0; i < 15; i += 1) {
+      numX = dataX.at(-1) + 2;
+      numY = dataY.at(-1) + 1;
 
-    setDataX(dataX.concat(numX));
-    setDataY(dataY.concat(numY));
+      setDataX(dataX.concat(numX));
+      setDataY(dataY.concat(numY));
 
-    setDataX2(dataX2.concat(numX + 3));
-    setDataY2(dataY2.concat(numY + 1));
-    setColors2(colors2.concat('blue'));
+      setDataX2(dataX2.concat(numX + 7));
+      setDataY2(dataY2.concat(numY + 1));
+      setColors2(colors2.concat('blue'));
+    }
+    // numX = dataX.at(-1) + 2;
+    // numY = dataY.at(-1) + 1;
 
-    setDataX3(dataX3.concat(numX + 10));
-    setDataY3(dataY3.concat(numY));
-    setColors3(colors2.concat('yellow'));
+    // setDataX(dataX.concat(numX));
+    // setDataY(dataY.concat(numY));
 
-    setDataX4(dataX4.concat(numX + 1));
-    setDataY4(dataY4.concat(numY));
-    setColors3(colors2.concat('green'));
+    // setDataX2(dataX2.concat(numX + 7));
+    // setDataY2(dataY2.concat(numY + 1));
+    // setColors2(colors2.concat('blue'));
 
-    setDataX5(dataX5.concat(numX + 12));
-    setDataY5(dataY5.concat(numY));
+    // setDataX3(dataX3.concat(numX + 10));
+    // setDataY3(dataY3.concat(numY));
+    // setColors3(colors2.concat('yellow'));
 
-    setDataX6(dataX6.concat(numX + 8));
-    setDataY6(dataY6.concat(numY));
+    // setDataX4(dataX4.concat(numX + 1));
+    // setDataY4(dataY4.concat(numY));
+    // setColors3(colors2.concat('green'));
 
-    setDataX7(dataX7.concat(numX + 9));
-    setDataY7(dataY7.concat(numY + 3));
+    // setDataX5(dataX5.concat(numX + 12));
+    // setDataY5(dataY5.concat(numY));
 
-    setDataX8(dataX8.concat(numX + 5));
-    setDataY8(dataY8.concat(numY));
+    // setDataX6(dataX6.concat(numX + 8));
+    // setDataY6(dataY6.concat(numY));
+
+    // setDataX7(dataX7.concat(numX + 9));
+    // setDataY7(dataY7.concat(numY + 3));
+
+    // setDataX8(dataX8.concat(numX + 5));
+    // setDataY8(dataY8.concat(numY));
   };
+
   const numOfPlots = () => {
     const times = 8 - sensoresSelected;
     // eslint-disable-next-line no-plusplus
@@ -293,11 +305,21 @@ const Caracterizar = ({ sensoresSelected }) => {
       }
       selection.length = 0;
       // console.log('Now i Have', colorsLocal1);
+      // const localArray = [];
       if (selectedEmg === 'EMG1') {
-        setVentanasSeñal1([...ventanasSeñal1, ...ventanas1Local]);
+        const localArray = [...ventanasSeñal1];
+        localArray.push(ventanas1Local);
+        setVentanasSeñal1(localArray);
+
+        console.log('Global', ventanasSeñal1);
+        console.log('Local', ventanas1Local);
+
         setColors1([...colorsLocal1]);
       } else if (selectedEmg === 'EMG2') {
-        setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
+        // setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
+        const localArray = [...ventanasSeñal2];
+        localArray.push(ventanas2Local);
+        setVentanasSeñal2(localArray);
         setColors2([...colorsLocal2]);
       }
     } else {

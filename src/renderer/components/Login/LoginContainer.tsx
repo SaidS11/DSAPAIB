@@ -52,8 +52,8 @@ const LoginContainer = () => {
       passw = passDocument.value
     } */
     loadData();
-    appDispatch(setCantidadSujetos(4));
-    appDispatch(setCantidadSujetosRespaldo(4));
+    appDispatch(setCantidadSujetos(2));
+    appDispatch(setCantidadSujetosRespaldo(2));
   };
   return (
     <div>

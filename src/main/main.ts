@@ -288,7 +288,7 @@ async function insertModelo(
 ) {
   try {
     const query = await pool.query(
-      ' INSERT INTO implementacion(modelo, prueba, algoritmo_ia, parametros) values ($1,$2,$3,$4)  ',
+      ' INSERT INTO implementacion(nombre, prueba, algoritmo_ia, parametros) values ($1,$2,$3,$4)  ',
       [modelo, prueba, algoritmo_ia, parametros]
     );
     console.log(query.rows);
@@ -331,7 +331,7 @@ ipcMain.on('selectImplementacionNombreIA', async (event, nombre) => {
 
 async function selectImplementacionPorNombre(nombre: string) {
   const query = await pool.query(
-    ' SELECT * FROM implementacion where modelo = $1',
+    ' SELECT * FROM implementacion where nombre = $1',
     [nombre]
   );
   console.log(query.rows);
@@ -346,7 +346,7 @@ ipcMain.on('selectImplementacionPorNombre', async (event, nombre) => {
 
 async function selectModelosNombre() {
   const query = await pool.query(
-    ' select modelo, algoritmo_ia from implementacion '
+    ' select nombre, algoritmo_ia from implementacion '
   );
   console.log('Estas son las rows', query.rows);
   return query.rows;
@@ -388,12 +388,16 @@ async function selectMultimediaConfig(nombre: string) {
   console.log(query.rows);
   return query.rows;
 }
+ipcMain.handle('selectMultimediaConfig', (event, nombre: string) =>
+  selectMultimediaConfig(nombre)
+);
+
 // ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) =>);
-ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) => {
-  const resp = await selectMultimediaConfig(nombre);
-  console.log(resp);
-  mainWindow?.webContents.send('selectMC', resp);
-});
+// ipcMain.handle('selectMultimediaConfig', async (event, nombre: string) => {
+//   const resp = await selectMultimediaConfig(nombre);
+//   console.log(resp);
+//   mainWindow?.webContents.send('selectMC', resp);
+// });
 
 async function insertRegistro(
   datosCrudos: any,
@@ -591,13 +595,13 @@ async function selectRegistrosProtocolo(nombre: string) {
     ' select paciente from registro where protocolo_adquisicion = $1 ',
     [nombre]
   );
-  console.log(query.rows);
+  console.log('query', query.rows);
   return query.rows;
 }
 
 ipcMain.on('selectRegistrosProtocolo', async (event, nombre: string) => {
   const resp = await selectRegistrosProtocolo(nombre);
-  console.log(resp);
+  console.log('resp', resp);
   mainWindow?.webContents.send('selectRP', resp);
 });
 
@@ -624,13 +628,9 @@ async function selectConfiguracionDetalle(nombre: string) {
   console.log('consulta', query.rows);
   return query.rows;
 }
-// ipcMain.handle('selectConfiguracionDetalle', () => selectConfiguracionDetalle);
-
-ipcMain.handle('selectConfiguracionDetalle', async (event, nombre: string) => {
-  const resp = await selectConfiguracionDetalle(nombre);
-  console.log(resp);
-  mainWindow?.webContents.send('selectCD', resp);
-});
+ipcMain.handle('selectConfiguracionDetalle', (event, nombre: string) =>
+  selectConfiguracionDetalle(nombre)
+);
 
 async function updateImplementacion(
   precision: string,
@@ -639,7 +639,7 @@ async function updateImplementacion(
   modelo: string
 ) {
   const query = await pool.query(
-    ' UPDATE implementacion SET precision = $1, desviacion_estandar = $2, entrenado = $3 WHERE modelo = $4',
+    ' UPDATE implementacion SET precision = $1, desviacion_estandar = $2, entrenado = $3 WHERE nombre = $4',
     [precision, desviacion, entrenado, modelo]
   );
   console.log(query.rows);

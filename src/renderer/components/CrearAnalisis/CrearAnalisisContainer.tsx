@@ -52,14 +52,14 @@ const CrearAnalisisContainer = () => {
   async function getParams(params: any) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.modelo);
+    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.nombre);
   }
   window.electron.ipcRenderer.selectImplementacionPorN(
     (event: any, resp: any) => {
       console.log('Esta es algo', resp);
       appDispatch(setIsLoading(false));
       console.log('Algo', resp[0].algoritmo_ia);
-      const nombre = resp[0].modelo;
+      const { nombre } = resp[0];
       if (resp[0].algoritmo_ia === 'Arbol de Decisión') {
         const params = JSON.stringify(resp[0].parametros);
         startAnalysis('Tree', params, nombre);
