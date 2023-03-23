@@ -1,9 +1,18 @@
+import { Json } from 'aws-sdk/clients/robomaker';
 import { Channels } from 'main/preload';
 
 declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
+        insertarElementoMongo(archivo: string): unknown;
+        buscarElementoM(arg0: (event: any, resp: any) => void): unknown;
+        buscarElementoMongo(archivo: string): unknown;
+        seleccionarTodoM(arg0: (event: any, resp: any) => void): unknown;
+        seleccionarTodoMongo(): unknown;
+        borrarElementoM(arg0: (event: any, resp: any) => void): unknown;
+        borrarElementoMongo(archivo: string): unknown;
         updateImplementacion(
           precision: string,
           desviacion: string,

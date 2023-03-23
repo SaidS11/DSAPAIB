@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable radix */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
@@ -18,6 +19,7 @@ import { Pool } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
+import { Json } from 'aws-sdk/clients/robomaker';
 import installExtension, {
   REDUX_DEVTOOLS,
   REACT_DEVELOPER_TOOLS,
@@ -158,23 +160,89 @@ const credenciales = {
   password: '219748227',
 };
 
-const pool = new Pool(credenciales);
-
 const uri =
-  'mongodb+srv://ByPona:<password>@clustermodular.vgf3uhd.mongodb.net/?retryWrites=true&w=majority';
+  'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
-client.connect((err: any) => {
-  const collection = client.db('test').collection('devices');
-  // perform actions on the collection object
-  console.log('Conectado MONGUITO');
-  client.close();
 });
 
-console.log('Conectado MONGOOO', client);
+const pool = new Pool(credenciales);
+
+async function conexionPrincipalMongo() {
+  try {
+    await client.connect();
+    console.log('Conexión a MongoDB Atlas exitosa');
+  } catch (error) {
+    console.log('Error al conectar', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function insertarElementoMongo(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .insertOne(queryJSON);
+    console.log(
+      `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
+    );
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+    return error;
+  } finally {
+    await client.close();
+  }
+}
+
+async function buscarElementoMongo(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find(queryJSON).toArray();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function seleccionarTodoMongo() {
+  try {
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find({}).toArray();
+    console.log(result);
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function borrarElementoMongo(query: string) {
+  try {
+    // const query = { name: 'Ernesto Peña' };
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .deleteOne(query);
+    console.log(`${result.deletedCount} documents deleted`);
+    console.log(result);
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
 
 async function iniciarSesion(user: string, pass: string) {
   const query = await pool.query(
@@ -185,10 +253,39 @@ async function iniciarSesion(user: string, pass: string) {
   return query.rows;
 }
 
+// ipcMain.on('loggearDoctor', async () => {
+//   await conexionPrincipalMongo();
+// });
+
 ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
+  await conexionPrincipalMongo();
   const resp = await iniciarSesion(user, pass);
   console.log(resp);
   mainWindow?.webContents.send('loggearD', resp);
+});
+
+ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
+  const resp = await insertarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('insertarElementoM', resp);
+});
+
+ipcMain.on('buscarElementoMongo', async (event, archivo: string) => {
+  const resp = await buscarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('buscarElementoM', resp);
+});
+
+ipcMain.on('seleccionarTodoMongo', async () => {
+  const resp = await seleccionarTodoMongo();
+  console.log(resp);
+  mainWindow?.webContents.send('seleccionarTodoM', resp);
+});
+
+ipcMain.on('borrarElementoMongo', async (event, archivo: string) => {
+  const resp = await borrarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('borrarElementoM', resp);
 });
 
 async function selectPacienteF(
