@@ -194,7 +194,6 @@ async function insertarElementoMongo(query: string) {
     return result;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
-    return error;
   } finally {
     await client.close();
   }
@@ -206,7 +205,6 @@ async function buscarElementoMongo(query: string) {
     await client.connect();
     const collection = client.db('Modular').collection('Señales');
     const result = await collection.find(queryJSON).toArray();
-    console.log(result);
     return result;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -220,7 +218,7 @@ async function seleccionarTodoMongo() {
     await client.connect();
     const collection = client.db('Modular').collection('Señales');
     const result = await collection.find({}).toArray();
-    console.log(result);
+    return result;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
   } finally {
@@ -237,6 +235,7 @@ async function borrarElementoMongo(query: string) {
       .deleteOne(query);
     console.log(`${result.deletedCount} documents deleted`);
     console.log(result);
+    mainWindow?.webContents.send('borrarElementoM', result);
   } catch (error) {
     console.log('Ha ocurrido un error', error);
   } finally {

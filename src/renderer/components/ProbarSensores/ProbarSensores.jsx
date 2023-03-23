@@ -244,6 +244,27 @@ const ProbarSensores = ({
     // Plotly.restyle('myDiv', update, [tn]);
     // setColor1("blue");
   };
+  async function buscarElementoMongoFront() {
+    // appDispatch(setIsLoading(true));
+    const document = { name: 'Ernesto Peña', protocol: 'PieDiabetico2en2' };
+    const document2 = { name: 'Ernesto Peña', protocol: 'PieDiabetico3en3' };
+    // const cadena = 'hola';
+    const jsonDocument = JSON.stringify(document);
+    // console.log(typeof jsonDocument);
+    window.electron.ipcRenderer.buscarElementoMongo(jsonDocument);
+  }
+  window.electron.ipcRenderer.buscarElementoM((event, resp) => {
+    if (resp.length > 0) {
+      console.log(resp[0]);
+    } else {
+      console.log('No hay nada');
+    }
+  });
+
+  const onClick2 = () => {
+    onClickAdd();
+    buscarElementoMongoFront();
+  };
   return (
     <div>
       <Plot
@@ -275,7 +296,7 @@ const ProbarSensores = ({
         // key={i}
       />
       <section className="display-center">
-        <Button onClick={onClickAdd} sx={styleButton}>
+        <Button onClick={onClick2} sx={styleButton}>
           Presioname
         </Button>
         <Button
