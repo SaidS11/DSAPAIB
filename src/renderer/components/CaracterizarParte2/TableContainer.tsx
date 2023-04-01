@@ -58,14 +58,24 @@ function getElementsAndSum(ventanas: any) {
 }
 
 interface TableContainerProps {
-  cantidadSensores: any;
+  cantidadSensores: number;
+  cantidadSensoresExtra: number;
   numeroDeSujeto: number;
   ventanasArray: any;
   ventanasArray2: any;
+  ventanasArrayGsr: any;
+  ventanasArrayTemp: any;
 }
 const TableContainer = (props: TableContainerProps) => {
-  const { cantidadSensores, numeroDeSujeto, ventanasArray, ventanasArray2 } =
-    props;
+  const {
+    cantidadSensores,
+    cantidadSensoresExtra,
+    numeroDeSujeto,
+    ventanasArray,
+    ventanasArray2,
+    ventanasArrayGsr,
+    ventanasArrayTemp,
+  } = props;
   // const ventanaSeñal1 = useCustomSelector(
   //   (state) => state.señales.ventanasArray
   // );
@@ -180,6 +190,20 @@ const TableContainer = (props: TableContainerProps) => {
           colRMSEMG2: calcularRms(
             ventanasArray2[numeroDeSujeto][i][0] as Array<number>
           ),
+          colMediaABSGsr: ventanasArrayGsr[numeroDeSujeto][i][2] as string,
+          colMedianaGsr: calcularMediana(
+            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSGsr: calcularRms(
+            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colMediaABSTemp: ventanasArrayTemp[numeroDeSujeto][i][2] as string,
+          colMedianaTemp: calcularMediana(
+            ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSTemp: calcularRms(
+            ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
+          ),
         };
       }
       console.log('Calculated1', dataJson);
@@ -197,19 +221,11 @@ const TableContainer = (props: TableContainerProps) => {
     []
   );
 
-  const sensoresNames = [
-    'EMG1',
-    'EMG2',
-    'SP02',
-    'Test1',
-    'Test2',
-    'Test3',
-    'Test4',
-    'Test5',
-  ];
-  const getColumns = (size: number) => {
+  const sensoresNames = ['EMG1', 'EMG2'];
+  const sensoresExtraNames = ['GSR Promedio', 'Temperatura Promedio'];
+  const getColumns = (sizeEMG: number, sizeSensoresExtra: number) => {
     const internalArray: Array<Column> = [];
-    for (let i = 0; i < size; i += 1) {
+    for (let i = 0; i < sizeEMG; i += 1) {
       console.log('Itera');
       internalArray.push({
         Header: sensoresNames[i],
@@ -229,9 +245,63 @@ const TableContainer = (props: TableContainerProps) => {
         ],
       });
     }
+    // for (let i = 0; i < sizeSensoresExtra; i += 1) {
+    //   console.log('Itera');
+    //   internalArray.push({
+    //     Header: sensoresExtraNames[i],
+    //     columns: [
+    //       {
+    //         Header: 'Media absoluta',
+    //         accessor: `colMediaABSEMG${i + 1}`,
+    //       },
+    //       {
+    //         Header: 'Mediana',
+    //         accessor: `colMedianaEMG${i + 1}`,
+    //       },
+    //       {
+    //         Header: 'RMS',
+    //         accessor: `colRMSEMG${i + 1}`,
+    //       },
+    //     ],
+    //   });
+    // }
+    internalArray.push({
+      Header: 'GSR Promedio',
+      columns: [
+        {
+          Header: 'Media absoluta',
+          accessor: `colMediaABSGsr`,
+        },
+        {
+          Header: 'Mediana',
+          accessor: `colMedianaGsr`,
+        },
+        {
+          Header: 'RMS',
+          accessor: `colRMSGsr`,
+        },
+      ],
+    });
+    internalArray.push({
+      Header: 'Temperatura Promedio',
+      columns: [
+        {
+          Header: 'Media absoluta',
+          accessor: `colMediaABSTemp`,
+        },
+        {
+          Header: 'Mediana',
+          accessor: `colMedianaTemp`,
+        },
+        {
+          Header: 'RMS',
+          accessor: `colRMSTemp`,
+        },
+      ],
+    });
     return internalArray;
   };
-  const columns = getColumns(cantidadSensores);
+  const columns = getColumns(cantidadSensores, cantidadSensoresExtra);
   console.log('these are co', columns);
   const options = {
     data,

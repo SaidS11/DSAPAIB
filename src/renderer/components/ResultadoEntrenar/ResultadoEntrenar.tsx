@@ -49,6 +49,9 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <h1>Resultados</h1>
       </section>
       <section className="display-center">
+        <h3>Tabla con resultados por sujeto</h3>
+      </section>
+      <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
       <section>
@@ -73,8 +76,12 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           <h5>{analisis.protocolo}</h5>
         </section>
         <section className="display-flexResultadosA">
-          <h5>Modelo Usado:</h5>
-          <h5>{analisis.nombre}</h5>
+          <h5>Implementación Usada:</h5>
+          <h5>{analisis.algoritmo}</h5>
+        </section>
+        <section className="display-flexResultadosA">
+          <h5>Nombre del modelo generado:</h5>
+          <h5>NA</h5>
         </section>
         <section className="display-flexResultadosA">
           <h5>Despues de las iteraciones seleccionadas:</h5>

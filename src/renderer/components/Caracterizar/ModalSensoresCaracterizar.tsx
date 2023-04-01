@@ -27,7 +27,7 @@ export interface ModalProps {
   setSensoresSelected: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function ModalSensores(props: ModalProps) {
+export default function ModalSensoresCaracterizar(props: ModalProps) {
   const { toggleModal, open, setSensoresSelected } = props;
   const [sensores, setSensores] = React.useState('');
 

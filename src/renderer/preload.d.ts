@@ -7,13 +7,14 @@ declare global {
       ipcRenderer: {
         insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoMongo(archivo: string): unknown;
-        buscarElementoM(arg0: (event: any, resp: any) => void): unknown;
+        buscarElementoM(archivo: string): unknown;
         buscarElementoMongo(archivo: string): unknown;
         seleccionarTodoM(arg0: (event: any, resp: any) => void): unknown;
         seleccionarTodoMongo(): unknown;
         borrarElementoM(arg0: (event: any, resp: any) => void): unknown;
         borrarElementoMongo(archivo: string): unknown;
         updateImplementacion(
+          selectCD: string,
           precision: string,
           desviacion: string,
           entrenado: string,
@@ -33,6 +34,7 @@ declare global {
         preAnalisisPython(): unknown;
         preAnalisisP(arg0: (event: any, resp: any) => void): unknown;
         selectC(): unknown;
+        selectPrs(): object;
         analisisP(arg0: (event: any, resp: any) => void): unknown;
         analisisPython(
           type: string,

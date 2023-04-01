@@ -15,15 +15,18 @@ import {
 import React from 'react';
 import styleButton, {
   styleButtonBiggerGreen,
+  styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 import './CaracterizarParte2.css';
 
 export interface CaracterizarParte2Props {
   componentArray: any;
+  OnClickNav: () => void;
+  OnClickBack: () => void;
 }
 
 const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
-  const { componentArray } = props;
+  const { componentArray, OnClickNav, OnClickBack } = props;
   const [checked, setChecked] = React.useState(true);
 
   const handleChange = (event: any) => {
@@ -45,8 +48,8 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
         sensor.
       </section>
       <section className="display-center" style={{ fontWeight: 'bold' }}>
-        Si la extracción de características es correcta seleccione que es lo que
-        quiere guardar.
+        Si la extracción de características fue exitosa continue el proceso. Al
+        presionar continuar se almacenara lo siguiente:
       </section>
       <section className="display-center">
         <FormGroup>
@@ -57,14 +60,23 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
           />
           {/* <FormControlLabel control={<Checkbox />} label="Selecciones por señal" /> */}
           <FormControlLabel
-            onChange={handleChange}
-            control={<Checkbox />}
+            disabled
+            control={<Checkbox defaultChecked />}
+            // onChange={handleChange}
+            // control={<Checkbox />}
             label="Características"
           />
         </FormGroup>
       </section>
       <section className="display-center">
-        <Button sx={styleButtonBiggerGreen}>Guardar</Button>
+        <Button sx={styleButtonBiggerGreen} onClick={OnClickNav}>
+          Continuar
+        </Button>
+      </section>
+      <section className="display-center">
+        <Button sx={styleButtonBiggerRed} onClick={OnClickBack}>
+          Cancelar
+        </Button>
       </section>
     </div>
   );

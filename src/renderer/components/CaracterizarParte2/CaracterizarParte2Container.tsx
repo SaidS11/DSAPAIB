@@ -71,6 +71,14 @@ const CaracterizarParte2Container = () => {
   const ventanaSeñal2 = useCustomSelector(
     (state) => state.señales.ventanasArray2
   );
+
+  const ventanaSeñalGsr = useCustomSelector(
+    (state) => state.señales.ventanasArrayGsr
+  );
+  const ventanaSeñalTemp = useCustomSelector(
+    (state) => state.señales.ventanasArrayTemp
+  );
+
   const cantidadSensores = useCustomSelector(
     (state) => state.señales.cantidadSensores
   );
@@ -83,6 +91,9 @@ const CaracterizarParte2Container = () => {
   const ventanasArray1: any[] = [];
   const ventanasArray2: any[] = [];
 
+  const ventanasArrayGsr: any[] = [];
+  const ventanasArrayTemp: any[] = [];
+
   // for(let i = 0; i < cantidadSujetos; i+=1) {
   //   const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1[i]);
   //   const mediaAbsoluta = (sumVentana / ventanaSeñal1[i].length).toString();
@@ -91,7 +102,10 @@ const CaracterizarParte2Container = () => {
   // }
   let ventanaAr: any[] = [];
   let ventanaAr2: any[] = [];
+  let ventanaGsr: any[] = [];
+  let ventanaTemp: any[] = [];
 
+  // EMG1
   for (let i = 0; i < cantidadSujetos; i += 1) {
     const largo = ventanaSeñal1[i].length;
     ventanaAr = [];
@@ -104,6 +118,8 @@ const CaracterizarParte2Container = () => {
     }
     ventanasArray1.push(ventanaAr);
   }
+
+  // EMG2
   for (let i = 0; i < cantidadSujetos; i += 1) {
     const largo = ventanaSeñal2[i].length;
     ventanaAr2 = [];
@@ -116,6 +132,34 @@ const CaracterizarParte2Container = () => {
     }
     ventanasArray2.push(ventanaAr2);
   }
+
+  // GSR
+  for (let i = 0; i < cantidadSujetos; i += 1) {
+    const largo = ventanaSeñalGsr[i].length;
+    ventanaGsr = [];
+    for (let c = 0; c < largo; c += 1) {
+      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalGsr[i][c]);
+      const mediaAbsoluta = (
+        sumVentana / ventanaSeñalGsr[i][c].length
+      ).toString();
+      ventanaGsr.push([ventana, sumVentana, mediaAbsoluta]);
+    }
+    ventanasArrayGsr.push(ventanaGsr);
+  }
+
+  // TEMP
+  for (let i = 0; i < cantidadSujetos; i += 1) {
+    const largo = ventanaSeñalTemp[i].length;
+    ventanaTemp = [];
+    for (let c = 0; c < largo; c += 1) {
+      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalTemp[i][c]);
+      const mediaAbsoluta = (
+        sumVentana / ventanaSeñalTemp[i][c].length
+      ).toString();
+      ventanaTemp.push([ventana, sumVentana, mediaAbsoluta]);
+    }
+    ventanasArrayTemp.push(ventanaTemp);
+  }
   // console.log("Filled with", ventanasArray1)
   const componentArray: any[] = [];
   for (let i = 0; i < cantidadSujetos; i += 1) {
@@ -124,9 +168,12 @@ const CaracterizarParte2Container = () => {
         <h3>Sujeto {i + 1}</h3>
         <TableContainer
           cantidadSensores={cantidadSensores}
+          cantidadSensoresExtra={2}
           numeroDeSujeto={i}
           ventanasArray={ventanasArray1}
           ventanasArray2={ventanasArray2}
+          ventanasArrayGsr={ventanasArrayGsr}
+          ventanasArrayTemp={ventanasArrayTemp}
         />
       </div>
     );
@@ -135,9 +182,20 @@ const CaracterizarParte2Container = () => {
   // componentArray.push(
   //   <h1>Test</h1>
   // )
+
+  const OnClickNav = () => {
+    navigate('/preAnalisis');
+  };
+  const OnClickBack = () => {
+    navigate('/entrenar');
+  };
   return (
     <div>
-      <CaracterizarParte2 componentArray={componentArray} />
+      <CaracterizarParte2
+        componentArray={componentArray}
+        OnClickNav={OnClickNav}
+        OnClickBack={OnClickBack}
+      />
     </div>
   );
 };

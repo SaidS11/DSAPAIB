@@ -200,6 +200,8 @@ async function insertarElementoMongo(query: string) {
 }
 
 async function buscarElementoMongo(query: string) {
+  console.log('Buscandop');
+
   try {
     const queryJSON = JSON.parse(query);
     await client.connect();
@@ -212,6 +214,10 @@ async function buscarElementoMongo(query: string) {
     await client.close();
   }
 }
+
+ipcMain.handle('buscarElementoMongo', async (event, archivo: string) =>
+  buscarElementoMongo(archivo)
+);
 
 async function seleccionarTodoMongo() {
   try {
@@ -267,12 +273,6 @@ ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
   const resp = await insertarElementoMongo(archivo);
   console.log(resp);
   mainWindow?.webContents.send('insertarElementoM', resp);
-});
-
-ipcMain.on('buscarElementoMongo', async (event, archivo: string) => {
-  const resp = await buscarElementoMongo(archivo);
-  console.log(resp);
-  mainWindow?.webContents.send('buscarElementoM', resp);
 });
 
 ipcMain.on('seleccionarTodoMongo', async () => {
@@ -454,12 +454,7 @@ async function selectProtocolos() {
   console.log(query.rows);
   return query.rows;
 }
-
-ipcMain.on('selectProtocolos', async (event) => {
-  const resp = await selectProtocolos();
-  console.log(resp);
-  mainWindow?.webContents.send('selectPrs', resp);
-});
+ipcMain.handle('selectProtocolos', selectProtocolos);
 
 async function selectConfiguracionNombre(nombre: string) {
   const query = await pool.query(

@@ -1,13 +1,17 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 import Plot from 'react-plotly.js';
 import './Caracterizar.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import {
   setVentanasArray,
   setVentanasArray2,
+  setVentanasArrayGsr,
+  setVentanasArrayTemp,
   setCantidadSujetos,
 } from '../../../redux/slices/SeñalesSlice';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
@@ -22,8 +26,7 @@ const Caracterizar = ({ sensoresSelected }) => {
   console.log(dataX); */
   // const [dataXParam, setDataXParam] = useState([0]);
   // const [dataYParam, setDataYParam] = useState([0]);
-  const [dataX, setDataX] = useState([0]);
-  const [dataY, setDataY] = useState([0]);
+
   const [localUpdater, setLocalUpdater] = useState(false);
   const [colors1, setColors1] = useState(['#00000']);
   const [colors2, setColors2] = useState(['blue']);
@@ -32,6 +35,15 @@ const Caracterizar = ({ sensoresSelected }) => {
 
   const [ventanasSeñal1, setVentanasSeñal1] = useState([]);
   const [ventanasSeñal2, setVentanasSeñal2] = useState([]);
+
+  const [gsrDataX, setGsrDataX] = useState([0]);
+  const [gsrDataY, setGsrDataY] = useState([0]);
+  const [ventanasSeñalGsr, setVentanasSeñalGsr] = useState([]);
+
+  const [tempDataX, setTempDataX] = useState([0]);
+  const [tempDataY, setTempDataY] = useState([0]);
+  const [ventanasSeñalTemp, setVentanasSeñalTemp] = useState([]);
+
   const sujetos = useCustomSelector((state) => state.señales.cantidadSujetos);
   const ventanaRedux1 = useCustomSelector(
     (state) => state.señales.ventanasArray
@@ -40,11 +52,19 @@ const Caracterizar = ({ sensoresSelected }) => {
     (state) => state.señales.ventanasArray2
   );
 
+  const ventanaReduxGsr = useCustomSelector(
+    (state) => state.señales.ventanasArrayGsr
+  );
+  const ventanaReduxTemp = useCustomSelector(
+    (state) => state.señales.ventanasArrayTemp
+  );
+
   const navigate = useNavigate();
   // const [curSelected, setCurSelected] = useState(false);
   const appDispatch = useCustomDispatch();
   // const [color1, setColor1] = useState("red")
-
+  const [dataX, setDataX] = useState([0]);
+  const [dataY, setDataY] = useState([0]);
   const trace1 = {
     x: dataX,
     y: dataY,
@@ -59,7 +79,7 @@ const Caracterizar = ({ sensoresSelected }) => {
 
   const [dataX2, setDataX2] = useState([0]);
   const [dataY2, setDataY2] = useState([0]);
-
+  console.log('Esto hay en el estado actual', ventanasSeñalGsr);
   const trace2 = {
     x: dataX2,
     y: dataY2,
@@ -154,8 +174,92 @@ const Caracterizar = ({ sensoresSelected }) => {
 
   let numY = 0;
   let numX = 0;
+  // async function buscarElementoMongoFront() {
+  //   // appDispatch(setIsLoading(true));
+  //   const document = { name: 'Ernesto Peña', protocol: 'PieDiabetico2en2' };
+  //   const document2 = { name: 'Ernesto Peña', protocol: 'PieDiabetico3en3' };
+  //   // const cadena = 'hola';
+  //   const jsonDocument = JSON.stringify(document);
+  //   // console.log(typeof jsonDocument);
+  //   window.electron.ipcRenderer.buscarElementoMongo(jsonDocument);
+  // }
+  // window.electron.ipcRenderer.buscarElementoM((event, resp) => {
+  //   if (resp.length > 0) {
+  //     console.log(resp[0]);
+  //   } else {
+  //     console.log('No hay nada');
+  //   }
+  // });
 
-  const onClickAdd = () => {
+  async function buscarElementoMongoFront() {
+    const document = { name: 'Ernesto Peña', protocol: 'PieDiabetico2en2' };
+    const document2 = { name: 'Ernesto Peña', protocol: 'PieDiabetico3en3' };
+    const jsonDocument = JSON.stringify(document);
+    const resp = await window.electron.ipcRenderer.buscarElementoM(
+      jsonDocument
+    );
+    return resp;
+  }
+  const sensoresExtraSeleccionados = ['GSR', 'TEMP'];
+
+  const retrieveSignal = async () => {
+    appDispatch(setIsLoading(true));
+
+    const respuesta = await buscarElementoMongoFront();
+    appDispatch(setIsLoading(false));
+
+    console.log('this is resp', respuesta);
+    const { signal1 } = respuesta[0].signals;
+    const { signal2 } = respuesta[0].signals;
+    const { signal3 } = respuesta[0].signals;
+    const { signal4 } = respuesta[0].signals;
+
+    const xArray = [];
+    const yArray = [];
+
+    const xArray2 = [];
+    const yArray2 = [];
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const colors2 = [];
+
+    const gsrSignalLocalX = [];
+    const gsrSignalLocalY = [];
+
+    const tempSignalLocalX = [];
+    const tempSignalLocalY = [];
+
+    for (let i = 0; i < signal1.length; i += 1) {
+      xArray.push(signal1[i].x);
+      yArray.push(signal1[i].y);
+
+      xArray2.push(signal2[i].x);
+      yArray2.push(signal2[i].y);
+      colors2.push('blue');
+
+      gsrSignalLocalX.push(signal3[i].x);
+      gsrSignalLocalY.push(signal3[i].y);
+
+      tempSignalLocalX.push(signal4[i].x);
+      tempSignalLocalY.push(signal4[i].y);
+    }
+    console.log('This is x', xArray);
+    console.log('This is y', yArray);
+    setDataX(xArray);
+    setDataY(yArray);
+
+    setDataX2(xArray2);
+    setDataY2(yArray2);
+    setColors2(colors2);
+
+    console.log('This is xGSR', gsrSignalLocalX);
+
+    setGsrDataX(gsrSignalLocalX);
+    setGsrDataY(gsrSignalLocalY);
+
+    setTempDataX(tempSignalLocalX);
+    setTempDataY(tempSignalLocalY);
+  };
+  const onClickAdd = async () => {
     for (let i = 0; i < 15; i += 1) {
       numX = dataX.at(-1) + 2;
       numY = dataY.at(-1) + 1;
@@ -167,9 +271,6 @@ const Caracterizar = ({ sensoresSelected }) => {
       setDataY2(dataY2.concat(numY + 1));
       setColors2(colors2.concat('blue'));
     }
-    // numX = dataX.at(-1) + 2;
-    // numY = dataY.at(-1) + 1;
-
     // setDataX(dataX.concat(numX));
     // setDataY(dataY.concat(numY));
 
@@ -275,6 +376,9 @@ const Caracterizar = ({ sensoresSelected }) => {
       const ventanas3Local = [];
       const ventanas4Local = [];
 
+      const ventanasGsrLocal = [];
+      const ventanasTempLocal = [];
+
       console.log('Current Colors', colorsLocal1);
       console.log('name', selectedEmg);
       for (let i = 0; i < dataX2.length; i += 1) {
@@ -293,6 +397,8 @@ const Caracterizar = ({ sensoresSelected }) => {
             console.log('this is xdata4', dataX4[i]);
             ventanas4Local.push({ x: dataX3[i], y: dataY3[i] });
           }
+          ventanasGsrLocal.push({ x: gsrDataX[i], y: gsrDataY[i] });
+          ventanasTempLocal.push({ x: tempDataX[i], y: tempDataY[i] });
           colorsLocal1[i] = 'red';
           colorsLocal2[i] = 'red';
           colorsLocal3[i] = 'red';
@@ -322,6 +428,15 @@ const Caracterizar = ({ sensoresSelected }) => {
         setVentanasSeñal2(localArray);
         setColors2([...colorsLocal2]);
       }
+      console.log('Estas son las locales', ventanasGsrLocal);
+      // Contains con nombre de sensores
+      const localArrayGsr = [...ventanasSeñalGsr];
+      localArrayGsr.push(ventanasGsrLocal);
+      setVentanasSeñalGsr(localArrayGsr);
+
+      const localArrayTemp = [...ventanasSeñalTemp];
+      localArrayTemp.push(ventanasTempLocal);
+      setVentanasSeñalTemp(localArrayTemp);
     } else {
       alert('Seleccione una ventana primero');
     }
@@ -335,8 +450,20 @@ const Caracterizar = ({ sensoresSelected }) => {
     ventanaRedux2.map((e) => localArray2.push(e));
     localArray2.push(ventanasSeñal2);
 
+    const localArrayGsr = [];
+    ventanaReduxGsr.map((e) => localArrayGsr.push(e));
+    localArrayGsr.push(ventanasSeñalGsr);
+
+    const localArrayTemp = [];
+    ventanaReduxTemp.map((e) => localArrayTemp.push(e));
+    localArrayTemp.push(ventanasSeñalTemp);
+    console.log('Esto tiene el estado', ventanasSeñalGsr);
+    console.log('Esto voy a guardar', localArrayGsr);
     appDispatch(setVentanasArray(localArray1));
     appDispatch(setVentanasArray2(localArray2));
+    appDispatch(setVentanasArrayGsr(localArrayGsr));
+    appDispatch(setVentanasArrayTemp(localArrayTemp));
+
     if (sujetos !== 1) {
       appDispatch(setCantidadSujetos(sujetos - 1));
       appDispatch(setIsLoading(true));
@@ -345,6 +472,11 @@ const Caracterizar = ({ sensoresSelected }) => {
       navigate('/caracterizar2');
     }
   };
+
+  useEffect(() => {
+    retrieveSignal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <Plot
@@ -371,16 +503,18 @@ const Caracterizar = ({ sensoresSelected }) => {
       />
       <section className="display-center">
         Seleccione en una gráfica la ventana a caracterizar, despues presione
-        confirmar, los puntos seleccionados cambiaran de color. Los mismos
-        segmentos cambiaran de color en el resto de gráficas indicando que la
-        ventana se aplica a todas las señales.
+        confirmar, los puntos seleccionados cambiaran de color. Debe seleccionar
+        la misma cantidad de ventanas por cada EMG graficado. Las ventanas que
+        seleccione, se replicaran para el resto de sus sensores, ejemplo: GSR,
+        Temperatura, etc. Y al procesar se realizaran los cálculos
+        correspondientes en dichos sensores.
       </section>
       <section className="display-center" style={{ fontWeight: 'bold' }}>
         Presione Procesar para terminar la selección y continuar a la extracción
         de características.
       </section>
       <section className="display-center">
-        <Button onClick={onClickAdd} sx={styleButton}>
+        <Button onClick={onClickAdd} sx={styleButton} disabled>
           Presioname
         </Button>
         <Button sx={styleButton} onClick={onClickSelect}>

@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-cycle
-import { RootState } from '../store';
 
 export interface SignalObj {
   length: number;
@@ -11,6 +9,8 @@ export interface SignalObj {
 export interface ISeñales {
   ventanasArray: Array<any>;
   ventanasArray2: Array<any>;
+  ventanasArrayGsr: Array<any>;
+  ventanasArrayTemp: Array<any>;
   cantidadSensores: number;
   cantidadSujetos: number;
   cantidadSujetosRespaldo: number;
@@ -19,6 +19,8 @@ export interface ISeñales {
 const initialState: ISeñales = {
   ventanasArray: [],
   ventanasArray2: [],
+  ventanasArrayGsr: [],
+  ventanasArrayTemp: [],
   cantidadSensores: 0,
   cantidadSujetos: 0,
   cantidadSujetosRespaldo: 0,
@@ -39,6 +41,18 @@ export const SeñalesSlice = createSlice({
       action: PayloadAction<ISeñales['ventanasArray2']>
     ) => {
       state.ventanasArray2 = action.payload;
+    },
+    setVentanasArrayGsr: (
+      state,
+      action: PayloadAction<ISeñales['ventanasArrayGsr']>
+    ) => {
+      state.ventanasArrayGsr = action.payload;
+    },
+    setVentanasArrayTemp: (
+      state,
+      action: PayloadAction<ISeñales['ventanasArrayTemp']>
+    ) => {
+      state.ventanasArrayTemp = action.payload;
     },
     setCantidadSensores: (
       state,
@@ -67,5 +81,7 @@ export const {
   setCantidadSensores,
   setCantidadSujetos,
   setCantidadSujetosRespaldo,
+  setVentanasArrayGsr,
+  setVentanasArrayTemp,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

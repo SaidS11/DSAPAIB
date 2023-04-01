@@ -7,6 +7,8 @@ import {
   setCantidadSujetosRespaldo,
   setVentanasArray,
   setVentanasArray2,
+  setVentanasArrayGsr,
+  setVentanasArrayTemp,
 } from 'redux/slices/SeñalesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
 import { useCustomDispatch } from '../../../redux/hooks';
@@ -136,6 +138,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   };
   appDispatch(setVentanasArray([]));
   appDispatch(setVentanasArray2([]));
+  appDispatch(setVentanasArrayGsr([]));
+  appDispatch(setVentanasArrayTemp([]));
   appDispatch(setCantidadSujetos(2));
   appDispatch(setCantidadSujetosRespaldo(2));
   const onClickStop = () => {
@@ -183,7 +187,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     const dataF = Object.fromEntries(new FormData(form).entries());
     console.log('la data', dataF);
     appDispatch(setAnalisisParams(dataF));
-    navigate('/preAnalisis');
+    navigate('/caracterizar');
+    // navigate('/preAnalisis');
     // preAn()
   };
   return (

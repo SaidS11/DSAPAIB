@@ -23,37 +23,46 @@ const EscogerConfiguracionContainer = () => {
   // Get All the data from the config
   async function loadConfCompleta(name: string) {
     // appDispatch(setIsLoading(true));
-    window.electron.ipcRenderer.selectConfiguracionDetalle(name);
-  }
-  window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('Esta es la config completa', resp);
-      appDispatch(setConfigCompleta(resp));
-      navigate('/colocacionMuestra');
-    } else {
-      console.log('nada en CD');
-    }
+    const resp = await window.electron.ipcRenderer.selectCD(name);
+    appDispatch(setConfigCompleta(resp));
     appDispatch(setIsLoading(false));
-  });
+    navigate('/colocacionMuestra');
+
+    // window.electron.ipcRenderer.selectConfiguracionDetalle(name);
+  }
+  // window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('Esta es la config completa', resp);
+  //     appDispatch(setConfigCompleta(resp));
+  //     navigate('/colocacionMuestra');
+  //   } else {
+  //     console.log('nada en CD');
+  //   }
+  //   appDispatch(setIsLoading(false));
+  // });
 
   // Get Multimedia to Display
   async function loadMulti(dataP: any) {
     // console.log('load multi', data);
     // appDispatch(setIsLoading(true));
     nameConfig = dataP[0].configuracion;
-    window.electron.ipcRenderer.selectMultimediaConfig(nameConfig);
+    const respMulti = await window.electron.ipcRenderer.selectMC(nameConfig);
+    appDispatch(setConfigMultimedia(respMulti));
+    loadConfCompleta(nameConfig);
+
+    // window.electron.ipcRenderer.selectMultimediaConfig(nameConfig);
     /* loadConfCompleta(data[0].configuracion); */
   }
-  window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('Esta es la multimedia', resp);
-    } else {
-      console.log('nada en MC');
-    }
-    // appDispatch(setIsLoading(false));
-    appDispatch(setConfigMultimedia(resp));
-    loadConfCompleta(nameConfig);
-  });
+  // window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('Esta es la multimedia', resp);
+  //   } else {
+  //     console.log('nada en MC');
+  //   }
+  //   // appDispatch(setIsLoading(false));
+  //   appDispatch(setConfigMultimedia(resp));
+  //   loadConfCompleta(nameConfig);
+  // });
 
   // Get data from selected Protocol
   async function loadConf() {
@@ -67,10 +76,10 @@ const EscogerConfiguracionContainer = () => {
     } else {
       console.log('nada en CN');
     }
-    appDispatch(setIsLoading(false));
+    // appDispatch(setIsLoading(false));
 
     // appDispatch(setIsLoading(false));
-    // loadMulti(resp);
+    loadMulti(resp);
   });
 
   const onClickNav = () => {
@@ -94,17 +103,21 @@ const EscogerConfiguracionContainer = () => {
   // Load Protocols
   async function loadData() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectProtocolos();
-  }
-  window.Bridge.selectPrs((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('si es', resp);
-      setData(resp);
-    } else {
-      console.log('nada');
-    }
+    const localResp = await window.electron.ipcRenderer.selectPrs();
+    setData(localResp);
     appDispatch(setIsLoading(false));
-  });
+
+    // window.Bridge.selectProtocolos();
+  }
+  // window.Bridge.selectPrs((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('si es', resp);
+  //     setData(resp);
+  //   } else {
+  //     console.log('nada');
+  //   }
+  //   appDispatch(setIsLoading(false));
+  // });
   useEffect(() => {
     console.log('updated');
     loadData();

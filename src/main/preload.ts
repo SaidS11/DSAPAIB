@@ -11,6 +11,10 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectConfiguracion');
     },
     selectC: () => ipcRenderer.invoke('selectConfiguracion'),
+    selectProtocolos() {
+      ipcRenderer.send('selectProtocolos');
+    },
+    selectPrs: () => ipcRenderer.invoke('selectProtocolos'),
     selectModelosNombre() {
       ipcRenderer.send('selectModelosNombre');
     },
@@ -42,7 +46,7 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('buscarElementoMongo', json);
     },
     buscarElementoM: (callback: any) =>
-      ipcRenderer.on('buscarElementoM', callback),
+      ipcRenderer.invoke('buscarElementoMongo', callback),
     seleccionarTodoMongo() {
       ipcRenderer.send('seleccionarTodoMongo');
     },
@@ -166,9 +170,9 @@ function insertModelo(
   ipcRenderer.send('insertModelo', modelo, prueba, algoritmo_ia, parametros);
 }
 
-function selectProtocolos() {
-  ipcRenderer.send('selectProtocolos');
-}
+// function selectProtocolos() {
+//   ipcRenderer.send('selectProtocolos');
+// }
 
 function selectConfiguracionNombre(nombre: string) {
   ipcRenderer.send('selectConfiguracionNombre', nombre);
@@ -290,8 +294,8 @@ const indexBridge = {
   insertP: (callback: any) => ipcRenderer.on('insertP', callback),
   insertModelo,
   insertMod: (callback: any) => ipcRenderer.on('insertMod', callback),
-  selectProtocolos,
-  selectPrs: (callback: any) => ipcRenderer.on('selectPrs', callback),
+  // selectProtocolos,
+  // selectPrs: (callback: any) => ipcRenderer.on('selectPrs', callback),
   selectConfiguracionNombre,
   selectCN: (callback: any) => ipcRenderer.on('selectCN', callback),
   selectMultimediaConfig,
@@ -310,8 +314,8 @@ const indexBridge = {
   selectRP: (callback: any) => ipcRenderer.on('selectRP', callback),
   selectProtocoloDetalle,
   selectPD: (callback: any) => ipcRenderer.on('selectPD', callback),
-  selectConfiguracionDetalle,
-  selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
+  // selectConfiguracionDetalle,
+  // selectCD: (callback: any) => ipcRenderer.on('selectCD', callback),
 };
 
 contextBridge.exposeInMainWorld('Bridge', indexBridge);

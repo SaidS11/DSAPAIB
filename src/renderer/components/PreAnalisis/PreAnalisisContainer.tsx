@@ -70,7 +70,9 @@ const PreAnalisisContainer = () => {
   async function getParams(params: any) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-    window.electron.ipcRenderer.selectImplementacionPorNombre(params!.nombre);
+    window.electron.ipcRenderer.selectImplementacionPorNombre(
+      params!.algoritmo
+    );
   }
   window.electron.ipcRenderer.selectImplementacionPorN(
     (event: any, resp: any) => {
