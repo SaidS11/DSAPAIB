@@ -322,11 +322,13 @@ async function selectPacientes() {
   return query.rows;
 }
 
-ipcMain.on('selectPacientes', async (event) => {
-  const resp = await selectPacientes();
-  console.log(resp);
-  mainWindow?.webContents.send('selectPs', resp);
-});
+// ipcMain.on('selectPacientes', async (event) => {
+//   const resp = await selectPacientes();
+//   console.log(resp);
+//   mainWindow?.webContents.send('selectPs', resp);
+// });
+
+ipcMain.handle('selectPacientes', selectPacientes);
 
 async function insertPaciente(
   usario: string,
@@ -465,11 +467,15 @@ async function selectConfiguracionNombre(nombre: string) {
   return query.rows;
 }
 
-ipcMain.on('selectConfiguracionNombre', async (event, nombre: string) => {
-  const resp = await selectConfiguracionNombre(nombre);
-  console.log(resp);
-  mainWindow?.webContents.send('selectCN', resp);
-});
+// ipcMain.on('selectConfiguracionNombre', async (event, nombre: string) => {
+//   const resp = await selectConfiguracionNombre(nombre);
+//   console.log(resp);
+//   mainWindow?.webContents.send('selectCN', resp);
+// });
+
+ipcMain.handle('selectConfiguracionNombre', (event, nombre: string) =>
+  selectConfiguracionNombre(nombre)
+);
 
 async function selectMultimediaConfig(nombre: string) {
   const query = await pool.query(

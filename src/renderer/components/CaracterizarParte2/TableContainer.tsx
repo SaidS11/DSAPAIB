@@ -120,6 +120,9 @@ const TableContainer = (props: TableContainerProps) => {
     colMediaABSGsr?: string;
     colMedianaGsr?: string;
     colRMSGsr?: string;
+
+    // Clase
+    etiqueta?: string;
   }
   // const getData = () => {
   //   const objSensoresData: Cols[] = [];
@@ -204,6 +207,7 @@ const TableContainer = (props: TableContainerProps) => {
           colRMSTemp: calcularRms(
             ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
           ),
+          etiqueta: 'Sano',
         };
       }
       console.log('Calculated1', dataJson);
@@ -296,6 +300,15 @@ const TableContainer = (props: TableContainerProps) => {
         {
           Header: 'RMS',
           accessor: `colRMSTemp`,
+        },
+      ],
+    });
+    internalArray.push({
+      Header: 'Etiqueta',
+      columns: [
+        {
+          Header: 'Clase',
+          accessor: 'etiqueta',
         },
       ],
     });

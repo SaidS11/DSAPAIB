@@ -85,19 +85,22 @@ const CrearAnalisisContainer = () => {
 
   async function loadData() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectProtocolos();
-  }
-  window.Bridge.selectPrs((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('si es', resp);
-      setData(resp);
-    } else {
-      // console.log('nada');
-      setOpen(true);
-    }
+    const localResp = await window.electron.ipcRenderer.selectPrs();
+    setData(localResp);
     appDispatch(setIsLoading(false));
-    // appDispatch(setIsLoading(false));
-  });
+    // window.Bridge.selectProtocolos();
+  }
+  // window.Bridge.selectPrs((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('si es', resp);
+  //     setData(resp);
+  //   } else {
+  //     // console.log('nada');
+  //     setOpen(true);
+  //   }
+  //   appDispatch(setIsLoading(false));
+  //   // appDispatch(setIsLoading(false));
+  // });
   async function loadModels() {
     console.log('Fui llamado');
     appDispatch(setIsLoading(true));

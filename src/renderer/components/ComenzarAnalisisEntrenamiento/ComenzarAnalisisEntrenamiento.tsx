@@ -18,18 +18,20 @@ import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/Button
 interface ComenzarAnalisisEntrenamientoProps {
   data: any;
   dataM: any;
-  options: TableOptions<{ col1: string }>;
+  options: TableOptions<{ col1: string, col2: string }>;
   onClickNav: (arg0: any) => void;
   onClickStop: () => void;
   toggleModal: any;
   modelo: any;
   setModelo: any;
+  setProtocolo: any;
+  protocolo: string; 
 }
 
 const ComenzarAnalisisEntrenamiento = (
   props: ComenzarAnalisisEntrenamientoProps
 ) => {
-  const { data, dataM, options, onClickNav, onClickStop, toggleModal, modelo, setModelo } = props;
+  const { data, dataM, options, onClickNav, onClickStop, toggleModal, modelo, setModelo, setProtocolo, protocolo } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -39,7 +41,12 @@ const ComenzarAnalisisEntrenamiento = (
     const num = parseInt(event.target.value, 10);
     setModelo(event.target.value as string);
   };
-  const sortedColumn = (column: HeaderGroup<{ col1: string }>) => {
+
+  const handleChangeProtocol = (event: SelectChangeEvent) => {
+    const num = parseInt(event.target.value, 10);
+    setProtocolo(event.target.value as string);
+  };
+  const sortedColumn = (column: HeaderGroup<{ col1: string, col2: string }>) => {
     if (column.isSortedDesc ?? false) {
       return <span className="icon-arrow-long-up" />;
     }
@@ -53,7 +60,7 @@ const ComenzarAnalisisEntrenamiento = (
       for(let i = 0; i < data.length; i++) {
         console.log('datos recibidios', data[i]);
         plots.push(
-          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+          <MenuItem key={i} value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
         )
       }
       return plots;
@@ -83,19 +90,38 @@ const ComenzarAnalisisEntrenamiento = (
       </div>
       <div className='display-center'>
         <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
-          <section className="display-flexAgregar">
+        <br />
+          <section className="display-center" style={{ marginRight: "5%", marginLeft: "5%" }}>
+            <h4>
+              Seleccione el protocolo del que desea obtener los registros. A continuación personalice los parametros del modelo a entrenar.
+            </h4>
+          </section>
+          {/* <section className="display-flexAgregar">
             <h3>Nombre: </h3>
             <input className="first-input" type="text"  name="nombre" required />
           </section>
           <section className="display-flexAgregar">
             <h3>Descripción: </h3>
             <textarea className="second-input" name="descripcion" required/>
-          </section>
+          </section> */}
           <section className="display-flexAgregar">
             <h3>Protocolo Adquisición: </h3>
-            <select className="fourth-input-modelo" required name="protocolo">
-            {setProtocols()}
-            </select>
+            <section className="list-box-sexo">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="protocolo"
+                  value={protocolo}
+                  label="Protocolo"
+                  onChange={handleChangeProtocol}
+                  required
+                >
+                  {setProtocols()}
+                </Select>
+              </FormControl>
+            </section>
           </section>
           <section className="display-flexAgregar">
             <h3>Algoritmo: </h3>

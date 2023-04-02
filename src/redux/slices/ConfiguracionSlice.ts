@@ -2,11 +2,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../store';
+import { MultimediaObj } from '../../renderer/components/Constants';
 
 export interface IStatus {
   configName: string;
   configDetalle: Object;
-  configMultimedia: Object;
+  configMultimedia: Array<MultimediaObj>;
   configPrimerPaso: Object;
   configCompleta: Object;
   protocoloDetalle: Object;
@@ -19,7 +20,12 @@ export interface IStatus {
 const initialState: IStatus = {
   configName: '',
   configDetalle: {},
-  configMultimedia: {},
+  configMultimedia: [
+    {
+      link_imagen: '',
+      link_video: '',
+    },
+  ],
   configPrimerPaso: {},
   configCompleta: {},
   protocoloDetalle: {},

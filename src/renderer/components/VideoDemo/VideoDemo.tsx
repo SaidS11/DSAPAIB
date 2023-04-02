@@ -69,7 +69,7 @@ const VideoDemo = (props: VideoDemoProps) => {
           </>
         )}
       </section>
-      <section>
+      {/* <section>
         <ProbarSensores
           sensoresSelected={sensores}
           onClickNav={undefined}
@@ -77,7 +77,7 @@ const VideoDemo = (props: VideoDemoProps) => {
           dataXParam={undefined}
           dataYParam={undefined}
         />
-      </section>
+      </section> */}
     </div>
   );
 };

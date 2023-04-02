@@ -1,5 +1,5 @@
-import { Json } from 'aws-sdk/clients/robomaker';
-import { Channels } from 'main/preload';
+import { Channels } from '../main/preload';
+import { PacientesAnalisis, MultimediaObj } from './components/Constants';
 
 declare global {
   interface Window {
@@ -46,10 +46,11 @@ declare global {
         ): unknown;
         selectCD(nombre: string): object;
         selectConfiguracionDetalle(nameConf: string): unknown;
-        selectCN(arg0: (event: any, resp: any) => void): unknown;
-        selectConfiguracionNombre(protocolo: string): unknown;
+        selectConfiguracionNombre(protocolo: any): unknown;
+        selectCN(nombre: string): object;
+        selectPs(): Array<PacientesAnalisis>;
         selectMultimediaConfig(configuracion: any): unknown;
-        selectMC(nombre: string): object;
+        selectMC(nombre: string): Array<MultimediaObj>;
         // selectC(arg0: (event: any, resp: any) => void): unknown;
         selectConfiguracion(): unknown;
         sendMessage(channel: Channels, args: unknown[]): void;

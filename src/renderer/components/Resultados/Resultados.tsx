@@ -34,9 +34,9 @@ const Resultados = (props: ResultadosProps) => {
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
-      <section>
+      {/* <section>
         <ProbarSensores sensoresSelected={sensores} />
-      </section>
+      </section> */}
       <section className="display-center">
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
           Guardar Registro

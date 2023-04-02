@@ -35,12 +35,12 @@ const Video = (props: VideoProps) => {
         <h3>La captura comenzara cuando se de clic en el boton</h3>
       </section>
       <section className="display-center">
-        <Button
+        {/* <Button
           sx={styleButtonBiggerGreen}
           onClick={() => console.log('mostrarvideo')}
         >
           Comenzar
-        </Button>
+        </Button> */}
         <ReactPlayer
           // controls
           url={url}
@@ -56,7 +56,7 @@ const Video = (props: VideoProps) => {
           Cancelar
         </Button>
       </section>
-      <section>
+      {/* <section>
         <ProbarSensores
           sensoresSelected={sensores}
           onClickNav={undefined}
@@ -64,7 +64,7 @@ const Video = (props: VideoProps) => {
           dataXParam={undefined}
           dataYParam={undefined}
         />
-      </section>
+      </section> */}
     </div>
   );
 };

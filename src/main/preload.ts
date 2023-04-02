@@ -11,6 +11,10 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectConfiguracion');
     },
     selectC: () => ipcRenderer.invoke('selectConfiguracion'),
+    selectPacientes() {
+      ipcRenderer.send('selectPacientes');
+    },
+    selectPs: () => ipcRenderer.invoke('selectPacientes'),
     selectProtocolos() {
       ipcRenderer.send('selectProtocolos');
     },
@@ -31,7 +35,8 @@ contextBridge.exposeInMainWorld('electron', {
     selectConfiguracionNombre(nombre: string) {
       ipcRenderer.send('selectConfiguracionNombre', nombre);
     },
-    selectCN: (callback: any) => ipcRenderer.on('selectCN', callback),
+    selectCN: (callback: any) =>
+      ipcRenderer.invoke('selectConfiguracionNombre', callback),
     selectImplementacionNombreIA(nombre: string) {
       ipcRenderer.send('selectImplementacionNombreIA', nombre);
     },

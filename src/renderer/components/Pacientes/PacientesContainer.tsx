@@ -96,28 +96,41 @@ const PacientesContainer = () => {
       console.log('no existe');
     }
   });
+  const datarRetrieved: Cols[] = [];
   async function loadDatos() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectPacientes();
-  }
-  const datarRetrieved: Cols[] = [];
-  window.Bridge.selectPs((event: any, resp: any) => {
-    if (resp.length > 0) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < resp.length; i++) {
-        const fechaReturn = obtenerFecha(resp[i].fecha_nacimiento);
-        datarRetrieved.push({
-          col1: resp[i].nombre,
-          col2: resp[i].apellido_paterno,
-          col3: resp[i].apellido_materno,
-          col4: fechaReturn,
-          col5: resp[i].email,
-        });
-      }
-      setData(datarRetrieved);
-      appDispatch(setIsLoading(false));
+    // window.Bridge.selectPacientes();
+    const pacientes = await window.electron.ipcRenderer.selectPs();
+    for (let i = 0; i < pacientes.length; i += 1) {
+      const fechaReturn = obtenerFecha(pacientes[i].fecha_nacimiento);
+      datarRetrieved.push({
+        col1: pacientes[i].nombre,
+        col2: pacientes[i].apellido_paterno,
+        col3: pacientes[i].apellido_materno,
+        col4: fechaReturn,
+        col5: pacientes[i].email,
+      });
     }
-  });
+    setData(datarRetrieved);
+    appDispatch(setIsLoading(false));
+  }
+  // window.Bridge.selectPs((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     // eslint-disable-next-line no-plusplus
+  //     for (let i = 0; i < resp.length; i++) {
+  //       const fechaReturn = obtenerFecha(resp[i].fecha_nacimiento);
+  //       datarRetrieved.push({
+  //         col1: resp[i].nombre,
+  //         col2: resp[i].apellido_paterno,
+  //         col3: resp[i].apellido_materno,
+  //         col4: fechaReturn,
+  //         col5: resp[i].email,
+  //       });
+  //     }
+  //     setData(datarRetrieved);
+  //     appDispatch(setIsLoading(false));
+  //   }
+  // });
   useEffect(() => {
     console.log('updated');
     loadDatos();

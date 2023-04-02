@@ -23,11 +23,12 @@ interface Config {
 }
 
 const ComenzarAnalisisEntrenamientoContainer = () => {
-  const [dataParam, setDataParam] = useState([]);
+  const [dataParam, setDataParam] = useState({});
   const [dataM, setDataM] = useState<any>([]);
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const [modelo, setModelo] = useState('');
+  const [protocolo, setProtocolo] = useState('');
   const [tipo, setTipo] = useState('');
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
@@ -53,85 +54,41 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   };
   interface Cols {
     col1: string;
+    col2: string;
   }
-  const data = React.useMemo(
-    (): Cols[] => [
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
+  const [data, setData] = useState<Cols[]>([]);
 
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
+  const datarRetrieved: Cols[] = [];
+  async function loadPacientes() {
+    appDispatch(setIsLoading(true));
+    const pacientes = await window.electron.ipcRenderer.selectPs();
+    console.log('Pacientes', pacientes);
+    for (let i = 0; i < pacientes.length; i += 1) {
+      datarRetrieved.push({
+        col1: `${pacientes[i].nombre} ${pacientes[i].apellido_paterno} ${pacientes[i].apellido_materno}`,
+        col2: pacientes[i].etiqueta,
+      });
+    }
+    setData(datarRetrieved);
+    appDispatch(setIsLoading(false));
+  }
 
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-      {
-        col1: 'Analisis 1',
-      },
-      {
-        col1: 'Analisis 2',
-      },
-    ],
-    []
-  );
-  const columns: Array<Column<{ col1: string }>> = React.useMemo(
+  const columns: Array<Column<{ col1: string; col2: string }>> = React.useMemo(
     () => [
       {
-        Header: 'Registros',
+        Header: 'Nombre',
         accessor: 'col1',
+      },
+      {
+        Header: 'Etiqueta',
+        accessor: 'col2',
       },
     ],
     []
   );
   const options: TableOptions<{
     col1: string;
+    col2: string;
   }> = {
     data,
     columns,
@@ -147,18 +104,11 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   };
   async function loadData() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectProtocolos();
-  }
-  window.Bridge.selectPrs((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('si es', resp);
-      setDataParam(resp);
-    } else {
-      console.log('nada');
-      // setOpen(true);
-    }
+    const localResp = await window.electron.ipcRenderer.selectPrs();
+    setDataParam(localResp);
     appDispatch(setIsLoading(false));
-  });
+  }
+
   async function loadModels() {
     console.log('Fui llamado');
     appDispatch(setIsLoading(true));
@@ -175,12 +125,18 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     }
     appDispatch(setIsLoading(false));
   }
+
   useEffect(() => {
     console.log('updated');
     loadData();
     loadModels();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    console.log('updated', protocolo);
+    loadPacientes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [protocolo]);
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = document.querySelector('form') as HTMLFormElement | undefined;
@@ -202,6 +158,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
         toggleModal={toggleModal}
         modelo={modelo}
         setModelo={setModelo}
+        setProtocolo={setProtocolo}
+        protocolo={protocolo}
       />
       {open && (
         <ModalVerMas

@@ -67,20 +67,21 @@ const EscogerConfiguracionContainer = () => {
   // Get data from selected Protocol
   async function loadConf() {
     appDispatch(setIsLoading(true));
-    window.electron.ipcRenderer.selectConfiguracionNombre(protocolo);
+    const respConf = await window.electron.ipcRenderer.selectCN(protocolo);
+    loadMulti(respConf);
   }
-  window.electron.ipcRenderer.selectCN((event: any, resp: any) => {
-    if (resp.length > 0) {
-      console.log('Esta es la config', resp);
-      setData(resp);
-    } else {
-      console.log('nada en CN');
-    }
-    // appDispatch(setIsLoading(false));
+  // window.electron.ipcRenderer.selectCN((event: any, resp: any) => {
+  //   if (resp.length > 0) {
+  //     console.log('Esta es la config', resp);
+  //     setData(resp);
+  //   } else {
+  //     console.log('nada en CN');
+  //   }
+  //   // appDispatch(setIsLoading(false));
 
-    // appDispatch(setIsLoading(false));
-    loadMulti(resp);
-  });
+  //   // appDispatch(setIsLoading(false));
+  //   loadMulti(resp);
+  // });
 
   const onClickNav = () => {
     if (protocolo === '') {
