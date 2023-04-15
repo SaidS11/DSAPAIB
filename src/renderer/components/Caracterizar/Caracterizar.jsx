@@ -14,12 +14,20 @@ import {
   setVentanasArrayTemp,
   setCantidadSujetos,
 } from '../../../redux/slices/SeñalesSlice';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import {
+  setIsLoading,
+  setSignalsIteration,
+} from '../../../redux/slices/StatusSlice';
 import styleButton, {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
 
-const Caracterizar = ({ sensoresSelected }) => {
+const Caracterizar = ({
+  sensoresSelected,
+  selectedPatients,
+  selectedProtocol,
+  currentIteration,
+}) => {
   // const { onClickAdd } = props;
   /* const dataX = [];
   const dataY = [];
@@ -192,8 +200,10 @@ const Caracterizar = ({ sensoresSelected }) => {
   // });
 
   async function buscarElementoMongoFront() {
-    const document = { name: 'Ernesto Peña', protocol: 'PieDiabetico2en2' };
-    const document2 = { name: 'Ernesto Peña', protocol: 'PieDiabetico3en3' };
+    const document = {
+      name: selectedPatients[currentIteration].col1,
+      protocol: selectedProtocol,
+    };
     const jsonDocument = JSON.stringify(document);
     const resp = await window.electron.ipcRenderer.buscarElementoM(
       jsonDocument
@@ -467,6 +477,8 @@ const Caracterizar = ({ sensoresSelected }) => {
     if (sujetos !== 1) {
       appDispatch(setCantidadSujetos(sujetos - 1));
       appDispatch(setIsLoading(true));
+      appDispatch(setSignalsIteration(currentIteration + 1));
+      // appDispatch(selectedPatients(localPatients))
       navigate('/blank');
     } else {
       navigate('/caracterizar2');
@@ -477,6 +489,7 @@ const Caracterizar = ({ sensoresSelected }) => {
     retrieveSignal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log('p', selectedPatients);
   return (
     <div>
       <Plot
@@ -491,7 +504,11 @@ const Caracterizar = ({ sensoresSelected }) => {
         //   ]
         // }
         // layout={{ title: 'Caracterizar', autosize: true, grid: gridLayout, dragmode: 'select' }}
-        layout={{ title: 'Caracterizar', autosize: true, grid: gridLayout }}
+        layout={{
+          title: `Caracterizar \n${selectedPatients[currentIteration].col1}`,
+          autosize: true,
+          grid: gridLayout,
+        }}
         config={{ scrollZoom: true, displaylogo: false }}
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
@@ -514,9 +531,9 @@ const Caracterizar = ({ sensoresSelected }) => {
         de características.
       </section>
       <section className="display-center">
-        <Button onClick={onClickAdd} sx={styleButton} disabled>
+        {/* <Button onClick={onClickAdd} sx={styleButton} disabled>
           Presioname
-        </Button>
+        </Button> */}
         <Button sx={styleButton} onClick={onClickSelect}>
           Confirmar Ventana
         </Button>

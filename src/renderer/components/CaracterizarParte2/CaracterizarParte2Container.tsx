@@ -85,6 +85,9 @@ const CaracterizarParte2Container = () => {
   const cantidadSujetos = useCustomSelector(
     (state) => state.señales.cantidadSujetosRespaldo
   );
+  const selectedPatients = useCustomSelector(
+    (state) => state.config.selectedPatients
+  );
   console.log('This was stored', ventanaSeñal1);
   console.log('This was stored 2', ventanaSeñal2);
 
@@ -165,7 +168,7 @@ const CaracterizarParte2Container = () => {
   for (let i = 0; i < cantidadSujetos; i += 1) {
     componentArray.push(
       <div>
-        <h3>Sujeto {i + 1}</h3>
+        <h3>{selectedPatients[i].col1}</h3>
         <TableContainer
           cantidadSensores={cantidadSensores}
           cantidadSensoresExtra={2}
@@ -174,6 +177,8 @@ const CaracterizarParte2Container = () => {
           ventanasArray2={ventanasArray2}
           ventanasArrayGsr={ventanasArrayGsr}
           ventanasArrayTemp={ventanasArrayTemp}
+          selectedPatients={selectedPatients}
+          patientNumber={i}
         />
       </div>
     );

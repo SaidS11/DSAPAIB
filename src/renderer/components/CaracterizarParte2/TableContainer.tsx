@@ -2,6 +2,7 @@ import React from 'react';
 import { Column } from 'react-table';
 import { useCustomSelector } from '../../../redux/hooks';
 import Table from './Table';
+import { SelectedPatientObj } from '../Utilities/Constants';
 
 interface SignalObj {
   x: number;
@@ -65,6 +66,8 @@ interface TableContainerProps {
   ventanasArray2: any;
   ventanasArrayGsr: any;
   ventanasArrayTemp: any;
+  selectedPatients: Array<SelectedPatientObj>;
+  patientNumber: number;
 }
 const TableContainer = (props: TableContainerProps) => {
   const {
@@ -75,6 +78,8 @@ const TableContainer = (props: TableContainerProps) => {
     ventanasArray2,
     ventanasArrayGsr,
     ventanasArrayTemp,
+    selectedPatients,
+    patientNumber,
   } = props;
   // const ventanaSeñal1 = useCustomSelector(
   //   (state) => state.señales.ventanasArray
@@ -207,7 +212,7 @@ const TableContainer = (props: TableContainerProps) => {
           colRMSTemp: calcularRms(
             ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
           ),
-          etiqueta: 'Sano',
+          etiqueta: selectedPatients[patientNumber].col2,
         };
       }
       console.log('Calculated1', dataJson);

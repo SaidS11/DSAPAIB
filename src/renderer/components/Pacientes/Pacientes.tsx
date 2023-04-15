@@ -9,11 +9,21 @@ import {
   TableOptions,
   useSortBy,
   useFilters,
+  useGlobalFilter,
   HeaderGroup,
 } from 'react-table';
+import MaUTable from '@mui/material/Table';
+import PropTypes from 'prop-types';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 // import Button from "@material-ui/core/Button";
 import '../../../../assets/Iconos/style.css';
 import './Table.css';
+import GlobalFilter from '../ComenzarAnalisisEntrenamiento/GlobalFilter';
 
 interface PacientesContentProps {
   filterInput: string;
@@ -27,26 +37,46 @@ interface PacientesContentProps {
   }>;
   onClickRow: (arg0: any) => void;
   onClickNavigate: () => void;
+  data: any;
+  columns: any;
 }
-
+const TableStyles = (theme: any) => ({
+  head1: {
+    zIndex: 3,
+    position: 'sticky',
+    top: '0px',
+  },
+  rotatedContent1: {
+    transform: 'rotate(270deg)',
+  },
+});
 const Pacientes = (props: PacientesContentProps) => {
-  const { filterInput, setFilterInput, options, onClickRow, onClickNavigate } =
-    props;
-
+  const {
+    filterInput,
+    setFilterInput,
+    options,
+    onClickRow,
+    onClickNavigate,
+    data,
+    columns,
+  } = props;
   // const classes = useClasses(TableStyles);
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
+    page,
     prepareRow,
-    setFilter,
-  } = useTable(options, useFilters, useSortBy);
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value || '';
-    setFilter('col1', value);
-    setFilterInput(value);
-  };
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { globalFilter },
+  } = useTable({ data, columns }, useGlobalFilter, useSortBy);
+  // const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value || '';
+  //   setFilter('col1', value);
+  //   setFilterInput(value);
+  // };
   const sortedColumn = (
     column: HeaderGroup<{
       col1: string;
@@ -78,13 +108,11 @@ const Pacientes = (props: PacientesContentProps) => {
         </section>
       </div>
       <div style={{ display: 'flex' }}>
-        <h3 style={{ paddingRight: '10px' }}>Busqueda:</h3>
-        <input
-          type="text"
-          placeholder="Nombres, Nombres"
-          className="input"
-          value={filterInput}
-          onChange={handleFilterChange}
+        <h3>Busqueda:</h3>
+        <GlobalFilter
+          preGlobalFilteredRows={preGlobalFilteredRows}
+          globalFilter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
         />
       </div>
       <div
@@ -94,41 +122,63 @@ const Pacientes = (props: PacientesContentProps) => {
           maxHeight: '70vh',
         }}
       >
-        <table {...getTableProps()} className="tableCustom">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  onClick={() => onClickRow(row)}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+        <TableContainer>
+          <MaUTable stickyHeader aria-label="sticky table" {...getTableProps()}>
+            <TableHead className="head1">
+              {headerGroups.map((headerGroup) => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <TableCell
+                      {...(column.id === 'selection'
+                        ? column.getHeaderProps()
+                        : column.getHeaderProps(column.getSortByToggleProps()))}
+                      className="shortHeader"
+                      style={{
+                        fontWeight: 'bold',
+                        position: 'sticky',
+                        top: '0px',
+                      }}
+                    >
+                      {column.render('Header')}
+                      {column.id !== 'selection' ? (
+                        <TableSortLabel
+                          active={column.isSorted}
+                          // react-table has a unsorted state which is not treated here
+                          direction={column.isSortedDesc ? 'desc' : 'asc'}
+                        />
+                      ) : null}
+                    </TableCell>
                   ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <TableRow
+                    {...row.getRowProps()}
+                    onClick={() => onClickRow(row)}
+                    className={
+                      row.index % 2 === 0
+                        ? 'tableElementOdd'
+                        : 'tableElementEven'
+                    }
+                  >
+                    {/* onClick={() => onClickRow(row)} */}
+                    {row.cells.map((cell) => {
+                      return (
+                        <TableCell {...cell.getCellProps()}>
+                          {cell.render('Cell')}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </MaUTable>
+        </TableContainer>
       </div>
     </div>
   );

@@ -1,5 +1,9 @@
 import { Channels } from '../main/preload';
-import { PacientesAnalisis, MultimediaObj } from './components/Constants';
+import {
+  PacientesAnalisis,
+  MultimediaObj,
+  PacientesAnalisisMongo,
+} from './components/Utilities/Constants';
 
 declare global {
   interface Window {
@@ -7,7 +11,7 @@ declare global {
       ipcRenderer: {
         insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoMongo(archivo: string): unknown;
-        buscarElementoM(archivo: string): unknown;
+        buscarElementoM(archivo: string): Array<object>;
         buscarElementoMongo(archivo: string): unknown;
         seleccionarTodoM(arg0: (event: any, resp: any) => void): unknown;
         seleccionarTodoMongo(): unknown;

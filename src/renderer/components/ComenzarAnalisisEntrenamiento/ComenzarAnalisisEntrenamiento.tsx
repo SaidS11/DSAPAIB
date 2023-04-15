@@ -14,8 +14,11 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
+import EnhancedTable from './EnhancedTable';
 
 interface ComenzarAnalisisEntrenamientoProps {
+  tableData: any;
+  columnsData: any;
   data: any;
   dataM: any;
   options: TableOptions<{ col1: string, col2: string }>;
@@ -26,12 +29,31 @@ interface ComenzarAnalisisEntrenamientoProps {
   setModelo: any;
   setProtocolo: any;
   protocolo: string; 
+  setFiltroSexo: any;
+  filtroSexo: any;
+  // setSelectedPatientsLocal: any;
 }
 
 const ComenzarAnalisisEntrenamiento = (
   props: ComenzarAnalisisEntrenamientoProps
 ) => {
-  const { data, dataM, options, onClickNav, onClickStop, toggleModal, modelo, setModelo, setProtocolo, protocolo } = props;
+  const { 
+    tableData, 
+    columnsData, 
+    data, 
+    dataM, 
+    options, 
+    onClickNav, 
+    onClickStop, 
+    toggleModal, 
+    modelo, 
+    setModelo, 
+    setProtocolo, 
+    protocolo,
+    setFiltroSexo,
+    filtroSexo,
+    // setSelectedPatientsLocal,
+   } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -43,8 +65,10 @@ const ComenzarAnalisisEntrenamiento = (
   };
 
   const handleChangeProtocol = (event: SelectChangeEvent) => {
-    const num = parseInt(event.target.value, 10);
     setProtocolo(event.target.value as string);
+  };
+  const handleChangeFiltroSexo = (event: SelectChangeEvent) => {
+    setFiltroSexo(event.target.value as string);
   };
   const sortedColumn = (column: HeaderGroup<{ col1: string, col2: string }>) => {
     if (column.isSortedDesc ?? false) {
@@ -58,7 +82,7 @@ const ComenzarAnalisisEntrenamiento = (
     if (data.length > 0) {
       // eslint-disable-next-line no-plusplus
       for(let i = 0; i < data.length; i++) {
-        console.log('datos recibidios', data[i]);
+        console.log('datos recibidos', data[i]);
         plots.push(
           <MenuItem key={i} value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
         )
@@ -157,22 +181,36 @@ const ComenzarAnalisisEntrenamiento = (
       </div>
       <section className="display-flexAgregar">
           <h4>Sexo: </h4>
+          <section className="list-box-sexo">
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="sexo"
+                value={filtroSexo}
+                label="Sexo"
+                onChange={handleChangeFiltroSexo}
+              >
+                <MenuItem key='Cualquiera' value='Cualquiera'>Cualquiera</MenuItem>
+                <MenuItem key='Hombre' value='Hombre'>Hombre</MenuItem>
+                <MenuItem key='Mujer' value='Mujer'>Mujer</MenuItem>
+              </Select>
+            </FormControl>
+          </section>
+          {/* <h4>Edad (años): </h4>
           <select>
-          <option>Hombre</option>
-          <option>Mujer</option>
-          </select>
-          <h4>Edad (años): </h4>
-          <select>
-          <option>10 a 15</option>
-          <option>15 a 20</option>
-          <option>20 a 25</option>
-          <option>25 a 30</option>
-          <option>30 a 35</option>
-          <option>35 a 40</option>
-          <option>40 a 45</option>
-          <option>45 a 50</option>
-          <option>Más de 50</option>
-          </select>
+            <option>Cualquiera</option>
+            <option>10 a 15</option>
+            <option>15 a 20</option>
+            <option>20 a 25</option>
+            <option>25 a 30</option>
+            <option>30 a 35</option>
+            <option>35 a 40</option>
+            <option>40 a 45</option>
+            <option>45 a 50</option>
+            <option>Más de 50</option>
+          </select> */}
         </section>
         <br />
       <div
@@ -183,44 +221,15 @@ const ComenzarAnalisisEntrenamiento = (
           marginLeft: '80px',
         }}
       >
-        <table {...getTableProps()} className="tableCustom" >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <EnhancedTable
+        columns={columnsData}
+        data={tableData}
+        // setSelectedPatientsLocal={setSelectedPatientsLocal}
+      />
       </div>
       <div className="display-center" style={{ marginTop: '10px' }}>
         <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
+        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{tableData.length}</h5>
       </div>
       <div className="display-center" style={{ marginTop: '10px' }}>
         <Button sx={styleButtonBigger} onClick={() => toggleModal('body')} style={ modelo === '' ? {backgroundColor: "grey", pointerEvents: "none" } : {}}>

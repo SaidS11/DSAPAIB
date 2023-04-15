@@ -9,6 +9,7 @@ export interface IStatus {
   failUpload: boolean;
   failUploadS3: boolean;
   errorDetails: string;
+  signalsIteration: number;
 }
 
 const initialState: IStatus = {
@@ -18,6 +19,7 @@ const initialState: IStatus = {
   failUpload: false,
   failUploadS3: false,
   errorDetails: '',
+  signalsIteration: 0,
 };
 
 export const StatusSlice = createSlice({
@@ -51,6 +53,12 @@ export const StatusSlice = createSlice({
     ) => {
       state.errorDetails = action.payload;
     },
+    setSignalsIteration: (
+      state,
+      action: PayloadAction<IStatus['signalsIteration']>
+    ) => {
+      state.signalsIteration = action.payload;
+    },
   },
 });
 
@@ -61,6 +69,7 @@ export const {
   setFailUpload,
   setFailUploadS3,
   setErrorDetails,
+  setSignalsIteration,
 } = StatusSlice.actions;
 export const selectIsLoading = (state: RootState) => state.status.isLoading;
 export const selectIsUploaded = (state: RootState) => state.status.isUploaded;

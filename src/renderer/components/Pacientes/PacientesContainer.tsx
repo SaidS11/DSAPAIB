@@ -162,6 +162,8 @@ const PacientesContainer = () => {
       options={options}
       onClickRow={onClickRow}
       onClickNavigate={onClickNavigate}
+      data={data}
+      columns={columns}
     />
   );
 };

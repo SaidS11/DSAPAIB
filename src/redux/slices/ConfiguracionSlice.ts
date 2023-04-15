@@ -2,7 +2,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import { RootState } from '../store';
-import { MultimediaObj } from '../../renderer/components/Constants';
+import {
+  MultimediaObj,
+  SelectedPatientObj,
+} from '../../renderer/components/Utilities/Constants';
 
 export interface IStatus {
   configName: string;
@@ -15,6 +18,7 @@ export interface IStatus {
   analisisParams: Object;
   algoritmoIA: string;
   modeloDetalle: Object;
+  selectedPatients: Array<SelectedPatientObj>;
 }
 
 const initialState: IStatus = {
@@ -33,6 +37,12 @@ const initialState: IStatus = {
   analisisParams: {},
   algoritmoIA: '',
   modeloDetalle: {},
+  selectedPatients: [
+    {
+      col1: '',
+      col2: '',
+    },
+  ],
 };
 
 export const ConfiguracionSlice = createSlice({
@@ -93,6 +103,12 @@ export const ConfiguracionSlice = createSlice({
     ) => {
       state.modeloDetalle = action.payload;
     },
+    setSelectedPatients: (
+      state,
+      action: PayloadAction<IStatus['selectedPatients']>
+    ) => {
+      state.selectedPatients = action.payload;
+    },
   },
 });
 
@@ -107,6 +123,7 @@ export const {
   setAnalisisParams,
   setAlgoritmoIA,
   setModeloDetalle,
+  setSelectedPatients,
 } = ConfiguracionSlice.actions;
 export const selectConfigName = (state: RootState) => state.config.configName;
 export const selectConfigDetalle = (state: RootState) =>

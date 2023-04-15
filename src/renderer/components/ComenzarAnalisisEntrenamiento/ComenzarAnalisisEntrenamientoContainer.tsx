@@ -11,10 +11,11 @@ import {
   setVentanasArrayTemp,
 } from 'redux/slices/SeñalesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import ComenzarAnalisisEntrenamiento from './ComenzarAnalisisEntrenamiento';
 import ModalVerMas from '../ResultadosAnalisis/ModalVerMas';
+import { PacientesAnalisisMongo } from '../Utilities/Constants';
 
 // Crear vermas datos y el vermas dejarlo como vermas final, en el datos no se podran ver la confusion o en el tree, regresar await a como estaba
 interface Config {
@@ -29,9 +30,14 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const [modelo, setModelo] = useState('');
   const [protocolo, setProtocolo] = useState('');
+  const [filtroSexo, setFiltroSexo] = useState('');
   const [tipo, setTipo] = useState('');
+  const [selectedPatientsLocal, setSelectedPatientsLocal] = useState([{}]);
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
+  // const selectedPatients = useCustomSelector(
+  //   (state) => state.config.selectedPatients
+  // );
   async function preAn() {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
@@ -59,13 +65,17 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   const [data, setData] = useState<Cols[]>([]);
 
   const datarRetrieved: Cols[] = [];
+
   async function loadPacientes() {
     appDispatch(setIsLoading(true));
-    const pacientes = await window.electron.ipcRenderer.selectPs();
-    console.log('Pacientes', pacientes);
+    const document = { protocol: protocolo };
+    const jsonDocument = JSON.stringify(document);
+    const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
+      jsonDocument
+    )) as Array<PacientesAnalisisMongo>;
     for (let i = 0; i < pacientes.length; i += 1) {
       datarRetrieved.push({
-        col1: `${pacientes[i].nombre} ${pacientes[i].apellido_paterno} ${pacientes[i].apellido_materno}`,
+        col1: pacientes[i].name,
         col2: pacientes[i].etiqueta,
       });
     }
@@ -137,19 +147,27 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     loadPacientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [protocolo]);
+  console.log('LocalState', selectedPatientsLocal);
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // if(selectedPatientsLocal.length < 0) {
+    //   alert("Seleccione al menos un paciente")
+    // }
+    // else {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
     console.log('la data', dataF);
     appDispatch(setAnalisisParams(dataF));
     navigate('/caracterizar');
+    // }
     // navigate('/preAnalisis');
     // preAn()
   };
   return (
     <div>
       <ComenzarAnalisisEntrenamiento
+        tableData={data}
+        columnsData={columns}
         data={dataParam}
         dataM={dataM}
         options={options}
@@ -160,6 +178,9 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
         setModelo={setModelo}
         setProtocolo={setProtocolo}
         protocolo={protocolo}
+        setFiltroSexo={setFiltroSexo}
+        filtroSexo={filtroSexo}
+        // setSelectedPatientsLocal={setSelectedPatientsLocal}
       />
       {open && (
         <ModalVerMas
