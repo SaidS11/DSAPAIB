@@ -34,6 +34,18 @@ const Resultados = (props: ResultadosProps) => {
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
+      <section className="display-flex">
+        <h5>Estado del paciente: </h5>
+        <input
+          type="text"
+          name="estado"
+          required
+          style={{ marginLeft: '10px' }}
+        />
+        <Button sx={styleButtonBiggerGreen} style={{ marginLeft: '20px' }}>
+          Actualizar Estado
+        </Button>
+      </section>
       {/* <section>
         <ProbarSensores sensoresSelected={sensores} />
       </section> */}

@@ -69,6 +69,18 @@ const VerPaciente = (props: VerPacienteProps) => {
           <h5 style={{ paddingLeft: '10px' }}>Estatura:</h5>
           <h5 className="second-item">1.50 metros</h5>
         </section>
+        <section className="display-flex">
+          <h5>Estado del paciente: </h5>
+          <input
+            type="text"
+            name="nombre"
+            required
+            style={{ marginLeft: '10px' }}
+          />
+          <Button sx={styleButton} style={{ marginLeft: '20px' }}>
+            Actualizar Estado
+          </Button>
+        </section>
       </div>
       <br />
       <div
