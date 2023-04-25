@@ -23,6 +23,10 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('selectModelosNombre');
     },
     selectModNom: () => ipcRenderer.invoke('selectModelosNombre'),
+    selectAlgoritmos() {
+      ipcRenderer.send('selectAlgoritmos');
+    },
+    selectAlgos: () => ipcRenderer.invoke('selectAlgoritmos'),
     selectAlgoritmosIA() {
       ipcRenderer.send('selectAlgoritmosIA');
     },
@@ -83,6 +87,26 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectCD: (callback: any) =>
       ipcRenderer.invoke('selectConfiguracionDetalle', callback),
+    selectModelosIA() {
+      ipcRenderer.send('selectModelosIA');
+    },
+    selectModIA: (callback: any) =>
+      ipcRenderer.invoke('selectModelosIA', callback),
+    insertModeloIA(
+      nombre: string,
+      algoritmo_ia: string,
+      entrenado: boolean,
+      protocolo: string
+    ) {
+      ipcRenderer.send(
+        'insertModeloIA',
+        nombre,
+        algoritmo_ia,
+        entrenado,
+        protocolo
+      );
+    },
+    insertModIA: (callback: any) => ipcRenderer.on('insertModIA', callback),
     selectImplementacionPorNombre(nombre: string) {
       ipcRenderer.send('selectImplementacionPorNombre', nombre);
     },
@@ -93,7 +117,8 @@ contextBridge.exposeInMainWorld('electron', {
       params: string,
       nombre: string,
       iteraciones: string,
-      reducedPercentage: string
+      reducedPercentage: string,
+      datos: string
     ) {
       ipcRenderer.invoke(
         'analisisPython',
@@ -102,10 +127,33 @@ contextBridge.exposeInMainWorld('electron', {
         params,
         nombre,
         iteraciones,
-        reducedPercentage
+        reducedPercentage,
+        datos
       );
     },
     analisisP: (callback: any) => ipcRenderer.on('analisisP', callback),
+
+    // analisisPython(
+    //   type: string,
+    //   typeIA: string,
+    //   params: string,
+    //   nombre: string,
+    //   iteraciones: string,
+    //   reducedPercentage: string,
+    //   datos: string
+    // ) {
+    //   ipcRenderer.send(
+    //     'analisisPython',
+    //     type,
+    //     typeIA,
+    //     params,
+    //     nombre,
+    //     iteraciones,
+    //     reducedPercentage,
+    //     datos,
+    //   );
+    // },
+    // analisisP: (callback: any) => ipcRenderer.invoke('analisisPython', callback),
     preAnalisisPython() {
       ipcRenderer.invoke('preAnalisisPython');
     },

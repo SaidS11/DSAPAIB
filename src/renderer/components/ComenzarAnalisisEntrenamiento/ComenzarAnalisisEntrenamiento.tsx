@@ -13,14 +13,17 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { useMemo } from 'react';
 import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
 import EnhancedTable from './EnhancedTable';
+import { Algoritmo } from '../Utilities/Constants';
+import GeneralTable from './AlgorithmTable';
 
 interface ComenzarAnalisisEntrenamientoProps {
   tableData: any;
   columnsData: any;
   data: any;
-  dataM: any;
+  dataAlgoritmo: any;
   options: TableOptions<{ col1: string, col2: string }>;
   onClickNav: (arg0: any) => void;
   onClickStop: () => void;
@@ -41,7 +44,7 @@ const ComenzarAnalisisEntrenamiento = (
     tableData, 
     columnsData, 
     data, 
-    dataM, 
+    dataAlgoritmo, 
     options, 
     onClickNav, 
     onClickStop, 
@@ -94,18 +97,32 @@ const ComenzarAnalisisEntrenamiento = (
   }
   const numOfAlgos = () => {
     const models = [];
-    if (dataM.length >= 1) {
+    if (dataAlgoritmo.length >= 1) {
       // eslint-disable-next-line no-plusplus
-      for(let i = 0; i < dataM.length; i++) {
+      for(let i = 0; i < dataAlgoritmo.length; i++) {
         // console.log('datos recibidios', data[i]);
         models.push(
-          <MenuItem key={i} value={`${dataM[i].nombre}`}>{dataM[i].nombre}</MenuItem>
+          <MenuItem key={i} value={`${dataAlgoritmo[i].nombre}`}>{dataAlgoritmo[i].nombre}</MenuItem>
         )
       }
       return models;
     }
     return <option value={1}>1</option>;
   }
+
+  const retrieveAlgoData = useMemo(() => {
+    if (modelo !== '') {
+      const selected = dataAlgoritmo.find((objeto: Algoritmo) => objeto.nombre === modelo);
+      console.log("Retrieved", selected);
+      const claves = Object.keys(selected);
+      console.log("claves", claves);
+      return <GeneralTable headers={claves} datos={selected}/>
+    } 
+      return <div />
+    
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modelo]);
 
   return (
     <div>
@@ -165,14 +182,22 @@ const ComenzarAnalisisEntrenamiento = (
                 </Select>
               </FormControl>
             </section>
+          
           </section>
+          {modelo !== '' &&
+          <section className="display-flexAgregar" style={{display: "block"}}>
+            <h3>Datos del algoritmo: </h3>
+            <br />
+            {retrieveAlgoData}
+          </section>
+          }
           <section className="display-flexAgregar">
             <h3>Numero de Iteraciones: </h3>
-            <input type="number" name="iteraciones" required min="10" max="500" />
+            <input type="number" name="iteraciones" required min="1" max="500" />
           </section>
           <section className="display-flexAgregar">
             <h3>Porcentaje de Datos de Prueba: </h3>
-            <input type="number" name="porcentaje" required min="10" max="500" />
+            <input type="number" name="porcentaje" required min="1" max="500" />
           </section>
           <br />
         

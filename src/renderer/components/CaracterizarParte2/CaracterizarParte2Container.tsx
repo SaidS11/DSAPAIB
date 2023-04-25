@@ -189,7 +189,8 @@ const CaracterizarParte2Container = () => {
   // )
 
   const OnClickNav = () => {
-    navigate('/preAnalisis');
+    // navigate('/preAnalisis');
+    navigate('/test');
   };
   const OnClickBack = () => {
     navigate('/entrenar');

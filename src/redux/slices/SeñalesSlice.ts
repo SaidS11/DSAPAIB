@@ -14,6 +14,7 @@ export interface ISeñales {
   cantidadSensores: number;
   cantidadSujetos: number;
   cantidadSujetosRespaldo: number;
+  datosAnalisisIA: Array<any>;
 }
 
 const initialState: ISeñales = {
@@ -24,6 +25,7 @@ const initialState: ISeñales = {
   cantidadSensores: 0,
   cantidadSujetos: 0,
   cantidadSujetosRespaldo: 0,
+  datosAnalisisIA: [],
 };
 
 export const SeñalesSlice = createSlice({
@@ -72,6 +74,20 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.cantidadSujetosRespaldo = action.payload;
     },
+    setDatosAnalisisIA: (
+      state,
+      action: PayloadAction<ISeñales['datosAnalisisIA']>
+    ) => {
+      const copy = state.datosAnalisisIA;
+      const newArray = [...copy, action.payload];
+      state.datosAnalisisIA = newArray;
+    },
+    setCleanDatosAnalisisIA: (
+      state,
+      action: PayloadAction<ISeñales['datosAnalisisIA']>
+    ) => {
+      state.datosAnalisisIA = action.payload;
+    },
   },
 });
 
@@ -83,5 +99,7 @@ export const {
   setCantidadSujetosRespaldo,
   setVentanasArrayGsr,
   setVentanasArrayTemp,
+  setDatosAnalisisIA,
+  setCleanDatosAnalisisIA,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

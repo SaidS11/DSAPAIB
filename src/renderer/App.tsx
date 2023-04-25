@@ -45,6 +45,8 @@ import CrearImplementacionContainer from './components/CrearAlgoritmo/CrearAlgor
 import VerAlgoritmosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
 import VerModeloContainer from './components/VerModelo/VerModeloContainer';
 import VerModelosContainer from './components/VerModelos/VerModelosContainer';
+import Test from './components/CaracterizarParte2/Test';
+import ResultsTableContainer from './components/Utilities/ResultsTableContainer';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -65,6 +67,8 @@ export default function App() {
           <br />
           <Routes>
             <Route path="/blank" element={<Blank />} />
+            <Route path="/test" element={<Test />} />
+            {/* <Route path="/resTable" element={<ResultsTableContainer />} /> */}
 
             <Route path="/" element={<VerInicioContainer />} />
             <Route path="/caracterizar" element={<CaracterizarContainer />} />
@@ -120,7 +124,7 @@ export default function App() {
               path="/escogerConfiguracion"
               element={<EscogerConfiguracionContainer />}
             />
-            <Route path="/verPrediccion" element={<PrediccionContainer />} />
+            <Route path="/prediccion" element={<PrediccionContainer />} />
             <Route
               path="/crearConfigMultimedia"
               element={<CrearConfiguracionMultimediaContainer />}

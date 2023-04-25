@@ -2,7 +2,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import MaUTable from '@mui/material/Table';
 import PropTypes from 'prop-types';
@@ -162,7 +162,11 @@ const EnhancedTable = ({
     return newArr;
   };
   console.log('IDs', selectedRowIds);
-  findPatientById(selectedRowIds, data);
+  const find = useMemo(
+    () => findPatientById(selectedRowIds, data),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selectedRowIds]
+  );
   // Render the UI for your table
   return (
     <TableContainer>

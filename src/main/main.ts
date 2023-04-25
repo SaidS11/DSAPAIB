@@ -199,6 +199,12 @@ async function insertarElementoMongo(query: string) {
   }
 }
 
+ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
+  const resp = await insertarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('insertarElementoM', resp);
+});
+
 async function buscarElementoMongo(query: string) {
   console.log('Buscandop');
 
@@ -267,12 +273,6 @@ ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
   const resp = await iniciarSesion(user, pass);
   console.log(resp);
   mainWindow?.webContents.send('loggearD', resp);
-});
-
-ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
-  const resp = await insertarElementoMongo(archivo);
-  console.log(resp);
-  mainWindow?.webContents.send('insertarElementoM', resp);
 });
 
 ipcMain.on('seleccionarTodoMongo', async () => {
@@ -451,12 +451,77 @@ async function selectModelosNombre() {
 }
 ipcMain.handle('selectModelosNombre', selectModelosNombre);
 
+async function selectAlgoritmos() {
+  const query = await pool.query(' select * from implementacion ');
+  console.log('Estas son las rows', query.rows);
+  return query.rows;
+}
+ipcMain.handle('selectAlgoritmos', selectAlgoritmos);
+
 async function selectProtocolos() {
   const query = await pool.query(' select nombre from protocolo_adquisicion  ');
   console.log(query.rows);
   return query.rows;
 }
 ipcMain.handle('selectProtocolos', selectProtocolos);
+
+async function insertModeloIA(
+  nombre: string,
+  algoritmo_ia: string,
+  entrenado: boolean,
+  protocolo: string
+) {
+  console.log('Recibido', nombre, algoritmo_ia, entrenado, protocolo);
+  try {
+    const query = await pool.query(
+      ' INSERT INTO modelo(nombre, algoritmo_ia, entrenado, protocolo) values ($1,$2,$3,$4)  ',
+      [nombre, algoritmo_ia, entrenado, protocolo]
+    );
+    console.log(query.rows);
+    return query.rows;
+  } catch (e: any) {
+    console.log('ERRORRRRRR', e);
+    return [0, e.detail];
+  }
+}
+
+// ipcMain.handle(
+//   'insertModeloIA',
+//   async (
+//     event,
+//     nombre: string,
+//     algoritmo_ia: string,
+//     entrenado: boolean,
+//     protocolo: string
+//   ) => await insertModeloIA(nombre, algoritmo_ia, entrenado, protocolo)
+// );
+
+ipcMain.on(
+  'insertModeloIA',
+  async (
+    event,
+    nombre: string,
+    algoritmo_ia: string,
+    entrenado: boolean,
+    protocolo: string
+  ) => {
+    const resp = await insertModeloIA(
+      nombre,
+      algoritmo_ia,
+      entrenado,
+      protocolo
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('insertModIA', resp);
+  }
+);
+
+async function selectModelosIA() {
+  const query = await pool.query(' select * from modelo ');
+  console.log('Estas son las rows', query.rows);
+  return query.rows;
+}
+ipcMain.handle('selectModelosIA', selectModelosIA);
 
 async function selectConfiguracionNombre(nombre: string) {
   const query = await pool.query(
@@ -913,11 +978,20 @@ ipcMain.handle(
     params: string,
     nombre: string,
     iteraciones: string,
-    reducedPercentage: string
+    reducedPercentage: string,
+    datos: string
   ) => {
     const options = {
       // scriptPath: "../pythonScripts/",
-      args: [tipo, tipoIA, params, nombre, iteraciones, reducedPercentage],
+      args: [
+        tipo,
+        tipoIA,
+        params,
+        nombre,
+        iteraciones,
+        reducedPercentage,
+        datos,
+      ],
     };
     console.log('Llamado 2');
     // const location = require("../pythonScripts/testing.py")

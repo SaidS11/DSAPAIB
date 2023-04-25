@@ -1,12 +1,37 @@
-import React from 'react';
+/* eslint-disable no-return-assign */
+import React, { useEffect } from 'react';
 import { Column } from 'react-table';
-import { useCustomSelector } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import Table from './Table';
 import { SelectedPatientObj } from '../Utilities/Constants';
+import { setDatosAnalisisIA } from '../../../redux/slices/SeñalesSlice';
 
 interface SignalObj {
   x: number;
   y: number;
+}
+
+interface Cols {
+  nombre?: string;
+  // EMG's
+  colMediaABSEMG1?: string;
+  colMedianaEMG1?: string;
+  colRMSEMG1?: string;
+
+  colMediaABSEMG2?: string;
+  colMedianaEMG2?: string;
+  colRMSEMG2?: string;
+  // TEMP
+  colMediaABSTemp?: string;
+  colMedianaTemp?: string;
+  colRMSTemp?: string;
+  // GSR
+  colMediaABSGsr?: string;
+  colMedianaGsr?: string;
+  colRMSGsr?: string;
+
+  // Clase
+  etiqueta?: string;
 }
 
 function calcularMediana(datos: Array<number>) {
@@ -81,131 +106,65 @@ const TableContainer = (props: TableContainerProps) => {
     selectedPatients,
     patientNumber,
   } = props;
-  // const ventanaSeñal1 = useCustomSelector(
-  //   (state) => state.señales.ventanasArray
-  // );
-  // const ventanaSeñal2 = useCustomSelector(
-  //   (state) => state.señales.ventanasArray2
-  // );
-  // const cantidadSensores = useCustomSelector(
-  //   (state) => state.señales.cantidadSensores
-  // );
-  // const cantidadSujetos = useCustomSelector(
-  //   (state) => state.señales.cantidadSujetosRespaldo
-  // );
 
-  // const { ventanaX1, sumVentana1 } = getElementsAndSum(ventanaSeñal1);
-  // const mediaAbsoluta = (sumVentana1 / ventanaSeñal1.length).toString();
-  // const { ventanaX1: ventanaX2, sumVentana1: sumVentana2 } =
-  //   getElementsAndSum(ventanaSeñal2);
-  // const mediaAbsoluta2 = (sumVentana2 / ventanaSeñal2.length).toString();
+  const appDispatch = useCustomDispatch();
 
-  // const ventanasArray: any[] = []
-  // for(let i = 0; i < cantidadSujetos; i+=1) {
-  //   const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1);
-  //   const mediaAbsoluta = (sumVentana / ventanaSeñal1[i].length).toString();
-  //   ventanasArray.push([ventana, sumVentana, mediaAbsoluta])
-
-  // }
-
-  interface Cols {
-    // EMG's
-    colMediaABSEMG1?: string;
-    colMedianaEMG1?: string;
-    colRMSEMG1?: string;
-
-    colMediaABSEMG2?: string;
-    colMedianaEMG2?: string;
-    colRMSEMG2?: string;
-    // TEMP
-    colMediaABSTemp?: string;
-    colMedianaTemp?: string;
-    colRMSTemp?: string;
-    // GSR
-    colMediaABSGsr?: string;
-    colMedianaGsr?: string;
-    colRMSGsr?: string;
-
-    // Clase
-    etiqueta?: string;
-  }
-  // const getData = () => {
-  //   const objSensoresData: Cols[] = [];
-  //   for(let i = 0; i < cantidadSujetos; i+=1) {
-  //     if(cantidadSensores > 1) {
-  //       const dataJson = {
-  //         colMediaABSEMG1: ventanasArray[i][2] as string,
-  //         colMedianaEMG1: calcularMediana(ventanasArray[i][0] as Array<number>),
-  //         colRMSEMG1: calcularRms(ventanasArray[i][0] as Array<number>),
-  //       }
-  //       objSensoresData.push(dataJson)
-  //     }
-  //     if(cantidadSensores >= 2) {
-  //       const dataJson = {
-  //         colMediaABSEMG2: ventanasArray[i][2] as string,
-  //         colMedianaEMG2: calcularMediana(ventanasArray[i][0] as Array<number>),
-  //         colRMSEMG2: calcularRms(ventanasArray[i][0] as Array<number>),
-  //       }
-  //       objSensoresData.push(dataJson)
-  //     }
-
-  //   }
-  //   return objSensoresData;
-  // }
   console.log('Actual', ventanasArray);
-  // const getData = () => {
-  //   const objSensoresData: Cols[] = [];
-  //   if(cantidadSensores > 1) {
-  //     const dataJson = {
-  //       colMediaABSEMG1: ventanasArray[numeroDeSujeto][0][2] as string,
-  //       colMedianaEMG1: calcularMediana(ventanasArray[numeroDeSujeto][0][0] as Array<number>),
-  //       colRMSEMG1: calcularRms(ventanasArray[numeroDeSujeto][0][0] as Array<number>),
-  //     }
-  //     console.log("Calculated1", dataJson)
-  //     objSensoresData.push(dataJson)
-  //   }
-  //   if(cantidadSensores >= 2) {
-  //     const dataJson = {
-  //       colMediaABSEMG1: ventanasArray[numeroDeSujeto][1][2] as string,
-  //       colMedianaEMG1: calcularMediana(ventanasArray[numeroDeSujeto][1][0] as Array<number>),
-  //       colRMSEMG1: calcularRms(ventanasArray[numeroDeSujeto][1][0] as Array<number>),
-  //     }
-  //     console.log("Calculated2", dataJson)
 
-  //     objSensoresData.push(dataJson)
-  //   }
-  //   return objSensoresData;
-  // }
-
+  const returnFixed = (num: string) => {
+    let localNum;
+    if (num.includes('.')) {
+      localNum = parseFloat(num);
+      localNum = localNum.toFixed(2);
+    } else {
+      localNum = parseInt(num, 10);
+    }
+    return localNum;
+  };
   const getData = () => {
     const objSensoresData: Cols[] = [];
     console.log('len', ventanasArray[numeroDeSujeto].length);
     for (let i = 0; i < ventanasArray[numeroDeSujeto].length; i += 1) {
+      console.log(
+        'test',
+        numeroDeSujeto,
+        i,
+        ventanasArray[numeroDeSujeto][i][2] as string
+      );
+      console.log('test2', returnFixed(ventanasArray[numeroDeSujeto][i][2]));
       let dataJson = {};
       if (cantidadSensores === 2) {
         dataJson = {
-          colMediaABSEMG1: ventanasArray[numeroDeSujeto][i][2] as string,
+          colMediaABSEMG1: returnFixed(
+            ventanasArray[numeroDeSujeto][i][2]
+          ) as string,
           colMedianaEMG1: calcularMediana(
             ventanasArray[numeroDeSujeto][i][0] as Array<number>
           ),
           colRMSEMG1: calcularRms(
             ventanasArray[numeroDeSujeto][i][0] as Array<number>
           ),
-          colMediaABSEMG2: ventanasArray2[numeroDeSujeto][i][2] as string,
+          colMediaABSEMG2: returnFixed(
+            ventanasArray2[numeroDeSujeto][i][2]
+          ) as string,
           colMedianaEMG2: calcularMediana(
             ventanasArray2[numeroDeSujeto][i][0] as Array<number>
           ),
           colRMSEMG2: calcularRms(
             ventanasArray2[numeroDeSujeto][i][0] as Array<number>
           ),
-          colMediaABSGsr: ventanasArrayGsr[numeroDeSujeto][i][2] as string,
+          colMediaABSGsr: returnFixed(
+            ventanasArrayGsr[numeroDeSujeto][i][2]
+          ) as string,
           colMedianaGsr: calcularMediana(
             ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
           ),
           colRMSGsr: calcularRms(
             ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
           ),
-          colMediaABSTemp: ventanasArrayTemp[numeroDeSujeto][i][2] as string,
+          colMediaABSTemp: returnFixed(
+            ventanasArrayTemp[numeroDeSujeto][i][2]
+          ) as string,
           colMedianaTemp: calcularMediana(
             ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
           ),
@@ -224,6 +183,19 @@ const TableContainer = (props: TableContainerProps) => {
 
   const parsedData = getData();
   console.log('Parsed', parsedData);
+
+  useEffect(() => {
+    const reduxData: Array<Cols> = [];
+    // reduxData.push({ nombre: selectedPatients[patientNumber].col1 })
+    console.log('DATA', selectedPatients[patientNumber].col1);
+    console.log('ele', reduxData);
+    parsedData.map((ele) => reduxData.push(ele));
+    console.log('ele2', reduxData);
+    reduxData.map((ele) => (ele.nombre = selectedPatients[patientNumber].col1));
+    appDispatch(setDatosAnalisisIA(reduxData));
+    console.log('This is rdx', reduxData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const data = React.useMemo(
     (): Cols[] => [...parsedData],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,26 +226,6 @@ const TableContainer = (props: TableContainerProps) => {
         ],
       });
     }
-    // for (let i = 0; i < sizeSensoresExtra; i += 1) {
-    //   console.log('Itera');
-    //   internalArray.push({
-    //     Header: sensoresExtraNames[i],
-    //     columns: [
-    //       {
-    //         Header: 'Media absoluta',
-    //         accessor: `colMediaABSEMG${i + 1}`,
-    //       },
-    //       {
-    //         Header: 'Mediana',
-    //         accessor: `colMedianaEMG${i + 1}`,
-    //       },
-    //       {
-    //         Header: 'RMS',
-    //         accessor: `colRMSEMG${i + 1}`,
-    //       },
-    //     ],
-    //   });
-    // }
     internalArray.push({
       Header: 'GSR Promedio',
       columns: [

@@ -3,6 +3,8 @@ import {
   PacientesAnalisis,
   MultimediaObj,
   PacientesAnalisisMongo,
+  Algoritmo,
+  ModeloIAInterface,
 } from './components/Utilities/Constants';
 
 declare global {
@@ -18,7 +20,6 @@ declare global {
         borrarElementoM(arg0: (event: any, resp: any) => void): unknown;
         borrarElementoMongo(archivo: string): unknown;
         updateImplementacion(
-          selectCD: string,
           precision: string,
           desviacion: string,
           entrenado: string,
@@ -34,9 +35,18 @@ declare global {
           arg0: (event: any, resp: any) => void
         ): unknown;
         selectModNom(): unknown;
+        selectAlgos(): Array<Algoritmo>;
         selectAIA(): unknown;
+        selectModIA(): Array<ModeloIAInterface>;
         preAnalisisPython(): unknown;
         preAnalisisP(arg0: (event: any, resp: any) => void): unknown;
+        insertModeloIA(
+          nombre: string,
+          algoritmo_ia: string,
+          entrenado: boolean,
+          protocolo: string
+        ): unknown;
+        insertModIA(arg0: (event: any, resp: any) => void): Array<unknown>;
         selectC(): unknown;
         selectPrs(): object;
         analisisP(arg0: (event: any, resp: any) => void): unknown;
@@ -46,8 +56,20 @@ declare global {
           params: string,
           nombre: string,
           iteraciones: string,
-          reducedPercentage: string
+          reducedPercentage: string,
+          datos: string
         ): unknown;
+
+        // analisisP(type: string, typeIA: string, params: string, nombre: string, iteraciones: string, reducedPercentage: string, datos: string): string;
+        // analisisPython(
+        //   type: string,
+        //   typeIA: string,
+        //   params: string,
+        //   nombre: string,
+        //   iteraciones: string,
+        //   reducedPercentage: string,
+        //   datos: string
+        // ): unknown;
         selectCD(nombre: string): object;
         selectConfiguracionDetalle(nameConf: string): unknown;
         selectConfiguracionNombre(protocolo: any): unknown;

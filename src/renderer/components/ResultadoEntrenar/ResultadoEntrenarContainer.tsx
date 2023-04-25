@@ -1,9 +1,13 @@
 // eslint-disable-next-line import/no-named-as-default
-import { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DialogProps } from '@mui/material/Dialog';
 import { setIsLoading, setIsUploaded } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import ResultadoEntrenar from './ResultadoEntrenar';
+import { AnalisisParamsInterface } from '../Utilities/Constants';
+import ModalVerMas from '../Utilities/ModalVerMas';
+import SaveModelModal from '../Utilities/SaveModelModal';
 
 const obtenerPorcentaje = (valor: string) => {
   const comprobacion = valor.substring(0, 1);
@@ -20,7 +24,9 @@ const ResultadoEntrenarContainer = () => {
   const navigate = useNavigate();
   const [probando, setProbando] = useState(false);
   const resp = useCustomSelector((state) => state.responses.pythonResponse);
-  const analisis = useCustomSelector((state) => state.config.analisisParams);
+  const analisis = useCustomSelector(
+    (state) => state.config.analisisParams
+  ) as AnalisisParamsInterface;
   const appDispatch = useCustomDispatch();
   console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
@@ -30,6 +36,8 @@ const ResultadoEntrenarContainer = () => {
   const recall = obtenerPorcentaje(parsedResp[3]);
   const precisionPromedio = parsedResp[4];
   const desviacion = parsedResp[5];
+  const respAnalisis = parsedResp[6];
+  console.log('This is resp', respAnalisis);
   const precisionPromedioParsed = parseInt(precisionPromedio, 10) * 100;
   const precisionPromParsString = precisionPromedioParsed.toString();
   console.log('Crosses', precisionPromedio, desviacion);
@@ -39,6 +47,17 @@ const ResultadoEntrenarContainer = () => {
     precision = `${parsedResp[1].substring(1, 1)}00`;
   } */
   console.log('precision', precision);
+  const [open, setOpen] = useState(false);
+  const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
+  const toggleModalVerMas = (scrollType: DialogProps['scroll']) => {
+    setOpen(!open);
+    setScroll(scrollType);
+  };
+
+  const [open2, setOpen2] = useState(false);
+  const toggleModalGuardar = () => {
+    setOpen2(!open2);
+  };
   const tipo = parsedResp[0];
   async function updateData() {
     appDispatch(setIsLoading(true));
@@ -46,7 +65,7 @@ const ResultadoEntrenarContainer = () => {
       precisionPromParsString,
       desviacion,
       '1',
-      analisis.modelo
+      'nombre asignado'
     );
   }
   window.electron.ipcRenderer.updateIm((event: any, respLocal: any) => {
@@ -54,10 +73,13 @@ const ResultadoEntrenarContainer = () => {
     appDispatch(setIsLoading(false));
     appDispatch(setIsUploaded(true));
   });
-  const onClickNav = () => {
+  const onClickSave = useCallback(() => {
+    // toggleModalGuardar()
+    setOpen2(!open2);
     // navigate('/video');
-    updateData();
-  };
+    // updateData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const onClickProbar = () => {
     if (probando === false) {
       setProbando(true);
@@ -69,13 +91,13 @@ const ResultadoEntrenarContainer = () => {
     }
   };
   const onClickBack = () => {
-    navigate('/entrenar');
+    // navigate('/entrenar');
   };
 
   return (
     <div>
       <ResultadoEntrenar
-        onClickNav={onClickNav}
+        onClickSave={onClickSave}
         onClickProbar={onClickProbar}
         onClickDetener={onClickDetener}
         probando={probando}
@@ -86,7 +108,20 @@ const ResultadoEntrenarContainer = () => {
         crossParsed={crossParsed}
         analisis={analisis}
         tipo={tipo}
+        respAnalisis={respAnalisis}
+        toggleModalVerMas={toggleModalVerMas}
       />
+      {open && (
+        <ModalVerMas
+          toggleModalVerMas={toggleModalVerMas}
+          open={open}
+          tipo={tipo}
+          scroll={scroll}
+        />
+      )}
+      {open2 && (
+        <SaveModelModal toggleModalGuardar={toggleModalGuardar} open={open2} />
+      )}
     </div>
   );
 };

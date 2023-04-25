@@ -8,12 +8,12 @@ const ProbarSensoresContainer = () => {
   /* const dataX: Number[] = [];
   const dataY: Number[] = []; */
   const onClickAdd = () => {};
-  const [open, setOpen] = useState(true);
   const [dataXParam, setDataXParam] = useState([]);
   const [dataYParam, setDataYParam] = useState([]);
   const arr: any = [];
   const [sensoresSelected, setSensoresSelected] = useState(0);
   const appDispatch = useCustomDispatch();
+  const [open, setOpen] = useState(true);
   const toggleModal = () => {
     if (sensoresSelected !== 0) {
       setOpen(!open);

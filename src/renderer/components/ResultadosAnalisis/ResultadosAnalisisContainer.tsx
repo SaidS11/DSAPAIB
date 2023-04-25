@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 // eslint-disable-next-line import/no-named-as-default
 import { useCustomSelector } from '../../../redux/hooks';
 import ResultadosAnalisis from './ResultadosAnalisis';
-import ModalVerMas from './ModalVerMas';
+import ModalVerMas from '../Utilities/ModalVerMas';
 
 const obtenerPorcentaje = (valor: string) => {
   const comprobacion = valor.substring(0, 1);
@@ -56,7 +56,7 @@ const ResultadosAnalisisContainer = () => {
       />
       {open && (
         <ModalVerMas
-          toggleModal={toggleModal}
+          toggleModalVerMas={toggleModal}
           open={open}
           tipo={tipo}
           scroll={scroll}

@@ -82,20 +82,20 @@ def classSVM(nombre):
     sys.stdout.flush() 
 
 
-def trainTree(modelArgs, nombre, iteraciones, reducedPercentage):
+def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     maxDepth =  modelArgs["profundidad"]
     randomState = modelArgs["estado"]
     # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
     # number of instances in each class
-    data.groupby('species').size()
-    train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['species'], random_state = 42)
+    data.groupby('etiqueta').size()
+    train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_train = train[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_train = train.species
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_train = train[headers]
+    y_train = train.etiqueta
+    X_test = test[headers]
+    y_test = test.etiqueta
 
     # first try decision tree
     mod_dt = DecisionTreeClassifier(max_depth = int(maxDepth), random_state = int(randomState))
@@ -110,8 +110,8 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage):
             avgModel = cv_results['estimator'][i]
     scores = cross_val_score(avgModel, X_train, y_train, cv=iteraciones)
     prediction=avgModel.predict(X_test)
-    fn = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
-    cn = ['setosa', 'versicolor', 'virginica']
+    fn = headers
+    cn = ['sano', 'diabetico']
     # set figure size
     plt.figure(figsize = (10,8))
     plot_tree(avgModel, feature_names = fn, class_names = cn, filled = True)
@@ -123,11 +123,20 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage):
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
     # print(my_path)
+    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    X_nuevos = datos_nuevos[headers]
+    y_pred = avgModel.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+
+
     print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
-    "|" "{:.2f}".format(scores.std()))
+    "|" "{:.2f}".format(scores.std()) +
+    "|" + resulJson)
     sys.stdout.flush()
 
 def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage):
@@ -211,11 +220,31 @@ if __name__ == '__main__':
     nombre = sys.argv[4]
     iteraciones = int(sys.argv[5])
     porcentaje = int(sys.argv[6])
+    datosConNombre = sys.argv[7]
     reducedPercentage = porcentaje / 100
     jsonParams = json.loads(params)
+
+    # datosConNombre = '[[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Karla"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Karla"}],[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"}],[{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 1"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 1"}], [{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 2"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 2"}]]'
+    parsed = json.loads(datosConNombre)
+    newList = list()
+
+    for i in range(len(parsed)):
+        for c in range(len(parsed[i])):
+            newList.append(parsed[i][c])
+
+    df = pd.DataFrame.from_dict(newList) 
+    df.to_csv(r'D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv', index=False, header=True)
+    
+
+    headers = list(parsed[0][0].keys())
+    headers.remove('etiqueta')
+    headers.remove('nombre')
+    
+
+
     if (first == "Train"):
         if (second == "Tree"):
-            trainTree(jsonParams, nombre, iteraciones, reducedPercentage)
+            trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers)
         if(second == "KNN"):
             trainKNN(jsonParams, nombre, iteraciones, reducedPercentage)
         if(second == "SVM"):

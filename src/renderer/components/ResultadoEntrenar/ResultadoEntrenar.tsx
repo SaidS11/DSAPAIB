@@ -5,16 +5,17 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
   styleButtonBigger,
 } from '../VerPaciente/ButtonStyle';
-import ProbarSensores from '../ProbarSensores/ProbarSensores';
+import ResultsTableContainer from '../Utilities/ResultsTableContainer';
 import './ResultadoEntrenar.css';
 
 export interface ResultadoEntrenarProps {
-  onClickNav: () => void;
+  onClickSave: () => void;
   onClickProbar: () => void;
   onClickDetener: () => void;
   probando: boolean;
@@ -25,11 +26,13 @@ export interface ResultadoEntrenarProps {
   crossParsed: string;
   analisis: any;
   tipo: string;
+  respAnalisis: string;
+  toggleModalVerMas: any;
 }
 
 const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
   const {
-    onClickNav,
+    onClickSave,
     onClickProbar,
     onClickDetener,
     probando,
@@ -40,37 +43,32 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     crossParsed,
     analisis,
     tipo,
+    respAnalisis,
+    toggleModalVerMas,
   } = props;
-  // const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const onClickTest = () => {
+    navigate('/caracterizar2');
+  };
   return (
     <div>
       <section className="display-center">
-        <h1>Resultados</h1>
-      </section>
-      <section className="display-center">
-        <h3>Tabla con resultados por sujeto</h3>
-      </section>
-      <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
-      </section>
-      <section>
-        <ProbarSensores
-          sensoresSelected={8}
-          onClickNav={undefined}
-          onClickStop={undefined}
-          dataXParam={undefined}
-          dataYParam={undefined}
-        />
       </section>
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>
       </section>
+
+      <section className="display-center">
+        <h3>Tabla con resultados por sujeto</h3>
+      </section>
+      <section className="display-center">
+        <ResultsTableContainer stringObjData={respAnalisis} />
+      </section>
+      <section className="display-center">
+        <h1>Métricas</h1>
+      </section>
       <div className="div-closingResultadosEntr">
-        <section className="display-flexResultadosEntr">
-          <h5>Resultado:</h5>
-          <h5>En Riesgo</h5>
-        </section>
         <section className="display-flexResultadosA">
           <h5>Protocolo:</h5>
           <h5>{analisis.protocolo}</h5>
@@ -102,17 +100,23 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           <h5>{recall}%</h5>
         </section>
         <section className="display-center">
-          <Button sx={styleButtonBigger} onClick={onClickProbar}>
+          <Button
+            sx={styleButtonBigger}
+            onClick={() => toggleModalVerMas('body')}
+          >
             Ver Más
           </Button>
         </section>
       </div>
       <section className="display-center">
-        <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
+        <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
           Guardar Modelo
         </Button>
+        <Button sx={styleButtonBigger} onClick={onClickTest}>
+          Cambiar Algoritmo
+        </Button>
         <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
-          Regresar
+          Cancelar
         </Button>
       </section>
       <br />

@@ -26,13 +26,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   width: '100%',
 }));
 export interface ModalProps {
-  toggleModal: any;
+  toggleModalVerMas: any;
   open: boolean;
   tipo: string;
   scroll: any;
 }
 export default function ModalVerMas(props: ModalProps) {
-  const { toggleModal, open, tipo, scroll } = props;
+  const { toggleModalVerMas, open, tipo, scroll } = props;
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
@@ -43,7 +43,7 @@ export default function ModalVerMas(props: ModalProps) {
         fullWidth
         maxWidth="lg"
         open={open}
-        onClose={toggleModal}
+        onClose={toggleModalVerMas}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
