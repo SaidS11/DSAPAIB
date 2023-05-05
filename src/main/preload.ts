@@ -41,6 +41,11 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectCN: (callback: any) =>
       ipcRenderer.invoke('selectConfiguracionNombre', callback),
+    selectModelosIAPorAlgoritmo(algoritmo: string) {
+      ipcRenderer.send('selectModelosIAPorAlgoritmo', algoritmo);
+    },
+    selectModIaPorAlgoritmo: (callback: any) =>
+      ipcRenderer.invoke('selectModelosIAPorAlgoritmo', callback),
     selectImplementacionNombreIA(nombre: string) {
       ipcRenderer.send('selectImplementacionNombreIA', nombre);
     },
@@ -96,14 +101,16 @@ contextBridge.exposeInMainWorld('electron', {
       nombre: string,
       algoritmo_ia: string,
       entrenado: boolean,
-      protocolo: string
+      protocolo: string,
+      resultados: string
     ) {
       ipcRenderer.send(
         'insertModeloIA',
         nombre,
         algoritmo_ia,
         entrenado,
-        protocolo
+        protocolo,
+        resultados
       );
     },
     insertModIA: (callback: any) => ipcRenderer.on('insertModIA', callback),
@@ -154,8 +161,8 @@ contextBridge.exposeInMainWorld('electron', {
     //   );
     // },
     // analisisP: (callback: any) => ipcRenderer.invoke('analisisPython', callback),
-    preAnalisisPython() {
-      ipcRenderer.invoke('preAnalisisPython');
+    preAnalisisPython(datos: string) {
+      ipcRenderer.invoke('preAnalisisPython', datos);
     },
     preAnalisisP: (callback: any) => ipcRenderer.on('preAnalisisP', callback),
     on(channel: Channels, func: (...args: unknown[]) => void) {

@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import {
   MultimediaObj,
+  SelectedModeloIAInterface,
   SelectedPatientObj,
 } from '../../renderer/components/Utilities/Constants';
 
@@ -19,6 +20,7 @@ export interface IStatus {
   algoritmoIA: string;
   modeloDetalle: Object;
   selectedPatients: Array<SelectedPatientObj>;
+  selectedModels: Array<SelectedModeloIAInterface>;
 }
 
 const initialState: IStatus = {
@@ -41,6 +43,15 @@ const initialState: IStatus = {
     {
       col1: '',
       col2: '',
+    },
+  ],
+  selectedModels: [
+    {
+      col1: '',
+      col2: '',
+      col3: '',
+      col4: '',
+      col5: {},
     },
   ],
 };
@@ -109,6 +120,12 @@ export const ConfiguracionSlice = createSlice({
     ) => {
       state.selectedPatients = action.payload;
     },
+    setSelectedModels: (
+      state,
+      action: PayloadAction<IStatus['selectedModels']>
+    ) => {
+      state.selectedModels = action.payload;
+    },
   },
 });
 
@@ -124,6 +141,7 @@ export const {
   setAlgoritmoIA,
   setModeloDetalle,
   setSelectedPatients,
+  setSelectedModels,
 } = ConfiguracionSlice.actions;
 export const selectConfigName = (state: RootState) => state.config.configName;
 export const selectConfigDetalle = (state: RootState) =>

@@ -43,7 +43,7 @@ const CrearAlgoritmo = (
   return (
     <div>
       <div className="display-center">
-        <h1>Algoritmo</h1>
+        <h1>Implementación</h1>
       </div>
       <div className="display-center">
         <form className="analisis-form" style={{ width: '70%' }}  onSubmit={onClickNav}>

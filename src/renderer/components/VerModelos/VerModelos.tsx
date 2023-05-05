@@ -38,7 +38,7 @@ const VerModelos = (props: VerModelosProps) => {
     <div>
       <div style={{}}>
         <section className="display-center">
-          <h1>Modelos</h1>
+          <h1>Implementaciones</h1>
         </section>
         <section className="display-center">
           <h4>Seleccione uno de la lista para ver más detalles:</h4>

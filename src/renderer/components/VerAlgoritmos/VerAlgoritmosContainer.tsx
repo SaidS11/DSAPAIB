@@ -21,7 +21,7 @@ const VerAlgoritmosContainer = () => {
   const columns: Array<Column<{ col1: string }>> = React.useMemo(
     () => [
       {
-        Header: 'Modelos',
+        Header: 'Algoritmos Soportados',
         accessor: 'col1',
       },
     ],

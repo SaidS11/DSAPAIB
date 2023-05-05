@@ -47,25 +47,26 @@ const ProbarSensoresContainer = () => {
     // hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
     // console.log('GSR', hr);
   });
-  async function stopSensores() {
-    console.log('Getting message stop');
-    window.Bridge.sensoresStop();
-  }
-  window.Bridge.sensoStop((event: any, resp: any) => {
-    appDispatch(setIsLoading(true));
-    console.log(resp);
-    console.log('This was collected', arr);
-    const innerX: any = [...Array(arr.length).keys()];
-    console.log('Inner', innerX);
-    setDataYParam(arr);
-    setDataXParam(innerX);
-    appDispatch(setIsLoading(false));
-  });
+
+  // async function stopSensores() {
+  //   console.log('Getting message stop');
+  //   window.Bridge.sensoresStop();
+  // }
+  // window.Bridge.sensoStop((event: any, resp: any) => {
+  //   appDispatch(setIsLoading(true));
+  //   console.log(resp);
+  //   console.log('This was collected', arr);
+  //   const innerX: any = [...Array(arr.length).keys()];
+  //   console.log('Inner', innerX);
+  //   setDataYParam(arr);
+  //   setDataXParam(innerX);
+  //   appDispatch(setIsLoading(false));
+  // });
   const onClickNav = () => {
-    loadSensores();
+    // loadSensores();
   };
   const onClickStop = () => {
-    stopSensores();
+    // stopSensores();
   };
   // return <ProbarSensores onClickAdd={onClickAdd} dataX={dataX} dataY={dataY} />;
   console.log('Seleccionados', sensoresSelected);

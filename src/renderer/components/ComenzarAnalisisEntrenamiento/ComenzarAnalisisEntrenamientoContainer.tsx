@@ -47,22 +47,22 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   const selectedPatients = useCustomSelector(
     (state) => state.config.selectedPatients
   );
-  async function preAn() {
-    appDispatch(setIsLoading(true));
-    console.log('Getting message');
-    window.electron.ipcRenderer.preAnalisisPython();
-  }
-  window.electron.ipcRenderer.preAnalisisP((event: unknown, resp: string) => {
-    console.log('Esta es', resp);
-    // appDispatch(setPythonResponse(resp));
-    appDispatch(setIsLoading(false));
-    // navigate('/preAnalisis');
-  });
+  // async function preAn() {
+  //   appDispatch(setIsLoading(true));
+  //   console.log('Getting message');
+  //   window.electron.ipcRenderer.preAnalisisPython();
+  // }
+  // window.electron.ipcRenderer.preAnalisisP((event: unknown, resp: string) => {
+  //   console.log('Esta es', resp);
+  //   // appDispatch(setPythonResponse(resp));
+  //   appDispatch(setIsLoading(false));
+  //   // navigate('/preAnalisis');
+  // });
   const toggleModal = (scrollType: DialogProps['scroll']) => {
     console.log('Seleccionado', modelo);
     const found = dataAlgoritmo.find((el: Config) => el.modelo === modelo);
     console.log('Founded', found);
-    preAn();
+    // preAn();
     setTipo(found.algoritmo_ia);
     setOpen(!open);
     setScroll(scrollType);
@@ -125,7 +125,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
       'test2',
       'Arbol de Decisión',
       true,
-      'Completo'
+      'Completo',
+      '{}'
     );
 
     const resp = await window.electron.ipcRenderer.selectModIA();

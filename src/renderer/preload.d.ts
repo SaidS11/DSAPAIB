@@ -38,17 +38,18 @@ declare global {
         selectAlgos(): Array<Algoritmo>;
         selectAIA(): unknown;
         selectModIA(): Array<ModeloIAInterface>;
-        preAnalisisPython(): unknown;
+        preAnalisisPython(datos: string): unknown;
         preAnalisisP(arg0: (event: any, resp: any) => void): unknown;
         insertModeloIA(
           nombre: string,
           algoritmo_ia: string,
           entrenado: boolean,
-          protocolo: string
+          protocolo: string,
+          resultados: string
         ): unknown;
         insertModIA(arg0: (event: any, resp: any) => void): Array<unknown>;
         selectC(): unknown;
-        selectPrs(): object;
+        selectPrs(): Array<object>;
         analisisP(arg0: (event: any, resp: any) => void): unknown;
         analisisPython(
           type: string,
@@ -74,6 +75,8 @@ declare global {
         selectConfiguracionDetalle(nameConf: string): unknown;
         selectConfiguracionNombre(protocolo: any): unknown;
         selectCN(nombre: string): object;
+        selectModIaPorAlgoritmo(algoritmo: string): Array<ModeloIAInterface>;
+
         selectPs(): Array<PacientesAnalisis>;
         selectMultimediaConfig(configuracion: any): unknown;
         selectMC(nombre: string): Array<MultimediaObj>;

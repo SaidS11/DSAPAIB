@@ -22,7 +22,7 @@ const VerModelosContainer = () => {
   const columns: Array<Column<{ col1: string }>> = React.useMemo(
     () => [
       {
-        Header: 'Modelos',
+        Header: 'Implementaciones',
         accessor: 'col1',
       },
     ],

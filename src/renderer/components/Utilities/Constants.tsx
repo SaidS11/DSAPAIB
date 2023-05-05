@@ -43,7 +43,7 @@ export interface Algoritmo {
 
 export interface AnalisisParamsInterface {
   protocolo: string;
-  algoritmo: string;
+  algoritmo?: string;
   iteraciones: string;
   porcentaje: string;
   sexo: string;
@@ -52,8 +52,18 @@ export interface AnalisisParamsInterface {
 export interface ModeloIAInterface {
   id: number;
   nombre: string;
-  algotitmo_ia: string;
+  algoritmo_ia: string;
   protocolo: string;
+  entrenado: string;
+  resultados: object;
+}
+
+export interface SelectedModeloIAInterface {
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+  col5: object;
 }
 
 export const datosDePrueba =

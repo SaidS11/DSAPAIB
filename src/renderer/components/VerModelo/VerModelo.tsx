@@ -13,7 +13,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import { styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
 
 interface VerModeloProps {
   resp: any;
@@ -40,7 +40,7 @@ const VerModelo = (props: VerModeloProps) => {
   return (
     <div>
       <div className="display-center">
-        <h1>Modelo</h1>
+        <h1>Implementación</h1>
       </div>
       <div className="display-center">
         <form className="analisis-form" style={{ width: '70%' }}>
@@ -140,7 +140,7 @@ const VerModelo = (props: VerModeloProps) => {
 
             <br />
             <section className='display-center'>
-              <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Crear
+              <Button sx={styleButtonBiggerRed} style={{marginTop: '10px', fontSize: '20px'}} variant="contained" component="label">Regresar
               <input hidden type="submit" />
               </Button>
             </section>

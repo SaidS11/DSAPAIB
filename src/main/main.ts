@@ -469,13 +469,22 @@ async function insertModeloIA(
   nombre: string,
   algoritmo_ia: string,
   entrenado: boolean,
-  protocolo: string
+  protocolo: string,
+  resultados: string
 ) {
-  console.log('Recibido', nombre, algoritmo_ia, entrenado, protocolo);
+  console.log(
+    'Recibido',
+    nombre,
+    algoritmo_ia,
+    entrenado,
+    protocolo,
+    resultados
+  );
+  const resulsJSON = JSON.parse(resultados);
   try {
     const query = await pool.query(
-      ' INSERT INTO modelo(nombre, algoritmo_ia, entrenado, protocolo) values ($1,$2,$3,$4)  ',
-      [nombre, algoritmo_ia, entrenado, protocolo]
+      ' INSERT INTO modelo(nombre, algoritmo_ia, entrenado, protocolo, resultados) values ($1,$2,$3,$4,$5)  ',
+      [nombre, algoritmo_ia, entrenado, protocolo, resulsJSON]
     );
     console.log(query.rows);
     return query.rows;
@@ -503,13 +512,15 @@ ipcMain.on(
     nombre: string,
     algoritmo_ia: string,
     entrenado: boolean,
-    protocolo: string
+    protocolo: string,
+    resultados: string
   ) => {
     const resp = await insertModeloIA(
       nombre,
       algoritmo_ia,
       entrenado,
-      protocolo
+      protocolo,
+      resultados
     );
     console.log(resp);
     mainWindow?.webContents.send('insertModIA', resp);
@@ -522,6 +533,18 @@ async function selectModelosIA() {
   return query.rows;
 }
 ipcMain.handle('selectModelosIA', selectModelosIA);
+
+async function selectModelosIAPorAlgoritmo(algoritmo: string) {
+  const query = await pool.query(
+    ' select * from modelo where algoritmo_ia = $1 ',
+    [algoritmo]
+  );
+  console.log('Estas son las rows', query.rows);
+  return query.rows;
+}
+ipcMain.handle('selectModelosIAPorAlgoritmo', (event, algoritmo: string) =>
+  selectModelosIAPorAlgoritmo(algoritmo)
+);
 
 async function selectConfiguracionNombre(nombre: string) {
   const query = await pool.query(
@@ -1027,9 +1050,9 @@ ipcMain.handle(
   }
 );
 
-ipcMain.handle('preAnalisisPython', async (event) => {
+ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
   const options = {
-    args: ['vacio'],
+    args: [datos],
   };
   console.log('Llamado 3');
   const direc = __dirname;
