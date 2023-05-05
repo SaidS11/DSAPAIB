@@ -37,10 +37,10 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
   return (
     <div>
       <section className="display-center">
-        <h1>Caracterizar Parte 2</h1>
+        <h1>Resultados</h1>
       </section>
       <section className="display-center">
-        <h3>Resultados de la selección de ventanas</h3>
+        <h3>Tabla con la selección de ventanas</h3>
       </section>
       {...componentArray}
       <section className="display-center" style={{ marginTop: '5%' }}>

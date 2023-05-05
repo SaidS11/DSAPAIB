@@ -139,19 +139,20 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     "|" + resulJson)
     sys.stdout.flush()
 
-def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage):
+def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     vecinos = modelArgs["vecinos"]
     # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
     # number of instances in each class
-    data.groupby('species').size()
-    train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
+    # number of instances in each class
+    data.groupby('etiqueta').size()
+    train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_train = train[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_train = train.species
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_train = train[headers]
+    y_train = train.etiqueta
+    X_test = test[headers]
+    y_test = test.etiqueta
     # KNN, first try 5
     mod_5nn=KNeighborsClassifier(n_neighbors=int(vecinos)) 
     cv_results = cross_validate(mod_5nn, X_train, y_train, cv=iteraciones, return_estimator=True)
@@ -169,25 +170,35 @@ def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage):
     dump(avgModel, f'{script_dir}/Modelos/{nombre}.joblib')
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
+    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    X_nuevos = datos_nuevos[headers]
+    y_pred = avgModel.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
     print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
-    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro'))+
-    "|" + "Precision promedio de %0.2f con una desviacion estandar de %0.2f" % (scores.mean(), scores.std()))
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "{:.2f}".format(scores.mean()) +
+    "|" "{:.2f}".format(scores.std()) +
+    "|" + resulJson)
     sys.stdout.flush() 
 
 def trainSVM(modelArgs, iteraciones, reducedPercentage):
     kernelArg = modelArgs["kernel"]
     # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+   # or load through local csv
+    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
     # number of instances in each class
-    data.groupby('species').size()
-    train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
+    # number of instances in each class
+    data.groupby('etiqueta').size()
+    train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_train = train[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_train = train.species
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_train = train[headers]
+    y_train = train.etiqueta
+    X_test = test[headers]
+    y_test = test.etiqueta
     # SVC with linear kernel
     # for SVC, may be impractical beyond tens of thousands of samples
     #almacenar matriz de confusion y promediarla al final
@@ -207,10 +218,18 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
     dump(avgModel, f'{script_dir}/Modelos/{nombre}.joblib')
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
+    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    X_nuevos = datos_nuevos[headers]
+    y_pred = avgModel.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
     print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
-    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) +
-    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro'))+
-    "|" + "Precision promedio de %0.2f con una desviacion estandar de %0.2f" % (scores.mean(), scores.std()))
+    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "{:.2f}".format(scores.mean()) +
+    "|" "{:.2f}".format(scores.std()) +
+    "|" + resulJson)
     sys.stdout.flush() 
 
 if __name__ == '__main__':
@@ -246,9 +265,9 @@ if __name__ == '__main__':
         if (second == "Tree"):
             trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers)
         if(second == "KNN"):
-            trainKNN(jsonParams, nombre, iteraciones, reducedPercentage)
+            trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers)
         if(second == "SVM"):
-            trainSVM(jsonParams, nombre, iteraciones, reducedPercentage)
+            trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
     if (first == "Class"):
         if (second == "Tree"):
             classificationTree(nombre)

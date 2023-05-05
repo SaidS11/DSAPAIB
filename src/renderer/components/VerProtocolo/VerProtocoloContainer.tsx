@@ -31,10 +31,7 @@ const VerProtocoloContainer = () => {
   async function loadData() {
     console.log('Fui llamado');
     appDispatch(setIsLoading(true));
-    window.Bridge.selectProtocolos();
-  }
-  window.Bridge.selectPrs((event: any, resp: any) => {
-    console.log('llamada dentro');
+    const resp = await window.electron.ipcRenderer.selectPrs();
     if (resp.length > 0) {
       console.log('si es', resp);
       // eslint-disable-next-line no-plusplus
@@ -48,7 +45,9 @@ const VerProtocoloContainer = () => {
       console.log('nada');
     }
     appDispatch(setIsLoading(false));
-  });
+
+    // window.Bridge.selectProtocolos();
+  }
 
   async function loadDataDetalle(nameConf: string) {
     appDispatch(setIsLoading(true));

@@ -376,77 +376,81 @@ const Caracterizar = ({
   const onClickSelect = () => {
     console.log('Selection', selection);
     if (selection.length > 0) {
-      const colorsLocal1 = [...colors1];
-      const colorsLocal2 = [...colors2];
-      const colorsLocal3 = [...colors3];
-      const colorsLocal4 = [...colors4];
+      try {
+        const colorsLocal1 = [...colors1];
+        const colorsLocal2 = [...colors2];
+        const colorsLocal3 = [...colors3];
+        const colorsLocal4 = [...colors4];
 
-      const ventanas1Local = [];
-      const ventanas2Local = [];
-      const ventanas3Local = [];
-      const ventanas4Local = [];
+        const ventanas1Local = [];
+        const ventanas2Local = [];
+        const ventanas3Local = [];
+        const ventanas4Local = [];
 
-      const ventanasGsrLocal = [];
-      const ventanasTempLocal = [];
+        const ventanasGsrLocal = [];
+        const ventanasTempLocal = [];
 
-      console.log('Current Colors', colorsLocal1);
-      console.log('name', selectedEmg);
-      for (let i = 0; i < dataX2.length; i += 1) {
-        console.log('This is it', selection);
-        if (i === selection[0]) {
-          if (selectedEmg === 'EMG1') {
-            console.log('this is xdata1', dataX[i]);
-            ventanas1Local.push({ x: dataX[i], y: dataY[i] });
-          } else if (selectedEmg === 'EMG2') {
-            console.log('this is xdata2', dataX2[i]);
-            ventanas2Local.push({ x: dataX2[i], y: dataY2[i] });
-          } else if (selectedEmg === 'EMG3') {
-            console.log('this is xdata3', dataX3[i]);
-            ventanas3Local.push({ x: dataX3[i], y: dataY3[i] });
-          } else if (selectedEmg === 'EMG4') {
-            console.log('this is xdata4', dataX4[i]);
-            ventanas4Local.push({ x: dataX3[i], y: dataY3[i] });
+        console.log('Current Colors', colorsLocal1);
+        console.log('name', selectedEmg);
+        for (let i = 0; i < dataX2.length; i += 1) {
+          console.log('This is it', selection);
+          if (i === selection[0]) {
+            if (selectedEmg === 'EMG1') {
+              console.log('this is xdata1', dataX[i]);
+              ventanas1Local.push({ x: dataX[i], y: dataY[i] });
+            } else if (selectedEmg === 'EMG2') {
+              console.log('this is xdata2', dataX2[i]);
+              ventanas2Local.push({ x: dataX2[i], y: dataY2[i] });
+            } else if (selectedEmg === 'EMG3') {
+              console.log('this is xdata3', dataX3[i]);
+              ventanas3Local.push({ x: dataX3[i], y: dataY3[i] });
+            } else if (selectedEmg === 'EMG4') {
+              console.log('this is xdata4', dataX4[i]);
+              ventanas4Local.push({ x: dataX3[i], y: dataY3[i] });
+            }
+            ventanasGsrLocal.push({ x: gsrDataX[i], y: gsrDataY[i] });
+            ventanasTempLocal.push({ x: tempDataX[i], y: tempDataY[i] });
+            colorsLocal1[i] = 'red';
+            colorsLocal2[i] = 'red';
+            colorsLocal3[i] = 'red';
+            colorsLocal4[i] = 'red';
+            selection.shift();
           }
-          ventanasGsrLocal.push({ x: gsrDataX[i], y: gsrDataY[i] });
-          ventanasTempLocal.push({ x: tempDataX[i], y: tempDataY[i] });
-          colorsLocal1[i] = 'red';
-          colorsLocal2[i] = 'red';
-          colorsLocal3[i] = 'red';
-          colorsLocal4[i] = 'red';
-          selection.shift();
+          if (selection.length === 0) {
+            break;
+          }
         }
-        if (selection.length === 0) {
-          break;
+        selection.length = 0;
+        // console.log('Now i Have', colorsLocal1);
+        // const localArray = [];
+        if (selectedEmg === 'EMG1') {
+          const localArray = [...ventanasSeñal1];
+          localArray.push(ventanas1Local);
+          setVentanasSeñal1(localArray);
+
+          console.log('Global', ventanasSeñal1);
+          console.log('Local', ventanas1Local);
+
+          setColors1([...colorsLocal1]);
+        } else if (selectedEmg === 'EMG2') {
+          // setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
+          const localArray = [...ventanasSeñal2];
+          localArray.push(ventanas2Local);
+          setVentanasSeñal2(localArray);
+          setColors2([...colorsLocal2]);
         }
+        console.log('Estas son las locales', ventanasGsrLocal);
+        // Contains con nombre de sensores
+        const localArrayGsr = [...ventanasSeñalGsr];
+        localArrayGsr.push(ventanasGsrLocal);
+        setVentanasSeñalGsr(localArrayGsr);
+
+        const localArrayTemp = [...ventanasSeñalTemp];
+        localArrayTemp.push(ventanasTempLocal);
+        setVentanasSeñalTemp(localArrayTemp);
+      } catch (ex) {
+        alert('Error', ex);
       }
-      selection.length = 0;
-      // console.log('Now i Have', colorsLocal1);
-      // const localArray = [];
-      if (selectedEmg === 'EMG1') {
-        const localArray = [...ventanasSeñal1];
-        localArray.push(ventanas1Local);
-        setVentanasSeñal1(localArray);
-
-        console.log('Global', ventanasSeñal1);
-        console.log('Local', ventanas1Local);
-
-        setColors1([...colorsLocal1]);
-      } else if (selectedEmg === 'EMG2') {
-        // setVentanasSeñal2([...ventanasSeñal2, ...ventanas2Local]);
-        const localArray = [...ventanasSeñal2];
-        localArray.push(ventanas2Local);
-        setVentanasSeñal2(localArray);
-        setColors2([...colorsLocal2]);
-      }
-      console.log('Estas son las locales', ventanasGsrLocal);
-      // Contains con nombre de sensores
-      const localArrayGsr = [...ventanasSeñalGsr];
-      localArrayGsr.push(ventanasGsrLocal);
-      setVentanasSeñalGsr(localArrayGsr);
-
-      const localArrayTemp = [...ventanasSeñalTemp];
-      localArrayTemp.push(ventanasTempLocal);
-      setVentanasSeñalTemp(localArrayTemp);
     } else {
       alert('Seleccione una ventana primero');
     }

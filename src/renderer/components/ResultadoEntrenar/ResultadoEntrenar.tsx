@@ -47,8 +47,8 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     toggleModalVerMas,
   } = props;
   const navigate = useNavigate();
-  const onClickTest = () => {
-    navigate('/caracterizar2');
+  const onClickCambiar = () => {
+    navigate('/guardarModelo');
   };
   return (
     <div>
@@ -112,7 +112,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
           Guardar Modelo
         </Button>
-        <Button sx={styleButtonBigger} onClick={onClickTest}>
+        <Button sx={styleButtonBigger} onClick={onClickCambiar}>
           Cambiar Algoritmo
         </Button>
         <Button sx={styleButtonBiggerRed} onClick={onClickBack}>

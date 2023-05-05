@@ -27,6 +27,13 @@ const ResultadoEntrenarContainer = () => {
   const analisis = useCustomSelector(
     (state) => state.config.analisisParams
   ) as AnalisisParamsInterface;
+  const selectedModels = useCustomSelector(
+    (state) => state.config.selectedModels
+  );
+  const algoritmoUsado = analisis.algoritmo;
+  const protocoloUsado = analisis.protocolo;
+  const nombreSeleccionado = selectedModels[0].col1;
+
   const appDispatch = useCustomDispatch();
   console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
@@ -73,13 +80,43 @@ const ResultadoEntrenarContainer = () => {
     appDispatch(setIsLoading(false));
     appDispatch(setIsUploaded(true));
   });
+
   const onClickSave = useCallback(() => {
     // toggleModalGuardar()
-    setOpen2(!open2);
+    // setOpen2(!open2);
+
+    appDispatch(setIsLoading(true));
+    const customResults = {
+      Precisión: precision,
+      F1: f1,
+      Recall: recall,
+    };
+    const customStrResults = JSON.stringify(customResults);
+    window.electron.ipcRenderer.insertModeloIA(
+      nombreSeleccionado,
+      'Arbol de Decisión' || 'undefined',
+      true,
+      protocoloUsado || 'undefined',
+      customStrResults
+    );
+
     // navigate('/video');
     // updateData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  window.electron.ipcRenderer.insertModIA((event: any, respInsert: any) => {
+    if (respInsert > 0) {
+      console.log('insert', respInsert[0]);
+      if (respInsert[0] === 0) {
+        console.log('Failed', respInsert[1]);
+      }
+    } else {
+      console.log(respInsert);
+    }
+    appDispatch(setIsLoading(false));
+  });
+
   const onClickProbar = () => {
     if (probando === false) {
       setProbando(true);

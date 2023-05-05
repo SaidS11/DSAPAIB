@@ -86,12 +86,12 @@ function Navegacion(props: NavProps) {
                 Ver Algoritmo
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('verModelos')}>
-                Ver Algoritmos
+                Ver Implementaciones
               </NavDropdown.Item>
               <NavDropdown.Item
                 onClick={() => onClickNav('crearImplementacion')}
               >
-                Crear Algoritmo
+                Crear Implementacion
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

@@ -47,6 +47,7 @@ import VerModeloContainer from './components/VerModelo/VerModeloContainer';
 import VerModelosContainer from './components/VerModelos/VerModelosContainer';
 import Test from './components/CaracterizarParte2/Test';
 import ResultsTableContainer from './components/Utilities/ResultsTableContainer';
+import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloContainer';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -67,6 +68,8 @@ export default function App() {
           <br />
           <Routes>
             <Route path="/blank" element={<Blank />} />
+            <Route path="/guardarModelo" element={<GuardarModeloContainer />} />
+
             <Route path="/test" element={<Test />} />
             {/* <Route path="/resTable" element={<ResultsTableContainer />} /> */}
 

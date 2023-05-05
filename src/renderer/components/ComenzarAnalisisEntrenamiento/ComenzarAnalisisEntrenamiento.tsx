@@ -12,11 +12,15 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import { useMemo, useState } from 'react';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { useMemo } from 'react';
-import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
-import EnhancedTable from './EnhancedTable';
+import FormLabel from '@mui/material/FormLabel';
 import { Algoritmo } from '../Utilities/Constants';
+import EnhancedTable from './EnhancedTable';
+import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
 import GeneralTable from './AlgorithmTable';
 
 interface ComenzarAnalisisEntrenamientoProps {
@@ -28,7 +32,7 @@ interface ComenzarAnalisisEntrenamientoProps {
   onClickNav: (arg0: any) => void;
   onClickStop: () => void;
   toggleModal: any;
-  modelo: any;
+  modelo: string;
   setModelo: any;
   setProtocolo: any;
   protocolo: string; 
@@ -62,6 +66,12 @@ const ComenzarAnalisisEntrenamiento = (
     useTable(options, useFilters, useSortBy);
   // const [modelo, setModelo] = useState('');
 
+  const [valueVentaneo, setValueVentaneo] = useState('manual');
+
+  const handleChangeVentaneo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValueVentaneo((event.target as HTMLInputElement).value);
+  };
+
   const handleChange = (event: SelectChangeEvent) => {
     const num = parseInt(event.target.value, 10);
     setModelo(event.target.value as string);
@@ -83,8 +93,7 @@ const ComenzarAnalisisEntrenamiento = (
   const setProtocols = () => {
     const plots = [];
     if (data.length > 0) {
-      // eslint-disable-next-line no-plusplus
-      for(let i = 0; i < data.length; i++) {
+      for(let i = 0; i < data.length; i+=1) {
         console.log('datos recibidos', data[i]);
         plots.push(
           <MenuItem key={i} value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
@@ -92,23 +101,23 @@ const ComenzarAnalisisEntrenamiento = (
       }
       return plots;
     }
-    return <option value={1}>1</option>;
+    return <option key={1} value={1}>1</option>;
     
   }
-  const numOfAlgos = () => {
-    const models = [];
-    if (dataAlgoritmo.length >= 1) {
-      // eslint-disable-next-line no-plusplus
-      for(let i = 0; i < dataAlgoritmo.length; i++) {
-        // console.log('datos recibidios', data[i]);
-        models.push(
-          <MenuItem key={i} value={`${dataAlgoritmo[i].nombre}`}>{dataAlgoritmo[i].nombre}</MenuItem>
-        )
-      }
-      return models;
-    }
-    return <option value={1}>1</option>;
-  }
+  // const numOfAlgos = () => {
+  //   const models = [];
+  //   if (dataAlgoritmo.length >= 1) {
+  //     // eslint-disable-next-line no-plusplus
+  //     for(let i = 0; i < dataAlgoritmo.length; i++) {
+  //       // console.log('datos recibidios', data[i]);
+  //       models.push(
+  //         <MenuItem key={i} value={`${dataAlgoritmo[i].nombre}`}>{dataAlgoritmo[i].nombre}</MenuItem>
+  //       )
+  //     }
+  //     return models;
+  //   }
+  //   return <option value={1}>1</option>;
+  // }
 
   const retrieveAlgoData = useMemo(() => {
     if (modelo !== '') {
@@ -164,7 +173,7 @@ const ComenzarAnalisisEntrenamiento = (
               </FormControl>
             </section>
           </section>
-          <section className="display-flexAgregar">
+          {/* <section className="display-flexAgregar">
             <h3>Algoritmo: </h3>
             <section className="list-box-sexo">
               <FormControl fullWidth>
@@ -183,7 +192,7 @@ const ComenzarAnalisisEntrenamiento = (
               </FormControl>
             </section>
           
-          </section>
+          </section> */}
           {modelo !== '' &&
           <section className="display-flexAgregar" style={{display: "block"}}>
             <h3>Datos del algoritmo: </h3>
@@ -198,6 +207,20 @@ const ComenzarAnalisisEntrenamiento = (
           <section className="display-flexAgregar">
             <h3>Porcentaje de Datos de Prueba: </h3>
             <input type="number" name="porcentaje" required min="1" max="500" />
+          </section>
+          <section className="display-flexAgregar">
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">Ventaneo</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={valueVentaneo}
+              onChange={handleChangeVentaneo}
+            >
+              <FormControlLabel value="automatico" control={<Radio />} label="Automatico" disabled />
+              <FormControlLabel value="manual" control={<Radio />} label="Manual" />
+            </RadioGroup>
+          </FormControl>
           </section>
           <br />
         
@@ -249,7 +272,6 @@ const ComenzarAnalisisEntrenamiento = (
         <EnhancedTable
         columns={columnsData}
         data={tableData}
-        // setSelectedPatientsLocal={setSelectedPatientsLocal}
       />
       </div>
       <div className="display-center" style={{ marginTop: '10px' }}>
