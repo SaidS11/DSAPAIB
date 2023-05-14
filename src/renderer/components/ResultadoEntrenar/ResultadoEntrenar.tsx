@@ -28,6 +28,7 @@ export interface ResultadoEntrenarProps {
   tipo: string;
   respAnalisis: string;
   toggleModalVerMas: any;
+  onClickCambiar: () => void;
 }
 
 const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
@@ -45,11 +46,10 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     tipo,
     respAnalisis,
     toggleModalVerMas,
+    onClickCambiar,
   } = props;
   const navigate = useNavigate();
-  const onClickCambiar = () => {
-    navigate('/guardarModelo');
-  };
+  
   return (
     <div>
       <section className="display-center">
@@ -66,11 +66,11 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <ResultsTableContainer stringObjData={respAnalisis} />
       </section>
       <section className="display-center">
-        <h1>Métricas</h1>
+        <h1>Métricas:</h1>
       </section>
       <div className="div-closingResultadosEntr">
         <section className="display-flexResultadosA">
-          <h5>Protocolo:</h5>
+          <h5>Protocolo: </h5>
           <h5>{analisis.protocolo}</h5>
         </section>
         <section className="display-flexResultadosA">

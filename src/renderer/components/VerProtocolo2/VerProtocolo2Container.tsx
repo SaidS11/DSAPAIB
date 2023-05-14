@@ -7,9 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import { useCustomSelector, useCustomDispatch } from '../../../redux/hooks';
 import VerProtocolo2 from './VerProtocolo2';
+import { PacientesAnalisisMongo } from '../Utilities/Constants';
 
+interface ProtocoloDetalle {
+  nombre: string
+}
 const VerProtocolo2Container = () => {
-  const resp = useCustomSelector((state) => state.config.protocoloDetalle);
+  const resp = useCustomSelector((state) => state.config.protocoloDetalle) as Array<ProtocoloDetalle>;
   const appDispatch = useCustomDispatch();
   const navigate = useNavigate();
   interface Cols {
@@ -18,28 +22,26 @@ const VerProtocolo2Container = () => {
   const [data, setData] = useState<Cols[]>([]);
   const datarRetrieved: Cols[] = [];
 
-  // Load Data for the rows
-  async function loadData() {
-    console.log('Fui llamado');
+  async function loadPacientes() {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectRegistrosProtocolo(resp[0].nombre);
-  }
-  window.Bridge.selectRP((event: any, respArg: any) => {
-    console.log('llamada dentro');
-    if (respArg.length > 0) {
-      console.log('si es', respArg);
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < respArg.length; i++) {
-        datarRetrieved.push({
-          col1: respArg[i].paciente,
-        });
-      }
-      setData(datarRetrieved);
-    } else {
-      console.log('nada');
+    const document = { protocol: resp[0].nombre };
+    const jsonDocument = JSON.stringify(document);
+    try {
+        const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
+          jsonDocument
+        )) as Array<PacientesAnalisisMongo>;
+        for (let i = 0; i < pacientes.length; i += 1) {
+          datarRetrieved.push({
+            col1: pacientes[i].name,
+          });
+        }
+        setData(datarRetrieved);
+    } catch (error: any) {
+      alert("Error while retrieving data");
     }
     appDispatch(setIsLoading(false));
-  });
+  }
+
     const columns: Array<Column<{ col1: string }>> = React.useMemo(
       () => [
         {
@@ -51,7 +53,7 @@ const VerProtocolo2Container = () => {
     );
     useEffect(() => {
       console.log('updated lista proto');
-      loadData();
+      loadPacientes();
     }, []);
     const options: TableOptions<{
       col1: string;

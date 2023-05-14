@@ -34,6 +34,7 @@ interface GuardarModeloProps {
   setData: any;
   onClickContinue: () => void;
   onClickBack: () => void;
+  algoritmoTipo: string;
 }
 
 const GuardarModelo = (props: GuardarModeloProps) => {
@@ -49,6 +50,7 @@ const GuardarModelo = (props: GuardarModeloProps) => {
     setData,
     onClickContinue,
     onClickBack,
+    algoritmoTipo,
   } = props;
   const [nombre, setNombre] = useState('');
 
@@ -96,23 +98,23 @@ const GuardarModelo = (props: GuardarModeloProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [algoritmo]);
 
-  const tableWrapper = useMemo(() => {
-    return (
-      <EnhancedTable
-        columns={columns}
-        data={data}
-        selectedProtocol={selectedProtocol}
-        setData={setData}
-        algoritmo={algoritmo}
-      />
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
+  // const tableWrapper = useMemo(() => {
+  //   return (
+  //     <EnhancedTable
+  //       columns={columns}
+  //       data={data}
+  //       selectedProtocol={selectedProtocol}
+  //       setData={setData}
+  //       algoritmo={algoritmo}
+  //     />
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data]);
 
   return (
     <div>
       <section className="display-center">
-        <h2>Es momento de escoger el algoritmo a utilizar y el modelo </h2>
+        <h2>Es momento de escoger el algoritmo a utilizar y el modelo. </h2>
       </section>
       <section className="display-center">
         <h2>
@@ -153,7 +155,7 @@ const GuardarModelo = (props: GuardarModeloProps) => {
       {modelosEncontrados === false && algoritmo !== '' && (
         <section className="display-flexAgregar" style={{ display: 'block' }}>
           <h3>No existen modelos asociados a este algoritmo </h3>
-          <h3>Asigne un nombre al nuevo modelo</h3>
+          <h3>Asigne un nombre al nuevo modelo.</h3>
           <TextField
             required
             id="outlined-basic"
@@ -174,6 +176,7 @@ const GuardarModelo = (props: GuardarModeloProps) => {
             selectedProtocol={selectedProtocol}
             setData={setData}
             algoritmo={algoritmo}
+            algoritmoTipo={algoritmoTipo}
           />
         </section>
       )}
@@ -196,6 +199,7 @@ const GuardarModelo = (props: GuardarModeloProps) => {
         </section>
         <br />
       </div>
+      <br />
     </div>
   );
 };

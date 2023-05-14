@@ -33,7 +33,7 @@ const VerProtocoloContainer = () => {
     appDispatch(setIsLoading(true));
     const resp = await window.electron.ipcRenderer.selectPrs();
     if (resp.length > 0) {
-      console.log('si es', resp);
+      console.log('si es protoco', resp);
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < resp.length; i++) {
         datarRetrieved.push({
@@ -49,9 +49,9 @@ const VerProtocoloContainer = () => {
     // window.Bridge.selectProtocolos();
   }
 
-  async function loadDataDetalle(nameConf: string) {
+  async function loadDataDetalle(nameProtocolo: string) {
     appDispatch(setIsLoading(true));
-    window.Bridge.selectProtocoloDetalle(nameConf);
+    window.Bridge.selectProtocoloDetalle(nameProtocolo);
   }
   window.Bridge.selectPD((event: any, resp: any) => {
     if (resp.length > 0) {

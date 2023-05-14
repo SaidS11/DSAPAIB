@@ -69,7 +69,7 @@ const VerPaciente = (props: VerPacienteProps) => {
           <h5 style={{ paddingLeft: '10px' }}>Estatura:</h5>
           <h5 className="second-item">1.50 metros</h5>
         </section>
-        <section className="display-flex">
+        {/* <section className="display-flex">
           <h5>Estado del paciente: </h5>
           <input
             type="text"
@@ -80,7 +80,7 @@ const VerPaciente = (props: VerPacienteProps) => {
           <Button sx={styleButton} style={{ marginLeft: '20px' }}>
             Actualizar Estado
           </Button>
-        </section>
+        </section> */}
       </div>
       <br />
       <div
@@ -133,7 +133,7 @@ const VerPaciente = (props: VerPacienteProps) => {
         <Button sx={styleButton} onClick={onClickCaptura}>
           Captura
         </Button>
-        <Button sx={styleButton}>Analisis</Button>
+        {/* <Button sx={styleButton}>Analisis</Button> */}
       </section>
       <br />
     </div>

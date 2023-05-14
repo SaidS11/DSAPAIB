@@ -21,14 +21,27 @@ interface Cols {
   colMediaABSEMG2?: string;
   colMedianaEMG2?: string;
   colRMSEMG2?: string;
+
+  colMediaABSEMG3?: string;
+  colMedianaEMG3?: string;
+  colRMSEMG3?: string;
+
+  colMediaABSEMG4?: string;
+  colMedianaEMG4?: string;
+  colRMSEMG4?: string;
   // TEMP
-  colMediaABSTemp?: string;
-  colMedianaTemp?: string;
-  colRMSTemp?: string;
+  colMediaABSAcelerometro?: string;
+  colMedianaAcelerometro?: string;
+  colRMSAcelerometro?: string;
   // GSR
-  colMediaABSGsr?: string;
-  colMedianaGsr?: string;
-  colRMSGsr?: string;
+  colMediaABSGiroscopio?: string;
+  colMedianaGiroscopio?: string;
+  colRMSGiroscopio?: string;
+
+  // SPO2
+  colMediaABSFrecuencia?: string;
+  colMedianaFrecuencia?: string;
+  colRMSFrecuencia?: string;
 
   // Clase
   etiqueta?: string;
@@ -87,29 +100,41 @@ interface TableContainerProps {
   cantidadSensores: number;
   cantidadSensoresExtra: number;
   numeroDeSujeto: number;
-  ventanasArray: any;
-  ventanasArray2: any;
-  ventanasArrayGsr: any;
-  ventanasArrayTemp: any;
+  ventanasArrayEmg1: any;
+  ventanasArrayEmg2: any;
+  ventanasArrayEmg3: any;
+  ventanasArrayEmg4: any;
+  ventanasArrayGiroscopio: any;
+  ventanasArrayAcelerometro: any;
+  ventanaArrayFrecuencia: any;
   selectedPatients: Array<SelectedPatientObj>;
   patientNumber: number;
+  giroscopioChecked: boolean;
+  acelerometroChecked: boolean;
+  frecuenciaChecked: boolean;
 }
 const TableContainer = (props: TableContainerProps) => {
   const {
     cantidadSensores,
     cantidadSensoresExtra,
     numeroDeSujeto,
-    ventanasArray,
-    ventanasArray2,
-    ventanasArrayGsr,
-    ventanasArrayTemp,
+    ventanasArrayEmg1,
+    ventanasArrayEmg2,
+    ventanasArrayEmg3,
+    ventanasArrayEmg4,
+    ventanasArrayGiroscopio,
+    ventanasArrayAcelerometro,
+    ventanaArrayFrecuencia,
     selectedPatients,
     patientNumber,
+    giroscopioChecked,
+    acelerometroChecked,
+    frecuenciaChecked,
   } = props;
 
   const appDispatch = useCustomDispatch();
 
-  console.log('Actual', ventanasArray);
+  console.log('Actual', ventanasArrayEmg1);
 
   const returnFixed = (num: string) => {
     let localNum;
@@ -123,57 +148,109 @@ const TableContainer = (props: TableContainerProps) => {
   };
   const getData = () => {
     const objSensoresData: Cols[] = [];
-    console.log('len', ventanasArray[numeroDeSujeto].length);
-    for (let i = 0; i < ventanasArray[numeroDeSujeto].length; i += 1) {
+    console.log('len', ventanasArrayEmg1[numeroDeSujeto].length);
+    for (let i = 0; i < ventanasArrayEmg1[numeroDeSujeto].length; i += 1) {
       console.log(
         'test',
         numeroDeSujeto,
         i,
-        ventanasArray[numeroDeSujeto][i][2] as string
+        ventanasArrayEmg1[numeroDeSujeto][i][2] as string
       );
-      console.log('test2', returnFixed(ventanasArray[numeroDeSujeto][i][2]));
+      console.log('test2', returnFixed(ventanasArrayEmg1[numeroDeSujeto][i][2]));
       let dataJson = {};
-      if (cantidadSensores === 2) {
-        dataJson = {
+      if (cantidadSensores >= 1) {
+        Object.assign(dataJson, {
           colMediaABSEMG1: returnFixed(
-            ventanasArray[numeroDeSujeto][i][2]
-          ) as string,
-          colMedianaEMG1: calcularMediana(
-            ventanasArray[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colRMSEMG1: calcularRms(
-            ventanasArray[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colMediaABSEMG2: returnFixed(
-            ventanasArray2[numeroDeSujeto][i][2]
-          ) as string,
-          colMedianaEMG2: calcularMediana(
-            ventanasArray2[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colRMSEMG2: calcularRms(
-            ventanasArray2[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colMediaABSGsr: returnFixed(
-            ventanasArrayGsr[numeroDeSujeto][i][2]
-          ) as string,
-          colMedianaGsr: calcularMediana(
-            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colRMSGsr: calcularRms(
-            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colMediaABSTemp: returnFixed(
-            ventanasArrayTemp[numeroDeSujeto][i][2]
-          ) as string,
-          colMedianaTemp: calcularMediana(
-            ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
-          ),
-          colRMSTemp: calcularRms(
-            ventanasArrayTemp[numeroDeSujeto][i][0] as Array<number>
-          ),
-          etiqueta: selectedPatients[patientNumber].col2,
-        };
+          ventanasArrayEmg1[numeroDeSujeto][i][2]
+        ) as string,
+        colMedianaEMG1: calcularMediana(
+          ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
+        ),
+        colRMSEMG1: calcularRms(
+          ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
+        )
+      })
       }
+      if (cantidadSensores >= 2) {
+        Object.assign(dataJson, {
+          colMediaABSEMG2: returnFixed(
+          ventanasArrayEmg2[numeroDeSujeto][i][2]
+        ) as string,
+        colMedianaEMG2: calcularMediana(
+          ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
+        ),
+        colRMSEMG2: calcularRms(
+          ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
+        )
+      })
+      }
+      if (cantidadSensores >= 3) {
+        Object.assign(dataJson, {
+          colMediaABSEMG3: returnFixed(
+          ventanasArrayEmg3[numeroDeSujeto][i][2]
+        ) as string,
+        colMedianaEMG3: calcularMediana(
+          ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
+        ),
+        colRMSEMG3: calcularRms(
+          ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
+        )
+      })
+      }
+      if (cantidadSensores >= 4) {
+        Object.assign(dataJson, {
+          colMediaABSEMG4: returnFixed(
+          ventanasArrayEmg4[numeroDeSujeto][i][2]
+        ) as string,
+        colMedianaEMG4: calcularMediana(
+          ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
+        ),
+        colRMSEMG4: calcularRms(
+          ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
+        )
+      })
+      }
+      if (giroscopioChecked) {
+        Object.assign(dataJson, {colMediaABSGiroscopio: returnFixed(
+          ventanasArrayGiroscopio[numeroDeSujeto][i][2]
+        ) as string,
+        colMedianaGiroscopio: calcularMediana(
+          ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+        ),
+        colRMSGiroscopio: calcularRms(
+          ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+        )
+      })
+      }
+      if (acelerometroChecked) {
+        Object.assign(dataJson, {
+          colMediaABSAcelerometro: returnFixed(
+            ventanasArrayAcelerometro[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaAcelerometro: calcularMediana(
+            ventanasArrayAcelerometro[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSAcelerometro: calcularRms(
+            ventanasArrayAcelerometro[numeroDeSujeto][i][0] as Array<number>
+          )
+        })
+      }
+
+      if (frecuenciaChecked) {
+        Object.assign(dataJson, {
+          colMediaABSFrecuencia: returnFixed(
+            ventanaArrayFrecuencia[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaFrecuencia: calcularMediana(
+            ventanaArrayFrecuencia[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSFrecuencia: calcularRms(
+            ventanaArrayFrecuencia[numeroDeSujeto][i][0] as Array<number>
+          )
+        })
+      }
+
+      Object.assign(dataJson, {etiqueta: selectedPatients[patientNumber].col2})
       console.log('Calculated1', dataJson);
       objSensoresData.push(dataJson);
     }
@@ -202,8 +279,7 @@ const TableContainer = (props: TableContainerProps) => {
     []
   );
 
-  const sensoresNames = ['EMG1', 'EMG2'];
-  const sensoresExtraNames = ['GSR Promedio', 'Temperatura Promedio'];
+  const sensoresNames = ['EMG1', 'EMG2', 'EMG3', 'EMG4'];
   const getColumns = (sizeEMG: number, sizeSensoresExtra: number) => {
     const internalArray: Array<Column> = [];
     for (let i = 0; i < sizeEMG; i += 1) {
@@ -226,40 +302,63 @@ const TableContainer = (props: TableContainerProps) => {
         ],
       });
     }
-    internalArray.push({
-      Header: 'GSR Promedio',
-      columns: [
-        {
-          Header: 'Media absoluta',
-          accessor: `colMediaABSGsr`,
-        },
-        {
-          Header: 'Mediana',
-          accessor: `colMedianaGsr`,
-        },
-        {
-          Header: 'RMS',
-          accessor: `colRMSGsr`,
-        },
-      ],
-    });
-    internalArray.push({
-      Header: 'Temperatura Promedio',
-      columns: [
-        {
-          Header: 'Media absoluta',
-          accessor: `colMediaABSTemp`,
-        },
-        {
-          Header: 'Mediana',
-          accessor: `colMedianaTemp`,
-        },
-        {
-          Header: 'RMS',
-          accessor: `colRMSTemp`,
-        },
-      ],
-    });
+    if (giroscopioChecked) {
+      internalArray.push({
+        Header: 'GSR Promedio',
+        columns: [
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSGiroscopio`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaGiroscopio`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSGiroscopio`,
+          },
+        ],
+      });
+    }
+    if (acelerometroChecked) {
+      internalArray.push({
+        Header: 'Acelerometro Promedio',
+        columns: [
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSAcelerometro`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaAcelerometro`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSAcelerometro`,
+          },
+        ],
+      });
+    }
+    if (frecuenciaChecked) {
+      internalArray.push({
+        Header: 'Frecuencia Promedio',
+        columns: [
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSFrecuencia`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaFrecuencia`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSFrecuencia`,
+          },
+        ],
+      });
+    }
     internalArray.push({
       Header: 'Etiqueta',
       columns: [

@@ -84,7 +84,7 @@ EditableCell.propTypes = {
 
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
-  Cell: EditableCell,
+  // Cell: EditableCell,
 };
 
 const EnhancedTable = ({

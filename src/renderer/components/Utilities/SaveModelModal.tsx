@@ -8,7 +8,8 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useCallback } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { styleButtonBigger } from '../VerPaciente/ButtonStyle';
+import { styleButtonBigger, styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute' as const,
@@ -29,19 +30,15 @@ export interface ModalProps {
 
 export default function SaveModelModal(props: ModalProps) {
   const { toggleModalGuardar, open } = props;
-  const [nombre, setNombre] = React.useState('');
 
-  const handleChange = (event: { target: { value: string } }) => {
-    const num = parseInt(event.target.value, 10);
-    console.log(num);
-    setNombre(event.target.value as string);
-  };
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
-  const saveModel = useCallback(() => {
-    console.log('nombre', nombre);
-  }, [nombre]);
+  const navigate = useNavigate();
+
+  const navigateToModels = () => {
+    navigate('/guardarModelo');
+  }
   return (
     <div>
       <Modal
@@ -52,18 +49,12 @@ export default function SaveModelModal(props: ModalProps) {
       >
         <Box sx={style} noValidate autoComplete="off" component="form">
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Escoja un Nombre y una descripción para el modelo
+            ¿Esta seguro que quiere continuar sin guardar?
           </Typography>
-          <br />
-          <TextField
-            required
-            id="outlined-basic"
-            label="Nombre"
-            variant="outlined"
-            onChange={handleChange}
-          />
-          <br />
-          <Button sx={styleButtonBigger} onClick={saveModel}>
+          <Button sx={styleButtonBiggerRed} onClick={toggleModalGuardar}>
+            Cancelar
+          </Button>
+          <Button sx={styleButtonBigger} onClick={navigateToModels}>
             Confirmar
           </Button>
         </Box>

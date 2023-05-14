@@ -101,7 +101,7 @@ const CrearConfiguracionMultimediaContainer = () => {
       
       async function insertConf(data: any) {
         appDispatch(setIsLoading(true));
-        window.Bridge.insertConfiguracion(data.nombreConfig, data.gsr, data.spo2, data.ritmo, data.canales, data.temperatura, "1", data.descripcion );
+        window.Bridge.insertConfiguracion(data.nombreConfig, data.giroscopio, data.frecuencia, data.ritmo, data.canales, data.acelerometro, "1", data.descripcion );
       }
       window.Bridge.insertC((event: any, resp: any) => {
         if (resp.length > 0) {

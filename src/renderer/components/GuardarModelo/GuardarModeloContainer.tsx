@@ -102,11 +102,12 @@ const GuardarModeloContainer = () => {
       for (let i = 0; i < respModelo.length; i += 1) {
         // const localString =  JSON.stringify(respModelo[i].resultados);
         const localString = parametrosString(respModelo[i].resultados);
+        console.log("entre", respModelo[i].entrenado)
         datarRetrieved.push({
           col1: respModelo[i].nombre,
           col2: respModelo[i].algoritmo_ia,
           col3: respModelo[i].protocolo,
-          col4: respModelo[i].entrenado,
+          col4: respModelo[i].entrenado.toString(),
           col5: localString,
         });
       }
@@ -154,6 +155,7 @@ const GuardarModeloContainer = () => {
       setData={setData}
       onClickContinue={onClickContinue}
       onClickBack={onClickBack}
+      algoritmoTipo={algoritmoTipo}
     />
   );
 };

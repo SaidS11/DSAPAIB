@@ -60,7 +60,7 @@ const EscogerConfiguracion = (props: LoginProps) => {
         <h3>Escoger Protocolo Guardado</h3>
       </section>
       <section className="display-flexEscogerC">
-        <h4 className="select-EscogerC ">Sexo:</h4>
+        <h4 className="select-EscogerC ">Protocolo:</h4>
         <section className="list-box-protocolo">
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>

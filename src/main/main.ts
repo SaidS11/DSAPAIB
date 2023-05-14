@@ -13,6 +13,7 @@
  */
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { Worker } from "worker_threads";
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { Pool } from 'pg';
@@ -94,6 +95,7 @@ const createWindow = async () => {
         : path.join(__dirname, '../../.erb/dll/preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      nodeIntegrationInWorker: true,
     },
   });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -640,11 +642,11 @@ ipcMain.handle('selectAlgoritmosIA', selectAlgoritmosIA);
 
 async function insertConfiguracion(
   configuracionNombre: string,
-  configuracionGsr: any,
-  configuracionSpo2: any,
+  configuracionGiroscopio: any,
+  configuracionFrecuenciaCardiaca: any,
   configuracionRitmoCardiaco: any,
   configuracionEmgs: any,
-  configuracionTemperatura: any,
+  configuracionAcelerometro: any,
   configuracionSubido: any,
   configuracionDescripcion: string
 ) {
@@ -652,11 +654,11 @@ async function insertConfiguracion(
     ' insert into configuracion values($1, $2, $3, $4, $5, $6, $7, $8)  ',
     [
       configuracionNombre,
-      configuracionGsr,
-      configuracionSpo2,
+      configuracionGiroscopio,
+      configuracionFrecuenciaCardiaca,
       configuracionRitmoCardiaco,
       configuracionEmgs,
-      configuracionTemperatura,
+      configuracionAcelerometro,
       configuracionSubido,
       configuracionDescripcion,
     ]
@@ -670,21 +672,21 @@ ipcMain.on(
   async (
     event,
     configuracionNombre: string,
-    configuracionGsr: any,
-    configuracionSpo2: any,
+    configuracionGiroscopio: any,
+    configuracionFrecuenciaCardiaca: any,
     configuracionRitmoCardiaco: any,
     configuracionEmgs: any,
-    configuracionTemperatura: any,
+    configuracionAcelerometro: any,
     configuracionSubido: any,
     configuracionDescripcion: string
   ) => {
-    const resp = await insertConfiguracion(
+    const resp = await insertConfiguracion( 
       configuracionNombre,
-      configuracionGsr,
-      configuracionSpo2,
+      configuracionGiroscopio,
+      configuracionFrecuenciaCardiaca,
       configuracionRitmoCardiaco,
       configuracionEmgs,
-      configuracionTemperatura,
+      configuracionAcelerometro,
       configuracionSubido,
       configuracionDescripcion
     );
@@ -851,14 +853,105 @@ ipcMain.on(
   }
 );
 
-const serialPort = new SerialPort({
-  path: 'COM5',
+
+async function updateModelo(
+  resultados: string,
+  entrenado: string,
+  modelo: string
+) {
+  const resulsJSON = JSON.parse(resultados);
+  const query = await pool.query(
+    ' UPDATE modelo SET resultados = $1, entrenado = $2 WHERE nombre = $3',
+    [resulsJSON, entrenado, modelo]
+  );
+  console.log(query.rows);
+  return query.rows;
+}
+
+ipcMain.on(
+  'updateModelo',
+  async (
+    event,
+    resultados: string,
+    entrenado: string,
+    modelo: string
+  ) => {
+    const resp = await updateModelo(
+      resultados,
+      entrenado,
+      modelo
+    );
+    console.log(resp);
+    mainWindow?.webContents.send('updateMod', resp);
+  }
+);
+
+// Arduino
+let serialPort = new SerialPort({
+  path: 'COM3',
   baudRate: 9600,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
+  autoOpen: true
 });
+
+ipcMain.on("loadPort", async(event, opcion, baud)=>{
+  serialPort = new SerialPort({
+    // path: `\\\\.\\` + opcion,
+    path: opcion,
+    baudRate: baud,
+    dataBits: 8,
+    stopBits: 1,
+    parity: 'none',
+    autoOpen: true
+  })
+  console.log("PUERTO", serialPort.path)
+  console.log("BAUD", serialPort.baudRate)
+})
+
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+let startFlag = false;
+parser.on('data', (chunk) => {
+  if (startFlag == true){
+    console.log("parzer")
+    mainWindow?.webContents.send('sensoNewTest', chunk);
+  }
+});
+parser.pause()
+
+ipcMain.on('sensoresNewTest',  async (event) => {
+  // parser._readableState.buffer.clear()
+  // parser._readableState.length = 0
+  console.log("Starting inside");
+  startFlag = true
+  parser.resume()
+});
+
+
+async function sensoresStopNewTest() {
+  //parser.off('data', console.log);
+  if (serialPort.isOpen === true) {
+    console.log("Stopping inside");
+    serialPort.close();
+    startFlag = false
+    parser.pause()
+    // parser2.pause()
+    // parser._readableState.buffer.clear()
+    // parser._readableState.length = 0
+    // parser2._readableState.buffer.clear()
+    // parser2._readableState.length = 0
+    //parser.removeListener('data', )
+    //serialPort.reset()
+  }
+  // parser.write('\x03')
+}
+
+ipcMain.on('sensoresStopNewTest', async (event) => {
+  const resp = await sensoresStopNewTest();
+  mainWindow?.webContents.send('sensoStopNewTest', resp);
+});
+
 // eslint-disable-next-line promise/param-names
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 async function sensores() {
@@ -866,7 +959,7 @@ async function sensores() {
   serialPort.open();
   let buffer = '';
   let sum = 0;
-  let gsrAverage = 0;
+  let giroscopioAverage = 0;
   let hr = 0;
   console.log('ANTES DEE');
   parser.on('data', async (chunk: any) => {
@@ -877,9 +970,9 @@ async function sensores() {
       console.log(buffer);
       sum += parseInt(buffer);
     }
-    gsrAverage = sum / 10;
-    console.log('Gsr Average', gsrAverage);
-    hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    giroscopioAverage = sum / 10;
+    console.log('Giroscopio Average', giroscopioAverage);
+    hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
     console.log('GSR', hr);
     // const resp = await sleep(10000);
     // console.log("Resp", resp);
@@ -895,7 +988,7 @@ ipcMain.on('sensores', async (event) => {
   }
   const buffer = '';
   const sum = 0;
-  const gsrAverage = 0;
+  const giroscopioAverage = 0;
   const hr = 0;
   const len = 0;
   const arrValues: Array<number> = [];
@@ -907,9 +1000,9 @@ ipcMain.on('sensores', async (event) => {
     // if (len === 10) {
     //   let sum2 = 0;
     //   arrValues.map((x) => sum2 += x);
-    //   gsrAverage = sum2 / 10;
-    //   console.log('GSR AVErage', gsrAverage);
-    //   hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    //   giroscopioAverage = sum2 / 10;
+    //   console.log('GSR AVErage', giroscopioAverage);
+    //   hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
     //   console.log('GSR', hr);
     //   len = 0;
     //   arrValues.length = 0;
@@ -921,10 +1014,10 @@ ipcMain.on('sensores', async (event) => {
     //   console.log(buffer);
     //   sum += parseInt(buffer);
     // }
-    // gsrAverage = sum / 10;
+    // giroscopioAverage = sum / 10;
     // sum = 0;
-    // console.log('Gsr Average', gsrAverage);
-    // hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
+    // console.log('Giroscopio Average', giroscopioAverage);
+    // hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
     // console.log('GSR', hr);
     // const resp = await sleep(10000);
     // console.log("Resp", resp);
@@ -952,6 +1045,64 @@ ipcMain.on('sensoresStop', async (event) => {
   mainWindow?.webContents.send('sensoStop', resp);
 });
 
+
+// async function puerto(){
+//   const puertos = await SerialPort.list()
+//   console.log("PUERTOS", puertos)
+// }
+// puerto()
+
+ipcMain.on("cargarPuertos", async(event)=>{
+  const puertos = await SerialPort.list()
+  console.log("PUERTOS", puertos)
+  mainWindow?.webContents.send("cargarP", puertos)
+})
+
+
+// const myWorker = new Worker("worker.ts");
+// const myWorker = new Worker("./src/main/worker.ts");
+
+async function testSensores() {
+  // if (window.Worker) {
+  //   console.log("WEB WORKERS AVAILABLE");
+
+  //   (function() {
+  //     myWorker.postMessage([12, 14]);
+  //     console.log('Message posted to worker');
+  //   })();
+  
+  //   // myWorker.on("message") = function(e) {
+  //   //   console.log('Message received from worker', e.data);
+  //   // }
+  // } else {
+  //   console.log("WEB WORKERS NOT AVAILABLE");
+  // }
+}
+
+ipcMain.on('testSensores', async (event) => {
+  const resp = await testSensores();
+  console.log(resp);
+  mainWindow?.webContents.send('testSensores', resp);
+});
+
+
+async function testSensoresStop() {
+  // if (window.Worker) {
+  //   console.log("WEB WORKER STOP");
+  //   myWorker.terminate();
+  // } else {
+  //   console.log("WEB WORKERS NOT RUNNING");
+  // }
+}
+
+ipcMain.on('testSensoresStop', async (event) => {
+  const resp = await testSensoresStop();
+  console.log(resp);
+  mainWindow?.webContents.send('testSensoresStop', resp);
+});
+
+
+// Arduino
 /* const options = {}
 const shellTest = new PythonShell('testing.py', options)
 
@@ -1045,7 +1196,7 @@ ipcMain.handle(
         }
       );
     } catch (e: any) {
-      console.log('Error', e);
+      console.log('ERROR EN LA EJECUCION', e);
     }
   }
 );

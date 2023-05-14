@@ -16,11 +16,11 @@ const CrearConfiguracionContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const data = Object.fromEntries(new FormData(form).entries());
-    // console.log('la data', data);
+    console.log('la data', data);
     appDispatch(setConfigPrimerPaso(data))
     appDispatch(setIsLoading(false));
     // insertData(data);
-    navigate('/crearConfigMultimedia');
+    // navigate('/crearConfigMultimedia');
   };
   return <CrearConfiguracion onClickNav={onClickNav}/>;
 };

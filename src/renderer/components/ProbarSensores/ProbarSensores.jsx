@@ -9,10 +9,16 @@ import styleButton, {
 
 const ProbarSensores = ({
   sensoresSelected,
-  onClickNav,
+  onClickStart,
   onClickStop,
-  dataXParam,
-  dataYParam,
+  dataXGiroscopio,
+  dataYGiroscopio,
+  dataXFrecuencia,
+  dataYFrecuencia,
+  dataXAcelerometro,
+  dataYAcelerometro,
+  onClickStopNew,
+  onClickStartNew,
 }) => {
   // const { onClickAdd } = props;
   /* const dataX = [];
@@ -37,16 +43,16 @@ const ProbarSensores = ({
   const [color1, setColor1] = useState('red');
 
   const trace1 = {
-    x: dataXParam,
-    y: dataYParam,
+    x: dataXGiroscopio,
+    y: dataYGiroscopio,
     type: 'scatter',
   };
 
   const [dataX2, setDataX2] = useState([0]);
   const [dataY2, setDataY2] = useState([0]);
   const trace2 = {
-    x: dataX2,
-    y: dataY2,
+    x: dataXFrecuencia,
+    y: dataYFrecuencia,
     xaxis: 'x2',
     yaxis: 'y2',
     type: 'scatter',
@@ -60,8 +66,8 @@ const ProbarSensores = ({
   const [dataX3, setDataX3] = useState([0]);
   const [dataY3, setDataY3] = useState([0]);
   const trace3 = {
-    x: dataX3,
-    y: dataY3,
+    x: dataXAcelerometro,
+    y: dataYAcelerometro,
     xaxis: 'x3',
     yaxis: 'y3',
     type: 'scatter',
@@ -222,62 +228,19 @@ const ProbarSensores = ({
     for (let i = 0; i < segment.points.length; i += 1) {
       pn = segment.points[i].pointNumber;
       tn = segment.points[i].curveNumber;
-      // colorsL[pn] = '#C54C82';
-      // colors = segment.points[i].fullData.marker.color;
-      // segment.points[i].fullData.marker.color = '#C54C82';
-      // segment.points[i].fullData.line.color = '#C54C82';
     }
-    // setLocalUpdater(!localUpdater);
-    // console.log('After color change', segment);
-    // Plot.restyle(myPlot, segment, [tn]);
-    // Plot.apply(myPlot);
-    // console.log("colors before", colorsL)
-    // colorsL[pn] = '#C54C82';
-    // colorsL[1] = '#C54C82';
-    // colorsL[2] = '#C54C82';
     console.log('Colors after', colorsL);
     const upd = {
       marker: { colors: colorsL },
     };
     setColors([...colorsL]);
-    // Plot.update(myPlot, upd);
-    // Plotly.restyle('myDiv', update, [tn]);
-    // setColor1("blue");
-  };
-  // async function buscarElementoMongoFront() {
-  //   // appDispatch(setIsLoading(true));
-  //   const document = { name: 'Ernesto Peña', protocol: 'PieDiabetico2en2' };
-  //   const document2 = { name: 'Ernesto Peña', protocol: 'PieDiabetico3en3' };
-  //   // const cadena = 'hola';
-  //   const jsonDocument = JSON.stringify(document);
-  //   // console.log(typeof jsonDocument);
-  //   window.electron.ipcRenderer.buscarElementoMongo(jsonDocument);
-  // }
-  // window.electron.ipcRenderer.buscarElementoM((event, resp) => {
-  //   if (resp.length > 0) {
-  //     console.log(resp[0]);
-  //   } else {
-  //     console.log('No hay nada');
-  //   }
-  // });
 
-  // const onClick2 = () => {
-  //   onClickAdd();
-  //   buscarElementoMongoFront();
-  // };
+  };
+
   return (
     <div>
       <Plot
         data={dataArr}
-        // data={
-        //   [
-        //     {
-        //       values: dataArr,
-        //       marker: { color: "red" },
-        //     }
-
-        //   ]
-        // }
         layout={{
           title: 'Sensores',
           autosize: true,
@@ -287,13 +250,9 @@ const ProbarSensores = ({
         config={{ scrollZoom: true }}
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
-        // Idea de captura, tener almacenado de manera temporal los datos, cuando se presiona el boton se almacenan en un arreglo y hasta el final cuando se guarda se despachan
         onSelected={(selection) => processSelections(selection)}
-        // onClick={(data) => processSelections(data)}
-        // onUpdate={(fig, graph) => console.log("")}
         onRestyle={(d) => console.log('Res', d)}
         divId="myDiv"
-        // key={i}
       />
       <section className="display-center">
         <Button onClick={onClickAdd} sx={styleButton}>
@@ -302,14 +261,14 @@ const ProbarSensores = ({
         <Button
           sx={styleButtonBiggerGreen}
           style={{ fontSize: '30px' }}
-          onClick={onClickNav}
+          onClick={onClickStartNew}
         >
           Comenzar
         </Button>
         <Button
           sx={styleButtonBiggerGreen}
           style={{ fontSize: '30px' }}
-          onClick={onClickStop}
+          onClick={onClickStopNew}
         >
           Parar
         </Button>

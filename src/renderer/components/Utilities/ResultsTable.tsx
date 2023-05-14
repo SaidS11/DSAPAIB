@@ -19,9 +19,44 @@ import { setIsLoading } from '../../../redux/slices/StatusSlice';
 
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
+interface Cols {
+  nombre?: string;
+  // EMG's
+  colMediaABSEMG1?: string;
+  colMedianaEMG1?: string;
+  colRMSEMG1?: string;
+
+  colMediaABSEMG2?: string;
+  colMedianaEMG2?: string;
+  colRMSEMG2?: string;
+
+  colMediaABSEMG3?: string;
+  colMedianaEMG3?: string;
+  colRMSEMG3?: string;
+
+  colMediaABSEMG4?: string;
+  colMedianaEMG4?: string;
+  colRMSEMG4?: string;
+  // TEMP
+  colMediaABSAcelerometro?: string;
+  colMedianaAcelerometro?: string;
+  colRMSAcelerometro?: string;
+  // GSR
+  colMediaABSGiroscopio?: string;
+  colMedianaGiroscopio?: string;
+  colRMSGiroscopio?: string;
+  // SPO2
+  colMediaABSFrecuencia?: string;
+  colMedianaFrecuencia?: string;
+  colRMSFrecuencia?: string;
+
+  // Clase
+  etiqueta?: string;
+}
+
 interface ResultsProps {
   options: any;
-  data: any;
+  dataInitial: any;
   columns: any;
 }
 
@@ -35,8 +70,64 @@ const initialHidden = (cols: any) => {
   return helperArray;
 };
 const ResultsTable = (props: ResultsProps) => {
-  const { options, data, columns } = props;
+  const { options, dataInitial, columns } = props;
   const [currentLabel, setCurrentLabel] = useState('Expandir');
+  const [currentData, setCurrentData] = useState([])
+  function prepareShortData () {
+    console.log("ACTUAL", currentLabel);
+    if (currentLabel === 'Expandir') {
+
+        const shortData: { nombre: any; etiqueta: any; }[] = [];
+        console.log("This data was received", dataInitial);
+        let tablaHash = new Map();
+        dataInitial.map((registro: any) => {
+          if(tablaHash.has(registro.nombre)) {
+            const prev = tablaHash.get(registro.nombre)
+            tablaHash.set(registro.nombre, [...prev, registro])
+          } else {
+            tablaHash.set(registro.nombre, [registro])
+          }
+          
+        })
+        console.log("This data was parsed", tablaHash);
+        let tablaHashEtiquetas = new Map();
+        tablaHash.forEach((value, key) => {
+          value.map((registro: any) => {
+            console.log("Nombre y etiqueta", registro.nombre, registro.etiqueta);
+            if(tablaHashEtiquetas.has(registro.etiqueta)) {
+              const prev = tablaHashEtiquetas.get(registro.etiqueta)
+              tablaHashEtiquetas.set(registro.etiqueta, prev + 1)
+            } else {
+              tablaHashEtiquetas.set(registro.etiqueta, 1)
+            }
+          })
+          let maxKey;
+          let maxValue = -Infinity;
+    
+          for (let [key, value] of tablaHashEtiquetas) {
+            if (value > maxValue) {
+              maxKey = key;
+              maxValue = value;
+            }
+          }
+          console.log("La clave con el valor máximo es:", maxKey);
+          shortData.push({nombre: key, etiqueta: maxKey})
+          tablaHashEtiquetas.clear()
+        });
+        console.log("Finished", shortData);
+        const preparedData = shortData;
+        return preparedData;
+    } else {
+      return dataInitial;
+    }
+  }
+  const dataParsed = prepareShortData();
+  const data = React.useMemo(
+    (): Cols[] => [...dataParsed],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentLabel]
+  );
+  // const data: Cols[] = dataParsed;
   const {
     getTableProps,
     getTableBodyProps,

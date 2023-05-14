@@ -53,39 +53,39 @@ const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
             </section>
 
             <section className="display-flex" id='less-margin-top'>
-              <h4>SPO2:</h4>
+              <h4>Frecuencia Cardiaca:</h4>
               {
-                resp[0].spo2 === true ?
-                <><input id='more-margin-left-spo2' className='first-radio' type="radio" name="spo2" value="si" checked/> 
-                <input className='second-radio' type="radio" name="spo2" value="no" disabled/></>
+                resp[0].frecuencia === true ?
+                <><input id='more-margin-left-frecuencia' className='first-radio' type="radio" name="frecuencia" value="si" checked/> 
+                <input className='second-radio' type="radio" name="frecuencia" value="no" disabled/></>
                 :
-                <><input id='more-margin-left-spo2' className='first-radio' type="radio" name="spo2" value="si" disabled/> 
-                <input className='second-radio' type="radio" name="spo2" value="no" checked/></>
+                <><input id='more-margin-left-frecuencia' className='first-radio' type="radio" name="frecuencia" value="si" disabled/> 
+                <input className='second-radio' type="radio" name="frecuencia" value="no" checked/></>
               }
             </section>
 
             <section className="display-flex" id='less-margin-top'>
-              <h4>GSR:</h4>
+              <h4>Giroscopio:</h4>
               {
-                resp[0].gsr === true ?
-                <><input id='more-margin-left-gsr' className='first-radio' type="radio" name="gsr" value="si" checked /> 
-                <input className='second-radio' type="radio" name="gsr" value="no" disabled/></>
+                resp[0].giroscopio === true ?
+                <><input id='more-margin-left-giroscopio' className='first-radio' type="radio" name="giroscopio" value="si" checked /> 
+                <input className='second-radio' type="radio" name="giroscopio" value="no" disabled/></>
                 :
-                <><input id='more-margin-left-gsr' className='first-radio' type="radio" name="gsr" value="si" disabled/> 
-                <input className='second-radio' type="radio" name="gsr" value="no" checked/></>
+                <><input id='more-margin-left-giroscopio' className='first-radio' type="radio" name="giroscopio" value="si" disabled/> 
+                <input className='second-radio' type="radio" name="giroscopio" value="no" checked/></>
               }
               
             </section>
 
             <section className="display-flex" id='less-margin-top'>
-              <h4>Temperatura:</h4>
+              <h4>Acelerometro:</h4>
               {
-                resp[0].temperatura === true ?
-                <><input id='more-margin-right-temperature' className='first-radio' type="radio" name="temperatura" value="si" checked/> 
-                <input className='second-radio' type="radio" name="temperatura" value="no" disabled/></>
+                resp[0].acelerometro === true ?
+                <><input id='more-margin-right-acelerometroerature' className='first-radio' type="radio" name="acelerometro" value="si" checked/> 
+                <input className='second-radio' type="radio" name="acelerometro" value="no" disabled/></>
                 :
-                <><input id='more-margin-right-temperature' className='first-radio' type="radio" name="temperatura" value="si" disabled/> 
-                <input className='second-radio' type="radio" name="temperatura" value="no" checked/></>
+                <><input id='more-margin-right-acelerometroerature' className='first-radio' type="radio" name="acelerometro" value="si" disabled/> 
+                <input className='second-radio' type="radio" name="acelerometro" value="no" checked/></>
               }
             </section>
             <section className="display-flexVerDetalle" id='less-margin-top'>

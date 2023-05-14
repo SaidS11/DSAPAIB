@@ -65,18 +65,28 @@ function getElementsAndSum(ventanas: any) {
 const CaracterizarParte2Container = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
-  const ventanaSeñal1 = useCustomSelector(
-    (state) => state.señales.ventanasArray
+  const ventanaSeñalEmg1 = useCustomSelector(
+    (state) => state.señales.ventanasArrayEmg1
   );
-  const ventanaSeñal2 = useCustomSelector(
-    (state) => state.señales.ventanasArray2
+  const ventanaSeñalEmg2 = useCustomSelector(
+    (state) => state.señales.ventanasArrayEmg2
+  );
+  const ventanaSeñalEmg3 = useCustomSelector(
+    (state) => state.señales.ventanasArrayEmg3
+  );
+  const ventanaSeñalEmg4 = useCustomSelector(
+    (state) => state.señales.ventanasArrayEmg4
   );
 
-  const ventanaSeñalGsr = useCustomSelector(
-    (state) => state.señales.ventanasArrayGsr
+
+  const ventanaSeñalGiroscopio = useCustomSelector(
+    (state) => state.señales.ventanasArrayGiroscopio
   );
-  const ventanaSeñalTemp = useCustomSelector(
-    (state) => state.señales.ventanasArrayTemp
+  const ventanaSeñalAcelerometro = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometro
+  );
+  const ventanaSeñalFrecuencia = useCustomSelector(
+    (state) => state.señales.ventanasArrayFrecuencia
   );
 
   const cantidadSensores = useCustomSelector(
@@ -88,82 +98,150 @@ const CaracterizarParte2Container = () => {
   const selectedPatients = useCustomSelector(
     (state) => state.config.selectedPatients
   );
-  console.log('This was stored', ventanaSeñal1);
-  console.log('This was stored 2', ventanaSeñal2);
+  const giroscopioChecked = useCustomSelector(
+    (state) => state.señales.giroscopioIsChecked
+  );
+  const acelerometroChecked = useCustomSelector(
+    (state) => state.señales.acelerometroIsChecked
+  );
+  const frecuenciaChecked = useCustomSelector(
+    (state) => state.señales.frecuenciaIsChecked
+  );
+  console.log('This was stored', ventanaSeñalEmg1);
+  console.log('This was stored 2', ventanaSeñalEmg2);
 
-  const ventanasArray1: any[] = [];
-  const ventanasArray2: any[] = [];
+  const ventanasArrayEmg1: any[] = [];
+  const ventanasArrayEmg2: any[] = [];
+  const ventanasArrayEmg3: any[] = [];
+  const ventanasArrayEmg4: any[] = [];
 
-  const ventanasArrayGsr: any[] = [];
-  const ventanasArrayTemp: any[] = [];
 
-  // for(let i = 0; i < cantidadSujetos; i+=1) {
-  //   const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1[i]);
-  //   const mediaAbsoluta = (sumVentana / ventanaSeñal1[i].length).toString();
-  //   ventanasArray.push([ventana, sumVentana, mediaAbsoluta])
+  const ventanasArrayGiroscopio: any[] = [];
+  const ventanasArrayAcelerometro: any[] = [];
+  const ventanaArrayFrecuencia: any[] = [];
 
-  // }
-  let ventanaAr: any[] = [];
-  let ventanaAr2: any[] = [];
-  let ventanaGsr: any[] = [];
-  let ventanaTemp: any[] = [];
+  let ventanaArrEmg1: any[] = [];
+  let ventanaArrEmg2: any[] = [];
+  let ventanaArrEmg3: any[] = [];
+  let ventanaArrEmg4: any[] = [];
+  let ventanaGiroscopio: any[] = [];
+  let ventanaAcelerometro: any[] = [];
+  let ventanaFrecuencia: any[] = [];
 
   // EMG1
-  for (let i = 0; i < cantidadSujetos; i += 1) {
-    const largo = ventanaSeñal1[i].length;
-    ventanaAr = [];
-    for (let c = 0; c < largo; c += 1) {
-      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal1[i][c]);
-      const mediaAbsoluta = (
-        sumVentana / ventanaSeñal1[i][c].length
-      ).toString();
-      ventanaAr.push([ventana, sumVentana, mediaAbsoluta]);
+  if (cantidadSensores >= 1) {
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalEmg1[i].length;
+      ventanaArrEmg1 = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg1[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalEmg1[i][c].length
+        ).toString();
+        ventanaArrEmg1.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayEmg1.push(ventanaArrEmg1);
     }
-    ventanasArray1.push(ventanaAr);
   }
 
   // EMG2
-  for (let i = 0; i < cantidadSujetos; i += 1) {
-    const largo = ventanaSeñal2[i].length;
-    ventanaAr2 = [];
-    for (let c = 0; c < largo; c += 1) {
-      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñal2[i][c]);
-      const mediaAbsoluta = (
-        sumVentana / ventanaSeñal2[i][c].length
-      ).toString();
-      ventanaAr2.push([ventana, sumVentana, mediaAbsoluta]);
+  if (cantidadSensores >=2) {
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalEmg2[i].length;
+      ventanaArrEmg2 = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg2[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalEmg2[i][c].length
+        ).toString();
+        ventanaArrEmg2.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayEmg2.push(ventanaArrEmg2);
     }
-    ventanasArray2.push(ventanaAr2);
   }
 
-  // GSR
-  for (let i = 0; i < cantidadSujetos; i += 1) {
-    const largo = ventanaSeñalGsr[i].length;
-    ventanaGsr = [];
-    for (let c = 0; c < largo; c += 1) {
-      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalGsr[i][c]);
-      const mediaAbsoluta = (
-        sumVentana / ventanaSeñalGsr[i][c].length
-      ).toString();
-      ventanaGsr.push([ventana, sumVentana, mediaAbsoluta]);
+  // EMG3
+  if (cantidadSensores >=3) {
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalEmg3[i].length;
+      ventanaArrEmg3 = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg3[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalEmg3[i][c].length
+        ).toString();
+        ventanaArrEmg3.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayEmg3.push(ventanaArrEmg3);
     }
-    ventanasArrayGsr.push(ventanaGsr);
   }
 
-  // TEMP
-  for (let i = 0; i < cantidadSujetos; i += 1) {
-    const largo = ventanaSeñalTemp[i].length;
-    ventanaTemp = [];
-    for (let c = 0; c < largo; c += 1) {
-      const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalTemp[i][c]);
-      const mediaAbsoluta = (
-        sumVentana / ventanaSeñalTemp[i][c].length
-      ).toString();
-      ventanaTemp.push([ventana, sumVentana, mediaAbsoluta]);
+  // EMG4
+  if (cantidadSensores >=4) {
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalEmg4[i].length;
+      ventanaArrEmg4 = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg4[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalEmg4[i][c].length
+        ).toString();
+        ventanaArrEmg4.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayEmg4.push(ventanaArrEmg4);
     }
-    ventanasArrayTemp.push(ventanaTemp);
   }
-  // console.log("Filled with", ventanasArray1)
+
+  if (giroscopioChecked) {
+    // GSR
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalGiroscopio[i].length;
+      ventanaGiroscopio = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalGiroscopio[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalGiroscopio[i][c].length
+        ).toString();
+        ventanaGiroscopio.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayGiroscopio.push(ventanaGiroscopio);
+    }
+  }
+
+  if (frecuenciaChecked) {
+    // SPO2
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalFrecuencia[i].length;
+      ventanaFrecuencia = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalFrecuencia[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalFrecuencia[i][c].length
+        ).toString();
+        ventanaFrecuencia.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanaArrayFrecuencia.push(ventanaFrecuencia);
+    }
+  }
+
+  if (acelerometroChecked) {
+    // TEMP
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalAcelerometro[i].length;
+      ventanaAcelerometro = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalAcelerometro[i][c]);
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalAcelerometro[i][c].length
+        ).toString();
+        ventanaAcelerometro.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayAcelerometro.push(ventanaAcelerometro);
+    }
+  }
+
+
+  // console.log("Filled with", ventanasArrayEmg1)
   const componentArray: any[] = [];
   for (let i = 0; i < cantidadSujetos; i += 1) {
     componentArray.push(
@@ -173,12 +251,18 @@ const CaracterizarParte2Container = () => {
           cantidadSensores={cantidadSensores}
           cantidadSensoresExtra={2}
           numeroDeSujeto={i}
-          ventanasArray={ventanasArray1}
-          ventanasArray2={ventanasArray2}
-          ventanasArrayGsr={ventanasArrayGsr}
-          ventanasArrayTemp={ventanasArrayTemp}
+          ventanasArrayEmg1={ventanasArrayEmg1}
+          ventanasArrayEmg2={ventanasArrayEmg2}
+          ventanasArrayEmg3={ventanasArrayEmg3}
+          ventanasArrayEmg4={ventanasArrayEmg4}
+          ventanasArrayGiroscopio={ventanasArrayGiroscopio}
+          ventanasArrayAcelerometro={ventanasArrayAcelerometro}
+          ventanaArrayFrecuencia={ventanaArrayFrecuencia}
           selectedPatients={selectedPatients}
           patientNumber={i}
+          giroscopioChecked={giroscopioChecked}
+          acelerometroChecked={acelerometroChecked}
+          frecuenciaChecked={frecuenciaChecked}
         />
       </div>
     );

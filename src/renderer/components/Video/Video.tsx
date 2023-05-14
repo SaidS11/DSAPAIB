@@ -21,10 +21,11 @@ export interface VideoProps {
   onClickDetener: () => void;
   probando: boolean;
   sensores: number;
+  onClickCancel: () => void;
 }
 
 const Video = (props: VideoProps) => {
-  const { onClickNav, url, onClickProbar, onClickDetener, probando, sensores } =
+  const { onClickNav, url, onClickProbar, onClickDetener, probando, sensores, onClickCancel } =
     props;
   return (
     <div>
@@ -52,7 +53,7 @@ const Video = (props: VideoProps) => {
         />
       </section>
       <section className="display-center">
-        <Button sx={styleButtonBiggerRed} onClick={onClickNav}>
+        <Button sx={styleButtonBiggerRed} onClick={onClickCancel}>
           Cancelar
         </Button>
       </section>

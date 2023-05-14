@@ -33,11 +33,13 @@ const ResultadoEntrenarContainer = () => {
   const algoritmoUsado = analisis.algoritmo;
   const protocoloUsado = analisis.protocolo;
   const nombreSeleccionado = selectedModels[0].col1;
+  const algoritmoSeleccionado = selectedModels[0].col2;
 
   const appDispatch = useCustomDispatch();
   console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
   console.log('Parsed', parsedResp);
+  
   const precision = obtenerPorcentaje(parsedResp[1]);
   const f1 = obtenerPorcentaje(parsedResp[2]);
   const recall = obtenerPorcentaje(parsedResp[3]);
@@ -45,6 +47,8 @@ const ResultadoEntrenarContainer = () => {
   const desviacion = parsedResp[5];
   const respAnalisis = parsedResp[6];
   console.log('This is resp', respAnalisis);
+  const banderaExistente = parsedResp[7];
+  console.log("this is flag", banderaExistente)
   const precisionPromedioParsed = parseInt(precisionPromedio, 10) * 100;
   const precisionPromParsString = precisionPromedioParsed.toString();
   console.log('Crosses', precisionPromedio, desviacion);
@@ -55,6 +59,7 @@ const ResultadoEntrenarContainer = () => {
   } */
   console.log('precision', precision);
   const [open, setOpen] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const toggleModalVerMas = (scrollType: DialogProps['scroll']) => {
     setOpen(!open);
@@ -86,25 +91,40 @@ const ResultadoEntrenarContainer = () => {
     // setOpen2(!open2);
 
     appDispatch(setIsLoading(true));
+    setIsSaved(true);
     const customResults = {
       Precisión: precision,
       F1: f1,
       Recall: recall,
     };
     const customStrResults = JSON.stringify(customResults);
-    window.electron.ipcRenderer.insertModeloIA(
-      nombreSeleccionado,
-      'Arbol de Decisión' || 'undefined',
-      true,
-      protocoloUsado || 'undefined',
-      customStrResults
-    );
+    appDispatch(setIsLoading(true));
+    if (banderaExistente === "true") {
+      window.electron.ipcRenderer.updateModelo(
+        customStrResults,
+        '1',
+        nombreSeleccionado
+      );
+    }
+    else {
+      window.electron.ipcRenderer.insertModeloIA(
+        nombreSeleccionado,
+        algoritmoSeleccionado,
+        true,
+        protocoloUsado || 'undefined',
+        customStrResults
+      );
+    }
 
     // navigate('/video');
     // updateData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  window.electron.ipcRenderer.updateMod((event: any, respLocal: any) => {
+    console.log('Esta es', respLocal);
+    appDispatch(setIsLoading(false));
+    appDispatch(setIsUploaded(true));
+  });
   window.electron.ipcRenderer.insertModIA((event: any, respInsert: any) => {
     if (respInsert > 0) {
       console.log('insert', respInsert[0]);
@@ -115,6 +135,7 @@ const ResultadoEntrenarContainer = () => {
       console.log(respInsert);
     }
     appDispatch(setIsLoading(false));
+    appDispatch(setIsUploaded(true));
   });
 
   const onClickProbar = () => {
@@ -129,6 +150,13 @@ const ResultadoEntrenarContainer = () => {
   };
   const onClickBack = () => {
     // navigate('/entrenar');
+  };
+  const onClickCambiar = () => {
+    if (isSaved !== true) {
+      toggleModalGuardar()
+    } else {
+      navigate('/guardarModelo');
+    }
   };
 
   return (
@@ -147,6 +175,7 @@ const ResultadoEntrenarContainer = () => {
         tipo={tipo}
         respAnalisis={respAnalisis}
         toggleModalVerMas={toggleModalVerMas}
+        onClickCambiar={onClickCambiar}
       />
       {open && (
         <ModalVerMas

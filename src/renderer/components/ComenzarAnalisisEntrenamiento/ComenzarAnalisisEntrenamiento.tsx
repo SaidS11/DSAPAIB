@@ -206,7 +206,7 @@ const ComenzarAnalisisEntrenamiento = (
           </section>
           <section className="display-flexAgregar">
             <h3>Porcentaje de Datos de Prueba: </h3>
-            <input type="number" name="porcentaje" required min="1" max="500" />
+            <input type="number" name="porcentaje" required min="10" max="90" />
           </section>
           <section className="display-flexAgregar">
           <FormControl>

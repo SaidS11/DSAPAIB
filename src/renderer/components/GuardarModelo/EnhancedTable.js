@@ -2,7 +2,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import MaUTable from '@mui/material/Table';
 import PropTypes from 'prop-types';
@@ -23,7 +23,7 @@ import {
   setSelectedPatients,
   setSelectedModels,
 } from '../../../redux/slices/ConfiguracionSlice';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import TableToolbar from './TableToolbar';
 
 const IndeterminateCheckbox = React.forwardRef(
@@ -87,7 +87,7 @@ EditableCell.propTypes = {
 
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
-  Cell: EditableCell,
+  // Cell: EditableCell,
 };
 
 const EnhancedTable = ({
@@ -96,8 +96,11 @@ const EnhancedTable = ({
   selectedProtocol,
   setData,
   algoritmo,
+  algoritmoTipo,
   // setSelectedPatientsLocal,
 }) => {
+  const [isSelected, setIsSelected] = useState([]);
+  // const selectedPatients = useCustomSelector((state) => state.config.selectedModels);
   const {
     getTableProps,
     headerGroups,
@@ -132,18 +135,37 @@ const EnhancedTable = ({
           // be server side pagination.  For one, the clients should not download all
           // rows in most cases.  The client should only download data for the current page.
           // In that case, getToggleAllRowsSelectedProps works fine.
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllRowsSelectedProps }) => (
+          //   <div>
+          //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          //   </div>
+          // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
+          // To be implemented disable rows after one is selected
+          Cell: ({ row }) => {
+            console.log("these are rows", row);
+            // console.log("is", isSelected);
+            // if (isSelected.length > 0) {
+            //   console.log("Ya hay", isSelected);
+            // }
+
+            return (
+              <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>
-          ),
+            </div>)
+            // if (row.isSelected === true) {
+            //   return (
+            //     <div>
+            //     <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+            //   </div>)
+            // } else {
+            //   return (
+            //     <div>
+            //     <IndeterminateCheckbox disabled {...row.getToggleRowSelectedProps()} />
+            //   </div>)
+            // }
+          },
         },
         ...columnsMap,
       ]);
@@ -163,6 +185,7 @@ const EnhancedTable = ({
       newArr.push(patientsList[intKeys[i]]);
     }
     console.log('Joined', newArr);
+    // setIsSelected(newArr);
     appDispatch(setSelectedModels(newArr));
     return newArr;
   };
@@ -191,6 +214,7 @@ const EnhancedTable = ({
         addUserHandler={addUserHandler}
         selectedProtocol={selectedProtocol}
         algoritmo={algoritmo}
+        algoritmoTipo={algoritmoTipo}
       />
       <MaUTable {...getTableProps()}>
         <TableHead>
@@ -242,6 +266,7 @@ EnhancedTable.propTypes = {
   selectedProtocol: PropTypes.string.isRequired,
   setData: PropTypes.func.isRequired,
   algoritmo: PropTypes.string.isRequired,
+  algoritmoTipo: PropTypes.string.isRequired,
   // setSelectedPatientsLocal: PropTypes.array.isRequired,
 };
 

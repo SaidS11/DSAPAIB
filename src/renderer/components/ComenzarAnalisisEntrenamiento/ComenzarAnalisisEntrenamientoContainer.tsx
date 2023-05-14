@@ -5,11 +5,12 @@ import { DialogProps } from '@mui/material/Dialog';
 import {
   setCantidadSujetos,
   setCantidadSujetosRespaldo,
+  setCleanAllSensors,
   setCleanDatosAnalisisIA,
-  setVentanasArray,
-  setVentanasArray2,
-  setVentanasArrayGsr,
-  setVentanasArrayTemp,
+  setVentanasArrayEmg1,
+  setVentanasArrayEmg2,
+  setVentanasArrayGiroscopio,
+  setVentanasArrayAcelerometro,
 } from '../../../redux/slices/SeñalesSlice';
 import { setPythonResponse } from '../../../redux/slices/ResponsesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
@@ -79,16 +80,20 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     appDispatch(setIsLoading(true));
     const document = { protocol: protocolo };
     const jsonDocument = JSON.stringify(document);
-    const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
-      jsonDocument
-    )) as Array<PacientesAnalisisMongo>;
-    for (let i = 0; i < pacientes.length; i += 1) {
-      datarRetrieved.push({
-        col1: pacientes[i].name,
-        col2: pacientes[i].etiqueta,
-      });
+    try {
+        const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
+          jsonDocument
+        )) as Array<PacientesAnalisisMongo>;
+        for (let i = 0; i < pacientes.length; i += 1) {
+          datarRetrieved.push({
+            col1: pacientes[i].name,
+            col2: pacientes[i].etiqueta,
+          });
+        }
+        setData(datarRetrieved);
+    } catch (error: any) {
+      alert("Error while retrieving data");
     }
-    setData(datarRetrieved);
     appDispatch(setIsLoading(false));
   }
 
@@ -116,7 +121,7 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   const onClickStop = async () => {
     // startAnalysis('Tree', '{"profundidad":"3","estado":"1"}', 'test', '2', '40', datosDePrueba3);
 
-    // const respStringTest = '{"colMediaABSEMG1":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaEMG1":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSEMG1":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colMedianaEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colRMSEMG2":{"0":8.57,"1":16.06,"2":8.57,"3":16.06,"4":4.81,"5":14.6,"6":4.81,"7":14.6},"colMediaABSGsr":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaGsr":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSGsr":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSTemp":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaTemp":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSTemp":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"etiqueta":{"0":"sano","1":"diabetico","2":"sano","3":"diabetico","4":"sano","5":"sano","6":"sano","7":"sano"},"nombre":{"0":"Karla","1":"Karla","2":"Martha Garcia Lopez","3":"Martha Garcia Lopez","4":"Sujeto Prueba 1","5":"Sujeto Prueba 1","6":"Sujeto Prueba 2","7":"Sujeto Prueba 2"}}'
+    // const respStringTest = '{"colMediaABSEMG1":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaEMG1":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSEMG1":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colMedianaEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colRMSEMG2":{"0":8.57,"1":16.06,"2":8.57,"3":16.06,"4":4.81,"5":14.6,"6":4.81,"7":14.6},"colMediaABSGiroscopio":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaGiroscopio":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSGiroscopio":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSAcelerometro":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaAcelerometro":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSAcelerometro":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"etiqueta":{"0":"sano","1":"diabetico","2":"sano","3":"diabetico","4":"sano","5":"sano","6":"sano","7":"sano"},"nombre":{"0":"Karla","1":"Karla","2":"Martha Garcia Lopez","3":"Martha Garcia Lopez","4":"Sujeto Prueba 1","5":"Sujeto Prueba 1","6":"Sujeto Prueba 2","7":"Sujeto Prueba 2"}}'
     // const parsedRespObj = JSON.parse(respStringTest);
     // console.log("this is parsed", parsedRespObj)
 
@@ -231,10 +236,11 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     }
   };
   useEffect(() => {
-    appDispatch(setVentanasArray([]));
-    appDispatch(setVentanasArray2([]));
-    appDispatch(setVentanasArrayGsr([]));
-    appDispatch(setVentanasArrayTemp([]));
+    appDispatch(setCleanAllSensors(true));
+    // appDispatch(setVentanasArrayEmg1([]));
+    // appDispatch(setVentanasArrayEmg2([]));
+    // appDispatch(setVentanasArrayGiroscopio([]));
+    // appDispatch(setVentanasArrayAcelerometro([]));
     appDispatch(setCleanDatosAnalisisIA([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

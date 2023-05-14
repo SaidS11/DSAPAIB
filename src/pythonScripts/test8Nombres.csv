@@ -1,7 +1,3 @@
-colMediaABSEMG1,colMedianaEMG1,colRMSEMG1,colMediaABSEMG2,colMedianaEMG2,colRMSEMG2,colMediaABSGsr,colMedianaGsr,colRMSGsr,colMediaABSTemp,colMedianaTemp,colRMSTemp,etiqueta,nombre
-4,4,4.24,5,5,5.20,4,4,4.24,4,4,4.24,Diabetico,Martha Garcia Lopez
-12,12,12.10,15.50,15.5,15.54,12,12,12.10,12,12,12.10,Diabetico,Martha Garcia Lopez
-4.50,4.5,4.81,5.50,5.5,5.96,4.50,4.5,4.81,4.50,4.5,4.81,Diabetico,Carlos Silva Chacon
-16.50,16.5,16.59,17,17,17.12,16.50,16.5,16.59,16.50,16.5,16.59,Diabetico,Carlos Silva Chacon
-3,3,3.32,5,5,5.20,3,3,3.32,3,3,3.32,Sano,Probando pr pr
-15,15,15.08,18,18,18.06,15,15,15.08,15,15,15.08,Sano,Probando pr pr
+colMediaABSEMG1,colMedianaEMG1,colRMSEMG1,colMediaABSEMG2,colMedianaEMG2,colRMSEMG2,colMediaABSEMG3,colMedianaEMG3,colRMSEMG3,colMediaABSEMG4,colMedianaEMG4,colRMSEMG4,colMediaABSFrecuencia,colMedianaFrecuencia,colRMSFrecuencia,etiqueta,nombre
+12.60,13,12.74,10.50,10.5,10.64,9.50,9.5,9.77,11,11,11.18,12.60,13,12.74,Diabetico,Martha Garcia Lopez
+9.50,9.5,9.77,11.17,11.5,11.37,10.50,10.5,10.75,14.71,15,14.90,9.50,9.5,9.77,Diabetico,Isaac Rayas Chacon

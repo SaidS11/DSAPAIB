@@ -86,7 +86,9 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     maxDepth =  modelArgs["profundidad"]
     randomState = modelArgs["estado"]
     # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     data.groupby('etiqueta').size()
     train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['etiqueta'], random_state = 42)
@@ -97,8 +99,15 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     X_test = test[headers]
     y_test = test.etiqueta
 
+
     # first try decision tree
-    mod_dt = DecisionTreeClassifier(max_depth = int(maxDepth), random_state = int(randomState))
+    existente = False
+    script_dir = os.path.dirname(__file__)
+    if os.path.exists(f'{script_dir}/Modelos/{nombre}.joblib'):
+        mod_dt = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+        existente = True
+    else:
+        mod_dt = DecisionTreeClassifier(max_depth = int(maxDepth), random_state = int(randomState))
     cv_results = cross_validate(mod_dt, X_train, y_train, cv=iteraciones, return_estimator=True)
     promedio = list()
     for i in range(len(cv_results['estimator'])):
@@ -123,7 +132,7 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
     # print(my_path)
-    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     X_nuevos = datos_nuevos[headers]
     y_pred = avgModel.predict(X_nuevos)
 
@@ -136,13 +145,16 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
-    "|" + resulJson)
+    "|" + resulJson +
+    "|" + f"{'true' if existente else 'false'}")
     sys.stdout.flush()
 
 def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     vecinos = modelArgs["vecinos"]
     # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     # number of instances in each class
     data.groupby('etiqueta').size()
@@ -170,7 +182,7 @@ def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     dump(avgModel, f'{script_dir}/Modelos/{nombre}.joblib')
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
-    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     X_nuevos = datos_nuevos[headers]
     y_pred = avgModel.predict(X_nuevos)
 
@@ -188,7 +200,9 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
     kernelArg = modelArgs["kernel"]
     # or load through local csv
    # or load through local csv
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     # number of instances in each class
     data.groupby('etiqueta').size()
@@ -218,7 +232,7 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
     dump(avgModel, f'{script_dir}/Modelos/{nombre}.joblib')
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
-    datos_nuevos = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv')
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     X_nuevos = datos_nuevos[headers]
     y_pred = avgModel.predict(X_nuevos)
 
@@ -252,7 +266,9 @@ if __name__ == '__main__':
             newList.append(parsed[i][c])
 
     df = pd.DataFrame.from_dict(newList) 
-    df.to_csv(r'D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/test8Nombres.csv', index=False, header=True)
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    df.to_csv(os.path.join(ruta_actual, nombre_archivo), index=False, header=True)
     
 
     headers = list(parsed[0][0].keys())
@@ -260,21 +276,23 @@ if __name__ == '__main__':
     headers.remove('nombre')
     
 
-
-    if (first == "Train"):
-        if (second == "Tree"):
-            trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers)
-        if(second == "KNN"):
-            trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers)
-        if(second == "SVM"):
-            trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
-    if (first == "Class"):
-        if (second == "Tree"):
-            classificationTree(nombre)
-        if(second == "KNN"):
-            classKNN(nombre)
-        if(second == "SVM"):
-            classSVM(nombre)
+    try:
+        if (first == "Train"):
+            if (second == "Tree"):
+                trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+            if(second == "KNN"):
+                trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+            if(second == "SVM"):
+                trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+        if (first == "Class"):
+            if (second == "Tree"):
+                classificationTree(nombre)
+            if(second == "KNN"):
+                classKNN(nombre)
+            if(second == "SVM"):
+                classSVM(nombre)
+    except  Exception as e:
+        print("Error" + "|" + str(e))
 
 """ def testing():
     return["Hola","Amigos","Como estan"]

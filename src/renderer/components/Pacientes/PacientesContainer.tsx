@@ -155,6 +155,13 @@ const PacientesContainer = () => {
     data,
     columns,
   };
+
+  async function testing() {
+    window.Bridge.testSensores();
+  }
+  window.Bridge.testSenso((event: any, resp: any) => {
+    console.log("entered")
+  });
   return (
     <Pacientes
       filterInput={filterInput}

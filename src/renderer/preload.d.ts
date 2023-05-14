@@ -5,6 +5,9 @@ import {
   PacientesAnalisisMongo,
   Algoritmo,
   ModeloIAInterface,
+  ConfigDetalle,
+  ProtocoloNombre,
+  ConfiguracionNombre,
 } from './components/Utilities/Constants';
 
 declare global {
@@ -26,6 +29,12 @@ declare global {
           modelo: string
         ): unknown;
         updateIm(arg0: (event: any, resp: any) => void): unknown;
+        updateModelo(
+          resultados: string,
+          entrenado: string,
+          modelo: string
+        ): unknown;
+        updateMod(arg0: (event: any, resp: any) => void): unknown;
         selectImplementacionNombreIA(name: string): unknown;
         selectImplemenIA( // selectC(arg0: (event: any, resp: any) => void): unknown;
           arg0: (event: any, resp: any) => void
@@ -49,7 +58,7 @@ declare global {
         ): unknown;
         insertModIA(arg0: (event: any, resp: any) => void): Array<unknown>;
         selectC(): unknown;
-        selectPrs(): Array<object>;
+        selectPrs(): Array<ProtocoloNombre>;
         analisisP(arg0: (event: any, resp: any) => void): unknown;
         analisisPython(
           type: string,
@@ -71,10 +80,10 @@ declare global {
         //   reducedPercentage: string,
         //   datos: string
         // ): unknown;
-        selectCD(nombre: string): object;
+        selectCD(nombre: string): Array<ConfigDetalle>;
         selectConfiguracionDetalle(nameConf: string): unknown;
         selectConfiguracionNombre(protocolo: any): unknown;
-        selectCN(nombre: string): object;
+        selectCN(nombre: string): Array<ConfiguracionNombre>;
         selectModIaPorAlgoritmo(algoritmo: string): Array<ModeloIAInterface>;
 
         selectPs(): Array<PacientesAnalisis>;

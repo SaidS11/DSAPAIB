@@ -48,6 +48,7 @@ import VerModelosContainer from './components/VerModelos/VerModelosContainer';
 import Test from './components/CaracterizarParte2/Test';
 import ResultsTableContainer from './components/Utilities/ResultsTableContainer';
 import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloContainer';
+import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -138,6 +139,8 @@ export default function App() {
             />
             <Route path="/videoDemo" element={<VideoDemoContainer />} />
             <Route path="/video" element={<VideoContainer />} />
+            <Route path="/procesamientoPrevio" element={<ProcesamientoPrevioBlankContainer />} />
+            
             <Route
               path="/CrearConfiguracion"
               element={<CrearConfiguracionContainer />}
