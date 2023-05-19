@@ -160,7 +160,7 @@ const PacientesContainer = () => {
     window.Bridge.testSensores();
   }
   window.Bridge.testSenso((event: any, resp: any) => {
-    console.log("entered")
+    console.log('entered');
   });
   return (
     <Pacientes

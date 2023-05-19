@@ -85,6 +85,7 @@ declare global {
         selectConfiguracionNombre(protocolo: any): unknown;
         selectCN(nombre: string): Array<ConfiguracionNombre>;
         selectModIaPorAlgoritmo(algoritmo: string): Array<ModeloIAInterface>;
+        selectModIAPorAlgoritmoEnt(algoritmo: string): Array<ModeloIAInterface>;
 
         selectPs(): Array<PacientesAnalisis>;
         selectMultimediaConfig(configuracion: any): unknown;

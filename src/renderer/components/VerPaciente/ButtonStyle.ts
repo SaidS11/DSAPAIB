@@ -253,4 +253,28 @@ export const styleButtonBiggerGreen = {
   },
 };
 
+export const checkBoxConfigRitmo = {
+  // marginLeft: '280px',
+  display: 'inline-block',
+  '&:>': {
+    display: 'inline-block',
+  },
+};
+
+export const checkBoxConfig = {
+  display: 'block',
+  height: '28.8px',
+  margin: '0px 0px 8px',
+  paddingBottom: '0px',
+  paddingTop: '0px',
+};
+
+export const checkBoxConfigGiroscopio = {
+  marginLeft: '330px',
+};
+
+export const checkBoxConfigAcelerometro = {
+  marginLeft: '303px',
+};
+
 export default styleButton;

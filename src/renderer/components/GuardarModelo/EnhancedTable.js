@@ -144,7 +144,7 @@ const EnhancedTable = ({
           // to the render a checkbox
           // To be implemented disable rows after one is selected
           Cell: ({ row }) => {
-            console.log("these are rows", row);
+            console.log('these are rows', row);
             // console.log("is", isSelected);
             // if (isSelected.length > 0) {
             //   console.log("Ya hay", isSelected);
@@ -152,8 +152,9 @@ const EnhancedTable = ({
 
             return (
               <div>
-              <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            </div>)
+                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+              </div>
+            );
             // if (row.isSelected === true) {
             //   return (
             //     <div>

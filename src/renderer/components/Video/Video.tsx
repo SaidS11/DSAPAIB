@@ -25,8 +25,15 @@ export interface VideoProps {
 }
 
 const Video = (props: VideoProps) => {
-  const { onClickNav, url, onClickProbar, onClickDetener, probando, sensores, onClickCancel } =
-    props;
+  const {
+    onClickNav,
+    url,
+    onClickProbar,
+    onClickDetener,
+    probando,
+    sensores,
+    onClickCancel,
+  } = props;
   return (
     <div>
       <section className="display-center">

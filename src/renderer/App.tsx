@@ -139,8 +139,11 @@ export default function App() {
             />
             <Route path="/videoDemo" element={<VideoDemoContainer />} />
             <Route path="/video" element={<VideoContainer />} />
-            <Route path="/procesamientoPrevio" element={<ProcesamientoPrevioBlankContainer />} />
-            
+            <Route
+              path="/procesamientoPrevio"
+              element={<ProcesamientoPrevioBlankContainer />}
+            />
+
             <Route
               path="/CrearConfiguracion"
               element={<CrearConfiguracionContainer />}

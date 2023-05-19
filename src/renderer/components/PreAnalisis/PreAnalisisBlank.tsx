@@ -1,10 +1,5 @@
-
 const PreAnalisisBlank = () => {
-  return (
-    <div>
-      
-    </div>
-  );
+  return <div />;
 };
 
 export default PreAnalisisBlank;

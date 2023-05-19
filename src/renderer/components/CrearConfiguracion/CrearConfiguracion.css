@@ -10,7 +10,7 @@
   margin-left: 397px;
 }
 
-#more-margin-right-acelerometroerature {
+#more-margin-right-acelerometro {
   margin-left: 314px;
 }
 
@@ -23,6 +23,24 @@
   box-shadow: 0 0 2px 2px #ccc;
 }
 
+.display-margin {
+  display: flex;
+  margin-left: 3%;
+  /* float:left; */
+}
+
+.item {
+  flex-basis: 100px;
+  height: 100px;
+  margin: 5px;
+}
+.second {
+  overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+
+.inside > * {
+  display: inline-block;
+}
 /*@media (max-width: 1030px) {
     .analisis-form {
       margin-left: 20%;

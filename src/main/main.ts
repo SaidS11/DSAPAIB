@@ -13,7 +13,7 @@
  */
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
-import { Worker } from "worker_threads";
+import { Worker } from 'worker_threads';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { Pool } from 'pg';
@@ -548,6 +548,19 @@ ipcMain.handle('selectModelosIAPorAlgoritmo', (event, algoritmo: string) =>
   selectModelosIAPorAlgoritmo(algoritmo)
 );
 
+async function selectModelosIAPorAlgoritmoEntrenado(algoritmo: string) {
+  const query = await pool.query(
+    ' select * from modelo where algoritmo_ia = $1 and entrenado = true',
+    [algoritmo]
+  );
+  console.log('Estas son las rows', query.rows);
+  return query.rows;
+}
+ipcMain.handle(
+  'selectModelosIAPorAlgoritmoEntrenado',
+  (event, algoritmo: string) => selectModelosIAPorAlgoritmoEntrenado(algoritmo)
+);
+
 async function selectConfiguracionNombre(nombre: string) {
   const query = await pool.query(
     ' select configuracion from protocolo_adquisicion where nombre = $1 ',
@@ -680,7 +693,7 @@ ipcMain.on(
     configuracionSubido: any,
     configuracionDescripcion: string
   ) => {
-    const resp = await insertConfiguracion( 
+    const resp = await insertConfiguracion(
       configuracionNombre,
       configuracionGiroscopio,
       configuracionFrecuenciaCardiaca,
@@ -853,7 +866,6 @@ ipcMain.on(
   }
 );
 
-
 async function updateModelo(
   resultados: string,
   entrenado: string,
@@ -870,17 +882,8 @@ async function updateModelo(
 
 ipcMain.on(
   'updateModelo',
-  async (
-    event,
-    resultados: string,
-    entrenado: string,
-    modelo: string
-  ) => {
-    const resp = await updateModelo(
-      resultados,
-      entrenado,
-      modelo
-    );
+  async (event, resultados: string, entrenado: string, modelo: string) => {
+    const resp = await updateModelo(resultados, entrenado, modelo);
     console.log(resp);
     mainWindow?.webContents.send('updateMod', resp);
   }
@@ -889,14 +892,18 @@ ipcMain.on(
 // Arduino
 let serialPort = new SerialPort({
   path: 'COM3',
-  baudRate: 9600,
+  baudRate: 3000,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
-  autoOpen: true
 });
 
-ipcMain.on("loadPort", async(event, opcion, baud)=>{
+let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+
+ipcMain.on('loadPort', async (event, opcion, baud) => {
+  if (serialPort.isOpen) {
+    serialPort.close();
+  }
   serialPort = new SerialPort({
     // path: `\\\\.\\` + opcion,
     path: opcion,
@@ -904,45 +911,47 @@ ipcMain.on("loadPort", async(event, opcion, baud)=>{
     dataBits: 8,
     stopBits: 1,
     parity: 'none',
-    autoOpen: true
-  })
-  console.log("PUERTO", serialPort.path)
-  console.log("BAUD", serialPort.baudRate)
-})
-
-const parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
-let startFlag = false;
-parser.on('data', (chunk) => {
-  if (startFlag == true){
-    console.log("parzer")
-    mainWindow?.webContents.send('sensoNewTest', chunk);
-  }
+    autoOpen: true,
+  });
+  console.log('PUERTO', serialPort.path);
+  console.log('BAUD', serialPort.baudRate);
+  parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 });
-parser.pause()
+let startFlag = false;
+// parser.on('data', (chunk) => {
+//   console.log("Starting Test");
+//   if (startFlag === true){
+//     console.log("parser")
+//     mainWindow?.webContents.send('sensoNewTest', chunk);
+//   }
+// });
+// parser.pause()
 
-ipcMain.on('sensoresNewTest',  async (event) => {
+ipcMain.on('sensoresNewTest', async (event) => {
   // parser._readableState.buffer.clear()
   // parser._readableState.length = 0
-  console.log("Starting inside");
-  startFlag = true
-  parser.resume()
+  console.log('Starting inside ');
+  if (!serialPort.isOpen) {
+    serialPort.open();
+  }
+  startFlag = true;
+  parser.resume();
 });
 
-
 async function sensoresStopNewTest() {
-  //parser.off('data', console.log);
+  // parser.off('data', console.log);
   if (serialPort.isOpen === true) {
-    console.log("Stopping inside");
+    console.log('Stopping inside');
     serialPort.close();
-    startFlag = false
-    parser.pause()
+    startFlag = false;
+    parser.pause();
     // parser2.pause()
     // parser._readableState.buffer.clear()
     // parser._readableState.length = 0
     // parser2._readableState.buffer.clear()
     // parser2._readableState.length = 0
-    //parser.removeListener('data', )
-    //serialPort.reset()
+    // parser.removeListener('data', )
+    // serialPort.reset()
   }
   // parser.write('\x03')
 }
@@ -983,59 +992,28 @@ async function sensores() {
 ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
-  if (serialPort.isOpen === false) {
+  if (!serialPort.isOpen) {
     serialPort.open();
+    parser.resume();
   }
-  const buffer = '';
-  const sum = 0;
-  const giroscopioAverage = 0;
-  const hr = 0;
-  const len = 0;
-  const arrValues: Array<number> = [];
-  console.log('ANTES DEE');
+  console.log('Inner sensor');
   parser.on('data', (chunk: any) => {
-    console.log('SIGOOO');
-    // len+=1;
-    // arrValues.push(parseInt(chunk));
-    // if (len === 10) {
-    //   let sum2 = 0;
-    //   arrValues.map((x) => sum2 += x);
-    //   giroscopioAverage = sum2 / 10;
-    //   console.log('GSR AVErage', giroscopioAverage);
-    //   hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
-    //   console.log('GSR', hr);
-    //   len = 0;
-    //   arrValues.length = 0;
-    //   mainWindow?.webContents.send('senso', hr);
+    // try {
+    //   event.reply('senso', chunk);
+    // } catch (err) {
+    //   console.log(err);
     // }
-    // for (let i = 0; i < 10; i++) {
-    //   buffer = '';
-    //   buffer += chunk;
-    //   console.log(buffer);
-    //   sum += parseInt(buffer);
-    // }
-    // giroscopioAverage = sum / 10;
-    // sum = 0;
-    // console.log('Giroscopio Average', giroscopioAverage);
-    // hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
-    // console.log('GSR', hr);
-    // const resp = await sleep(10000);
-    // console.log("Resp", resp);
-    console.log('c', chunk);
-    // mainWindow?.webContents.send('senso', chunk);
-    try {
-      event.reply('senso', chunk);
-    } catch (err) {
-      console.log(err);
-    }
-    // mainWindow?.webContents.send('senso', chunk);
+    mainWindow?.webContents.send('senso', chunk);
   });
 });
 
 async function sensoresStop() {
   // parser.off('data', console.log);
   console.log('Closing');
-  serialPort.close();
+  if (serialPort.isOpen) {
+    serialPort.close();
+    parser.pause();
+  }
   // parser.write('\x03')
 }
 
@@ -1045,19 +1023,17 @@ ipcMain.on('sensoresStop', async (event) => {
   mainWindow?.webContents.send('sensoStop', resp);
 });
 
-
 // async function puerto(){
 //   const puertos = await SerialPort.list()
 //   console.log("PUERTOS", puertos)
 // }
 // puerto()
 
-ipcMain.on("cargarPuertos", async(event)=>{
-  const puertos = await SerialPort.list()
-  console.log("PUERTOS", puertos)
-  mainWindow?.webContents.send("cargarP", puertos)
-})
-
+ipcMain.on('cargarPuertos', async (event) => {
+  const puertos = await SerialPort.list();
+  console.log('PUERTOS', puertos);
+  mainWindow?.webContents.send('cargarP', puertos);
+});
 
 // const myWorker = new Worker("worker.ts");
 // const myWorker = new Worker("./src/main/worker.ts");
@@ -1065,12 +1041,10 @@ ipcMain.on("cargarPuertos", async(event)=>{
 async function testSensores() {
   // if (window.Worker) {
   //   console.log("WEB WORKERS AVAILABLE");
-
   //   (function() {
   //     myWorker.postMessage([12, 14]);
   //     console.log('Message posted to worker');
   //   })();
-  
   //   // myWorker.on("message") = function(e) {
   //   //   console.log('Message received from worker', e.data);
   //   // }
@@ -1084,7 +1058,6 @@ ipcMain.on('testSensores', async (event) => {
   console.log(resp);
   mainWindow?.webContents.send('testSensores', resp);
 });
-
 
 async function testSensoresStop() {
   // if (window.Worker) {
@@ -1100,7 +1073,6 @@ ipcMain.on('testSensoresStop', async (event) => {
   console.log(resp);
   mainWindow?.webContents.send('testSensoresStop', resp);
 });
-
 
 // Arduino
 /* const options = {}

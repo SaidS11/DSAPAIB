@@ -31,10 +31,16 @@ export interface ModalProps {
 }
 
 export default function ModalSensores(props: ModalProps) {
-  const { toggleModal, open, setSensoresSelected, setPortSelected, setBaudSelected } = props;
+  const {
+    toggleModal,
+    open,
+    setSensoresSelected,
+    setPortSelected,
+    setBaudSelected,
+  } = props;
   const [sensores, setSensores] = React.useState('');
   const [puerto, setPuerto] = React.useState('');
-  const [baudRate, setBaudRate] = React.useState('');
+  const [baudRate, setBaudRate] = React.useState('9600');
   const [puertos, setPuertos] = React.useState([]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -45,9 +51,9 @@ export default function ModalSensores(props: ModalProps) {
   };
 
   const handleChangePuerto = (event: SelectChangeEvent) => {
-    console.log("puerto", event.target.value as string)
+    console.log('puerto', event.target.value as string);
     setPuerto(event.target.value as string);
-    setPortSelected(event.target.value as string)
+    setPortSelected(event.target.value as string);
   };
 
   // const handleChangeBaud = () => {
@@ -60,19 +66,24 @@ export default function ModalSensores(props: ModalProps) {
   const handleClose = () => setOpen(false); */
 
   const cargarPuertos = () => {
-    window.Bridge.cargarPuertos()
-  }
+    window.Bridge.cargarPuertos();
+  };
   window.Bridge.cargarP((event: any, puertos: any) => {
-    const nombresSet = puertos
-    console.log("reading", puertos)
-    const select: any = []
-    for (var i = 0; i < nombresSet.length; i++){
-        select.push(<MenuItem value={nombresSet[i].path}>{nombresSet[i].path}</MenuItem>)
+    const nombresSet = puertos;
+    console.log('reading', puertos);
+    const select: any = [];
+    for (let i = 0; i < nombresSet.length; i++) {
+      // select.push(<MenuItem value={nombresSet[i].path}>{nombresSet[i].path}</MenuItem>)
+      select.push(
+        <MenuItem key={nombresSet[i].path} value={nombresSet[i].path}>
+          {nombresSet[i].friendlyName}
+        </MenuItem>
+      );
     }
     setPuertos(select);
-})
+  });
   useEffect(() => {
-    cargarPuertos()
+    cargarPuertos();
   }, []);
 
   return (
@@ -133,11 +144,10 @@ export default function ModalSensores(props: ModalProps) {
               type="text"
               fullWidth
               value={baudRate}
-              defaultValue="9600"
               onChange={(event) => {
                 const num = parseInt(event.target.value, 10);
                 setBaudRate(event.target.value as string);
-                setBaudSelected(num)
+                setBaudSelected(num);
               }}
             />
           </div>

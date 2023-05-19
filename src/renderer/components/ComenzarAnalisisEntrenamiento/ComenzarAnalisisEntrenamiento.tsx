@@ -101,23 +101,8 @@ const ComenzarAnalisisEntrenamiento = (
       }
       return plots;
     }
-    return <option key={1} value={1}>1</option>;
-    
+    return <option key={1} value={1} />;
   }
-  // const numOfAlgos = () => {
-  //   const models = [];
-  //   if (dataAlgoritmo.length >= 1) {
-  //     // eslint-disable-next-line no-plusplus
-  //     for(let i = 0; i < dataAlgoritmo.length; i++) {
-  //       // console.log('datos recibidios', data[i]);
-  //       models.push(
-  //         <MenuItem key={i} value={`${dataAlgoritmo[i].nombre}`}>{dataAlgoritmo[i].nombre}</MenuItem>
-  //       )
-  //     }
-  //     return models;
-  //   }
-  //   return <option value={1}>1</option>;
-  // }
 
   const retrieveAlgoData = useMemo(() => {
     if (modelo !== '') {
@@ -275,23 +260,20 @@ const ComenzarAnalisisEntrenamiento = (
       />
       </div>
       <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Total: </h5>{' '}
+        <h5>Registros Recuperados: </h5>{' '}
         <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{tableData.length}</h5>
       </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
+      {/* <div className="display-center" style={{ marginTop: '10px' }}>
         <Button sx={styleButtonBigger} onClick={() => toggleModal('body')} style={ modelo === '' ? {backgroundColor: "grey", pointerEvents: "none" } : {}}>
           {modelo === '' ? 'Seleccione registros antes de ver detalles' : 'Información acerca de los datos'}
         </Button>
-      </div>
+      </div> */}
       <div
         className="display-center"
         style={{ marginTop: '5px', marginBottom: '30px' }}
       >
-        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Comenzar
+        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
           <input hidden type="submit" />
-        </Button>
-        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} onClick={onClickStop}>
-          Parar
         </Button>
       </div>
       </form>

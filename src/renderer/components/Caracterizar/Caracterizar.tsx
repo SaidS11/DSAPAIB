@@ -28,7 +28,6 @@ import styleButton, {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
 
-
 interface CaracterizarProps {
   sensoresSelected: any;
   selectedPatients: any;
@@ -49,7 +48,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     frecuenciaChecked,
     acelerometroChecked,
   } = props;
-  console.log("frecuencia STATUS", frecuenciaChecked);
+  console.log('frecuencia STATUS', frecuenciaChecked);
   const [localUpdater, setLocalUpdater] = useState(false);
   const [colors1, setColors1] = useState(['#00000']);
   const [colors2, setColors2] = useState(['blue']);
@@ -61,14 +60,15 @@ const Caracterizar = (props: CaracterizarProps) => {
   const [ventanasSeñal3Emg3, setVentanasSeñal3Emg3] = useState([]);
   const [ventanasSeñal4Emg4, setVentanasSeñal4Emg4] = useState([]);
 
-
   const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
   const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
   const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState([]);
 
   const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
   const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
-  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] = useState([]);
+  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] = useState(
+    []
+  );
 
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
@@ -232,15 +232,15 @@ const Caracterizar = (props: CaracterizarProps) => {
 
     const respuesta = await buscarElementoMongoFront();
     appDispatch(setIsLoading(false));
-    console.log("Señales", respuesta[0].signals)
+    console.log('Señales', respuesta[0].signals);
     console.log('this is resp', respuesta);
     const { signal1 } = respuesta[0].signals;
     const { signal2 } = respuesta[0].signals;
     const { signal3 } = respuesta[0].signals;
     const { signal4 } = respuesta[0].signals;
-    const gsr = respuesta[0].gsr;
+    const { gsr } = respuesta[0];
 
-    console.log("frecuencia signal 4", signal4);
+    console.log('frecuencia signal 4', signal4);
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -264,19 +264,19 @@ const Caracterizar = (props: CaracterizarProps) => {
     const acelerometroSignalLocalY = [];
 
     const frecuenciaSignalLocalX = [];
-    const frecuenciaSignalLocalY = []
+    const frecuenciaSignalLocalY = [];
 
     for (let i = 0; i < signal1.length; i += 1) {
       if (sensoresSelected >= 1) {
         xArrayEmg1.push(signal1[i].x);
         yArrayEmg1.push(signal1[i].y);
       }
-      if (sensoresSelected >=2) {
+      if (sensoresSelected >= 2) {
         xArray2Emg2.push(signal2[i].x);
         yArray2Emg2.push(signal2[i].y);
         colors2.push('blue');
       }
-      if (sensoresSelected >=3) {
+      if (sensoresSelected >= 3) {
         xArray3Emg3.push(signal3[i].x);
         yArray3Emg3.push(signal3[i].y);
         colors3.push('yellow');
@@ -287,24 +287,22 @@ const Caracterizar = (props: CaracterizarProps) => {
         colors4.push('green');
       }
 
-
-      if(giroscopioChecked) {
+      if (giroscopioChecked) {
         giroscopioSignalLocalX.push(signal3[i].x);
         giroscopioSignalLocalY.push(signal3[i].y);
       }
-      if(acelerometroChecked) {
+      if (acelerometroChecked) {
         acelerometroSignalLocalX.push(signal4[i].x);
         acelerometroSignalLocalY.push(signal4[i].y);
       }
-      console.log("frecuencia should enter 1", frecuenciaChecked);
-      if(frecuenciaChecked) {
-        console.log("frecuencia check1");
+      console.log('frecuencia should enter 1', frecuenciaChecked);
+      if (frecuenciaChecked) {
+        console.log('frecuencia check1');
         frecuenciaSignalLocalX.push(signal4[i].x);
         frecuenciaSignalLocalY.push(signal4[i].y);
       }
-
     }
-    if (sensoresSelected >=1) {
+    if (sensoresSelected >= 1) {
       console.log('This is x', xArrayEmg1);
       console.log('This is y', yArrayEmg1);
       setDataXEmg1(xArrayEmg1);
@@ -317,12 +315,12 @@ const Caracterizar = (props: CaracterizarProps) => {
       setColors2(colors2);
     }
 
-    if(sensoresSelected >= 3) {
+    if (sensoresSelected >= 3) {
       setDataX3Emg3(xArray3Emg3);
       setDataY3Emg3(yArray3Emg3);
       setColors3(colors3);
     }
-    if(sensoresSelected >= 4) {
+    if (sensoresSelected >= 4) {
       setDataX4Emg4(xArray4Emg4);
       setDataY4Emg4(yArray4Emg4);
       setColors4(colors4);
@@ -337,21 +335,19 @@ const Caracterizar = (props: CaracterizarProps) => {
       setAcelerometroDataX(acelerometroSignalLocalX);
       setAcelerometroDataY(acelerometroSignalLocalY);
     }
-    console.log("frecuencia should enter 2", frecuenciaChecked);
+    console.log('frecuencia should enter 2', frecuenciaChecked);
     if (frecuenciaChecked) {
-      console.log("frecuencia check2");
-      console.log("frecuencia init", frecuenciaSignalLocalX)
+      console.log('frecuencia check2');
+      console.log('frecuencia init', frecuenciaSignalLocalX);
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
     }
-
   };
 
-  
-  console.log("DataarrPre", dataArr);
+  console.log('DataarrPre', dataArr);
   const numOfPlots = () => {
     const times = 8 - sensoresSelected;
-    for (let i = 0; i < times; i+=1) {
+    for (let i = 0; i < times; i += 1) {
       dataArr.pop();
     }
     console.log('sensores', sensoresSelected);
@@ -388,12 +384,14 @@ const Caracterizar = (props: CaracterizarProps) => {
   let selection: any[] = [];
   let selectedEmg = '';
   const gridLayout = numOfPlots();
-  const storeSelections = (segment: { points: any[]; }) => {
+  const storeSelections = (segment: { points: any[] }) => {
     if (segment.points.length > 0) {
       console.log('Sele', segment);
       selectedEmg = segment.points[0].fullData.name;
       const helperArr: any[] = [];
-      segment.points.map((ele: { pointNumber: any; }) => helperArr.push(ele.pointNumber));
+      segment.points.map((ele: { pointNumber: any }) =>
+        helperArr.push(ele.pointNumber)
+      );
       selection = [...helperArr];
     }
   };
@@ -413,7 +411,7 @@ const Caracterizar = (props: CaracterizarProps) => {
 
         const ventanasGiroscopioLocal = [];
         const ventanasAcelerometroLocal = [];
-        const ventanasFrecuenciaLocal = []
+        const ventanasFrecuenciaLocal = [];
 
         console.log('Current Colors', colorsLocal1);
         console.log('name', selectedEmg);
@@ -422,7 +420,7 @@ const Caracterizar = (props: CaracterizarProps) => {
           if (i === selection[0]) {
             if (selectedEmg === 'EMG1') {
               console.log('this is xdata1', dataXEmg1[i]);
-              console.log("frecuencia check3 test xdata", dataXEmg1[i])
+              console.log('frecuencia check3 test xdata', dataXEmg1[i]);
               ventanasLocalEmg1.push({ x: dataXEmg1[i], y: dataYEmg1[i] });
             } else if (selectedEmg === 'EMG2') {
               console.log('this is xdata2', dataX2Emg2[i]);
@@ -434,14 +432,23 @@ const Caracterizar = (props: CaracterizarProps) => {
               console.log('this is xdata4', dataX4Emg4[i]);
               ventanasLocalEmg4.push({ x: dataX4Emg4[i], y: dataY4Emg4[i] });
             }
-            if(giroscopioChecked) {
-              ventanasGiroscopioLocal.push({ x: giroscopioDataX[i], y: giroscopioDataY[i] });
+            if (giroscopioChecked) {
+              ventanasGiroscopioLocal.push({
+                x: giroscopioDataX[i],
+                y: giroscopioDataY[i],
+              });
             }
-            if(acelerometroChecked) {
-              ventanasAcelerometroLocal.push({ x: acelerometroDataX[i], y: acelerometroDataY[i] });
+            if (acelerometroChecked) {
+              ventanasAcelerometroLocal.push({
+                x: acelerometroDataX[i],
+                y: acelerometroDataY[i],
+              });
             }
             if (frecuenciaChecked) {
-              ventanasFrecuenciaLocal.push({ x: frecuenciaDataX[i], y: frecuenciaDataY[i] });
+              ventanasFrecuenciaLocal.push({
+                x: frecuenciaDataX[i],
+                y: frecuenciaDataY[i],
+              });
             }
             colorsLocal1[i] = 'red';
             colorsLocal2[i] = 'red';
@@ -480,27 +487,26 @@ const Caracterizar = (props: CaracterizarProps) => {
           localArray.push(ventanasLocalEmg4);
           setVentanasSeñal4Emg4(localArray);
           setColors4([...colorsLocal4]);
-        } 
+        }
         console.log('Estas son las locales', ventanasGiroscopioLocal);
         // Contains con nombre de sensores
-        if(giroscopioChecked) {
+        if (giroscopioChecked) {
           const localArrayGiroscopio = [...ventanasSeñalGiroscopio];
           localArrayGiroscopio.push(ventanasGiroscopioLocal);
           setVentanasSeñalGiroscopio(localArrayGiroscopio);
         }
-        if(acelerometroChecked) {
+        if (acelerometroChecked) {
           const localArrayAcelerometro = [...ventanasSeñalAcelerometro];
           localArrayAcelerometro.push(ventanasAcelerometroLocal);
           setVentanasSeñalAcelerometro(localArrayAcelerometro);
         }
-        if(frecuenciaChecked) {
-          console.log("frecuencia check4");
+        if (frecuenciaChecked) {
+          console.log('frecuencia check4');
           const localArrayFrecuencia = [...ventanasSeñalFrecuencia];
           localArrayFrecuencia.push(ventanasFrecuenciaLocal);
-          console.log("frecuencia stored", localArrayFrecuencia)
+          console.log('frecuencia stored', localArrayFrecuencia);
           setVentanasSeñalFrecuencia(localArrayFrecuencia);
         }
-
       } catch (ex: any) {
         alert(`Error ${ex}`);
       }
@@ -533,7 +539,6 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayEmg4.push(ventanasSeñal4Emg4);
     }
 
-
     const localArrayGiroscopio = [];
     if (giroscopioChecked) {
       ventanaReduxGiroscopio.map((e) => localArrayGiroscopio.push(e));
@@ -541,22 +546,22 @@ const Caracterizar = (props: CaracterizarProps) => {
     }
 
     const localArrayAcelerometro = [];
-    if(acelerometroChecked) {
+    if (acelerometroChecked) {
       ventanaReduxAcelerometro.map((e) => localArrayAcelerometro.push(e));
       localArrayAcelerometro.push(ventanasSeñalAcelerometro);
     }
 
     const localArrayFrecuencia = [];
     if (frecuenciaChecked) {
-      console.log("frecuencia check5");
+      console.log('frecuencia check5');
       ventanaReduxFrecuencia.map((e) => localArrayFrecuencia.push(e));
-      console.log("frecuencia about to be stored", ventanasSeñalFrecuencia);
+      console.log('frecuencia about to be stored', ventanasSeñalFrecuencia);
       localArrayFrecuencia.push(ventanasSeñalFrecuencia);
     }
 
     // console.log('Esto tiene el estado', ventanasSeñalGiroscopio);
     // console.log('Esto voy a guardar', localArrayGiroscopio);
-    
+
     appDispatch(setVentanasArrayEmg1(localArrayEmg1));
     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
     appDispatch(setVentanasArrayEmg3(localArrayEmg3));
@@ -564,7 +569,6 @@ const Caracterizar = (props: CaracterizarProps) => {
     appDispatch(setVentanasArrayGiroscopio(localArrayGiroscopio));
     appDispatch(setVentanasArrayAcelerometro(localArrayAcelerometro));
     appDispatch(setVentanasArrayFrecuencia(localArrayFrecuencia));
-
 
     if (sujetos !== 1) {
       appDispatch(setCantidadSujetos(sujetos - 1));
@@ -584,11 +588,12 @@ const Caracterizar = (props: CaracterizarProps) => {
   console.log('p', selectedPatients);
   return (
     <div>
-      <PlotP dataArr={dataArr}
-       selectedPatients={selectedPatients}
-       currentIteration={currentIteration}
-       storeSelections={storeSelections}
-       gridLayout={gridLayout}
+      <PlotP
+        dataArr={dataArr}
+        selectedPatients={selectedPatients}
+        currentIteration={currentIteration}
+        storeSelections={storeSelections}
+        gridLayout={gridLayout}
       />
       <section className="display-center">
         Seleccione en una gráfica la ventana a caracterizar, despues presione

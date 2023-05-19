@@ -11,6 +11,13 @@ const ProbarSensores = ({
   sensoresSelected,
   onClickStart,
   onClickStop,
+  data,
+  dataXEmg1,
+  dataYEmg1,
+  dataXEmg2,
+  dataYEmg2,
+  dataXEmg3,
+  dataYEmg3,
   dataXGiroscopio,
   dataYGiroscopio,
   dataXFrecuencia,
@@ -41,18 +48,18 @@ const ProbarSensores = ({
     '#00000',
   ]);
   const [color1, setColor1] = useState('red');
-
+  // console.log("This is X", dataXEmg1);
   const trace1 = {
-    x: dataXGiroscopio,
-    y: dataYGiroscopio,
+    x: dataXEmg1,
+    y: dataYEmg1,
     type: 'scatter',
   };
 
   const [dataX2, setDataX2] = useState([0]);
   const [dataY2, setDataY2] = useState([0]);
   const trace2 = {
-    x: dataXFrecuencia,
-    y: dataYFrecuencia,
+    x: dataXEmg2,
+    y: dataYEmg2,
     xaxis: 'x2',
     yaxis: 'y2',
     type: 'scatter',
@@ -60,14 +67,14 @@ const ProbarSensores = ({
     // mode:'markers',
     line: { color: 'black' },
     // Wit each click a push to the colors array must be ,ade to keep adding colors
-    marker: { color: colors },
+    // marker: { color: colors },
   };
 
   const [dataX3, setDataX3] = useState([0]);
   const [dataY3, setDataY3] = useState([0]);
   const trace3 = {
-    x: dataXAcelerometro,
-    y: dataYAcelerometro,
+    x: dataXEmg3,
+    y: dataYEmg3,
     xaxis: 'x3',
     yaxis: 'y3',
     type: 'scatter',
@@ -145,8 +152,6 @@ const ProbarSensores = ({
     trace8,
   ];
 
-  console.log('llegaron', sensoresSelected);
-
   let numY = 0;
   let numX = 0;
 
@@ -185,7 +190,6 @@ const ProbarSensores = ({
     for (let i = 0; i < times; i++) {
       dataArr.pop();
     }
-    console.log('sensores', sensoresSelected);
     // impar aumenta las columns
     let dynamicRows = 0;
     let dynamicColumns = 0;
@@ -234,20 +238,20 @@ const ProbarSensores = ({
       marker: { colors: colorsL },
     };
     setColors([...colorsL]);
-
   };
 
   return (
     <div>
       <Plot
         data={dataArr}
+        // data={[data]}
         layout={{
           title: 'Sensores',
           autosize: true,
           grid: gridLayout,
           dragmode: 'select',
         }}
-        config={{ scrollZoom: true }}
+        config={{ scrollZoom: true, displayModeBar: false }}
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
         onSelected={(selection) => processSelections(selection)}
@@ -261,14 +265,14 @@ const ProbarSensores = ({
         <Button
           sx={styleButtonBiggerGreen}
           style={{ fontSize: '30px' }}
-          onClick={onClickStartNew}
+          onClick={onClickStart}
         >
           Comenzar
         </Button>
         <Button
           sx={styleButtonBiggerGreen}
           style={{ fontSize: '30px' }}
-          onClick={onClickStopNew}
+          onClick={onClickStop}
         >
           Parar
         </Button>

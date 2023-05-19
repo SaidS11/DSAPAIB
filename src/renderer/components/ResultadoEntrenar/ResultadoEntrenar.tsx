@@ -49,7 +49,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     onClickCambiar,
   } = props;
   const navigate = useNavigate();
-  
+
   return (
     <div>
       <section className="display-center">

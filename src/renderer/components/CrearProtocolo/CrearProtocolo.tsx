@@ -23,7 +23,7 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
       }
       return plots;
     }
-    return <option value={1}>1</option>;
+    return <option value={0} />;
   };
     return (
         <div>

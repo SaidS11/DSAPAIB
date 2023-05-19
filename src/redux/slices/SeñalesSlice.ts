@@ -31,6 +31,7 @@ export interface ISeñales {
   mongoInsertObject: MongoInsertObjectInterface;
   dataArray: Array<any>;
   gridLayout: any;
+  predictMode: boolean;
 }
 
 const initialState: ISeñales = {
@@ -62,6 +63,7 @@ const initialState: ISeñales = {
   },
   dataArray: [],
   gridLayout: [],
+  predictMode: false,
 };
 
 export const SeñalesSlice = createSlice({
@@ -188,7 +190,7 @@ export const SeñalesSlice = createSlice({
       action: PayloadAction<ISeñales['extraSensorsChecked']>
     ) => {
       state.extraSensorsChecked = action.payload;
-      console.log("this was payload", action.payload);
+      console.log('this was payload', action.payload);
     },
     setTotalSensores: (
       state,
@@ -208,17 +210,14 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.mongoInsertObject = action.payload;
     },
-    setDataArray: (
-      state,
-      action: PayloadAction<ISeñales['dataArray']>
-    ) => {
+    setDataArray: (state, action: PayloadAction<ISeñales['dataArray']>) => {
       state.dataArray = action.payload;
     },
-    setGridLayout: (
-      state,
-      action: PayloadAction<ISeñales['gridLayout']>
-    ) => {
+    setGridLayout: (state, action: PayloadAction<ISeñales['gridLayout']>) => {
       state.gridLayout = action.payload;
+    },
+    setPredictMode: (state, action: PayloadAction<ISeñales['predictMode']>) => {
+      state.predictMode = action.payload;
     },
   },
 });
@@ -248,5 +247,6 @@ export const {
   setMongoInsertObject,
   setDataArray,
   setGridLayout,
+  setPredictMode,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

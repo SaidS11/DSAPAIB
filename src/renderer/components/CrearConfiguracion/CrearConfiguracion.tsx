@@ -2,16 +2,11 @@
 /* eslint-disable prettier/prettier */
 import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import {
-  styleButtonBiggerGreen,
+  styleButtonBiggerGreen, checkBoxConfig,
 } from '../VerPaciente/ButtonStyle';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+
 export interface CrearConfigProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
 }
@@ -53,32 +48,23 @@ const CrearAnalisis = (props: CrearConfigProps) => {
               </select>
             </section>
             <section className='display-flex'> 
-                <h4 id='labelsi'>Si</h4> <h4 id='labelno'>No</h4>
+                <h4>Sensores Adicionales</h4>
             </section>
+            <div className='display-margin'>
+              <div >
+                <h4>Ritmo Cardiaco:</h4>
+                <h4>Frecuencia Cardiaca:</h4>
+                <h4>Giroscopio:</h4>
+                <h4>Acelerometro:</h4>
+              </div>
+              <div>
+                <Checkbox  sx={checkBoxConfig} name="ritmo" value="1"  />
+                <Checkbox   sx={checkBoxConfig} name="frecuencia" value="1"  />
+                <Checkbox  sx={checkBoxConfig} name="giroscopio" value="1"  />
+                <Checkbox   sx={checkBoxConfig} name="acelerometro" value="1"  />
+              </div>
+            </div>
 
-            <section className="display-flex" id='less-margin-top'>
-              <h4>Ritmo Cardiaco:</h4>
-              <input className='first-radio' type="radio" name="ritmo" value="1" required/> 
-              <input className='second-radio' type="radio" name="ritmo" value="0"/>
-            </section>
-
-            <section className="display-flex" id='less-margin-top'>
-              <h4>Frecuencia Cardiaca:</h4>
-              <input id='more-margin-left-frecuencia' className='first-radio' type="radio" name="frecuencia" value="1" required/> 
-              <input className='second-radio' type="radio" name="frecuencia" value="0"/>
-            </section>
-
-            <section className="display-flex" id='less-margin-top'>
-              <h4>Giroscopio:</h4>
-              <input id='more-margin-left-giroscopio' className='first-radio' type="radio" name="giroscopio" value="1" required/> 
-              <input className='second-radio' type="radio" name="giroscopio" value="0"/>
-            </section>
-
-            <section className="display-flex" id='less-margin-top'>
-              <h4>Acelerometro:</h4>
-              <input id='more-margin-right-acelerometroerature' className='first-radio' type="radio" name="acelerometro" value="1" required/> 
-              <input className='second-radio' type="radio" name="acelerometro" value="0"/>
-            </section>
             <section className='display-center'>
               <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"
             component="label" >Continuar

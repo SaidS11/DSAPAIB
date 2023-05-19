@@ -10,35 +10,50 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import InputLabel from '@mui/material/InputLabel';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import EnhancedTable from '../ComenzarAnalisisEntrenamiento/EnhancedTable';
 
 interface PrediccionProps {
-  options: TableOptions<{ col1: string }>;
+  options: TableOptions<{ col1: string, col2: string }>;
+  tableData: any;
+  columnsData: any;
   data: any;
   dataM: any;
   onClickNav: any
   onClickStop: any
+  protocolo: string; 
+  setProtocolo: any;
 }
 
 const Prediccion = (
   props: PrediccionProps
 ) => {
-  const { options, data, dataM, onClickNav, onClickStop } = props;
+  const { options, tableData, columnsData, data, dataM, onClickNav, onClickStop, protocolo, setProtocolo } = props;
+
   const setProtocols = () => {
     const plots = [];
     if (data.length > 0) {
-      // eslint-disable-next-line no-plusplus
-      for(let i = 0; i < data.length; i++) {
-        console.log('datos recibidios', data[i]);
+      for(let i = 0; i < data.length; i+=1) {
+        console.log('datos recibidos', data[i]);
         plots.push(
-          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+          <MenuItem key={i} value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
         )
       }
       return plots;
     }
-    return <option value={1}>1</option>;
-    
+    return <option key={1} value={1} />;
   }
+  
+  const handleChangeProtocol = (event: SelectChangeEvent) => {
+    setProtocolo(event.target.value as string);
+  };
+
   const numOfAlgos = () => {
     const models = [];
     if (dataM.length >= 1) {
@@ -67,92 +82,68 @@ const Prediccion = (
   return (
     <div>
       <div className="display-center">
-        <h1>Análisis Predicción</h1>
+        <h1>Predicción</h1>
       </div>
       <div className='display-center'>
-        <form className="analisis-form" action="" style={{ width: "70%" }}>
-          <section className="display-flex">
+        <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
+          <br />
+          <section className="display-center" style={{ marginRight: "5%", marginLeft: "5%" }}>
+              <h4>
+                Seleccione el protocolo del que desea obtener los registros.
+              </h4>
+          </section>
+          {/* <section className="display-flex">
             <h3>Nombre: </h3>{' '}
             <input className="first-input" type="text"  name="nombrePrediccion" required />
           </section>
           <section className="display-flex">
             <h3>Descripción: </h3>{' '}
             <textarea className="second-input" name="descripcion" required/>
-          </section>
-          <section className="display-flex">
+          </section> */}
+          <section className="display-flexAgregar">
             <h3>Protocolo Adquisición: </h3>{' '}
-            <select className='sensores-crear-analisis' name="protocolo" required>
-              {setProtocols()}
-            </select>
-          </section>
-          <section className="display-flex">
-            <h3>Algoritmo: </h3>{' '}
-            <select className="fourth-input-modelo">
-              {numOfAlgos()}
-            </select>
-          </section>
-        
-      <div className='display-center'>
-          <h2>Pacientes:</h2>
-      </div>
-      <div
-        style={{
-          width: '90%',
-          overflow: 'auto',
-          maxHeight: '60vh',
-          marginLeft: '80px',
-        }}
-      >
-        <table {...getTableProps()} className="tableCustom" id="table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
+            <section className="list-box-sexo">
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="protocolo"
+                  value={protocolo}
+                  label="Protocolo"
+                  onChange={handleChangeProtocol}
+                  required
                 >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Total: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>5</h5>
-      </div>
-      <div
-        className="display-center"
-        style={{ marginTop: '5px', marginBottom: '30px' }}
-      >
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickNav}>
-          Comenzar
-        </Button>
-        <Button sx={styleButtonBiggerGreen} style={{ fontSize: '30px' }} onClick={onClickStop}>
-          Parar
-        </Button>
-      </div>
+                  {setProtocols()}
+                </Select>
+              </FormControl>
+            </section>
+          </section>
+          <div
+            style={{
+              width: '90%',
+              overflow: 'auto',
+              maxHeight: '60vh',
+              marginLeft: '80px',
+            }}
+          >
+            <EnhancedTable
+            columns={columnsData}
+            data={tableData}
+          />
+          </div>
+          <div className="display-center" style={{ marginTop: '10px' }}>
+            <h5>Registros Recuperados: </h5>{' '}
+            <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{tableData.length}</h5>
+          </div>
+          <div
+            className="display-center"
+            style={{ marginTop: '5px', marginBottom: '30px' }}
+          >
+            <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
+              <input hidden type="submit" />
+            </Button>
+          </div>
       </form>
       </div>
     </div>

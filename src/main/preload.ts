@@ -46,6 +46,12 @@ contextBridge.exposeInMainWorld('electron', {
     },
     selectModIaPorAlgoritmo: (callback: any) =>
       ipcRenderer.invoke('selectModelosIAPorAlgoritmo', callback),
+
+    selectModelosIAPorAlgoritmoEntrenado(algoritmo: string) {
+      ipcRenderer.send('selectModelosIAPorAlgoritmoEntrenado', algoritmo);
+    },
+    selectModIAPorAlgoritmoEnt: (callback: any) =>
+      ipcRenderer.invoke('selectModelosIAPorAlgoritmoEntrenado', callback),
     selectImplementacionNombreIA(nombre: string) {
       ipcRenderer.send('selectImplementacionNombreIA', nombre);
     },
@@ -86,17 +92,8 @@ contextBridge.exposeInMainWorld('electron', {
       );
     },
     updateIm: (callback: any) => ipcRenderer.on('updateIm', callback),
-    updateModelo(
-      resultados: string,
-      entrenado: string,
-      modelo: string
-    ) {
-      ipcRenderer.send(
-        'updateModelo',
-        resultados,
-        entrenado,
-        modelo
-      );
+    updateModelo(resultados: string, entrenado: string, modelo: string) {
+      ipcRenderer.send('updateModelo', resultados, entrenado, modelo);
     },
     updateMod: (callback: any) => ipcRenderer.on('updateMod', callback),
     selectImplementacionPorN: (callback: any) =>
@@ -356,33 +353,33 @@ function testSensores() {
 function testSensoresStop() {
   ipcRenderer.send('testSensoresStop');
 }
-function cargarPuertos(){
-  ipcRenderer.send("cargarPuertos")
+function cargarPuertos() {
+  ipcRenderer.send('cargarPuertos');
 }
 
-function loadPort(opcion: string, baud: number){
-  ipcRenderer.send("loadPort", opcion,baud)
+function loadPort(opcion: string, baud: number) {
+  ipcRenderer.send('loadPort', opcion, baud);
 }
-
 
 const indexBridge = {
   loggearDoctor,
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
-  cargarPuertos: cargarPuertos,
-  cargarP: (callback: any) => ipcRenderer.on("cargarP", (callback)),
+  cargarPuertos,
+  cargarP: (callback: any) => ipcRenderer.on('cargarP', callback),
   sensores(nombre: string) {
     ipcRenderer.send('sensores', nombre);
   },
   senso: (callback: any) => ipcRenderer.on('senso', callback),
-  loadPort: loadPort,
+  loadPort,
   sensoresStopNewTest() {
     ipcRenderer.send('sensoresStopNewTest');
   },
-  sensoStopNewTest: (callback: any) => ipcRenderer.on('sensoStopNewTest', callback),
+  sensoStopNewTest: (callback: any) =>
+    ipcRenderer.on('sensoStopNewTest', callback),
   sensoresNewTest() {
     ipcRenderer.send('sensoresNewTest');
   },
-  sensoNewTest: (callback:any) => ipcRenderer.on('sensoNewTest', callback),
+  sensoNewTest: (callback: any) => ipcRenderer.on('sensoNewTest', callback),
   // sensores,
   // senso: (callback: any) => ipcRenderer.on('senso', callback),
   sensoresStop,

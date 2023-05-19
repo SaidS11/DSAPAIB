@@ -25,8 +25,15 @@ export interface ResultadosProps {
 }
 
 const Resultados = (props: ResultadosProps) => {
-  const { onClickGuardar, onClickProbar, onClickBack, probando, sensores, dataArr, gridLayout } =
-    props;
+  const {
+    onClickGuardar,
+    onClickProbar,
+    onClickBack,
+    probando,
+    sensores,
+    dataArr,
+    gridLayout,
+  } = props;
   // const navigate = useNavigate();
 
   return (
@@ -54,7 +61,9 @@ const Resultados = (props: ResultadosProps) => {
         <Button sx={styleButtonBiggerGreen} onClick={onClickGuardar}>
           Guardar Registro
         </Button>
-        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>Cancelar</Button>
+        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+          Cancelar
+        </Button>
       </section>
       <br />
     </div>

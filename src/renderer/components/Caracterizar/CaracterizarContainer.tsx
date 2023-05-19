@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
-import { setCantidadSensores, setGiroscopioIsChecked, setFrecuenciaIsChecked, setAcelerometroIsChecked, setExtraSensorsChecked } from '../../../redux/slices/SeñalesSlice';
+import {
+  setCantidadSensores,
+  setGiroscopioIsChecked,
+  setFrecuenciaIsChecked,
+  setAcelerometroIsChecked,
+  setExtraSensorsChecked,
+} from '../../../redux/slices/SeñalesSlice';
 import ModalSensoresCaracterizar from './ModalSensoresCaracterizar';
 import Caracterizar from './Caracterizar';
 import { FormularioEntrenamiento } from '../Utilities/Constants';
@@ -12,7 +18,7 @@ const CaracterizarContainer = () => {
   const onClickAdd = () => {};
   const [open, setOpen] = useState(false);
   const arr: any = [];
-  
+
   const selectedPatients = useCustomSelector(
     (state) => state.config.selectedPatients
   );
@@ -29,7 +35,7 @@ const CaracterizarContainer = () => {
   const [frecuenciaChecked, setFrecuenciaChecked] = useState(false);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [acelerometroChecked, setAcelerometroChecked] = useState(false);
-  
+
   console.log('Params', formParams);
   const selectedProtocol = formParams.protocolo;
   const appDispatch = useCustomDispatch();
@@ -44,39 +50,46 @@ const CaracterizarContainer = () => {
   console.log('Seleccionados', sensoresSelected);
   appDispatch(setCantidadSensores(sensoresSelected));
 
-  async function loadConfig () {
+  async function loadConfig() {
     appDispatch(setIsLoading(true));
 
-    const respConf = await window.electron.ipcRenderer.selectCN(selectedProtocol);
-    console.log("respconf", respConf[0].configuracion);
-    const resp = await window.electron.ipcRenderer.selectCD(respConf[0].configuracion);
-    console.log("this is config", resp)
+    const respConf = await window.electron.ipcRenderer.selectCN(
+      selectedProtocol
+    );
+    console.log('respconf', respConf[0].configuracion);
+    const resp = await window.electron.ipcRenderer.selectCD(
+      respConf[0].configuracion
+    );
+    console.log('this is config', resp);
     const cantidadEmgs = resp[0].emgs;
-    setSensoresSelected(cantidadEmgs)
-    const giroscopio = resp[0].giroscopio;
+    setSensoresSelected(cantidadEmgs);
+    const { giroscopio } = resp[0];
     setGiroscopioChecked(resp[0].giroscopio);
-    const frecuencia_cardiaca = resp[0].frecuencia_cardiaca;
-    setFrecuenciaChecked(resp[0].frecuencia_cardiaca)
-    const acelerometro = resp[0].acelerometro;
+    const { frecuencia_cardiaca } = resp[0];
+    setFrecuenciaChecked(resp[0].frecuencia_cardiaca);
+    const { acelerometro } = resp[0];
     setAcelerometroChecked(resp[0].acelerometro);
-    console.log(`This is config EMGS: ${cantidadEmgs}, giroscopio ${giroscopio}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`)
+    console.log(
+      `This is config EMGS: ${cantidadEmgs}, giroscopio ${giroscopio}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
+    );
     appDispatch(setGiroscopioIsChecked(giroscopio));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
-    appDispatch(setExtraSensorsChecked([giroscopio, acelerometro, frecuencia_cardiaca]))
+    appDispatch(
+      setExtraSensorsChecked([giroscopio, acelerometro, frecuencia_cardiaca])
+    );
     setConfigLoaded(true);
     appDispatch(setIsLoading(false));
-    
+
     return resp;
   }
   useEffect(() => {
-    loadConfig()
+    loadConfig();
   }, []);
 
   if (configLoaded) {
     return (
       <div>
-        
         <Caracterizar
           sensoresSelected={sensoresSelected}
           selectedPatients={selectedPatients}
@@ -85,9 +98,8 @@ const CaracterizarContainer = () => {
           giroscopioChecked={giroscopioChecked}
           frecuenciaChecked={frecuenciaChecked}
           acelerometroChecked={acelerometroChecked}
-          
         />
-        
+
         {/* {open && (
           <ModalSensoresCaracterizar
             toggleModal={toggleModal}
@@ -98,9 +110,8 @@ const CaracterizarContainer = () => {
       </div>
     );
   }
-  else {
-    return(<div></div>);
-  }
+
+  return <div />;
 };
 
 export default CaracterizarContainer;

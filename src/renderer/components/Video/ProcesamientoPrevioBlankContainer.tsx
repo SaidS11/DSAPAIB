@@ -4,27 +4,37 @@ import { useNavigate } from 'react-router-dom';
 import { setPythonResponse } from '../../../redux/slices/ResponsesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
-import { setMongoInsertObject, setTotalSensores } from '../../../redux/slices/SeñalesSlice';
+import {
+  setMongoInsertObject,
+  setTotalSensores,
+} from '../../../redux/slices/SeñalesSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import ProcesamientoPrevioBlank from './ProcesamientoPrevioBlank';
 
 const ProcesamientoPrevioBlankContainer = () => {
   const appDispatch = useCustomDispatch();
   const navigate = useNavigate();
-  const sensoresSelected = useCustomSelector((state) => state.señales.cantidadSensores);
-  const giroscopioChecked = useCustomSelector((state) => state.señales.giroscopioIsChecked);
-  const acelerometroChecked = useCustomSelector ((state) => state.señales.acelerometroIsChecked);
-  const frecuenciaChecked =  useCustomSelector((state) => state.señales.frecuenciaIsChecked);
-
+  const sensoresSelected = useCustomSelector(
+    (state) => state.señales.cantidadSensores
+  );
+  const giroscopioChecked = useCustomSelector(
+    (state) => state.señales.giroscopioIsChecked
+  );
+  const acelerometroChecked = useCustomSelector(
+    (state) => state.señales.acelerometroIsChecked
+  );
+  const frecuenciaChecked = useCustomSelector(
+    (state) => state.señales.frecuenciaIsChecked
+  );
 
   const signals = useCustomSelector((state) => state.señales.signalsToStore);
   const paciente = useCustomSelector((state) => state.datos.datosPaciente);
-  const protocoloNombre =useCustomSelector((state) => state.config.protocoloNombre);
+  const protocoloNombre = useCustomSelector(
+    (state) => state.config.protocoloNombre
+  );
 
+  console.log('Señal x', signals);
 
-  console.log("Señal x", signals);
-  
-  
   useEffect(() => {
     let cantidadTotal = sensoresSelected;
     if (giroscopioChecked) {
@@ -37,28 +47,23 @@ const ProcesamientoPrevioBlankContainer = () => {
       cantidadTotal += 1;
     }
 
-    let dataMongo = {
+    const dataMongo = {
       name: `${paciente[0].col1} ${paciente[0].col2} ${paciente[0].col3}`,
       protocol: protocoloNombre,
-  
     };
     Object.assign(dataMongo, {
-        signals: {...signals}
+      signals: { ...signals },
     });
-    console.log("Signal Ready", dataMongo);
-
-
+    console.log('Signal Ready', dataMongo);
 
     appDispatch(setMongoInsertObject(dataMongo));
 
     appDispatch(setTotalSensores(cantidadTotal));
-  }, [])
-  return(<ProcesamientoPrevioBlank></ProcesamientoPrevioBlank>)
-
+  }, []);
+  return <ProcesamientoPrevioBlank />;
 };
 
 export default ProcesamientoPrevioBlankContainer;
-
 
 // const localArrayEmg1 = [];
 //     if (sensoresSelected >= 1) {
@@ -84,7 +89,6 @@ export default ProcesamientoPrevioBlankContainer;
 //       localArrayEmg4.push(ventanasSeñal4Emg4);
 //     }
 
-
 //     const localArrayGiroscopio = [];
 //     if (giroscopioChecked) {
 //       ventanaReduxGiroscopio.map((e) => localArrayGiroscopio.push(e));
@@ -107,7 +111,7 @@ export default ProcesamientoPrevioBlankContainer;
 
 //     // console.log('Esto tiene el estado', ventanasSeñalGiroscopio);
 //     // console.log('Esto voy a guardar', localArrayGiroscopio);
-    
+
 //     appDispatch(setVentanasArrayEmg1(localArrayEmg1));
 //     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
 //     appDispatch(setVentanasArrayEmg3(localArrayEmg3));

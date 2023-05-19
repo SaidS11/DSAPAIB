@@ -8,8 +8,11 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useCallback } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { styleButtonBigger, styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
 import { useNavigate } from 'react-router-dom';
+import {
+  styleButtonBigger,
+  styleButtonBiggerRed,
+} from '../VerPaciente/ButtonStyle';
 
 const style = {
   position: 'absolute' as const,
@@ -38,7 +41,7 @@ export default function SaveModelModal(props: ModalProps) {
 
   const navigateToModels = () => {
     navigate('/guardarModelo');
-  }
+  };
   return (
     <div>
       <Modal

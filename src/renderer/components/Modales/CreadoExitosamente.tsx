@@ -41,7 +41,7 @@ export default function CreadoExitosamente() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Creacion Exitosa
+            Guardado Exitosamente
           </Typography>
           <Button sx={styleButton} onClick={toggleModal}>Continuar</Button>
         </Box>

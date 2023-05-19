@@ -26,25 +26,27 @@ const VerPacienteContainer = () => {
   const datarRetrieved: Cols[] = [];
   async function loadPacientes() {
     appDispatch(setIsLoading(true));
-    const document = { name:  `${datosArray[0].col1} ${datosArray[0].col2} ${datosArray[0].col3}` };
+    const document = {
+      name: `${datosArray[0].col1} ${datosArray[0].col2} ${datosArray[0].col3}`,
+    };
     const jsonDocument = JSON.stringify(document);
     try {
-        const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
-          jsonDocument
-        )) as Array<PacientesAnalisisMongo>;
-        for (let i = 0; i < pacientes.length; i += 1) {
-          datarRetrieved.push({
-            col1: `${pacientes[i].name} Protocolo: ${pacientes[i].protocol} Etiqueta: ${pacientes[i].etiqueta}`,
-          });
-        }
-        console.log("Retrieved", datarRetrieved)
-        setData(datarRetrieved);
+      const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
+        jsonDocument
+      )) as Array<PacientesAnalisisMongo>;
+      for (let i = 0; i < pacientes.length; i += 1) {
+        datarRetrieved.push({
+          col1: `${pacientes[i].name} Protocolo: ${pacientes[i].protocol} Etiqueta: ${pacientes[i].etiqueta}`,
+        });
+      }
+      console.log('Retrieved', datarRetrieved);
+      setData(datarRetrieved);
     } catch (error: any) {
-      alert("Error while retrieving data");
+      alert('Error while retrieving data');
     }
     appDispatch(setIsLoading(false));
   }
-  
+
   const columns: Array<Column<{ col1: string }>> = React.useMemo(
     () => [
       {
@@ -69,7 +71,7 @@ const VerPacienteContainer = () => {
 
   useEffect(() => {
     console.log('updated');
-    loadPacientes()
+    loadPacientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

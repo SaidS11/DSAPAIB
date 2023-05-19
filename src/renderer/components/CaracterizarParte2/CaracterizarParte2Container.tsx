@@ -78,7 +78,6 @@ const CaracterizarParte2Container = () => {
     (state) => state.señales.ventanasArrayEmg4
   );
 
-
   const ventanaSeñalGiroscopio = useCustomSelector(
     (state) => state.señales.ventanasArrayGiroscopio
   );
@@ -115,7 +114,6 @@ const CaracterizarParte2Container = () => {
   const ventanasArrayEmg3: any[] = [];
   const ventanasArrayEmg4: any[] = [];
 
-
   const ventanasArrayGiroscopio: any[] = [];
   const ventanasArrayAcelerometro: any[] = [];
   const ventanaArrayFrecuencia: any[] = [];
@@ -134,7 +132,9 @@ const CaracterizarParte2Container = () => {
       const largo = ventanaSeñalEmg1[i].length;
       ventanaArrEmg1 = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg1[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalEmg1[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalEmg1[i][c].length
         ).toString();
@@ -145,12 +145,14 @@ const CaracterizarParte2Container = () => {
   }
 
   // EMG2
-  if (cantidadSensores >=2) {
+  if (cantidadSensores >= 2) {
     for (let i = 0; i < cantidadSujetos; i += 1) {
       const largo = ventanaSeñalEmg2[i].length;
       ventanaArrEmg2 = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg2[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalEmg2[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalEmg2[i][c].length
         ).toString();
@@ -161,12 +163,14 @@ const CaracterizarParte2Container = () => {
   }
 
   // EMG3
-  if (cantidadSensores >=3) {
+  if (cantidadSensores >= 3) {
     for (let i = 0; i < cantidadSujetos; i += 1) {
       const largo = ventanaSeñalEmg3[i].length;
       ventanaArrEmg3 = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg3[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalEmg3[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalEmg3[i][c].length
         ).toString();
@@ -177,12 +181,14 @@ const CaracterizarParte2Container = () => {
   }
 
   // EMG4
-  if (cantidadSensores >=4) {
+  if (cantidadSensores >= 4) {
     for (let i = 0; i < cantidadSujetos; i += 1) {
       const largo = ventanaSeñalEmg4[i].length;
       ventanaArrEmg4 = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalEmg4[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalEmg4[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalEmg4[i][c].length
         ).toString();
@@ -198,7 +204,9 @@ const CaracterizarParte2Container = () => {
       const largo = ventanaSeñalGiroscopio[i].length;
       ventanaGiroscopio = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalGiroscopio[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalGiroscopio[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalGiroscopio[i][c].length
         ).toString();
@@ -214,7 +222,9 @@ const CaracterizarParte2Container = () => {
       const largo = ventanaSeñalFrecuencia[i].length;
       ventanaFrecuencia = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalFrecuencia[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalFrecuencia[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalFrecuencia[i][c].length
         ).toString();
@@ -230,7 +240,9 @@ const CaracterizarParte2Container = () => {
       const largo = ventanaSeñalAcelerometro[i].length;
       ventanaAcelerometro = [];
       for (let c = 0; c < largo; c += 1) {
-        const { ventana, sumVentana } = getElementsAndSum(ventanaSeñalAcelerometro[i][c]);
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalAcelerometro[i][c]
+        );
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalAcelerometro[i][c].length
         ).toString();
@@ -239,7 +251,6 @@ const CaracterizarParte2Container = () => {
       ventanasArrayAcelerometro.push(ventanaAcelerometro);
     }
   }
-
 
   // console.log("Filled with", ventanasArrayEmg1)
   const componentArray: any[] = [];

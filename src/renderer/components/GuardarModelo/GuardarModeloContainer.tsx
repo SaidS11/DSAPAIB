@@ -28,6 +28,8 @@ const GuardarModeloContainer = () => {
   const analisisParams = useCustomSelector(
     (state) => state.config.analisisParams
   ) as AnalisisParamsInterface;
+  const predictMode = useCustomSelector((state) => state.señales.predictMode);
+
   const selectedProtocol = analisisParams.protocolo;
   console.log('selected', selectedProtocol);
   const [algoritmo, setAlgoritmo] = useState('');
@@ -95,14 +97,21 @@ const GuardarModeloContainer = () => {
   const loadModels = useCallback(async () => {
     console.log('Fui llamado Models', algoritmoTipo);
     appDispatch(setIsLoading(true));
-
-    const respModelo =
-      await window.electron.ipcRenderer.selectModIaPorAlgoritmo(algoritmoTipo);
+    let respModelo;
+    if (predictMode) {
+      respModelo = await window.electron.ipcRenderer.selectModIAPorAlgoritmoEnt(
+        algoritmoTipo
+      );
+    } else {
+      respModelo = await window.electron.ipcRenderer.selectModIaPorAlgoritmo(
+        algoritmoTipo
+      );
+    }
     if (respModelo.length > 0) {
       for (let i = 0; i < respModelo.length; i += 1) {
         // const localString =  JSON.stringify(respModelo[i].resultados);
         const localString = parametrosString(respModelo[i].resultados);
-        console.log("entre", respModelo[i].entrenado)
+        console.log('entre', respModelo[i].entrenado);
         datarRetrieved.push({
           col1: respModelo[i].nombre,
           col2: respModelo[i].algoritmo_ia,

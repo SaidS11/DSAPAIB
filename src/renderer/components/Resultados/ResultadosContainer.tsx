@@ -12,26 +12,39 @@ import { setIsLogged } from '../../../redux/slices/LoginSlice';
 import Resultados from './Resultados';
 
 interface ConfLocal {
-  emgs: number
+  emgs: number;
 }
-
 
 const ResultadosContainer = () => {
   const navigate = useNavigate();
   const [probando, setProbando] = useState(false);
   const appDispatch = useCustomDispatch();
-  const confObj = useCustomSelector((state) => state.config.configCompleta) as Array<ConfLocal>;
+  const confObj = useCustomSelector(
+    (state) => state.config.configCompleta
+  ) as Array<ConfLocal>;
   const nombreProtocolo = useCustomSelector(
     (state) => state.config.protocoloNombre
   );
-  const sensoresSelected = useCustomSelector((state) => state.señales.cantidadSensores);
-  const totalSensores = useCustomSelector((state) => state.señales.totalSensores);
+  const sensoresSelected = useCustomSelector(
+    (state) => state.señales.cantidadSensores
+  );
+  const totalSensores = useCustomSelector(
+    (state) => state.señales.totalSensores
+  );
 
   const usuario = useCustomSelector((state) => state.datos.usuarioPaciente);
-  const objetoMongo = useCustomSelector((state) => state.señales.mongoInsertObject);
-  const giroscopioChecked = useCustomSelector((state) => state.señales.giroscopioIsChecked);
-  const acelerometroChecked = useCustomSelector ((state) => state.señales.acelerometroIsChecked);
-  const frecuenciaChecked =  useCustomSelector((state) => state.señales.frecuenciaIsChecked);
+  const objetoMongo = useCustomSelector(
+    (state) => state.señales.mongoInsertObject
+  );
+  const giroscopioChecked = useCustomSelector(
+    (state) => state.señales.giroscopioIsChecked
+  );
+  const acelerometroChecked = useCustomSelector(
+    (state) => state.señales.acelerometroIsChecked
+  );
+  const frecuenciaChecked = useCustomSelector(
+    (state) => state.señales.frecuenciaIsChecked
+  );
 
   const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
   const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
@@ -45,7 +58,6 @@ const ResultadosContainer = () => {
   const [isDataReady, setIsDataReady] = useState(false);
   const [grid, setGrid] = useState([]);
   const [data, setData] = useState([]);
-
 
   const sensores = confObj[0].emgs;
 
@@ -86,8 +98,6 @@ const ResultadosContainer = () => {
   const onClickGuardar = () => {
     insertRegistro();
   };
-
-
 
   const [dataXEmg1, setDataXEmg1] = useState([0]);
   const [dataYEmg1, setDataYEmg1] = useState([0]);
@@ -194,12 +204,11 @@ const ResultadosContainer = () => {
     type: 'scatter',
   };
 
-
   const retrieveSignal = async () => {
     appDispatch(setIsLoading(true));
 
     appDispatch(setIsLoading(false));
-    console.log("Señales", objetoMongo.signals)
+    console.log('Señales', objetoMongo.signals);
     console.log('this is RespObj', objetoMongo);
     const { emg1 } = objetoMongo.signals;
     const { emg2 } = objetoMongo.signals;
@@ -208,7 +217,6 @@ const ResultadosContainer = () => {
     const { acelerometro } = objetoMongo.signals;
     const { giroscopio } = objetoMongo.signals;
     const { frecuencia } = objetoMongo.signals;
-
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -229,18 +237,18 @@ const ResultadosContainer = () => {
     const acelerometroSignalLocalY = [];
 
     const frecuenciaSignalLocalX = [];
-    const frecuenciaSignalLocalY = []
+    const frecuenciaSignalLocalY = [];
 
     for (let i = 0; i < emg1.length; i += 1) {
       if (sensoresSelected >= 1) {
         xArrayEmg1.push(emg1[i].x);
         yArrayEmg1.push(emg1[i].y);
       }
-      if (sensoresSelected >=2) {
+      if (sensoresSelected >= 2) {
         xArray2Emg2.push(emg2[i].x);
         yArray2Emg2.push(emg2[i].y);
       }
-      if (sensoresSelected >=3) {
+      if (sensoresSelected >= 3) {
         xArray3Emg3.push(emg3[i].x);
         yArray3Emg3.push(emg3[i].y);
       }
@@ -249,25 +257,23 @@ const ResultadosContainer = () => {
         yArray4Emg4.push(emg4[i].y);
       }
 
-
-      if(giroscopioChecked) {
-        console.log("giroscopio checked");
+      if (giroscopioChecked) {
+        console.log('giroscopio checked');
         giroscopioSignalLocalX.push(giroscopio[i].x);
         giroscopioSignalLocalY.push(giroscopio[i].y);
       }
-      if(acelerometroChecked) {
-        console.log("acelerometro checked");
+      if (acelerometroChecked) {
+        console.log('acelerometro checked');
         acelerometroSignalLocalX.push(acelerometro[i].x);
         acelerometroSignalLocalY.push(acelerometro[i].y);
       }
-      if(frecuenciaChecked) {
-        console.log("frecuencia checked");
+      if (frecuenciaChecked) {
+        console.log('frecuencia checked');
         frecuenciaSignalLocalX.push(frecuencia[i].x);
         frecuenciaSignalLocalY.push(frecuencia[i].y);
       }
-
     }
-    if (sensoresSelected >=1) {
+    if (sensoresSelected >= 1) {
       console.log('This is x', xArrayEmg1);
       console.log('This is y', yArrayEmg1);
       setDataXEmg1(xArrayEmg1);
@@ -279,11 +285,11 @@ const ResultadosContainer = () => {
       setDataY2Emg2(yArray2Emg2);
     }
 
-    if(sensoresSelected >= 3) {
+    if (sensoresSelected >= 3) {
       setDataX3Emg3(xArray3Emg3);
       setDataY3Emg3(yArray3Emg3);
     }
-    if(sensoresSelected >= 4) {
+    if (sensoresSelected >= 4) {
       setDataX4Emg4(xArray4Emg4);
       setDataY4Emg4(yArray4Emg4);
     }
@@ -301,36 +307,29 @@ const ResultadosContainer = () => {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
     }
-
-
   };
-
 
   const numOfPlots = () => {
     const dataAux: any = [];
-    if (sensoresSelected >=1) {
+    if (sensoresSelected >= 1) {
       dataAux.push(trace1);
     }
 
     if (sensoresSelected >= 2) {
       dataAux.push(trace2);
-      
     }
 
-    if(sensoresSelected >= 3) {
+    if (sensoresSelected >= 3) {
       dataAux.push(trace3);
-
     }
-    if(sensoresSelected >= 4) {
+    if (sensoresSelected >= 4) {
       dataAux.push(trace4);
-
     }
     if (giroscopioChecked) {
       dataAux.push(trace5);
     }
     if (frecuenciaChecked) {
       dataAux.push(trace6);
-      
     }
     if (acelerometroChecked) {
       dataAux.push(trace7);
@@ -340,7 +339,7 @@ const ResultadosContainer = () => {
     // impar aumenta las columns
     let dynamicRows = 0;
     let dynamicColumns = 0;
-    
+
     if (totalSensores === 1) {
       dynamicRows = 1;
       dynamicColumns = 1;
@@ -369,7 +368,6 @@ const ResultadosContainer = () => {
     return [objGrid, dataAux];
   };
 
-  
   useEffect(() => {
     retrieveSignal();
     const [gridLayoutAux, dataAux] = numOfPlots();
@@ -378,12 +376,8 @@ const ResultadosContainer = () => {
     setIsDataReady(true);
   }, []);
   if (isDataReady === false) {
-    return (
-      <div>
-
-      </div>
-    )
-  } 
+    return <div />;
+  }
   return (
     <div>
       <Resultados

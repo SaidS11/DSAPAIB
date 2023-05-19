@@ -39,7 +39,7 @@ const ResultadoEntrenarContainer = () => {
   console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
   console.log('Parsed', parsedResp);
-  
+
   const precision = obtenerPorcentaje(parsedResp[1]);
   const f1 = obtenerPorcentaje(parsedResp[2]);
   const recall = obtenerPorcentaje(parsedResp[3]);
@@ -48,7 +48,7 @@ const ResultadoEntrenarContainer = () => {
   const respAnalisis = parsedResp[6];
   console.log('This is resp', respAnalisis);
   const banderaExistente = parsedResp[7];
-  console.log("this is flag", banderaExistente)
+  console.log('this is flag', banderaExistente);
   const precisionPromedioParsed = parseInt(precisionPromedio, 10) * 100;
   const precisionPromParsString = precisionPromedioParsed.toString();
   console.log('Crosses', precisionPromedio, desviacion);
@@ -91,7 +91,7 @@ const ResultadoEntrenarContainer = () => {
     // setOpen2(!open2);
 
     appDispatch(setIsLoading(true));
-    setIsSaved(true);
+
     const customResults = {
       Precisión: precision,
       F1: f1,
@@ -99,14 +99,13 @@ const ResultadoEntrenarContainer = () => {
     };
     const customStrResults = JSON.stringify(customResults);
     appDispatch(setIsLoading(true));
-    if (banderaExistente === "true") {
+    if (banderaExistente === 'true') {
       window.electron.ipcRenderer.updateModelo(
         customStrResults,
         '1',
         nombreSeleccionado
       );
-    }
-    else {
+    } else {
       window.electron.ipcRenderer.insertModeloIA(
         nombreSeleccionado,
         algoritmoSeleccionado,
@@ -115,6 +114,7 @@ const ResultadoEntrenarContainer = () => {
         customStrResults
       );
     }
+    setIsSaved(true);
 
     // navigate('/video');
     // updateData();
@@ -153,7 +153,7 @@ const ResultadoEntrenarContainer = () => {
   };
   const onClickCambiar = () => {
     if (isSaved !== true) {
-      toggleModalGuardar()
+      toggleModalGuardar();
     } else {
       navigate('/guardarModelo');
     }

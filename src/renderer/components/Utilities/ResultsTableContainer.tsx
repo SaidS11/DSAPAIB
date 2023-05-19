@@ -78,60 +78,60 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
     const numberOfKeys = keys.length;
     console.log('len', numberOfKeys);
     for (let i = 0; i < numberOfKeys; i += 1) {
-      let dataJson = {};
-      Object.assign(dataJson, {nombre: parsedRespObj.nombre[i]})
+      const dataJson = {};
+      Object.assign(dataJson, { nombre: parsedRespObj.nombre[i] });
       if (cantidadSensores >= 1) {
-      Object.assign(dataJson, {
-        colMediaABSEMG1: parsedRespObj.colMediaABSEMG1[i],
-        colMedianaEMG1: parsedRespObj.colMedianaEMG1[i],
-        colRMSEMG1: parsedRespObj.colRMSEMG1[i]
-      })
+        Object.assign(dataJson, {
+          colMediaABSEMG1: parsedRespObj.colMediaABSEMG1[i],
+          colMedianaEMG1: parsedRespObj.colMedianaEMG1[i],
+          colRMSEMG1: parsedRespObj.colRMSEMG1[i],
+        });
       }
-      if(cantidadSensores >= 2) {
+      if (cantidadSensores >= 2) {
         Object.assign(dataJson, {
           colMediaABSEMG2: parsedRespObj.colMediaABSEMG2[i],
           colMedianaEMG2: parsedRespObj.colMedianaEMG2[i],
-          colRMSEMG2: parsedRespObj.colRMSEMG2[i]
-        })
+          colRMSEMG2: parsedRespObj.colRMSEMG2[i],
+        });
       }
-      if(cantidadSensores >= 3) {
+      if (cantidadSensores >= 3) {
         Object.assign(dataJson, {
           colMediaABSEMG3: parsedRespObj.colMediaABSEMG3[i],
           colMedianaEMG3: parsedRespObj.colMedianaEMG3[i],
-          colRMSEMG3: parsedRespObj.colRMSEMG3[i]
-        })
+          colRMSEMG3: parsedRespObj.colRMSEMG3[i],
+        });
       }
-      if(cantidadSensores >= 4) {
+      if (cantidadSensores >= 4) {
         Object.assign(dataJson, {
           colMediaABSEMG4: parsedRespObj.colMediaABSEMG4[i],
           colMedianaEMG4: parsedRespObj.colMedianaEMG4[i],
-          colRMSEMG4: parsedRespObj.colRMSEMG4[i]
-        })
+          colRMSEMG4: parsedRespObj.colRMSEMG4[i],
+        });
       }
       if (giroscopioChecked) {
         Object.assign(dataJson, {
           colMediaABSGiroscopio: parsedRespObj.colMediaABSGiroscopio[i],
           colMedianaGiroscopio: parsedRespObj.colMedianaGiroscopio[i],
           colRMSGiroscopio: parsedRespObj.colRMSGiroscopio[i],
-        })
+        });
       }
       if (acelerometroChecked) {
         Object.assign(dataJson, {
           colMediaABSAcelerometro: parsedRespObj.colMediaABSAcelerometro[i],
           colMedianaAcelerometro: parsedRespObj.colMedianaAcelerometro[i],
-          colRMSAcelerometro: parsedRespObj.colRMSAcelerometro[i]
-        })
+          colRMSAcelerometro: parsedRespObj.colRMSAcelerometro[i],
+        });
       }
 
-      if(frecuenciaChecked) {
+      if (frecuenciaChecked) {
         Object.assign(dataJson, {
           colMediaABSFrecuencia: parsedRespObj.colMediaABSFrecuencia[i],
           colMedianaFrecuencia: parsedRespObj.colMedianaFrecuencia[i],
-          colRMSFrecuencia: parsedRespObj.colRMSFrecuencia[i]
-        })
+          colRMSFrecuencia: parsedRespObj.colRMSFrecuencia[i],
+        });
       }
 
-      Object.assign(dataJson, {etiqueta: parsedRespObj.etiqueta[i]})
+      Object.assign(dataJson, { etiqueta: parsedRespObj.etiqueta[i] });
       console.log('Calculated1', dataJson);
       objSensoresData.push(dataJson);
     }
@@ -146,7 +146,7 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
   console.log('DAta', data);
 
   const sensoresNames = ['EMG1', 'EMG2', 'EMG3', 'EMG4'];
-  const sensoresExtraNames = ['GSR Promedio', 'Acelerometro Promedio', ];
+  const sensoresExtraNames = ['GSR Promedio', 'Acelerometro Promedio'];
   const getColumns = (sizeEMG: number, sizeSensoresExtra: number) => {
     const internalArray: Array<
       Column<{ Header: string; show: boolean; accessor: string }>
@@ -261,8 +261,9 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
     columns,
   };
 
- 
-  return <ResultsTable options={options} dataInitial={data} columns={columns} />;
+  return (
+    <ResultsTable options={options} dataInitial={data} columns={columns} />
+  );
 };
 
 export default ResultsTableContainer;

@@ -19,22 +19,27 @@ import json
 from joblib import dump, load
 import os
 
-def classificationTree(nombre):
-    
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+def classificationTree(modelArgs, nombre, headers):
+    maxDepth =  modelArgs["profundidad"]
+    randomState = modelArgs["estado"]
+    # or load through local csv
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
-    data.groupby('species').size()
-    train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
+    data.groupby('etiqueta').size()
+    train, test = train_test_split(data, test_size = 0, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_test = test[headers]
+    y_test = test.etiqueta
     script_dir = os.path.dirname(__file__)
+    existente = True
     clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 
     prediction=clf.predict(X_test)
     
-    fn = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
-    cn = ['setosa', 'versicolor', 'virginica']
+    fn = headers
+    cn = ['sano', 'diabetico']
     # set figure size
     plt.figure(figsize = (10,8))
     plot_tree(clf, feature_names = fn, class_names = cn, filled = True)
@@ -44,7 +49,20 @@ def classificationTree(nombre):
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
     plt.savefig(os.path.join(script_dir,"Confusion.png"))
     # print(my_path)
-    print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+"|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')))
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    X_nuevos = datos_nuevos[headers]
+    y_pred = clf.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+    # print(my_path)
+    print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "0.99" +
+    "|" "0.99" +
+    "|" + resulJson +
+    "|" + f"{'true' if existente else 'false'}")
     sys.stdout.flush()
 
 def classKNN(nombre):
@@ -166,7 +184,13 @@ def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     X_test = test[headers]
     y_test = test.etiqueta
     # KNN, first try 5
-    mod_5nn=KNeighborsClassifier(n_neighbors=int(vecinos)) 
+    existente = False
+    script_dir = os.path.dirname(__file__)
+    if os.path.exists(f'{script_dir}/Modelos/{nombre}.joblib'):
+        mod_5nn = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+        existente = True
+    else:
+        mod_5nn=KNeighborsClassifier(n_neighbors=int(vecinos)) 
     cv_results = cross_validate(mod_5nn, X_train, y_train, cv=iteraciones, return_estimator=True)
     promedio = list()
     for i in range(len(cv_results['estimator'])):
@@ -193,7 +217,8 @@ def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
-    "|" + resulJson)
+    "|" + resulJson +
+    "|" + f"{'true' if existente else 'false'}")
     sys.stdout.flush() 
 
 def trainSVM(modelArgs, iteraciones, reducedPercentage):
@@ -216,7 +241,13 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
     # SVC with linear kernel
     # for SVC, may be impractical beyond tens of thousands of samples
     #almacenar matriz de confusion y promediarla al final
-    linear_svc = SVC(kernel=kernelArg).fit(X_train, y_train)
+    existente = False
+    script_dir = os.path.dirname(__file__)
+    if os.path.exists(f'{script_dir}/Modelos/{nombre}.joblib'):
+        linear_svc = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+        existente = True
+    else:
+        linear_svc = SVC(kernel=kernelArg).fit(X_train, y_train)
     cv_results = cross_validate(linear_svc, X_train, y_train, cv=iteraciones, return_estimator=True)
     promedio = list()
     for i in range(len(cv_results['estimator'])):
@@ -243,7 +274,8 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
-    "|" + resulJson)
+    "|" + resulJson +
+    "|" + f"{'true' if existente else 'false'}")
     sys.stdout.flush() 
 
 if __name__ == '__main__':
@@ -286,25 +318,10 @@ if __name__ == '__main__':
                 trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
         if (first == "Class"):
             if (second == "Tree"):
-                classificationTree(nombre)
+                classificationTree(jsonParams, nombre, headers)
             if(second == "KNN"):
                 classKNN(nombre)
             if(second == "SVM"):
                 classSVM(nombre)
     except  Exception as e:
         print("Error" + "|" + str(e))
-
-""" def testing():
-    return["Hola","Amigos","Como estan"]
-if __name__ == '__main__':
-    print(testing())
-    sys.stdout.flush() """
-
-""" ### Working code
-import sys
-from sklearn import datasets
-first = sys.argv[1]
-iris= datasets.load_iris()
-print(iris.data.shape, "Hola")
-# print("Greetings from python " + first)
-sys.stdout.flush() """

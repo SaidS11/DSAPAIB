@@ -156,71 +156,75 @@ const TableContainer = (props: TableContainerProps) => {
         i,
         ventanasArrayEmg1[numeroDeSujeto][i][2] as string
       );
-      console.log('test2', returnFixed(ventanasArrayEmg1[numeroDeSujeto][i][2]));
-      let dataJson = {};
+      console.log(
+        'test2',
+        returnFixed(ventanasArrayEmg1[numeroDeSujeto][i][2])
+      );
+      const dataJson = {};
       if (cantidadSensores >= 1) {
         Object.assign(dataJson, {
           colMediaABSEMG1: returnFixed(
-          ventanasArrayEmg1[numeroDeSujeto][i][2]
-        ) as string,
-        colMedianaEMG1: calcularMediana(
-          ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
-        ),
-        colRMSEMG1: calcularRms(
-          ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
-        )
-      })
+            ventanasArrayEmg1[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaEMG1: calcularMediana(
+            ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSEMG1: calcularRms(
+            ventanasArrayEmg1[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
       }
       if (cantidadSensores >= 2) {
         Object.assign(dataJson, {
           colMediaABSEMG2: returnFixed(
-          ventanasArrayEmg2[numeroDeSujeto][i][2]
-        ) as string,
-        colMedianaEMG2: calcularMediana(
-          ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
-        ),
-        colRMSEMG2: calcularRms(
-          ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
-        )
-      })
+            ventanasArrayEmg2[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaEMG2: calcularMediana(
+            ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSEMG2: calcularRms(
+            ventanasArrayEmg2[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
       }
       if (cantidadSensores >= 3) {
         Object.assign(dataJson, {
           colMediaABSEMG3: returnFixed(
-          ventanasArrayEmg3[numeroDeSujeto][i][2]
-        ) as string,
-        colMedianaEMG3: calcularMediana(
-          ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
-        ),
-        colRMSEMG3: calcularRms(
-          ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
-        )
-      })
+            ventanasArrayEmg3[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaEMG3: calcularMediana(
+            ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSEMG3: calcularRms(
+            ventanasArrayEmg3[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
       }
       if (cantidadSensores >= 4) {
         Object.assign(dataJson, {
           colMediaABSEMG4: returnFixed(
-          ventanasArrayEmg4[numeroDeSujeto][i][2]
-        ) as string,
-        colMedianaEMG4: calcularMediana(
-          ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
-        ),
-        colRMSEMG4: calcularRms(
-          ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
-        )
-      })
+            ventanasArrayEmg4[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaEMG4: calcularMediana(
+            ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSEMG4: calcularRms(
+            ventanasArrayEmg4[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
       }
       if (giroscopioChecked) {
-        Object.assign(dataJson, {colMediaABSGiroscopio: returnFixed(
-          ventanasArrayGiroscopio[numeroDeSujeto][i][2]
-        ) as string,
-        colMedianaGiroscopio: calcularMediana(
-          ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
-        ),
-        colRMSGiroscopio: calcularRms(
-          ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
-        )
-      })
+        Object.assign(dataJson, {
+          colMediaABSGiroscopio: returnFixed(
+            ventanasArrayGiroscopio[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaGiroscopio: calcularMediana(
+            ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSGiroscopio: calcularRms(
+            ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
       }
       if (acelerometroChecked) {
         Object.assign(dataJson, {
@@ -232,8 +236,8 @@ const TableContainer = (props: TableContainerProps) => {
           ),
           colRMSAcelerometro: calcularRms(
             ventanasArrayAcelerometro[numeroDeSujeto][i][0] as Array<number>
-          )
-        })
+          ),
+        });
       }
 
       if (frecuenciaChecked) {
@@ -246,11 +250,13 @@ const TableContainer = (props: TableContainerProps) => {
           ),
           colRMSFrecuencia: calcularRms(
             ventanaArrayFrecuencia[numeroDeSujeto][i][0] as Array<number>
-          )
-        })
+          ),
+        });
       }
 
-      Object.assign(dataJson, {etiqueta: selectedPatients[patientNumber].col2})
+      Object.assign(dataJson, {
+        etiqueta: selectedPatients[patientNumber].col2,
+      });
       console.log('Calculated1', dataJson);
       objSensoresData.push(dataJson);
     }

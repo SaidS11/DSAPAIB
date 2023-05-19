@@ -70,7 +70,6 @@ export interface ConfigDetalle {
   acelerometro: boolean;
 }
 
-
 export interface SelectedModeloIAInterface {
   col1: string;
   col2: string;
@@ -78,7 +77,6 @@ export interface SelectedModeloIAInterface {
   col4: string;
   col5: object;
 }
-
 
 export interface ProtocoloNombre {
   nombre: string;
@@ -93,12 +91,11 @@ export interface MongoSignalLayout {
   y: number;
 }
 export interface MongoSignals {
-  signal1?: Array<Object>
-  signal2?: Array<Object>
-  signal3?: Array<Object>
-  signal4?: Array<Object>
-  signalGs4?: Array<Object>
-
+  signal1?: Array<Object>;
+  signal2?: Array<Object>;
+  signal3?: Array<Object>;
+  signal4?: Array<Object>;
+  signalGs4?: Array<Object>;
 }
 export interface DataSignalsMongo {
   etiqueta: string;

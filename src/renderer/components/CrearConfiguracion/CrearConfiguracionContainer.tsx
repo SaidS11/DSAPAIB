@@ -16,6 +16,18 @@ const CrearConfiguracionContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const data = Object.fromEntries(new FormData(form).entries());
+    if (!('ritmo' in data)) {
+      data.ritmo = '0';
+    }
+    if (!('frecuencia' in data)) {
+      data.frecuencia = '0';
+    }
+    if (!('giroscopio' in data)) {
+      data.giroscopio = '0';
+    }
+    if (!('acelerometro' in data)) {
+      data.acelerometro = '0';
+    }
     console.log('la data', data);
     appDispatch(setConfigPrimerPaso(data))
     appDispatch(setIsLoading(false));
