@@ -62,6 +62,12 @@ contextBridge.exposeInMainWorld('electron', {
     },
     insertarElementoM: (callback: any) =>
       ipcRenderer.on('insertarElementoM', callback),
+
+    copiarArchivo(file: string, destino: string) {
+      ipcRenderer.send('copiarArchivo', file, destino);
+    },
+    copiarAr: (callback: any) => ipcRenderer.on('copiarAr', callback),
+
     buscarElementoMongo(json: string) {
       ipcRenderer.send('buscarElementoMongo', json);
     },

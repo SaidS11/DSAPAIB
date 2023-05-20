@@ -21,12 +21,26 @@ import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import { Json } from 'aws-sdk/clients/robomaker';
+import * as fs from 'fs';
 import installExtension, {
   REDUX_DEVTOOLS,
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
+import express, { Express, Request, Response } from 'express';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+
+const app2: Express = express();
+
+// Configurar el middleware para servir archivos estáticos
+app2.use(express.static('C:/Users/play_/OneDrive/Escritorio/electron-app'));
+
+// ... otras rutas y middleware ...
+
+// Iniciar el servidor
+app2.listen(8000, () => {
+  console.log('El servidor está escuchando en el puerto 8000');
+});
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
@@ -181,6 +195,22 @@ async function conexionPrincipalMongo() {
     await client.close();
   }
 }
+
+async function copiarArchivo(file: string, destino: string) {
+  await fs.copyFile(file, destino, (err) => {
+    if (err) {
+      console.error('Error al copiar el archivo:', err);
+    } else {
+      console.log('Archivo copiado exitosamente.');
+    }
+  });
+}
+
+ipcMain.on('copiarArchivo', async (event, file: string, destino: string) => {
+  const resp = await copiarArchivo(file, destino);
+  console.log(resp);
+  mainWindow?.webContents.send('copiarAr', resp);
+});
 
 async function insertarElementoMongo(query: string) {
   try {

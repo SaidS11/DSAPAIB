@@ -14,7 +14,7 @@ export interface CrearConfigProps {
 const CrearAnalisis = (props: CrearConfigProps) => {
   const { onClickNav } = props;
   const variable = "EMG's"
-  
+
   const numofEmgs = () => {
     const emgs = [];
 
@@ -47,7 +47,7 @@ const CrearAnalisis = (props: CrearConfigProps) => {
                 {numofEmgs()}
               </select>
             </section>
-            <section className='display-flex'> 
+            <section className='display-flex'>
                 <h4>Sensores Adicionales</h4>
             </section>
             <div className='display-margin'>
@@ -79,61 +79,3 @@ const CrearAnalisis = (props: CrearConfigProps) => {
 };
 
 export default CrearAnalisis;
-
-
-// TEST
-{/* <section className='display-flex'> 
-                <h4>Sensores </h4>
-            </section>
-            <section className="display-flex">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">Ritmo Cardiaco</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel value="1" name="ritmo" control={<Radio />} label="Si" />
-                <FormControlLabel value="0" name="ritmo" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl>
-            </section>
-            <section className="display-flex">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">Frecuencia Cardiaca</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel value="1" name="frecuencia" control={<Radio />} label="Si" />
-                <FormControlLabel value="0" name="frecuencia" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl>
-            </section>
-            <section className="display-flex">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">Acelerometro</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel value="1" name="acelerometro" control={<Radio />} label="Si" />
-                <FormControlLabel value="0" name="acelerometro" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl>
-            </section>
-            <section className="display-flex">
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">Giroscopio</FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel value="1" name="giroscopio" control={<Radio />} label="Si" />
-                <FormControlLabel value="0" name="giroscopio" control={<Radio />} label="No" />
-              </RadioGroup>
-            </FormControl>
-            </section> */}

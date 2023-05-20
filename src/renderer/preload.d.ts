@@ -14,6 +14,8 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        copiarArchivo(fileImagenDB: string, destino: string): unknown;
+        copiarAr(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoMongo(archivo: string): unknown;
         buscarElementoM(archivo: string): Array<object>;
