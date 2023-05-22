@@ -24,6 +24,7 @@ const ResultadoEntrenarContainer = () => {
   const navigate = useNavigate();
   const [probando, setProbando] = useState(false);
   const resp = useCustomSelector((state) => state.responses.pythonResponse);
+  const predictMode = useCustomSelector((state) => state.señales.predictMode);
   const analisis = useCustomSelector(
     (state) => state.config.analisisParams
   ) as AnalisisParamsInterface;
@@ -176,6 +177,7 @@ const ResultadoEntrenarContainer = () => {
         respAnalisis={respAnalisis}
         toggleModalVerMas={toggleModalVerMas}
         onClickCambiar={onClickCambiar}
+        predictMode={predictMode}
       />
       {open && (
         <ModalVerMas

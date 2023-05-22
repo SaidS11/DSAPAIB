@@ -95,7 +95,7 @@ const GuardarModeloContainer = () => {
   };
 
   const loadModels = useCallback(async () => {
-    console.log('Fui llamado Models', algoritmoTipo);
+    console.log('Fui llamado Modelsdsad', algoritmoTipo);
     appDispatch(setIsLoading(true));
     let respModelo;
     if (predictMode) {
@@ -125,7 +125,7 @@ const GuardarModeloContainer = () => {
     } else {
       setMdelosEncontrados(false);
     }
-    console.log('Este es modelod', respModelo);
+    console.log('Este es modelo', respModelo);
     console.log('data', datarRetrieved);
     appDispatch(setIsLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,6 +151,7 @@ const GuardarModeloContainer = () => {
   const onClickBack = () => {
     navigate('/entrenar');
   };
+  
   return (
     <GuardarModelo
       dataAlgoritmo={dataAlgoritmo}

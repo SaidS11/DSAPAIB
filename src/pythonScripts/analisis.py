@@ -28,11 +28,11 @@ def classificationTree(modelArgs, nombre, headers):
     data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     data.groupby('etiqueta').size()
-    train, test = train_test_split(data, test_size = 0, stratify = data['etiqueta'], random_state = 42)
+    # train, test = train_test_split(data, test_size = 0, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_test = test[headers]
-    y_test = test.etiqueta
+    X_test = data[headers]
+    y_test = data.etiqueta
     script_dir = os.path.dirname(__file__)
     existente = True
     clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 

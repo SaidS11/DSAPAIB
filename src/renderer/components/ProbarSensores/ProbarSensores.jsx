@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import Plot, { P } from 'react-plotly.js';
+import Plot from 'react-plotly.js';
 import './ProbarSensores.css';
 import { Button } from '@mui/material';
 import { useState } from 'react';
@@ -33,6 +33,7 @@ const ProbarSensores = ({
   console.log(dataX); */
   // const [dataXParam, setDataXParam] = useState([0]);
   // const [dataYParam, setDataYParam] = useState([0]);
+  // console.log("Plot");
   const [dataX, setDataX] = useState([0]);
   const [dataY, setDataY] = useState([0]);
   const [localUpdater, setLocalUpdater] = useState(false);

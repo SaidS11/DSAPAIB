@@ -97,9 +97,12 @@ const EnhancedTable = ({
   setData,
   algoritmo,
   algoritmoTipo,
+  firstRender,
+  setFirstRender,
   // setSelectedPatientsLocal,
 }) => {
   const [isSelected, setIsSelected] = useState([]);
+  const [first, setFirst] = useState(true);
   // const selectedPatients = useCustomSelector((state) => state.config.selectedModels);
   const {
     getTableProps,
@@ -142,30 +145,12 @@ const EnhancedTable = ({
           // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          // To be implemented disable rows after one is selected
-          Cell: ({ row }) => {
-            console.log('these are rows', row);
-            // console.log("is", isSelected);
-            // if (isSelected.length > 0) {
-            //   console.log("Ya hay", isSelected);
-            // }
-
+          Cell: ({ row }) => { 
             return (
               <div>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
               </div>
             );
-            // if (row.isSelected === true) {
-            //   return (
-            //     <div>
-            //     <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-            //   </div>)
-            // } else {
-            //   return (
-            //     <div>
-            //     <IndeterminateCheckbox disabled {...row.getToggleRowSelectedProps()} />
-            //   </div>)
-            // }
           },
         },
         ...columnsMap,
@@ -177,20 +162,15 @@ const EnhancedTable = ({
   const findPatientById = (selectedPatients, patientsList) => {
     const newArr = [];
     const keys = Object.keys(selectedPatients);
-    console.log('Keys', keys);
     const intKeys = keys.map(Number);
-    console.log('intKeys', intKeys);
 
     for (let i = 0; i < intKeys.length; i += 1) {
-      console.log('Current', intKeys[i]);
       newArr.push(patientsList[intKeys[i]]);
     }
-    console.log('Joined', newArr);
     // setIsSelected(newArr);
     appDispatch(setSelectedModels(newArr));
     return newArr;
   };
-  console.log('IDs', selectedRowIds);
 
   const find = useMemo(
     () => findPatientById(selectedRowIds, data),
@@ -198,12 +178,9 @@ const EnhancedTable = ({
     [selectedRowIds]
   );
   const addUserHandler = (modelo) => {
-    console.log('This will be added', modelo);
     const newData = data.concat([modelo]);
     setData(newData);
-    console.log('Added');
   };
-  console.log('Algo', algoritmo);
   // Render the UI for your table
   return (
     <TableContainer>
@@ -246,11 +223,38 @@ const EnhancedTable = ({
             return (
               <TableRow {...row.getRowProps()}>
                 {row.cells.map((cell) => {
-                  return (
-                    <TableCell {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </TableCell>
-                  );
+                  {if(Object.keys(selectedRowIds).length > 0) {
+                    if(cell.row.isSelected) {
+                      return (
+                        <TableCell {...cell.getCellProps()}>
+                          {cell.render('Cell')}
+                        </TableCell>
+                      );
+                    }
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                      </TableCell>
+                    )
+                  } else {
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </TableCell>
+                    );
+                  }
+                }
+                  // {Object.keys(selectedRowIds).length > 0
+                  //   return (
+                  //     <TableCell {...cell.getCellProps()}>
+                  //       {cell.render('Cell')}
+                  //     </TableCell>
+                  //   )
+                  // }
+                  // return (
+                  //   <TableCell {...cell.getCellProps()}>
+                  //     {cell.render('Cell')}
+                  //   </TableCell>
+                  // );
                 })}
               </TableRow>
             );
@@ -268,6 +272,8 @@ EnhancedTable.propTypes = {
   setData: PropTypes.func.isRequired,
   algoritmo: PropTypes.string.isRequired,
   algoritmoTipo: PropTypes.string.isRequired,
+  firstRender: PropTypes.bool.isRequired,
+  setFirstRender: PropTypes.func.isRequired,
   // setSelectedPatientsLocal: PropTypes.array.isRequired,
 };
 

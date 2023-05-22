@@ -29,6 +29,7 @@ export interface ResultadoEntrenarProps {
   respAnalisis: string;
   toggleModalVerMas: any;
   onClickCambiar: () => void;
+  predictMode: boolean;
 }
 
 const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
@@ -47,6 +48,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     respAnalisis,
     toggleModalVerMas,
     onClickCambiar,
+    predictMode,
   } = props;
   const navigate = useNavigate();
 
@@ -81,9 +83,9 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           <h5>Nombre del modelo generado:</h5>
           <h5>NA</h5>
         </section>
-        <section className="display-flexResultadosA">
+        {/* <section className="display-flexResultadosA">
           <h5>Despues de las iteraciones seleccionadas:</h5>
-        </section>
+        </section> */}
         <section className="display-flexResultadosA">
           <h5>{crossParsed}</h5>
         </section>
@@ -108,6 +110,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           </Button>
         </section>
       </div>
+      {!predictMode && 
       <section className="display-center">
         <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
           Guardar Modelo
@@ -119,6 +122,14 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           Cancelar
         </Button>
       </section>
+      } { predictMode &&
+
+        <section className="display-center">
+        <Button sx={styleButtonBiggerRed}>
+          Cancelar
+        </Button>
+      </section>
+      }
       <br />
     </div>
   );

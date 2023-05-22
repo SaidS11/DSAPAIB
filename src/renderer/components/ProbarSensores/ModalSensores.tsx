@@ -68,11 +68,11 @@ export default function ModalSensores(props: ModalProps) {
   const cargarPuertos = () => {
     window.Bridge.cargarPuertos();
   };
-  window.Bridge.cargarP((event: any, puertos: any) => {
-    const nombresSet = puertos;
-    console.log('reading', puertos);
+  window.Bridge.cargarP((event: any, ports: any) => {
+    const nombresSet = ports;
+    console.log('reading', ports);
     const select: any = [];
-    for (let i = 0; i < nombresSet.length; i++) {
+    for (let i = 0; i < nombresSet.length; i+=1) {
       // select.push(<MenuItem value={nombresSet[i].path}>{nombresSet[i].path}</MenuItem>)
       select.push(
         <MenuItem key={nombresSet[i].path} value={nombresSet[i].path}>

@@ -28,32 +28,12 @@ const ProbarSensoresContainer = () => {
   });
 
   const [dataXEmg1, setDataXEmg1] = useState<any>([...startingNumbers]);
-  const [dataYEmg1, setDataYEmg1] = useState<any>([...startingNumbers]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // setData((prev: any) => {
-      //   return {
-      //     x: prev.x,
-      //     y: [...prev.y.slice(1), Math.floor(Math.random() * count)]
-      //   };
-      // });
-      setDataXEmg1((prev: any) => {
-        return prev;
-      });
-      setDataYEmg1((prev: any) => {
-        return [...prev.slice(1), Math.floor(Math.random() * count)];
-      });
-    }, 300);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [isReady]);
-
-  const [dataXEmg2, setDataXEmg2] = useState([]);
+  const [dataYEmg1, setDataYEmg1] = useState<any>([]);
+  
+  const [dataXEmg2, setDataXEmg2] = useState<any>([...startingNumbers]);
   const [dataYEmg2, setDataYEmg2] = useState<any>([]);
 
-  const [dataXEmg3, setDataXEmg3] = useState([]);
+  const [dataXEmg3, setDataXEmg3] = useState<any>([...startingNumbers]);
   const [dataYEmg3, setDataYEmg3] = useState<any>([]);
 
   const [dataXEmg4, setDataXEmg4] = useState([]);
@@ -70,7 +50,7 @@ const ProbarSensoresContainer = () => {
   const toggleModal = () => {
     if (sensoresSelected !== 0 && portSelected !== '' && baudSelected !== 0) {
       setOpen(!open);
-      setIsReady(true);
+      // setIsReady(true);
       window.Bridge.loadPort(portSelected, baudSelected);
       // window.Bridge.sensoresNewTest()
     } else {
@@ -131,120 +111,6 @@ const ProbarSensoresContainer = () => {
     setIsReady(true);
     window.Bridge.sensoresNewTest();
   }
-  // window.Bridge.sensoNewTest((event: any, resp: any) => {
-  //   console.log("Flowing")
-
-  //   const data = resp
-  //   console.log("data", data)
-  //   bufferdatos = data;
-  //   const decode = decodeURIComponent(bufferdatos)
-  //   const separado = decode.split(',')
-
-  //   if(separado.length >= sensoresSelected) {
-  //     if (emg1Arr.length >= 3) {
-  //       emg1Arr.splice(0);
-  //       emg2Arr.splice(0);
-  //       emg3Arr.splice(0);
-  //     }
-  //     if (sensoresSelected >= 1) {
-  //       emg1Arr.push(separado[0]);
-  //       const innerXEmg1: any = [...Array(separado.length).keys()];
-  //       setDataXEmg1([]);
-  //       setDataYEmg1(innerXEmg1);
-  //     }
-  //     if (sensoresSelected >= 2) {
-  //       emg2Arr.push(separado[1]);
-  //       const innerXEmg2: any = [...Array(separado.length).keys()];
-  //       setDataXEmg1(emg2Arr);
-  //       setDataYEmg1(innerXEmg2);
-  //     }
-  //     if (sensoresSelected >= 3) {
-  //       emg3Arr.push(separado[2]);
-  //       const innerXEmg3: any = [...Array(separado.length).keys()];
-  //       setDataXEmg1(emg3Arr);
-  //       setDataYEmg1(innerXEmg3);
-  //     }
-  //     if (sensoresSelected >= 4) {
-  //       emg4Arr.push(separado[4]);
-  //       const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
-  //       setDataXEmg1(emg4Arr);
-  //       setDataYEmg1(innerXEmg4);
-  //     }
-  //   }
-  //   // if(separado.length>=5){
-  //   //     if(separado.length===6){
-  //   //         separado.pop()
-  //   //         if(separado.includes('')){
-  //   //         }
-  //   //         else {
-  //   //             console.log('SSSSSSSSSS',separado)
-  //   //             sum = 0;
-  //   //             giroscopioAverage = 0;
-  //   //             hr = 0;
-  //   //              contador+=1;
-  //   //              sum = sum + parseInt(separado[2]);
-  //   //              if (contador>=10){
-  //   //                // console.log('entre',sum)
-  //   //                 contador = 0;
-  //   //                 giroscopioAverage = sum / 10;
-  //   //                 volt = (giroscopioAverage*5)/1023;
-  //   //                 console.log("Giroscopio Average", giroscopioAverage);
-  //   //                 //hr = ((1024+2*giroscopioAverage)*1000) / (512-giroscopioAverage);
-  //   //                 hrOhms = ((5+2*volt)*10000) / (2.5-volt);
-  //   //                 // Conductancia = 1/hrOhms;
-  //   //                 console.log("GSR Ohms", hrOhms);
-  //   //                 console.log("Impedancia",Impedancia);
-  //   //                 console.log('Acelerometro:', parseFloat(separado[1]));
-  //   //                 giroscopioArr.push(hrOhms)
-  //   //                 acelerometroArr.push(separado[1])
-  //   //                 sum = 0;
-  //   //              }
-
-  //   //              contadorFrecuencia+=1;
-
-  //   //              if (contadorFrecuencia>=10){
-  //   //                 sumSpo2 = sumSpo2 + parseInt(separado[3]);
-  //   //                 //console.log('entre',sumSpo2)
-  //   //                 contadorFrecuencia = 0;
-  //   //                 DCIR = sumSpo2/10;
-  //   //                 ACIR = sumSpo2 - DCIR;
-  //   //                 sumSpo2 = 0;
-  //   //              }
-
-  //   //              contadorFrecuenciaRED+=1;
-
-  //   //              if (contadorFrecuenciaRED>=10){
-  //   //                 sumFrecuenciaRED = sumFrecuenciaRED + parseInt(separado[4]);
-  //   //                 //console.log('entre',sumFrecuenciaRED)
-  //   //                 contadorFrecuenciaRED = 0;
-  //   //                 DCRED = sumFrecuenciaRED/10;
-  //   //                 ACRED = sumFrecuenciaRED - DCIR;
-  //   //                 sumFrecuenciaRED = 0;
-  //   //                 Aoyagi = (ACRED/DCRED)/(ACIR/DCIR);
-  //   //                 frecuencia = 110 - (25*Aoyagi);
-  //   //                 console.log("frecuencia", frecuencia);
-  //   //                 frecuenciaArr.push(frecuencia)
-  //   //              }
-
-  //   //         }
-  //   //         const innerXGiroscopio: any = [...Array(giroscopioArr.length).keys()];
-  //   //         setDataYGiroscopio(giroscopioArr);
-  //   //         setDataXGiroscopio(innerXGiroscopio);
-
-  //   //         const innerXFrecuencia: any = [...Array(frecuenciaArr.length).keys()];
-  //   //         setDataYFrecuencia(frecuenciaArr);
-  //   //         setDataXFrecuencia(innerXFrecuencia);
-
-  //   //         const innerXAcelerometro: any = [...Array(acelerometroArr.length).keys()];
-  //   //         setDataYAcelerometro(acelerometroArr);
-  //   //         setDataXAcelerometro(innerXAcelerometro);
-  //   //     }
-  //   //     else {
-  //   //         //console.log('NNNNNNNNN',separado)
-  //   //     }
-  //   // }
-
-  // });
 
   const onClickStartNew = async () => {
     await startSensors();
@@ -254,139 +120,151 @@ const ProbarSensoresContainer = () => {
 
   async function loadSensores() {
     console.log('Getting message');
-    // setIsReady(true);
-    window.Bridge.sensores();
+    setIsReady(true);
+    window.electron.ipcRenderer.sensores();
   }
   // const [data, setData] = useState('');
   // let data = '';
   const [datosAux, setDatosAux] = useState<Array<string>>([]);
-  const testData: Array<string> = [...datosAux];
-  window.Bridge.senso((event: any, resp: any) => {
-    // console.log(resp);
-    // setData(resp);
-    // console.log("Flowing")
+  // const testData: Array<string> = [...datosAux];
+  const testData: Array<string> = [];
+  const testData2: Array<string> = [];
+  const testData3: Array<string> = [];
 
-    const data = resp;
-    // console.log("data", data)
-    bufferdatos = data;
+
+  // window.Bridge.senso((event: any, resp: any) => {
+  window.electron.ipcRenderer.senso((event: any, resp: any) => {
+  
+    console.log("reading");
+    const dataLocal = resp;
+    // console.log("dataLocal", dataLocal)
+    bufferdatos = dataLocal;
     const decode = decodeURIComponent(bufferdatos);
     const separado = decode.split(',');
     if (separado.length >= sensoresSelected) {
       testData.push(separado[0]);
-      console.log('Data', testData);
-      // if (emg1Arr.length >= 4) {
-      //   console.log("Cleaning")
-      //   // emg1Arr.splice(0);
-      //   // emg2Arr.splice(0);
-      //   // emg3Arr.splice(0);
-      // }
-      // console.log("leng", separado.length)
-      // if (sensoresSelected >= 1) {
-      //   // emg1Arr.push(separado[0]);
-      //   // const testArr: any = [];
-      //   // const testArr: any = [...dataXEmg1];
-      //   // testArr.push(separado[0]);
-      //   console.log("Emg arr", dataXEmg1);
-      //   const innerXEmg1: any = [...Array(dataXEmg1.length).keys()];
-      //   // console.log("Inner x", innerXEmg1);
-      //   setDataXEmg1(innerXEmg1);
-      //   setDataYEmg1([...dataXEmg1, separado[0]]);
-      // }
-      // if (sensoresSelected >= 2) {
-      //   emg2Arr.push(separado[1]);
-      //   // const testArr2: any = [...dataXEmg2];
-      //   // testArr2.push(separado[1]);
-      //   const innerXEmg2: any = [...Array(emg2Arr.length).keys()];
-      //   setDataXEmg2(innerXEmg2);
-      //   setDataYEmg2(emg2Arr);
-      // }
-      // if (sensoresSelected >= 3) {
-      //   emg3Arr.push(separado[2]);
-      //   // const testArr3: any = [...dataXEmg3];
-      //   // testArr3.push(separado[2]);
-      //   const innerXEmg3: any = [...Array(emg3Arr.length).keys()];
-      //   setDataXEmg3(innerXEmg3);
-      //   setDataYEmg3(emg3Arr);
-      // }
-      // if (sensoresSelected >= 4) {
-      //   emg4Arr.push(separado[3]);
-      //   const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
-      //   setDataXEmg4(innerXEmg4);
-      //   setDataYEmg4(emg4Arr);
-      // }
-    }
-    if (testData.length % 15 === 0) {
-      console.log('UPDATINGGGG');
-      // setDatosAux([...testData]);
-      setIsReady(true);
+      testData2.push(separado[1]);
+      testData3.push(separado[2]);
     }
   });
 
-  // const intervalFunction = setInterval(function(){
-  //   if (!isReady) {
-  //     console.log("Nothing to do")
-  //     return;
-  //   }
-  //   console.log("Updating interval", data);
-  //   bufferdatos = data;
-  //   const decode = decodeURIComponent(bufferdatos)
-  //   const separado = decode.split(',')
+  const [globalData, setGlobalData] = useState<any>([]);
+  const [globalData2, setGlobalData2] = useState<any>([]);
+  const [globalData3, setGlobalData3] = useState<any>([]);
+  // let intervalID: string | number | NodeJS.Timeout | undefined;
 
-  //   if(separado.length >= sensoresSelected) {
-  //     if (sensoresSelected >= 1) {
-  //       emg1Arr.push(separado[0]);
-  //       const innerXEmg1: any = [...Array(emg1Arr.length).keys()];
-  //       // console.log("Lenght", emg1Arr.length);
-  //       // console.log("Inner X", innerXEmg1);
-  //       setDataYEmg1(emg1Arr);
-  //       setDataXEmg1(innerXEmg1);
-  //     }
-  //     if (sensoresSelected >= 2) {
-  //       emg2Arr.push(separado[1]);
-  //       const innerXEmg2: any = [...Array(emg2Arr.length).keys()];
-  //       setDataYEmg2(emg2Arr);
-  //       setDataXEmg2(innerXEmg2);
-  //     }
-  //     if (sensoresSelected >= 3) {
-  //       emg3Arr.push(separado[2]);
-  //       const innerXEmg3: any = [...Array(emg3Arr.length).keys()];
-  //       setDataYEmg3(emg3Arr);
-  //       setDataXEmg3(innerXEmg3);
-  //     }
-  //     if (sensoresSelected >= 4) {
-  //       emg4Arr.push(separado[4]);
-  //       const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
-  //       setDataYEmg4(emg4Arr);
-  //       setDataXEmg4(innerXEmg4);
-  //     }
-  //   }
-  // }, 400)
+  function intervalFunction (){
+    // console.log("interval");
+    setGlobalData([...globalData, ...testData]);
+    setGlobalData2([...globalData2, ...testData2]);
+    setGlobalData3([...globalData3, ...testData3]);
 
+    if (sensoresSelected >= 1) {
+      // setDataYEmg1((prev: any) => {
+      //   return [...prev.slice(1), ...newA];
+      // });
+      setDataYEmg1(testData.slice(-dataXEmg1.length));
+      // setDataXEmg1(innerXEmg1);
+      // setDataXEmg1((prev: any) => {
+      //   return prev;
+      // });
+    }
+    if (sensoresSelected >= 2) {
+      // setDataYEmg2((prev: any) => {
+      //   return [...prev.slice(1), ...testData2];
+      // });
+      setDataYEmg2(testData2.slice(-dataXEmg2.length))
+      // setDataXEmg1(innerXEmg1);
+      // setDataXEmg2((prev: any) => {
+      //   return prev;
+      // });
+      // emg2Arr.push(separado[1]);
+      // const innerXEmg2: any = [...Array(emg2Arr.length).keys()];
+      // setDataYEmg2(emg2Arr);
+      // setDataXEmg2(innerXEmg2);
+    }
+    if (sensoresSelected >= 3) {
+      // setDataYEmg3((prev: any) => {
+      //   return [...prev.slice(1), ...testData3];
+      // });
+      setDataYEmg3(testData3.slice(-dataXEmg3.length))
+
+      // setDataXEmg1(innerXEmg1);
+      // setDataXEmg3((prev: any) => {
+      //   return prev;
+      // });
+      // emg3Arr.push(separado[2]);
+      // const innerXEmg3: any = [...Array(emg3Arr.length).keys()];
+      // setDataYEmg3(emg3Arr);
+      // setDataXEmg3(innerXEmg3);
+    }
+    if (sensoresSelected >= 4) {
+      // emg4Arr.push(separado[4]);
+      // const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
+      // setDataYEmg4(emg4Arr);
+      // setDataXEmg4(innerXEmg4);
+    }
+  // }
+  }
+  const auxFunc = (intervalToClean: any) => {
+    console.log("About to clean");
+    clearInterval(intervalToClean);
+  }
+  const cleanUpTimed = (intervalToClean: any) => {
+    setTimeout(() => auxFunc(intervalToClean), 5000);
+  }
+  let timeoutID: string | number | NodeJS.Timeout | undefined;
+  function iniciarIntervalo() {
+    timeoutID = setTimeout(function() {
+      intervalFunction();
+      iniciarIntervalo(); // Vuelve a iniciar el intervalo
+    }, 100); // Elige el tiempo deseado (en milisegundos) para el intervalo
+  }
+  function detenerIntervalo() {
+    clearTimeout(timeoutID);
+  }
+  useEffect(() => {
+    let intervalID;
+    if(isReady) {
+      console.log("Starting");
+      // intervalID = setInterval(intervalFunction, 100);
+      iniciarIntervalo();
+    } else {
+      console.log("unable to start");
+      detenerIntervalo();
+      // clearInterval(intervalID);
+    }
+  }, [isReady])
   async function stopSensores() {
     console.log('Getting message stop');
+    // detenerIntervalo();
     setIsReady(false);
-    console.log('FInal', datosAux);
-    // clearInterval(intervalFunction);
-    window.Bridge.sensoresStop();
-  }
-  window.Bridge.sensoStop((event: any, resp: any) => {
+    console.log('FInal', globalData);
+    console.log('FInal2', globalData2);
+    console.log('FInal3', globalData3);
     // appDispatch(setIsLoading(true));
-    // console.log(resp);
-    // console.log('This was collected', arr);
-    // const innerX: any = [...Array(arr.length).keys()];
-    // console.log('Inner', innerX);
-    // setDataYGiroscopio(arr);
-    // setDataXGiroscopio(innerX);
-    // appDispatch(setIsLoading(false));
-  });
+
+    // clearInterval(intervalFunction);
+    const resp = await window.electron.ipcRenderer.sensoStop();
+  }
+  // window.electron.ipcRenderer.sensoStop((event: any, resp: any) => {
+  //   // appDispatch(setIsLoading(true));
+  //   // console.log(resp);
+  //   // console.log('This was collected', arr);
+  //   // const innerX: any = [...Array(arr.length).keys()];
+  //   // console.log('Inner', innerX);
+  //   // setDataYGiroscopio(arr);
+  //   // setDataXGiroscopio(innerX);
+  //   // appDispatch(setIsLoading(false));
+  //   // appDispatch(setIsLoading(false));
+  // });
 
   const onClickStart = async () => {
-    await loadSensores();
+    loadSensores();
   };
   const onClickStop = async () => {
-    await stopSensores();
+    stopSensores();
   };
-
   return (
     <div>
       <ProbarSensores
@@ -409,7 +287,7 @@ const ProbarSensoresContainer = () => {
         onClickStopNew={onClickStopNew}
         onClickStartNew={onClickStartNew}
       />
-      {/* {open && (
+      {open && (
         <ModalSensores
           toggleModal={toggleModal}
           open={open}
@@ -417,7 +295,7 @@ const ProbarSensoresContainer = () => {
           setPortSelected={setPortSelected}
           setBaudSelected={setBaudSelected}
         />
-      )} */}
+      )}
     </div>
   );
 };

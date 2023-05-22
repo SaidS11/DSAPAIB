@@ -91,17 +91,17 @@ export interface MongoSignalLayout {
   y: number;
 }
 export interface MongoSignals {
-  signal1?: Array<Object>;
-  signal2?: Array<Object>;
-  signal3?: Array<Object>;
-  signal4?: Array<Object>;
-  signalGs4?: Array<Object>;
+  signal1?: Array<MongoSignalLayout>;
+  signal2?: Array<MongoSignalLayout>;
+  signal3?: Array<MongoSignalLayout>;
+  signal4?: Array<MongoSignalLayout>;
+  signalGs4?: Array<MongoSignalLayout>;
 }
 export interface DataSignalsMongo {
   etiqueta: string;
   name: string;
   protocol: string;
-  signals: object;
+  signals: any;
 }
 
 export interface MongoInsertObjectInterface {

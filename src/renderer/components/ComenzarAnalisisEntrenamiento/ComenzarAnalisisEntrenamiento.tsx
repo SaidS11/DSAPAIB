@@ -186,7 +186,7 @@ const ComenzarAnalisisEntrenamiento = (
           </section>
           }
           <section className="display-flexAgregar">
-            <h3>Numero de Iteraciones: </h3>
+            <h3>Numero de K(Folds): </h3>
             <input type="number" name="iteraciones" required min="1" max="500" />
           </section>
           <section className="display-flexAgregar">

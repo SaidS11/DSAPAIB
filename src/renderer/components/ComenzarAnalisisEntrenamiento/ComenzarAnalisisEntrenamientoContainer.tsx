@@ -169,44 +169,20 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
   }, [protocolo]);
   console.log('lennn', selectedPatients.length);
   console.log('LocalState', selectedPatients);
-  // Testinggg
-  async function startAnalysis(
-    tipoArg: string,
-    params: string,
-    nombre: string,
-    iteraciones: string,
-    reducedPercentage: string,
-    datos: string
-  ) {
-    // appDispatch(setIsLoading(true));
-    console.log('Getting message');
-    window.electron.ipcRenderer.analisisPython(
-      'Train',
-      tipo,
-      params,
-      nombre,
-      iteraciones,
-      reducedPercentage,
-      datos
-    );
-  }
-  window.electron.ipcRenderer.analisisP((event: any, resp: any) => {
-    console.log('Esta es', resp);
-    appDispatch(setPythonResponse(resp));
-    appDispatch(setIsLoading(false));
-
-    // navigate('/resultadoEntrenar');
-  });
 
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = document.querySelector('form') as
+      | HTMLFormElement
+      | undefined;
+    const dataF = Object.fromEntries(new FormData(form).entries());
+    const numIteraciones = parseInt(dataF.iteraciones.toString())
     if (selectedPatients.length <= 0) {
       alert('Seleccione al menos un paciente');
+    } else if (selectedPatients.length > numIteraciones) {
+      alert('Los K folds no pueden ser menores al numero de pacientes seleccionados');
     } else {
-      const form = document.querySelector('form') as
-        | HTMLFormElement
-        | undefined;
-      const dataF = Object.fromEntries(new FormData(form).entries());
+      
       console.log('la data', dataF);
       appDispatch(setPredictMode(false));
       appDispatch(setAnalisisParams(dataF));

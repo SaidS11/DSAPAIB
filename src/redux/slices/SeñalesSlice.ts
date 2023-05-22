@@ -8,6 +8,7 @@ export interface SignalObj {
   y: number;
 }
 export interface ISeñales {
+  sensoresPrueba: number;
   signalsXGraph: Array<any>;
   signalsYGraph: Array<any>;
   ventanasArrayEmg1: Array<any>;
@@ -35,6 +36,7 @@ export interface ISeñales {
 }
 
 const initialState: ISeñales = {
+  sensoresPrueba: 0,
   signalsXGraph: [],
   signalsYGraph: [],
   ventanasArrayEmg1: [],
@@ -70,6 +72,13 @@ export const SeñalesSlice = createSlice({
   name: 'señales',
   initialState,
   reducers: {
+    
+    setSensoresPrueba: (
+      state,
+      action: PayloadAction<ISeñales['sensoresPrueba']>
+    ) => {
+      state.sensoresPrueba = action.payload;
+    },
     setSignalsXGraph: (
       state,
       action: PayloadAction<ISeñales['signalsXGraph']>
@@ -223,6 +232,7 @@ export const SeñalesSlice = createSlice({
 });
 
 export const {
+  setSensoresPrueba,
   setSignalsXGraph,
   setSignalsYGraph,
   setVentanasArrayEmg1,

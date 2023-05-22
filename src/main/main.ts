@@ -324,12 +324,6 @@ async function selectPacientes() {
   return query.rows;
 }
 
-// ipcMain.on('selectPacientes', async (event) => {
-//   const resp = await selectPacientes();
-//   console.log(resp);
-//   mainWindow?.webContents.send('selectPs', resp);
-// });
-
 ipcMain.handle('selectPacientes', selectPacientes);
 
 async function insertPaciente(
@@ -989,6 +983,15 @@ async function sensores() {
   return hr;
 }
 
+
+
+// async function selectPacientes() {
+//   const query = await pool.query(' select * from paciente  ');
+//   console.log(query.rows);
+//   return query.rows;
+// }
+
+// ipcMain.handle('selectPacientes', selectPacientes);
 ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
@@ -1013,15 +1016,19 @@ async function sensoresStop() {
   if (serialPort.isOpen) {
     serialPort.close();
     parser.pause();
+    // parser.end();
+    // parser._readableState.length = 0
   }
   // parser.write('\x03')
+  return "Closed";
 }
+ipcMain.handle('sensoresStop', sensoresStop);
 
-ipcMain.on('sensoresStop', async (event) => {
-  const resp = await sensoresStop();
-  console.log(resp);
-  mainWindow?.webContents.send('sensoStop', resp);
-});
+// ipcMain.handle('sensoresStop', async (event) => {
+//   const resp = await sensoresStop();
+//   console.log(resp);
+//   mainWindow?.webContents.send('sensoStop', resp);
+// });
 
 // async function puerto(){
 //   const puertos = await SerialPort.list()

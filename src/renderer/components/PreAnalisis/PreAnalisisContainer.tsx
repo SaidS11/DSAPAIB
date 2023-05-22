@@ -48,14 +48,17 @@ const PreAnalisisContainer = () => {
         strData
       );
     } else {
-      const { iteraciones, reducedPercentage } = paramsArg as any;
+      const { iteraciones, porcentaje } = paramsArg as any;
+      // const reducedPercentage = parseInt(porcentaje) / 100;
+      const strPercentage = porcentaje.toString();
+      console.log("THis is STR", strPercentage);
       window.electron.ipcRenderer.analisisPython(
         'Train',
         tipo,
         params,
         nombre,
         iteraciones,
-        reducedPercentage,
+        strPercentage,
         strData
       );
     }
