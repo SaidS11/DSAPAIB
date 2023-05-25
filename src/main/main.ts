@@ -59,7 +59,7 @@ app2.use(express.json());
 app2.use(cors());
 
 // Configurar el middleware para servir archivos estáticos
-app2.use(express.static('C:/Users/play_/OneDrive/Escritorio/electron-app'));
+app2.use(express.static(path.join(__dirname, 'public')));
 
 /// ////////////////
 async function insertarDatosAnalisis(

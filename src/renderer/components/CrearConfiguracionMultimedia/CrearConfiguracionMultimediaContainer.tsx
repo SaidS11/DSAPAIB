@@ -108,7 +108,7 @@ const CrearConfiguracionMultimediaContainer = () => {
           method: 'POST',
           body: JSON.stringify(datosImagen),
           headers: {'Content-Type': 'application/json'}
-        }); */ 
+        }); */
         // window.electron.ipcRenderer.copiarArchivo(fileImagenDB, destino);
 
 

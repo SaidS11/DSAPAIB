@@ -41,7 +41,7 @@ const ColocacionMuestraContainer = () => {
     navigate('/escogerConfiguracion');
   };
   // const url = `${multimediaObj[0].link_imagen}`;
-  const url = 'http://localhost:8000/11.png';
+  const url = 'http://localhost:8000/text.png';
   console.log(url);
 
   return (
