@@ -126,7 +126,7 @@
     "electron-log": "^4.4.8",
     "electron-updater": "^5.2.3",
     "mongodb": "^5.0.1",
-    "pg": "^8.8.0",
+    "pg": "^8.11.0",
     "plotly.js": "^2.17.0",
     "python-shell": "^3.0.1",
     "react": "^18.2.0",

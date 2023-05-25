@@ -16,7 +16,7 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { Worker } from 'worker_threads';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { Pool } from 'pg';
+import { Pool, Client } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
@@ -30,19 +30,599 @@ import express, { Express, Request, Response } from 'express';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+const credenciales2 = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'modular',
+  password: '219748227',
+};
+// /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
+// /////////////////POSTGRESQL///////////////////////
+// /////////////////INSERT///////////////////////
 const app2: Express = express();
 
-// Configurar el middleware para servir archivos estáticos
-app2.use(express.static('C:/Users/play_/OneDrive/Escritorio/electron-app'));
-
-// ... otras rutas y middleware ...
-
-// Iniciar el servidor
 app2.listen(8000, () => {
   console.log('El servidor está escuchando en el puerto 8000');
 });
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+app2.use(express.json());
+
+// Configurar el middleware para servir archivos estáticos
+app2.use(express.static('C:/Users/play_/OneDrive/Escritorio/electron-app'));
+
+/// ////////////////
+async function insertarDatosAnalisis(
+  nombre: string,
+  descripcion: string,
+  resultado: string,
+  protocolo_nombre: string,
+  modelo: string
+): Promise<boolean> {
+  try {
+    const client = new Client(credenciales2);
+    await client.connect();
+
+    const query =
+      'INSERT INTO analisis (nombre, descripcion, resultado, protocolo_nombre, modelo) VALUES ($1, $2, $3, $4, $5)';
+    const values = [nombre, descripcion, resultado, protocolo_nombre, modelo];
+    await client.query(query, values);
+
+    await client.end();
+
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarAnalisis', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { nombre, descripcion, resultado, protocolo_nombre, modelo } =
+      req.body;
+    const result = await insertarDatosAnalisis(
+      nombre,
+      descripcion,
+      resultado,
+      protocolo_nombre,
+      modelo
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+/// //////////
+async function insertarDatosPaciente(
+  usuario: string,
+  email: string,
+  telefono: string,
+  fechaNacimiento: string,
+  nombre: string,
+  apellidoP: string,
+  apellidoM: string,
+  sexo: string,
+  peso: string,
+  estatura: string
+): Promise<boolean> {
+  try {
+    const client = new Client(credenciales2);
+    await client.connect();
+
+    const query =
+      'INSERT INTO paciente (usuario, email, telefono, fecha_nacimiento, nombre, apellido_paterno, apellido_materno, sexo, peso, estatura) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+    const values = [
+      usuario,
+      email,
+      telefono,
+      fechaNacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+      sexo,
+      peso,
+      estatura,
+    ];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarPaciente', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const {
+      usuario,
+      email,
+      telefono,
+      fechaNacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+      sexo,
+      peso,
+      estatura,
+    } = req.body;
+    const result = await insertarDatosPaciente(
+      usuario,
+      email,
+      telefono,
+      fechaNacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+      sexo,
+      peso,
+      estatura
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+/// ////////////////
+async function insertarDatosImplementacion(
+  nombre: string,
+  descripcion: string,
+  algoritmo_ia: string,
+  parametros: string,
+  precision: string,
+  desviacion_estandar: string,
+  entrenado: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO implementacion (nombre, descripcion, algoritmo_ia, parametros, precision, desviacion_estandar, entrenado) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+    const values = [
+      nombre,
+      descripcion,
+      algoritmo_ia,
+      parametros,
+      precision,
+      desviacion_estandar,
+      entrenado,
+    ];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarImplementacion', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const {
+      nombre,
+      descripcion,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      algoritmo_ia,
+      parametros,
+      precision,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      desviacion_estandar,
+      entrenado,
+    } = req.body;
+    const result = await insertarDatosImplementacion(
+      nombre,
+      descripcion,
+      algoritmo_ia,
+      parametros,
+      precision,
+      desviacion_estandar,
+      entrenado
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// //////////////////
+async function insertarDatosModelo(
+  nombre: string,
+  algoritmo_ia: string,
+  protocolo: string,
+  entrenado: string,
+  resultados: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO modelo (nombre, algoritmo_ia, protocolo, entrenado, resultados) VALUES ($1, $2, $3, $4, $5)';
+    const values = [nombre, algoritmo_ia, protocolo, entrenado, resultados];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarModelo', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { nombre, algoritmo_ia, protocolo, entrenado, resultados } = req.body;
+    const result = await insertarDatosModelo(
+      nombre,
+      algoritmo_ia,
+      protocolo,
+      entrenado,
+      resultados
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// ////////////////
+async function insertarDatosRegistro(
+  datos_crudos: string,
+  fecha: string,
+  paciente: string,
+  protocolo_adquisicion: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO registro (datos_crudos, fecha, paciente, protocolo_adquisicion) VALUES ($1, $2, $3, $4)';
+    const values = [datos_crudos, fecha, paciente, protocolo_adquisicion];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarRegistro', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { datos_crudos, fecha, paciente, protocolo_adquisicion } = req.body;
+    const result = await insertarDatosRegistro(
+      datos_crudos,
+      fecha,
+      paciente,
+      protocolo_adquisicion
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// //////////////////
+async function insertarDatosConfiguracion(
+  nombre: string,
+  giroscopio: string,
+  frecuencia_cardiaca: string,
+  rimto_cardiaco: string,
+  emgs: string,
+  acelerometro: string,
+  subido: string,
+  descripcion: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO configuracion (nombre, giroscopio, frecuencia_cardiaca, rimto_cardiaco, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+    const values = [
+      nombre,
+      giroscopio,
+      frecuencia_cardiaca,
+      rimto_cardiaco,
+      emgs,
+      acelerometro,
+      subido,
+      descripcion,
+    ];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const {
+      nombre,
+      giroscopio,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      frecuencia_cardiaca,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      rimto_cardiaco,
+      emgs,
+      acelerometro,
+      subido,
+      descripcion,
+    } = req.body;
+    const result = await insertarDatosConfiguracion(
+      nombre,
+      giroscopio,
+      frecuencia_cardiaca,
+      rimto_cardiaco,
+      emgs,
+      acelerometro,
+      subido,
+      descripcion
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// //////////////////////
+async function insertarDatosMultimedia(
+  nombre: string,
+  link_video: string,
+  link_imagen: string,
+  subido: string,
+  configuracion: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO multimedia (nombre, link_video, link_imagen, subido, configuracion) VALUES ($1, $2, $3, $4, $5)';
+    const values = [nombre, link_video, link_imagen, subido, configuracion];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarMultimedia', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { nombre, link_video, link_imagen, subido, configuracion } = req.body;
+    const result = await insertarDatosMultimedia(
+      nombre,
+      link_video,
+      link_imagen,
+      subido,
+      configuracion
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// /////////////////////////////
+async function insertarDatosProtocoloAdquisicion(
+  nombre: string,
+  doctor: string,
+  configuracion: string,
+  descripcion: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO protocolo_adquisicion (nombre, doctor, configuracion, descripcion) VALUES ($1, $2, $3, $4)';
+    const values = [nombre, doctor, configuracion, descripcion];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post(
+  '/insertarProtocoloAdquisicion',
+  async (req: Request, res: Response) => {
+    try {
+      // Obtener los datos enviados en la solicitud
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { nombre, doctor, configuracion, descripcion } = req.body;
+      const result = await insertarDatosProtocoloAdquisicion(
+        nombre,
+        doctor,
+        configuracion,
+        descripcion
+      );
+      if (result) {
+        res.status(200).json({ message: 'Datos insertados correctamente' });
+      } else {
+        res.status(500).json({ error: 'Error al insertar datos' });
+      }
+    } catch (error) {
+      console.error('Error al insertar datos', error);
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  }
+);
+// ///////////////// UPDATES ///////////////////////
+// //////////////////
+async function actualizarImplementacion(
+  precision: string,
+  desviacion: string,
+  entrenado: string,
+  nombre: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    console.log(precision, desviacion, entrenado, nombre);
+    const query =
+      'UPDATE implementacion SET precision = $1, desviacion_estandar = $2, entrenado = $3 WHERE nombre = $4';
+    const values = [precision, desviacion, entrenado, nombre];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.patch('/actualizarImplementacion', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { precision, desviacion, entrenado, nombre } = req.body;
+    const result = await actualizarImplementacion(
+      precision,
+      desviacion,
+      entrenado,
+      nombre
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// /////////////////////
+async function actualizarModelo(
+  resultados: string,
+  entrenado: string,
+  nombre: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      ' UPDATE modelo SET resultados = $1, entrenado = $2 WHERE nombre = $3';
+    const values = [resultados, entrenado, nombre];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.patch('/actualizarModelo', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { resultados, entrenado, nombre } = req.body;
+    const result = await actualizarModelo(resultados, entrenado, nombre);
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// /////////////////MONGO///////////////////////
+const { MongoClient } = require('mongodb');
+
+async function insertarDatosMongo(
+  nombre: string,
+  doctor: string,
+  configuracion: string,
+  descripcion: string
+): Promise<boolean> {
+  const client = new Client(credenciales2);
+  await client.connect();
+
+  try {
+    const query =
+      'INSERT INTO protocolo_adquisicion (nombre, doctor, configuracion, descripcion) VALUES ($1, $2, $3, $4)';
+    const values = [nombre, doctor, configuracion, descripcion];
+    await client.query(query, values);
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post(
+  '/insertarProtocoloAdquisicion',
+  async (req: Request, res: Response) => {
+    try {
+      // Obtener los datos enviados en la solicitud
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { nombre, doctor, configuracion, descripcion } = req.body;
+      const result = await insertarDatosProtocoloAdquisicion(
+        nombre,
+        doctor,
+        configuracion,
+        descripcion
+      );
+      if (result) {
+        res.status(200).json({ message: 'Datos insertados correctamente' });
+      } else {
+        res.status(500).json({ error: 'Error al insertar datos' });
+      }
+    } catch (error) {
+      console.error('Error al insertar datos', error);
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  }
+);
+// /////////////////////////////////// Fin Cagadero Pona///////////////////////////////////
 
 class AppUpdater {
   constructor() {
@@ -169,6 +749,7 @@ app
       .catch((err) => console.log('An error occurred: ', err));
   })
   .catch(console.log);
+
 const credenciales = {
   user: 'postgres',
   host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
