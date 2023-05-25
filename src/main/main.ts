@@ -27,15 +27,25 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-
-const credenciales2 = {
+// --------------------Conexion PostgreAWS--------------
+const credenciales = {
   user: 'postgres',
-  host: 'localhost',
-  database: 'modular',
+  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
+  database: 'ModularDB',
   password: '219748227',
 };
+
+// --------------Conexion PostgreLocal--------------
+// The file of backup is already extract it
+/* const credenciales = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Modular',
+  password: '219748227',
+}; */
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
@@ -46,6 +56,7 @@ app2.listen(8000, () => {
 });
 
 app2.use(express.json());
+app2.use(cors());
 
 // Configurar el middleware para servir archivos estáticos
 app2.use(express.static('C:/Users/play_/OneDrive/Escritorio/electron-app'));
@@ -59,7 +70,7 @@ async function insertarDatosAnalisis(
   modelo: string
 ): Promise<boolean> {
   try {
-    const client = new Client(credenciales2);
+    const client = new Client(credenciales);
     await client.connect();
 
     const query =
@@ -113,7 +124,7 @@ async function insertarDatosPaciente(
   estatura: string
 ): Promise<boolean> {
   try {
-    const client = new Client(credenciales2);
+    const client = new Client(credenciales);
     await client.connect();
 
     const query =
@@ -185,7 +196,7 @@ async function insertarDatosImplementacion(
   desviacion_estandar: string,
   entrenado: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -250,7 +261,7 @@ async function insertarDatosModelo(
   entrenado: string,
   resultados: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -294,7 +305,7 @@ async function insertarDatosRegistro(
   paciente: string,
   protocolo_adquisicion: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -341,7 +352,7 @@ async function insertarDatosConfiguracion(
   subido: string,
   descripcion: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -409,7 +420,7 @@ async function insertarDatosMultimedia(
   subido: string,
   configuracion: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -453,7 +464,7 @@ async function insertarDatosProtocoloAdquisicion(
   configuracion: string,
   descripcion: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -500,7 +511,7 @@ async function actualizarImplementacion(
   entrenado: string,
   nombre: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -543,7 +554,7 @@ async function actualizarModelo(
   entrenado: string,
   nombre: string
 ): Promise<boolean> {
-  const client = new Client(credenciales2);
+  const client = new Client(credenciales);
   await client.connect();
 
   try {
@@ -576,52 +587,196 @@ app2.patch('/actualizarModelo', async (req: Request, res: Response) => {
 });
 // /////////////////MONGO///////////////////////
 const { MongoClient } = require('mongodb');
+// --------------Conexion MongoAtlas--------------
 
-async function insertarDatosMongo(
-  nombre: string,
-  doctor: string,
-  configuracion: string,
-  descripcion: string
-): Promise<boolean> {
-  const client = new Client(credenciales2);
-  await client.connect();
+const uri =
+  'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
+// --------------ConexionMongoLocal--------------
+
+// To run MongoDB in local mode have to be installed mongo server from: https://www.mongodb.com/try/download/community
+// After installation need to be created the foler in path: C:\data and  C:\data\db
+// Final step is run the server located in: C:\Program Files\MongoDB\Server\6.0\bin\mongod.exe
+
+/* const uri = 'mongodb://0.0.0.0:27017/';
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}); */
+
+async function conexionPrincipalMongo() {
   try {
-    const query =
-      'INSERT INTO protocolo_adquisicion (nombre, doctor, configuracion, descripcion) VALUES ($1, $2, $3, $4)';
-    const values = [nombre, doctor, configuracion, descripcion];
-    await client.query(query, values);
+    await client.connect();
     return true;
   } catch (error) {
-    console.error('Error al insertar datos', error);
     return false;
+  } finally {
+    await client.close();
   }
 }
 
-app2.post(
-  '/insertarProtocoloAdquisicion',
-  async (req: Request, res: Response) => {
-    try {
-      // Obtener los datos enviados en la solicitud
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { nombre, doctor, configuracion, descripcion } = req.body;
+app2.get('/conexionMongo', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    /* const { nombre, doctor, configuracion, descripcion } = req.body;
       const result = await insertarDatosProtocoloAdquisicion(
         nombre,
         doctor,
         configuracion,
         descripcion
-      );
-      if (result) {
-        res.status(200).json({ message: 'Datos insertados correctamente' });
-      } else {
-        res.status(500).json({ error: 'Error al insertar datos' });
-      }
-    } catch (error) {
-      console.error('Error al insertar datos', error);
-      res.status(500).json({ error: 'Error al insertar datos' });
+      ); */
+    const result = await conexionPrincipalMongo();
+    if (result) {
+      res.status(200).json({ message: 'Conexion Aceptada' });
+    } else {
+      res.status(500).json({ error: 'Conexion Rechazada' });
     }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
   }
-);
+});
+// ////////////////////////////////////////
+async function insertarElementoMongo2(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .insertOne(queryJSON);
+    console.log(
+      `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
+    );
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+app2.post('/insertarElementoMongo', async (req: Request, res: Response) => {
+  try {
+    const json = req.body;
+    const jsonstring = JSON.stringify(json);
+    console.log(jsonstring);
+    const result = await insertarElementoMongo2(jsonstring);
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados' });
+    } else {
+      res.status(500).json({ error: 'Error Insertando datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// ///////////////////////
+async function buscarElementoMongo2(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find(queryJSON).toArray();
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+app2.get('/buscarElementoMongo', async (req: Request, res: Response) => {
+  try {
+    const json = req.body;
+    const jsonstring = JSON.stringify(json);
+    console.log(jsonstring);
+    const result = await buscarElementoMongo2(jsonstring);
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Insertando datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// ///////////////////
+async function buscarTodoMongo2() {
+  try {
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.find({}).toArray();
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+app2.get('/buscarTodoMongo', async (req: Request, res: Response) => {
+  try {
+    const result = await buscarTodoMongo2();
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datos' });
+  }
+});
+// ///////////////////////
+
+async function borrarElementoMongo2(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const collection = client.db('Modular').collection('Señales');
+    const result = await collection.deleteOne(queryJSON);
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.delete('/borrarElementoMongo', async (req: Request, res: Response) => {
+  try {
+    const json = req.body;
+    const jsonstring = JSON.stringify(json);
+    console.log(jsonstring);
+    const result = await borrarElementoMongo2(jsonstring);
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Insertando datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
+// /////////////////////PARTE DE ARCHIVOS///////////////////////
+app2.post('/moverArchivos', async (req: Request, res: Response) => {
+  try {
+    const { ruta } = req.body;
+    const destino =
+      'C:/Users/play_/OneDrive/Escritorio/electron-app/src/main/public/text.mp4';
+    console.log(ruta);
+    await fs.copyFile(ruta, destino, (err) => {
+      if (err) {
+        res.send('Error al copiar el archivo:');
+      } else {
+        res.send('Archivo copiado exitosamente.');
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
 // /////////////////////////////////// Fin Cagadero Pona///////////////////////////////////
 
 class AppUpdater {
@@ -750,32 +905,7 @@ app
   })
   .catch(console.log);
 
-const credenciales = {
-  user: 'postgres',
-  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
-  database: 'ModularDB',
-  password: '219748227',
-};
-
-const uri =
-  'mongodb+srv://ByPona:219748227@modulardbmongo.3hvrzpy.mongodb.net/test';
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
 const pool = new Pool(credenciales);
-
-async function conexionPrincipalMongo() {
-  try {
-    await client.connect();
-    console.log('Conexión a MongoDB Atlas exitosa');
-  } catch (error) {
-    console.log('Error al conectar', error);
-  } finally {
-    await client.close();
-  }
-}
 
 async function copiarArchivo(file: string, destino: string) {
   await fs.copyFile(file, destino, (err) => {
@@ -792,81 +922,6 @@ ipcMain.on('copiarArchivo', async (event, file: string, destino: string) => {
   console.log(resp);
   mainWindow?.webContents.send('copiarAr', resp);
 });
-
-async function insertarElementoMongo(query: string) {
-  try {
-    const queryJSON = JSON.parse(query);
-    await client.connect();
-    const result = await client
-      .db('Modular')
-      .collection('Señales')
-      .insertOne(queryJSON);
-    console.log(
-      `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
-    );
-    return result;
-  } catch (error) {
-    console.log('Ha ocurrido un error', error);
-  } finally {
-    await client.close();
-  }
-}
-
-ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
-  const resp = await insertarElementoMongo(archivo);
-  console.log(resp);
-  mainWindow?.webContents.send('insertarElementoM', resp);
-});
-
-async function buscarElementoMongo(query: string) {
-  console.log('Buscandop');
-
-  try {
-    const queryJSON = JSON.parse(query);
-    await client.connect();
-    const collection = client.db('Modular').collection('Señales');
-    const result = await collection.find(queryJSON).toArray();
-    return result;
-  } catch (error) {
-    console.log('Ha ocurrido un error', error);
-  } finally {
-    await client.close();
-  }
-}
-
-ipcMain.handle('buscarElementoMongo', async (event, archivo: string) =>
-  buscarElementoMongo(archivo)
-);
-
-async function seleccionarTodoMongo() {
-  try {
-    await client.connect();
-    const collection = client.db('Modular').collection('Señales');
-    const result = await collection.find({}).toArray();
-    return result;
-  } catch (error) {
-    console.log('Ha ocurrido un error', error);
-  } finally {
-    await client.close();
-  }
-}
-
-async function borrarElementoMongo(query: string) {
-  try {
-    // const query = { name: 'Ernesto Peña' };
-    const result = await client
-      .db('Modular')
-      .collection('Señales')
-      .deleteOne(query);
-    console.log(`${result.deletedCount} documents deleted`);
-    console.log(result);
-    mainWindow?.webContents.send('borrarElementoM', result);
-  } catch (error) {
-    console.log('Ha ocurrido un error', error);
-  } finally {
-    await client.close();
-  }
-}
 
 async function iniciarSesion(user: string, pass: string) {
   const query = await pool.query(
@@ -886,18 +941,6 @@ ipcMain.on('loggearDoctor', async (event, user: string, pass: string) => {
   const resp = await iniciarSesion(user, pass);
   console.log(resp);
   mainWindow?.webContents.send('loggearD', resp);
-});
-
-ipcMain.on('seleccionarTodoMongo', async () => {
-  const resp = await seleccionarTodoMongo();
-  console.log(resp);
-  mainWindow?.webContents.send('seleccionarTodoM', resp);
-});
-
-ipcMain.on('borrarElementoMongo', async (event, archivo: string) => {
-  const resp = await borrarElementoMongo(archivo);
-  console.log(resp);
-  mainWindow?.webContents.send('borrarElementoM', resp);
 });
 
 async function selectPacienteF(

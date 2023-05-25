@@ -25,9 +25,7 @@ const CrearConfiguracionMultimediaContainer = () => {
   const primerConfig = useCustomSelector((state) => state.config.configPrimerPaso);
   console.log(primerConfig);
   const appDispatch = useCustomDispatch();
-  let fileImagenDB = '';
-  let fileVideoDB = '';
-  let fileName = '';
+  const fileName = '';
   let fileNameVideo = '';
 
   const onClickBack = () => {
@@ -98,21 +96,41 @@ const CrearConfiguracionMultimediaContainer = () => {
         }); */
         const {files} = imgObj
         const file = files![0]
-        console.log(file.path)
-        fileName = file.name
-        fileImagenDB = file.path
-        console.log(fileImagenDB)
-        const destino = `.\\src\\main\\public\\${fileName}`
+        const fileNameImagen = file.name
+        console.log(fileNameImagen)
+        const rutaImagen = file.path
+        console.log(rutaImagen)
+        const destinoImagen = `.\\src\\main\\public\\${fileNameImagen}`
+        const datosImagen = {
+          ruta: rutaImagen
+        }
+        /* const response = await fetch("http://localhost:8000/moverArchivos", {
+          method: 'POST',
+          body: JSON.stringify(datosImagen),
+          headers: {'Content-Type': 'application/json'}
+        }); */ 
         // window.electron.ipcRenderer.copiarArchivo(fileImagenDB, destino);
 
 
         const files2 = videoObj.files
         const file2 = files2![0]
-        console.log(file2.path)
         fileNameVideo = file2.name
-        fileVideoDB = file2.path
+        const rutaVideo = file2.path
+        console.log(rutaVideo)
+        console.log(fileNameVideo)
         const destinoVideo = `.\\src\\main\\public\\${fileNameVideo}`
-        await window.electron.ipcRenderer.copiarArchivo(fileVideoDB, destino);
+        const datosVideo = {
+          ruta: rutaVideo
+        }
+
+        const response2 = await fetch("http://localhost:8000/moverArchivos", {
+          method: 'POST',
+          body: JSON.stringify(datosVideo),
+          headers: {'Content-Type': 'application/json'}
+        });
+
+
+        // bawait window.electron.ipcRenderer.copiarArchivo(fileVideoDB, destino);
         // insertConf(primerConfig);
 
       }
