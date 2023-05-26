@@ -895,21 +895,26 @@ let serialPort = new SerialPort({
 let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 
 ipcMain.on('loadPort', async (event, opcion, baud) => {
-  if (serialPort.isOpen) {
-    serialPort.close();
+  try {
+    if (serialPort.isOpen) {
+      serialPort.close();
+      serialPort.destroy();
+    }
+    serialPort = new SerialPort({
+      // path: `\\\\.\\` + opcion,
+      path: opcion,
+      baudRate: baud,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none',
+      autoOpen: true,
+    });
+    console.log('PUERTO', serialPort.path);
+    console.log('BAUD', serialPort.baudRate);
+    parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+  } catch(error) {
+    console.log("ERROR  ", error);
   }
-  serialPort = new SerialPort({
-    // path: `\\\\.\\` + opcion,
-    path: opcion,
-    baudRate: baud,
-    dataBits: 8,
-    stopBits: 1,
-    parity: 'none',
-    autoOpen: true,
-  });
-  console.log('PUERTO', serialPort.path);
-  console.log('BAUD', serialPort.baudRate);
-  parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 });
 let startFlag = false;
 // parser.on('data', (chunk) => {
@@ -957,41 +962,50 @@ ipcMain.on('sensoresStopNewTest', async (event) => {
 
 // eslint-disable-next-line promise/param-names
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-async function sensores() {
-  // serialPort.isOpen;
-  serialPort.open();
-  let buffer = '';
-  let sum = 0;
-  let giroscopioAverage = 0;
-  let hr = 0;
-  console.log('ANTES DEE');
-  parser.on('data', async (chunk: any) => {
-    console.log('SIGOOO');
-    for (let i = 0; i < 10; i++) {
-      buffer = '';
-      buffer += chunk;
-      console.log(buffer);
-      sum += parseInt(buffer);
-    }
-    giroscopioAverage = sum / 10;
-    console.log('Giroscopio Average', giroscopioAverage);
-    hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
-    console.log('GSR', hr);
-    // const resp = await sleep(10000);
-    // console.log("Resp", resp);
-  });
-  return hr;
-}
-
-
-
-// async function selectPacientes() {
-//   const query = await pool.query(' select * from paciente  ');
-//   console.log(query.rows);
-//   return query.rows;
+// async function sensores() {
+//   // serialPort.isOpen;
+//   serialPort.open();
+//   let buffer = '';
+//   let sum = 0;
+//   let giroscopioAverage = 0;
+//   let hr = 0;
+//   console.log('ANTES DEE');
+//   parser.on('data', async (chunk: any) => {
+//     console.log('SIGOOO');
+//     for (let i = 0; i < 10; i++) {
+//       buffer = '';
+//       buffer += chunk;
+//       console.log(buffer);
+//       sum += parseInt(buffer);
+//     }
+//     giroscopioAverage = sum / 10;
+//     console.log('Giroscopio Average', giroscopioAverage);
+//     hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
+//     console.log('GSR', hr);
+//     // const resp = await sleep(10000);
+//     // console.log("Resp", resp);
+//   });
+//   return hr;
 // }
 
-// ipcMain.handle('selectPacientes', selectPacientes);
+
+
+
+async function sensores() {
+  if (!serialPort.isOpen) {
+    serialPort.open();
+    parser.resume();
+  }
+  console.log('Inner sensor');
+  parser.on('data', (chunk: any) => {
+    // try {
+    //   event.reply('senso', chunk);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    mainWindow?.webContents.send('senso', chunk);
+  });
+}
 ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
@@ -999,7 +1013,7 @@ ipcMain.on('sensores', async (event) => {
     serialPort.open();
     parser.resume();
   }
-  console.log('Inner sensor');
+  console.log('Inner sensor ');
   parser.on('data', (chunk: any) => {
     // try {
     //   event.reply('senso', chunk);

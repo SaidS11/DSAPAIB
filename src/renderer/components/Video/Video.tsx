@@ -12,6 +12,8 @@ import {
   styleButtonBigger,
 } from '../VerPaciente/ButtonStyle';
 import ProbarSensores from '../ProbarSensores/ProbarSensores';
+import ProbarSensoresContainer from '../ProbarSensores/ProbarSensoresContainer';
+
 import './Video.css';
 
 export interface VideoProps {

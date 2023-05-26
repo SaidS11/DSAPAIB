@@ -9,8 +9,11 @@ import {
   setFrecuenciaIsChecked,
   setAcelerometroIsChecked,
   setExtraSensorsChecked,
+  setCleanAllSensors,
 } from '../../../redux/slices/SeñalesSlice';
 import VideoDemo from './VideoDemo';
+import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
+import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
 
 interface ConfLocal {
   emgs: number;
@@ -30,19 +33,25 @@ const VideoDemoContainer = () => {
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
   const sensores = confObj[0].emgs;
-  const onClickNav = () => {
+
+  const onClickNav = async () => {
+    appDispatch(setCleanAllSensors(true));
+    const resp = await window.electron.ipcRenderer.sensoStop();
     navigate('/video');
   };
+
   const onClickProbar = () => {
     if (probando === false) {
       setProbando(true);
     }
   };
+
   const onClickDetener = () => {
     if (probando === true) {
       setProbando(false);
     }
   };
+
   const onClickBack = () => {
     navigate('/colocacionMuestra');
   };
@@ -79,8 +88,28 @@ const VideoDemoContainer = () => {
   }
   useEffect(() => {
     loadConfig();
+    appDispatch(setCleanAllSensors(true));
   }, []);
 
+  const [baudSelected, setBaudSelected] = useState(9600);
+  const [portSelected, setPortSelected] = useState('');
+
+  const [open, setOpen] = useState(true);
+  const toggleModal = () => {
+    if (portSelected !== '' && baudSelected !== 0) {
+      setOpen(!open);
+      // setIsReady(true);
+      window.Bridge.loadPort(portSelected, baudSelected);
+      // window.Bridge.sensoresNewTest()
+    } else {
+      alert('Seleccione una cantidad');
+    }
+    console.log(
+      'Amount and port, and baud',
+      portSelected,
+      baudSelected
+    );
+  };
   return (
     <div>
       <VideoDemo
@@ -92,6 +121,19 @@ const VideoDemoContainer = () => {
         probando={probando}
         sensores={sensores}
       />
+      {open && (
+        <ModalSensoresAdquisicion
+          toggleModal={toggleModal}
+          open={open}
+          setPortSelected={setPortSelected}
+          setBaudSelected={setBaudSelected}
+        />
+      )}
+      <section className="display-center">
+        <h3>Para probar si los sensores funcionan correctamente presione Comenzar</h3>
+      </section>
+      <SensoresAdquisicionContainer mode={"TEST"} shouldStop={false}/>
+      <br />
     </div>
   );
 };

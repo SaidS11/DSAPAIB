@@ -10,21 +10,19 @@ import { setIsLoading } from '../../../redux/slices/StatusSlice';
 // eslint-disable-next-line import/no-named-as-default
 import { useCustomSelector, useCustomDispatch } from '../../../redux/hooks';
 import { setIsLogged } from '../../../redux/slices/LoginSlice';
+import ProbarSensoresContainer from '../ProbarSensores/ProbarSensoresContainer';
+
 import Video from './Video';
+import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 
 interface ConfLocal {
   emgs: number;
 }
 
-function parseSignalsIntoObjects(xAr: Array<number>, yAr: Array<number>) {
-  const parsedArr = xAr.map((xValue, index) => {
-    return { x: xValue, y: yAr[index] };
-  });
-  return parsedArr;
-}
 const VideoContainer = () => {
   const navigate = useNavigate();
   const [probando, setProbando] = useState(false);
+  const [shouldStop, setShouldStop] = useState(false);
   const appDispatch = useCustomDispatch();
 
   const multimediaObj = useCustomSelector(
@@ -43,70 +41,21 @@ const VideoContainer = () => {
     (state) => state.señales.frecuenciaIsChecked
   );
 
-  const xEmg1 = [1, 2, 3, 4, 5];
-  const yEmg1 = [2, 4, 6, 8, 10];
-
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
   const sensores = confObj[0].emgs;
-  const onClickNav = () => {
-    const signalsXTotales = [];
-    const signals = {};
-    if (sensoresSelected >= 1) {
-      Object.assign(signals, {
-        emg1: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"emg1": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
 
-    if (sensoresSelected >= 2) {
-      Object.assign(signals, {
-        emg2: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"emg2": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-
-    if (sensoresSelected >= 3) {
-      Object.assign(signals, {
-        emg3: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"emg3": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-
-    if (sensoresSelected >= 4) {
-      Object.assign(signals, {
-        emg4: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"emg4": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-
-    if (giroscopioChecked) {
-      Object.assign(signals, {
-        giroscopio: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"giroscopio": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-
-    if (acelerometroChecked) {
-      Object.assign(signals, {
-        acelerometro: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"acelerometro": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-
-    if (frecuenciaChecked) {
-      Object.assign(signals, {
-        frecuencia: parseSignalsIntoObjects(xEmg1, yEmg1),
-      });
-      // signals.push({"frecuencia": parseSignalsIntoObjects(xEmg1, yEmg1)});
-    }
-    appDispatch(setSignalsToStore(signals));
+  const onClickNav = async () => {
+    setShouldStop(true);
+    const resp = await window.electron.ipcRenderer.sensoStop();
     navigate('/procesamientoPrevio');
   };
+
   const onClickCancel = () => {
     navigate('/videoDemo');
   };
+
   const onClickProbar = () => {
     if (probando === false) {
       setProbando(true);
@@ -149,6 +98,7 @@ const VideoContainer = () => {
         sensores={sensores}
         onClickCancel={onClickCancel}
       />
+      <SensoresAdquisicionContainer mode={"LIVE"} shouldStop={shouldStop}/>
     </div>
   );
 };

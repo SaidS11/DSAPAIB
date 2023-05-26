@@ -12,7 +12,7 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { useMemo, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useMemo, useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -29,15 +29,15 @@ interface ComenzarAnalisisEntrenamientoProps {
   data: any;
   dataAlgoritmo: any;
   options: TableOptions<{ col1: string, col2: string }>;
-  onClickNav: (arg0: any) => void;
+  onClickNav: (arg0: FormEvent<HTMLFormElement>) => void;
   onClickStop: () => void;
   toggleModal: any;
   modelo: string;
-  setModelo: any;
-  setProtocolo: any;
+  setModelo: Dispatch<SetStateAction<string>>;
+  setProtocolo: Dispatch<SetStateAction<string>>;
   protocolo: string; 
-  setFiltroSexo: any;
-  filtroSexo: any;
+  setFiltroSexo: Dispatch<SetStateAction<string>>;
+  filtroSexo: string;
   // setSelectedPatientsLocal: any;
 }
 

@@ -75,6 +75,7 @@ const CrearAlgoritmo = (
                     required
                     >
                   <MenuItem value="Arbol de Decisión">Arbol de Decisión</MenuItem>
+                  <MenuItem value=" K-Nearest Neighbor"> K-Nearest Neighbor</MenuItem>
                   <MenuItem value="Red Neuronal">Red Neuronal</MenuItem>
                   <MenuItem value="Maquina de Soporte Vectorial">Maquina de Soporte Vectorial</MenuItem>
                 </Select>

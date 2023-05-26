@@ -179,8 +179,6 @@ const GuardarModelo = (props: GuardarModeloProps) => {
             setData={setData}
             algoritmo={algoritmo}
             algoritmoTipo={algoritmoTipo}
-            firstRender={firstRender}
-            setFirstRender={setFirstRender}
           />
         </section>
       )}

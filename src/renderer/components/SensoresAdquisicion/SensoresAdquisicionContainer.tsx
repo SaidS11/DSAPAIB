@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useCustomDispatch } from 'redux/hooks';
-import { setIsLoading } from 'redux/slices/StatusSlice';
-import ModalSensores from './ModalSensores';
-import ProbarSensores from './ProbarSensores';
+import { useCustomDispatch, useCustomSelector } from 'redux/hooks';
+import { setRealTimeSignal } from 'redux/slices/SeñalesSlice';
+import ModalSensoresAdquisicion from './ModalSensoresAdquisicion';
+import SensoresAdquisicion from './SensoresAdquisicion';
+import { RealTimeSignalInterface } from '../Utilities/Constants';
 
-const ProbarSensoresContainer = () => {
+interface SensoresAdquisicionInterface {
+  mode: string;
+  shouldStop: boolean;
+}
+
+const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
+
+  const { mode,shouldStop } = props;
   /* const dataX: Number[] = [];
   const dataY: Number[] = []; */
   const [isReady, setIsReady] = useState(false);
@@ -38,31 +46,11 @@ const ProbarSensoresContainer = () => {
 
   const [dataXEmg4, setDataXEmg4] = useState([]);
   const [dataYEmg4, setDataYEmg4] = useState([]);
+  const appDispatch = useCustomDispatch(); 
 
-  const arr: any = [];
-  const [sensoresSelected, setSensoresSelected] = useState(0);
-  const [baudSelected, setBaudSelected] = useState(9600);
-
-  const [portSelected, setPortSelected] = useState('');
-
-  const appDispatch = useCustomDispatch();
-  const [open, setOpen] = useState(true);
-  const toggleModal = () => {
-    if (sensoresSelected !== 0 && portSelected !== '' && baudSelected !== 0) {
-      setOpen(!open);
-      // setIsReady(true);
-      window.Bridge.loadPort(portSelected, baudSelected);
-      // window.Bridge.sensoresNewTest()
-    } else {
-      alert('Seleccione una cantidad');
-    }
-    console.log(
-      'Amount and port, and baud',
-      sensoresSelected,
-      portSelected,
-      baudSelected
-    );
-  };
+  
+  const sensorTest = useCustomSelector((state) => state.señales.cantidadSensores);
+  const sensoresSelected = 3;
 
   async function stopSensoresNew() {
     setIsReady(false);
@@ -132,6 +120,10 @@ const ProbarSensoresContainer = () => {
   const testData3: Array<string> = [];
 
   window.electron.ipcRenderer.senso((event: any, resp: any) => {
+    if(shouldStop) {
+      detenerIntervalo();
+      stopSensores();
+    }
     // console.log("reading");
     const dataLocal = resp;
     bufferdatos = dataLocal;
@@ -148,17 +140,19 @@ const ProbarSensoresContainer = () => {
   const [globalData2, setGlobalData2] = useState<any>([]);
   const [globalData3, setGlobalData3] = useState<any>([]);
   // let intervalID: string | number | NodeJS.Timeout | undefined;
-
+  // objectStored
   function intervalFunction (){
-    // console.log("interval");
-    setGlobalData([...globalData, ...testData]);
-    setGlobalData2([...globalData2, ...testData2]);
-    setGlobalData3([...globalData3, ...testData3]);
-
+    // console.log("interval");    
+    const objectToStore = {};
     if (sensoresSelected >= 1) {
       // setDataYEmg1((prev: any) => {
-      //   return [...prev.slice(1), ...newA];
-      // });
+        //   return [...prev.slice(1), ...newA];
+        // });
+      Object.assign(objectToStore, {
+        emg1: [...globalData, ...testData],
+      });
+      // objectToStore.emg1 = [...globalData, ...testData]
+      setGlobalData([...globalData, ...testData]);
       setDataYEmg1(testData.slice(-dataXEmg1.length));
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg1((prev: any) => {
@@ -169,6 +163,11 @@ const ProbarSensoresContainer = () => {
       // setDataYEmg2((prev: any) => {
       //   return [...prev.slice(1), ...testData2];
       // });
+      Object.assign(objectToStore, {
+        emg2: [...globalData2, ...testData2],
+      });
+      // objectToStore.emg2 = [...globalData2, ...testData2]
+      setGlobalData2([...globalData2, ...testData2]);
       setDataYEmg2(testData2.slice(-dataXEmg2.length))
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg2((prev: any) => {
@@ -183,6 +182,11 @@ const ProbarSensoresContainer = () => {
       // setDataYEmg3((prev: any) => {
       //   return [...prev.slice(1), ...testData3];
       // });
+      Object.assign(objectToStore, {
+        emg3: [...globalData3, ...testData3],
+      });
+      // objectToStore.emg3 = [...globalData3, ...testData3]
+      setGlobalData3([...globalData3, ...testData3]);
       setDataYEmg3(testData3.slice(-dataXEmg3.length))
 
       // setDataXEmg1(innerXEmg1);
@@ -195,11 +199,13 @@ const ProbarSensoresContainer = () => {
       // setDataXEmg3(innerXEmg3);
     }
     if (sensoresSelected >= 4) {
+      // objectToStore.emg3 = [...globalData3, ...testData3]
       // emg4Arr.push(separado[4]);
       // const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
       // setDataYEmg4(emg4Arr);
       // setDataXEmg4(innerXEmg4);
     }
+    appDispatch(setRealTimeSignal(objectToStore));
   // }
   }
   const auxFunc = (intervalToClean: any) => {
@@ -265,9 +271,14 @@ const ProbarSensoresContainer = () => {
   const onClickStop = async () => {
     stopSensores();
   };
+  useEffect(() => {
+    if(mode === "LIVE") {
+      loadSensores();
+    }
+  }, [])
   return (
     <div>
-      <ProbarSensores
+      <SensoresAdquisicion
         sensoresSelected={sensoresSelected}
         onClickStart={onClickStart}
         onClickStop={onClickStop}
@@ -287,17 +298,9 @@ const ProbarSensoresContainer = () => {
         onClickStopNew={onClickStopNew}
         onClickStartNew={onClickStartNew}
       />
-      {open && (
-        <ModalSensores
-          toggleModal={toggleModal}
-          open={open}
-          setSensoresSelected={setSensoresSelected}
-          setPortSelected={setPortSelected}
-          setBaudSelected={setBaudSelected}
-        />
-      )}
+
     </div>
   );
 };
 
-export default ProbarSensoresContainer;
+export default SensoresAdquisicionContainer;

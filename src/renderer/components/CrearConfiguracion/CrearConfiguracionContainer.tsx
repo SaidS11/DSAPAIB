@@ -5,10 +5,13 @@ import { setConfigPrimerPaso } from '../../../redux/slices/ConfiguracionSlice';
 // eslint-disable-next-line import/no-named-as-default
 import { useCustomDispatch } from '../../../redux/hooks';
 import CrearConfiguracion from './CrearConfiguracion';
+import { useState } from 'react';
 
 const CrearConfiguracionContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
+  const [canales, setCanales] = useState('');
+
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     appDispatch(setIsLoading(true));
     e.preventDefault();
@@ -34,7 +37,7 @@ const CrearConfiguracionContainer = () => {
     // insertData(data);
     navigate('/crearConfigMultimedia');
   };
-  return <CrearConfiguracion onClickNav={onClickNav}/>;
+  return <CrearConfiguracion onClickNav={onClickNav} canales={canales} setCanales={setCanales} />;
 };
 
 export default CrearConfiguracionContainer;

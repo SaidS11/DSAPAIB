@@ -50,6 +50,8 @@ import ResultsTableContainer from './components/Utilities/ResultsTableContainer'
 import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloContainer';
 import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
 import ProbarSensoresBlank from './components/ProbarSensores/ProbarSensoresBlank';
+import SensoresAdquisicionContainer from './components/SensoresAdquisicion/SensoresAdquisicionContainer';
+import ModalSensoresAdquisicion from './components/SensoresAdquisicion/ModalSensoresAdquisicion';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -157,6 +159,15 @@ export default function App() {
               path="/probarSensoresBlank"
               element={<ProbarSensoresBlank />}
             />
+            <Route
+              path="/sensoresAdquisicion"
+              element={<SensoresAdquisicionContainer />}
+            />
+            {/* <Route
+              path="/modalSensores"
+              element={<ModalSensoresAdquisicion />}
+            /> */}
+            
             <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
             <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
             <Route path="/verAlgoritmos" element={<VerAlgoritmosContainer />} />

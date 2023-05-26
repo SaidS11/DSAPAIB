@@ -10,6 +10,8 @@ import {
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLogged } from '../../../redux/slices/LoginSlice';
 import Resultados from './Resultados';
+import SaveEtiquetaModal from '../Utilities/SaveEtiquetaModal';
+import { setMongoInsertObject } from 'redux/slices/SeñalesSlice';
 
 interface ConfLocal {
   emgs: number;
@@ -18,6 +20,10 @@ interface ConfLocal {
 const ResultadosContainer = () => {
   const navigate = useNavigate();
   const [probando, setProbando] = useState(false);
+  const [open, setOpen] = useState(false);
+  const toggleModalGuardar = () => {
+    setOpen(!open);
+  };
   const appDispatch = useCustomDispatch();
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
@@ -56,7 +62,7 @@ const ResultadosContainer = () => {
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
 
   const [isDataReady, setIsDataReady] = useState(false);
-  const [grid, setGrid] = useState([]);
+  const [grid, setGrid] = useState<any>([]);
   const [data, setData] = useState([]);
 
   const sensores = confObj[0].emgs;
@@ -96,7 +102,7 @@ const ResultadosContainer = () => {
     }
   });
   const onClickGuardar = () => {
-    insertRegistro();
+    // insertRegistro();
   };
 
   const [dataXEmg1, setDataXEmg1] = useState([0]);
@@ -109,7 +115,7 @@ const ResultadosContainer = () => {
     type: 'scatter',
     line: { color: 'black' },
     // marker: { color: colors1 },
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'EMG1',
   };
 
@@ -126,7 +132,7 @@ const ResultadosContainer = () => {
     line: { color: 'blue' },
     // With each click a push to the colors array must be added to keep adding colors
     // marker: { color: colors2 },
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'EMG2',
   };
 
@@ -140,7 +146,7 @@ const ResultadosContainer = () => {
     type: 'scatter',
     line: { color: 'yellow' },
     // marker: { color: colors3 },
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'EMG3',
   };
 
@@ -154,7 +160,7 @@ const ResultadosContainer = () => {
     type: 'scatter',
     line: { color: 'green' },
     // marker: { color: colors4 },
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'EMG4',
   };
 
@@ -166,7 +172,7 @@ const ResultadosContainer = () => {
     xaxis: 'x5',
     yaxis: 'y5',
     type: 'scatter',
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'Giroscopio',
   };
 
@@ -178,7 +184,7 @@ const ResultadosContainer = () => {
     xaxis: 'x6',
     yaxis: 'y6',
     type: 'scatter',
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'Frecuencia',
   };
 
@@ -190,7 +196,7 @@ const ResultadosContainer = () => {
     xaxis: 'x7',
     yaxis: 'y7',
     type: 'scatter',
-    mode: 'markers+lines',
+    // mode: 'markers+lines',
     name: 'Acelerometro',
   };
 
@@ -204,10 +210,9 @@ const ResultadosContainer = () => {
     type: 'scatter',
   };
 
-  const retrieveSignal = async () => {
-    appDispatch(setIsLoading(true));
+  const [signalRetrieved, setSignalRetrieved] = useState(false);
+  const retrieveSignal = () => {
 
-    appDispatch(setIsLoading(false));
     console.log('Señales', objetoMongo.signals);
     console.log('this is RespObj', objetoMongo);
     const { emg1 } = objetoMongo.signals;
@@ -258,7 +263,7 @@ const ResultadosContainer = () => {
       }
 
       if (giroscopioChecked) {
-        console.log('giroscopio checked');
+        console.log('giroscopio checked ');
         giroscopioSignalLocalX.push(giroscopio[i].x);
         giroscopioSignalLocalY.push(giroscopio[i].y);
       }
@@ -307,6 +312,7 @@ const ResultadosContainer = () => {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
     }
+    setSignalRetrieved(true);
   };
 
   const numOfPlots = () => {
@@ -364,20 +370,74 @@ const ResultadosContainer = () => {
       rows: dynamicRows,
       columns: dynamicColumns,
       pattern: 'independent',
-    };
-    return [objGrid, dataAux];
+    }
+    // setIsDataReady(true);
+    console.log("This is dataAux", dataAux);
+    setData(dataAux);
+    setIsDataReady(true);
+    setGrid(objGrid);
   };
 
   useEffect(() => {
+    appDispatch(setIsLoading(true));
+    numOfPlots();
+    // const [gridLayoutAux, dataAux] = numOfPlots();
+    // setGrid(gridLayoutAux);
+    appDispatch(setIsLoading(false));
+
+  }, [signalRetrieved]);
+  useEffect(() => {
+    appDispatch(setIsLoading(true));
+
     retrieveSignal();
-    const [gridLayoutAux, dataAux] = numOfPlots();
-    setGrid(gridLayoutAux);
-    setData(dataAux);
-    setIsDataReady(true);
+    // const [gridLayoutAux, dataAux] = numOfPlots();
+    // setGrid(gridLayoutAux);
+    appDispatch(setIsLoading(false));
+
   }, []);
+  
+  const onClickCrear = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // navigate('/escogerConfiguracion');
+    const form = document.querySelector('form') as HTMLFormElement | undefined;
+    // console.log('el form', form);
+    const dataR = Object.fromEntries(new FormData(form).entries());
+    console.log('la data', dataR);
+    if (dataR.etiqueta === '') {
+      console.log("Seguro que vacio");
+      setOpen(!open);
+    } else {
+      const objCopy = {...objetoMongo}
+      const etiquetaLocal = dataR.etiqueta as string
+      objCopy.etiqueta = etiquetaLocal;
+      console.log("to be inserted", objCopy);
+      appDispatch(setMongoInsertObject(objCopy));
+      const jsonDocument = JSON.stringify(objCopy);
+      appDispatch(setIsLoading(true));
+      window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
+      // navigate('/verPaciente');
+    }
+  };
+
+
+  window.electron.ipcRenderer.insertarElementoM((event: any, resp: any) => {
+
+    if (resp[0] === 0) {
+      console.log('Despacho error', resp[1]);
+      appDispatch(setFailUpload(true));
+      appDispatch(setIsLoading(false));
+    } else {
+      console.log('Correcto');
+      appDispatch(setIsLoading(false));
+      appDispatch(setIsUploaded(true));
+      navigate('/verPaciente');
+    }
+  });
+
   if (isDataReady === false) {
     return <div />;
   }
+  console.log("N")
   return (
     <div>
       <Resultados
@@ -388,7 +448,11 @@ const ResultadosContainer = () => {
         sensores={sensores}
         dataArr={data}
         gridLayout={grid}
+        onClickCrear={onClickCrear}
       />
+      {open && (
+        <SaveEtiquetaModal toggleModalGuardar={toggleModalGuardar} open={open} objMongo={objetoMongo} />
+      )}
     </div>
   );
 };

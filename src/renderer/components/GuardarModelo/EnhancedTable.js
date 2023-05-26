@@ -97,8 +97,6 @@ const EnhancedTable = ({
   setData,
   algoritmo,
   algoritmoTipo,
-  firstRender,
-  setFirstRender,
   // setSelectedPatientsLocal,
 }) => {
   const [isSelected, setIsSelected] = useState([]);
@@ -272,8 +270,6 @@ EnhancedTable.propTypes = {
   setData: PropTypes.func.isRequired,
   algoritmo: PropTypes.string.isRequired,
   algoritmoTipo: PropTypes.string.isRequired,
-  firstRender: PropTypes.bool.isRequired,
-  setFirstRender: PropTypes.func.isRequired,
   // setSelectedPatientsLocal: PropTypes.array.isRequired,
 };
 

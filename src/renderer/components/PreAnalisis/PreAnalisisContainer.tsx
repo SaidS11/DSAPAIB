@@ -18,9 +18,10 @@ const PreAnalisisContainer = () => {
   const nombresSeleccionados = useCustomSelector(
     (state) => state.config.selectedModels
   );
-
+  
+  console.log("DATOS PREVIOS", datos);
   const strData = JSON.stringify(datos);
-
+  console.log("DATOS STR", strData);
   async function preAn() {
     appDispatch(setIsLoading(true));
     console.log('Getting message');

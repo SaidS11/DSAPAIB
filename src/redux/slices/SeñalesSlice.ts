@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MongoInsertObjectInterface } from 'renderer/components/Utilities/Constants';
+import { MongoInsertObjectInterface, RealTimeSignalInterface } from 'renderer/components/Utilities/Constants';
 
 export interface SignalObj {
   length: number;
   x: number;
   y: number;
 }
+
+
+
 export interface ISeñales {
   sensoresPrueba: number;
   signalsXGraph: Array<any>;
@@ -33,6 +36,7 @@ export interface ISeñales {
   dataArray: Array<any>;
   gridLayout: any;
   predictMode: boolean;
+  realTimeSignal: any;
 }
 
 const initialState: ISeñales = {
@@ -66,6 +70,7 @@ const initialState: ISeñales = {
   dataArray: [],
   gridLayout: [],
   predictMode: false,
+  realTimeSignal: {},
 };
 
 export const SeñalesSlice = createSlice({
@@ -175,6 +180,7 @@ export const SeñalesSlice = createSlice({
       state.ventanasArrayGiroscopio = [];
       state.ventanasArrayAcelerometro = [];
       state.ventanasArrayFrecuencia = [];
+      state.realTimeSignal = {};
     },
     setGiroscopioIsChecked: (
       state,
@@ -228,6 +234,10 @@ export const SeñalesSlice = createSlice({
     setPredictMode: (state, action: PayloadAction<ISeñales['predictMode']>) => {
       state.predictMode = action.payload;
     },
+    setRealTimeSignal: (state, action: PayloadAction<ISeñales['realTimeSignal']>) => {
+      state.realTimeSignal = action.payload;
+    },
+    
   },
 });
 
@@ -258,5 +268,6 @@ export const {
   setDataArray,
   setGridLayout,
   setPredictMode,
+  setRealTimeSignal,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;
