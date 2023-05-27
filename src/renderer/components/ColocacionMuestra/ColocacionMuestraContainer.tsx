@@ -53,7 +53,9 @@ const ColocacionMuestraContainer = () => {
   const onClickBack = () => {
     navigate('/escogerConfiguracion');
   };
-  const url = `${multimediaObj[0].link_imagen}`;
+  // const url = `${multimediaObj[0].link_imagen}`;
+  const url = 'http://localhost:8000/text.png';
+  console.log(url);
 
   useEffect(() => {
     loadConfig();

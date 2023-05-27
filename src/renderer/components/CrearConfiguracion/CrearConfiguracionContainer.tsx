@@ -35,7 +35,7 @@ const CrearConfiguracionContainer = () => {
     appDispatch(setConfigPrimerPaso(data))
     appDispatch(setIsLoading(false));
     // insertData(data);
-    navigate('/crearConfigMultimedia');
+     navigate('/crearConfigMultimedia');
   };
   return <CrearConfiguracion onClickNav={onClickNav} canales={canales} setCanales={setCanales} />;
 };

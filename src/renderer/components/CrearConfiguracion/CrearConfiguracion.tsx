@@ -73,7 +73,7 @@ const CrearAnalisis = (props: CrearConfigProps) => {
                 </FormControl>
               </section>
             </section>
-            <section className='display-flex'> 
+            <section className='display-flex'>
                 <h4>Sensores Adicionales</h4>
             </section>
             <div className='display-margin'>

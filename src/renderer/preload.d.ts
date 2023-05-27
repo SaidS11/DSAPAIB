@@ -14,6 +14,8 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
+        copiarArchivo(fileImagenDB: string, destino: string): unknown;
+        copiarAr(arg0: (event: any, resp: any) => void): unknown;
         sensores(): unknown;
         senso(arg0: (event: any, resp: any) => void): unknown;
         sensoresStop(): unknown;
