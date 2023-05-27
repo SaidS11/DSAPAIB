@@ -4,7 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Column } from 'react-table';
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Algoritmo } from '../Utilities/Constants';
 import GeneralTable from '../ComenzarAnalisisEntrenamiento/AlgorithmTable';
@@ -35,6 +35,7 @@ interface GuardarModeloProps {
   onClickContinue: () => void;
   onClickBack: () => void;
   algoritmoTipo: string;
+  // setFirstRender: Dispatch<SetStateAction<boolean>>;
 }
 
 const GuardarModelo = (props: GuardarModeloProps) => {
@@ -169,6 +170,7 @@ const GuardarModelo = (props: GuardarModeloProps) => {
       {modelosEncontrados === true && algoritmo !== '' && (
         <section className="display-flexAgregar" style={{ display: 'block' }}>
           <h3>Modelos asociados al algoritmo. </h3>
+          <h4>Tome en cuenta que solo puede seleccionar 1 modelo. </h4>
           {/* {tableWrapper} */}
           <EnhancedTable
             columns={columns}

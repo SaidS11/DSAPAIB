@@ -18,9 +18,10 @@ const PreAnalisisContainer = () => {
   const nombresSeleccionados = useCustomSelector(
     (state) => state.config.selectedModels
   );
-
+  
+  console.log("DATOS PREVIOS", datos);
   const strData = JSON.stringify(datos);
-
+  console.log("DATOS STR", strData);
   async function preAn() {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
@@ -48,14 +49,17 @@ const PreAnalisisContainer = () => {
         strData
       );
     } else {
-      const { iteraciones, reducedPercentage } = paramsArg as any;
+      const { iteraciones, porcentaje } = paramsArg as any;
+      // const reducedPercentage = parseInt(porcentaje) / 100;
+      const strPercentage = porcentaje.toString();
+      console.log("THis is STR", strPercentage);
       window.electron.ipcRenderer.analisisPython(
         'Train',
         tipo,
         params,
         nombre,
         iteraciones,
-        reducedPercentage,
+        strPercentage,
         strData
       );
     }

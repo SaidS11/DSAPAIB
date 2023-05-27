@@ -1,13 +1,12 @@
 /* eslint-disable react/prop-types */
 import Plot from 'react-plotly.js';
-import './ProbarSensores.css';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import styleButton, {
+import {
   styleButtonBiggerGreen, styleButtonBiggerRed
 } from '../VerPaciente/ButtonStyle';
 
-const ProbarSensores = ({
+const SensoresAdquisicion = ({
   sensoresSelected,
   onClickStart,
   onClickStop,
@@ -262,21 +261,22 @@ const ProbarSensores = ({
       <section className="display-center">
         <Button
           sx={styleButtonBiggerGreen}
-          style={{ fontSize: '20px' }}
+          style={{ fontSize: '15px' }}
           onClick={onClickStart}
         >
-          Comenzar
+          Comenzar Lectura
         </Button>
         <Button
           sx={styleButtonBiggerRed}
-          style={{ fontSize: '20px' }}
+          style={{ fontSize: '15px' }}
           onClick={onClickStop}
         >
-          Parar
+          Detener Lectura
         </Button>
       </section>
+
     </div>
   );
 };
 
-export default ProbarSensores;
+export default SensoresAdquisicion;

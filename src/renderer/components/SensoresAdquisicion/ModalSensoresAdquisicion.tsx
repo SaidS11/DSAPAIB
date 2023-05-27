@@ -25,30 +25,21 @@ const style = {
 export interface ModalProps {
   toggleModal: () => void;
   open: boolean;
-  setSensoresSelected: React.Dispatch<React.SetStateAction<number>>;
   setPortSelected: React.Dispatch<React.SetStateAction<string>>;
   setBaudSelected: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function ModalSensores(props: ModalProps) {
+export default function ModalSensoresAdquisicion(props: ModalProps) {
   const {
     toggleModal,
     open,
-    setSensoresSelected,
     setPortSelected,
     setBaudSelected,
   } = props;
-  const [sensores, setSensores] = React.useState('');
   const [puerto, setPuerto] = React.useState('');
   const [baudRate, setBaudRate] = React.useState('9600');
   const [puertos, setPuertos] = React.useState([]);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    const num = parseInt(event.target.value, 10);
-    console.log(num);
-    setSensores(event.target.value as string);
-    setSensoresSelected(num);
-  };
 
   const handleChangePuerto = (event: SelectChangeEvent) => {
     console.log('puerto', event.target.value as string);
@@ -96,30 +87,8 @@ export default function ModalSensores(props: ModalProps) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Seleccione la cantidad de sensores/EMG
+            Seleccione el puerto a leer
           </Typography>
-          <br />
-          <div>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Sensores</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={sensores}
-                label="Sensores"
-                onChange={handleChange}
-              >
-                <MenuItem value={1}>1</MenuItem>
-                <MenuItem value={2}>2</MenuItem>
-                <MenuItem value={3}>3</MenuItem>
-                <MenuItem value={4}>4</MenuItem>
-                <MenuItem value={5}>5</MenuItem>
-                <MenuItem value={6}>6</MenuItem>
-                <MenuItem value={7}>7</MenuItem>
-                <MenuItem value={8}>8</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
           <br />
           <div>
             <FormControl fullWidth>

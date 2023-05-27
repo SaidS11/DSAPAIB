@@ -19,22 +19,19 @@ import json
 from joblib import dump, load
 import os
 
-def classificationTree(modelArgs, nombre, headers):
-    maxDepth =  modelArgs["profundidad"]
-    randomState = modelArgs["estado"]
+def classificationTree(nombre, headers):
     # or load through local csv
     ruta_actual = os.path.dirname(__file__)
     nombre_archivo = "test8Nombres.csv"
     data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     data.groupby('etiqueta').size()
-    train, test = train_test_split(data, test_size = 0, stratify = data['etiqueta'], random_state = 42)
+    # train, test = train_test_split(data, test_size = 0, stratify = data['etiqueta'], random_state = 42)
 
     # Model development
-    X_test = test[headers]
-    y_test = test.etiqueta
+    X_test = data[headers]
+    y_test = data.etiqueta
     script_dir = os.path.dirname(__file__)
-    existente = True
     clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 
     prediction=clf.predict(X_test)
     
@@ -62,42 +59,77 @@ def classificationTree(modelArgs, nombre, headers):
     "|" + "0.99" +
     "|" "0.99" +
     "|" + resulJson +
-    "|" + f"{'true' if existente else 'false'}")
+    "|" + "true")
     sys.stdout.flush()
 
-def classKNN(nombre):
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+def classKNN(nombre, headers):
+    # or load through local csv
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     data.groupby('species').size()
-    train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    # number of instances in each class
+    data.groupby('etiqueta').size()
+    # train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
 
     # Model development
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_test = data[headers]
+    y_test = data.etiqueta
     script_dir = os.path.dirname(__file__)
     clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 
     prediction=clf.predict(X_test)
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
-    plt.savefig(os.path.join(script_dir,"Confusion.png"))
-    print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+"|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')))
-    sys.stdout.flush() 
 
-def classSVM(nombre):
-    data = pd.read_csv('D:/DocumentosLap/Modular/App de Escritorio/Electron Modular/electron-app/src/pythonScripts/data.csv')
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    X_nuevos = datos_nuevos[headers]
+    y_pred = clf.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+    # print(my_path)
+    print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "0.99" +
+    "|" "0.99" +
+    "|" + resulJson +
+    "|" + "true")
+    sys.stdout.flush()
+
+def classSVM(nombre, headers):
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
     # number of instances in each class
     data.groupby('species').size()
-    train, test = train_test_split(data, test_size = 0.4, stratify = data['species'], random_state = 42)
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    # number of instances in each class
+    data.groupby('etiqueta').size()
 
     # Model development
-    X_test = test[['sepal_length','sepal_width','petal_length','petal_width']]
-    y_test = test.species
+    X_test = data[headers]
+    y_test = data.etiqueta
     script_dir = os.path.dirname(__file__)
     clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 
     prediction=clf.predict(X_test)
     skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
-    plt.savefig(os.path.join(script_dir,"Confusion.png"))
-    print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+"|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')))
-    sys.stdout.flush() 
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    X_nuevos = datos_nuevos[headers]
+    y_pred = clf.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+    # print(my_path)
+    print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "0.99" +
+    "|" "0.99" +
+    "|" + resulJson +
+    "|" + "true")
+    sys.stdout.flush()
 
 
 def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
@@ -318,10 +350,10 @@ if __name__ == '__main__':
                 trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
         if (first == "Class"):
             if (second == "Tree"):
-                classificationTree(jsonParams, nombre, headers)
+                classificationTree(nombre, headers)
             if(second == "KNN"):
-                classKNN(nombre)
+                classKNN(nombre, headers)
             if(second == "SVM"):
-                classSVM(nombre)
+                classSVM(nombre, headers)
     except  Exception as e:
         print("Error" + "|" + str(e))

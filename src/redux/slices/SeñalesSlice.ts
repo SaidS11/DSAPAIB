@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MongoInsertObjectInterface } from 'renderer/components/Utilities/Constants';
+import { MongoInsertObjectInterface, RealTimeSignalInterface } from 'renderer/components/Utilities/Constants';
 
 export interface SignalObj {
   length: number;
   x: number;
   y: number;
 }
+
+
+
 export interface ISeñales {
+  sensoresPrueba: number;
   signalsXGraph: Array<any>;
   signalsYGraph: Array<any>;
   ventanasArrayEmg1: Array<any>;
@@ -32,9 +36,11 @@ export interface ISeñales {
   dataArray: Array<any>;
   gridLayout: any;
   predictMode: boolean;
+  realTimeSignal: any;
 }
 
 const initialState: ISeñales = {
+  sensoresPrueba: 0,
   signalsXGraph: [],
   signalsYGraph: [],
   ventanasArrayEmg1: [],
@@ -64,12 +70,20 @@ const initialState: ISeñales = {
   dataArray: [],
   gridLayout: [],
   predictMode: false,
+  realTimeSignal: {},
 };
 
 export const SeñalesSlice = createSlice({
   name: 'señales',
   initialState,
   reducers: {
+    
+    setSensoresPrueba: (
+      state,
+      action: PayloadAction<ISeñales['sensoresPrueba']>
+    ) => {
+      state.sensoresPrueba = action.payload;
+    },
     setSignalsXGraph: (
       state,
       action: PayloadAction<ISeñales['signalsXGraph']>
@@ -166,6 +180,7 @@ export const SeñalesSlice = createSlice({
       state.ventanasArrayGiroscopio = [];
       state.ventanasArrayAcelerometro = [];
       state.ventanasArrayFrecuencia = [];
+      state.realTimeSignal = {};
     },
     setGiroscopioIsChecked: (
       state,
@@ -219,10 +234,15 @@ export const SeñalesSlice = createSlice({
     setPredictMode: (state, action: PayloadAction<ISeñales['predictMode']>) => {
       state.predictMode = action.payload;
     },
+    setRealTimeSignal: (state, action: PayloadAction<ISeñales['realTimeSignal']>) => {
+      state.realTimeSignal = action.payload;
+    },
+    
   },
 });
 
 export const {
+  setSensoresPrueba,
   setSignalsXGraph,
   setSignalsYGraph,
   setVentanasArrayEmg1,
@@ -248,5 +268,6 @@ export const {
   setDataArray,
   setGridLayout,
   setPredictMode,
+  setRealTimeSignal,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

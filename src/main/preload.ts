@@ -7,6 +7,14 @@ contextBridge.exposeInMainWorld('electron', {
     sendMessage(channel: Channels, args: unknown[]) {
       ipcRenderer.send(channel, args);
     },
+    sensores(nombre: string) {
+      ipcRenderer.send('sensores', nombre);
+    },
+    senso: (callback: any) => ipcRenderer.on('senso', callback),
+    sensoresStop() {
+      ipcRenderer.send('sensoresStop');
+    },
+    sensoStop: (callback: any) => ipcRenderer.invoke('sensoresStop', callback),
     selectConfiguracion() {
       ipcRenderer.send('selectConfiguracion');
     },
@@ -344,13 +352,13 @@ function selectConfiguracionDetalle(nombre: string) {
   ipcRenderer.send('selectConfiguracionDetalle', nombre);
 }
 
-function sensores() {
-  ipcRenderer.send('sensores');
-}
+// function sensores() {
+//   ipcRenderer.send('sensores');
+// }
 
-function sensoresStop() {
-  ipcRenderer.send('sensoresStop');
-}
+// function sensoresStop() {
+//   ipcRenderer.send('sensoresStop');
+// }
 
 function testSensores() {
   ipcRenderer.send('testSensores');
@@ -372,10 +380,12 @@ const indexBridge = {
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
   cargarPuertos,
   cargarP: (callback: any) => ipcRenderer.on('cargarP', callback),
-  sensores(nombre: string) {
-    ipcRenderer.send('sensores', nombre);
-  },
-  senso: (callback: any) => ipcRenderer.on('senso', callback),
+  // sensores(nombre: string) {
+  //   ipcRenderer.send('sensores', nombre);
+  // },
+  // senso: (callback: any) => ipcRenderer.on('senso', callback),
+  // sensoresStop,
+  // sensoStop: (callback: any) => ipcRenderer.on('sensoStop', callback),
   loadPort,
   sensoresStopNewTest() {
     ipcRenderer.send('sensoresStopNewTest');
@@ -388,8 +398,6 @@ const indexBridge = {
   sensoNewTest: (callback: any) => ipcRenderer.on('sensoNewTest', callback),
   // sensores,
   // senso: (callback: any) => ipcRenderer.on('senso', callback),
-  sensoresStop,
-  sensoStop: (callback: any) => ipcRenderer.on('sensoStop', callback),
   testSensores,
   testSenso: (callback: any) => ipcRenderer.on('testSenso', callback),
   testSensoresStop,

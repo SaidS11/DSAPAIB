@@ -3,14 +3,23 @@ import Button from '@mui/material/Button';
 import {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
+import { InputLabel, FormControl, MenuItem } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface CrearProtocoloProps {
   onClickCrear: (arg0: React.FormEvent<HTMLFormElement>) => void;
   data: any;
+  configuration: string;
+  setConfiguration: Dispatch<SetStateAction<string>>
 }
 
 const CrearProtocolo = (props: CrearProtocoloProps) => {
-  const { onClickCrear, data } = props;
+  const { onClickCrear, data, configuration, setConfiguration } = props;
+
+  const handleChangeConfiguration = (event: SelectChangeEvent) => {
+    setConfiguration(event.target.value as string);
+  };
   const setConfig = () => {
     const plots = [];
     if (data.length > 1) {
@@ -18,7 +27,9 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
       for (let i = 0; i < data.length; i++) {
         console.log('datos recibidios', data[i]);
         plots.push(
-          <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+          // <option value={`${data[i].nombre}`}>{data[i].nombre}</option>
+          <MenuItem key={i} value={`${data[i].nombre}`}>{data[i].nombre}</MenuItem>
+
         );
       }
       return plots;
@@ -40,11 +51,27 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
                 <h4>Descripción:</h4>
                 <textarea className="second-input" name="descripcion" required/>
               </section>
-              <section className="display-flex">
+              <section className="display-flexAgregar">
                 <h4>Configuración:</h4>
-                <select className="third-input-canales" name="config" required>
+                {/* <select className="third-input-canales" name="config" required>
                   {setConfig()}
-                </select>
+                </select> */}
+                <section  className="list-box-sexo">
+                  <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Configuración</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="config"
+                    label="Configuración"
+                    value={configuration}
+                    onChange={handleChangeConfiguration}
+                    required
+                  >
+                    {setConfig()}
+                  </Select>
+                </FormControl>
+                </section>
               </section>
               <section className='display-center'>
                 <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"

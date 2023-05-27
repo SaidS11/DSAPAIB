@@ -1,8 +1,7 @@
 /* eslint-disable prefer-const */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
-import Plot from 'react-plotly.js';
 import PlotP from './PlotP';
+import { PlotSelectionEvent, Shape } from "plotly.js";
 import './Caracterizar.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -25,8 +24,14 @@ import {
   setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
 import styleButton, {
-  styleButtonBiggerGreen,
+  styleButtonBiggerGreen, styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
+import { DataSignalsMongo } from '../Utilities/Constants';
+
+
+export type PlotSelectionState = PlotSelectionEvent & {
+  selections?: Partial<Shape>[];
+ };
 
 interface CaracterizarProps {
   sensoresSelected: any;
@@ -48,31 +53,30 @@ const Caracterizar = (props: CaracterizarProps) => {
     frecuenciaChecked,
     acelerometroChecked,
   } = props;
-  console.log('frecuencia STATUS', frecuenciaChecked);
-  const [localUpdater, setLocalUpdater] = useState(false);
+
   const [colors1, setColors1] = useState(['#00000']);
   const [colors2, setColors2] = useState(['blue']);
   const [colors3, setColors3] = useState(['yellow']);
   const [colors4, setColors4] = useState(['green']);
 
-  const [ventanasSeñal1Emg1, setVentanasSeñal1Emg1] = useState([]);
-  const [ventanasSeñal2Emg2, setVentanasSeñal2Emg2] = useState([]);
-  const [ventanasSeñal3Emg3, setVentanasSeñal3Emg3] = useState([]);
-  const [ventanasSeñal4Emg4, setVentanasSeñal4Emg4] = useState([]);
+  const [ventanasSeñal1Emg1, setVentanasSeñal1Emg1] = useState<any>([]);
+  const [ventanasSeñal2Emg2, setVentanasSeñal2Emg2] = useState<any>([]);
+  const [ventanasSeñal3Emg3, setVentanasSeñal3Emg3] = useState<any>([]);
+  const [ventanasSeñal4Emg4, setVentanasSeñal4Emg4] = useState<any>([]);
 
   const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
   const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
-  const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState([]);
+  const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState<any>([]);
 
   const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
   const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
-  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] = useState(
+  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] = useState<any>(
     []
   );
 
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
-  const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState([]);
+  const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState<any>([]);
 
   const sujetos = useCustomSelector((state) => state.señales.cantidadSujetos);
   const ventanaReduxEmg1 = useCustomSelector(
@@ -98,6 +102,8 @@ const Caracterizar = (props: CaracterizarProps) => {
     (state) => state.señales.ventanasArrayFrecuencia
   );
 
+  const [currentMaxWindows, setCurrentMaxWindows] = useState(0);
+
   const navigate = useNavigate();
   // const [curSelected, setCurSelected] = useState(false);
   const appDispatch = useCustomDispatch();
@@ -118,7 +124,6 @@ const Caracterizar = (props: CaracterizarProps) => {
 
   const [dataX2Emg2, setDataX2Emg2] = useState([0]);
   const [dataY2Emg2, setDataY2Emg2] = useState([0]);
-  console.log('Esto hay en el estado actual', ventanasSeñalGiroscopio);
   const trace2 = {
     x: dataX2Emg2,
     y: dataY2Emg2,
@@ -230,17 +235,14 @@ const Caracterizar = (props: CaracterizarProps) => {
   const retrieveSignal = async () => {
     appDispatch(setIsLoading(true));
 
-    const respuesta = await buscarElementoMongoFront();
+    const respuesta = await buscarElementoMongoFront() as Array<DataSignalsMongo>;
     appDispatch(setIsLoading(false));
-    console.log('Señales', respuesta[0].signals);
-    console.log('this is resp', respuesta);
-    const { signal1 } = respuesta[0].signals;
+    
+    const { signal1 } = respuesta[0]!.signals;
     const { signal2 } = respuesta[0].signals;
     const { signal3 } = respuesta[0].signals;
     const { signal4 } = respuesta[0].signals;
-    const { gsr } = respuesta[0];
 
-    console.log('frecuencia signal 4', signal4);
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -295,16 +297,12 @@ const Caracterizar = (props: CaracterizarProps) => {
         acelerometroSignalLocalX.push(signal4[i].x);
         acelerometroSignalLocalY.push(signal4[i].y);
       }
-      console.log('frecuencia should enter 1', frecuenciaChecked);
       if (frecuenciaChecked) {
-        console.log('frecuencia check1');
         frecuenciaSignalLocalX.push(signal4[i].x);
         frecuenciaSignalLocalY.push(signal4[i].y);
       }
     }
     if (sensoresSelected >= 1) {
-      console.log('This is x', xArrayEmg1);
-      console.log('This is y', yArrayEmg1);
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);
     }
@@ -326,7 +324,6 @@ const Caracterizar = (props: CaracterizarProps) => {
       setColors4(colors4);
     }
 
-    console.log('This is xGSR', giroscopioSignalLocalX);
     if (giroscopioChecked) {
       setGiroscopioDataX(giroscopioSignalLocalX);
       setGiroscopioDataY(giroscopioSignalLocalY);
@@ -335,22 +332,17 @@ const Caracterizar = (props: CaracterizarProps) => {
       setAcelerometroDataX(acelerometroSignalLocalX);
       setAcelerometroDataY(acelerometroSignalLocalY);
     }
-    console.log('frecuencia should enter 2', frecuenciaChecked);
     if (frecuenciaChecked) {
-      console.log('frecuencia check2');
-      console.log('frecuencia init', frecuenciaSignalLocalX);
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
     }
   };
 
-  console.log('DataarrPre', dataArr);
   const numOfPlots = () => {
     const times = 8 - sensoresSelected;
     for (let i = 0; i < times; i += 1) {
       dataArr.pop();
     }
-    console.log('sensores', sensoresSelected);
     // impar aumenta las columns
     let dynamicRows = 0;
     let dynamicColumns = 0;
@@ -383,20 +375,27 @@ const Caracterizar = (props: CaracterizarProps) => {
   };
   let selection: any[] = [];
   let selectedEmg = '';
+  const [selectedLength, setSelectedLength] = useState(0);
+  const [lastEMG, setLastEMG] = useState('');
   const gridLayout = numOfPlots();
+  const [allSelections, setAllSelections] = useState<
+   PlotSelectionState[]
+ >([]);
   const storeSelections = (segment: { points: any[] }) => {
     if (segment.points.length > 0) {
-      console.log('Sele', segment);
+      setAllSelections((curr) => [...curr, segment]);
       selectedEmg = segment.points[0].fullData.name;
+      setLastEMG(selectedEmg)
       const helperArr: any[] = [];
       segment.points.map((ele: { pointNumber: any }) =>
         helperArr.push(ele.pointNumber)
       );
       selection = [...helperArr];
+      onClickSelect();
     }
   };
+  
   const onClickSelect = () => {
-    console.log('Selection', selection);
     if (selection.length > 0) {
       try {
         const colorsLocal1 = [...colors1];
@@ -413,24 +412,23 @@ const Caracterizar = (props: CaracterizarProps) => {
         const ventanasAcelerometroLocal = [];
         const ventanasFrecuenciaLocal = [];
 
-        console.log('Current Colors', colorsLocal1);
-        console.log('name', selectedEmg);
+        
+        setSelectedLength(selection.length);
         for (let i = 0; i < dataX2Emg2.length; i += 1) {
-          console.log('This is it', selection);
           if (i === selection[0]) {
             if (selectedEmg === 'EMG1') {
-              console.log('this is xdata1', dataXEmg1[i]);
-              console.log('frecuencia check3 test xdata', dataXEmg1[i]);
               ventanasLocalEmg1.push({ x: dataXEmg1[i], y: dataYEmg1[i] });
+              colorsLocal1[i] = 'red';
             } else if (selectedEmg === 'EMG2') {
-              console.log('this is xdata2', dataX2Emg2[i]);
               ventanasLocalEmg2.push({ x: dataX2Emg2[i], y: dataY2Emg2[i] });
+              colorsLocal2[i] = 'red';
             } else if (selectedEmg === 'EMG3') {
-              console.log('this is xdata3', dataX3Emg3[i]);
               ventanasLocalEmg3.push({ x: dataX3Emg3[i], y: dataY3Emg3[i] });
+              colorsLocal3[i] = 'red';
             } else if (selectedEmg === 'EMG4') {
-              console.log('this is xdata4', dataX4Emg4[i]);
               ventanasLocalEmg4.push({ x: dataX4Emg4[i], y: dataY4Emg4[i] });
+            colorsLocal4[i] = 'red';
+
             }
             if (giroscopioChecked) {
               ventanasGiroscopioLocal.push({
@@ -450,10 +448,7 @@ const Caracterizar = (props: CaracterizarProps) => {
                 y: frecuenciaDataY[i],
               });
             }
-            colorsLocal1[i] = 'red';
-            colorsLocal2[i] = 'red';
-            colorsLocal3[i] = 'red';
-            colorsLocal4[i] = 'red';
+                        
             selection.shift();
           }
           if (selection.length === 0) {
@@ -461,15 +456,12 @@ const Caracterizar = (props: CaracterizarProps) => {
           }
         }
         selection.length = 0;
-        // console.log('Now i Have', colorsLocal1);
-        // const localArray = [];
         if (selectedEmg === 'EMG1') {
           const localArray = [...ventanasSeñal1Emg1];
           localArray.push(ventanasLocalEmg1);
           setVentanasSeñal1Emg1(localArray);
 
-          console.log('Global', ventanasSeñal1Emg1);
-          console.log('Local', ventanasLocalEmg1);
+          
 
           setColors1([...colorsLocal1]);
         } else if (selectedEmg === 'EMG2') {
@@ -488,7 +480,6 @@ const Caracterizar = (props: CaracterizarProps) => {
           setVentanasSeñal4Emg4(localArray);
           setColors4([...colorsLocal4]);
         }
-        console.log('Estas son las locales', ventanasGiroscopioLocal);
         // Contains con nombre de sensores
         if (giroscopioChecked) {
           const localArrayGiroscopio = [...ventanasSeñalGiroscopio];
@@ -501,10 +492,8 @@ const Caracterizar = (props: CaracterizarProps) => {
           setVentanasSeñalAcelerometro(localArrayAcelerometro);
         }
         if (frecuenciaChecked) {
-          console.log('frecuencia check4');
           const localArrayFrecuencia = [...ventanasSeñalFrecuencia];
           localArrayFrecuencia.push(ventanasFrecuenciaLocal);
-          console.log('frecuencia stored', localArrayFrecuencia);
           setVentanasSeñalFrecuencia(localArrayFrecuencia);
         }
       } catch (ex: any) {
@@ -514,7 +503,22 @@ const Caracterizar = (props: CaracterizarProps) => {
       alert('Seleccione una ventana primero');
     }
   };
+
   const onClickSave = () => {
+    // Comprobacion del numero de ventanas, todos los sensores tienen que tener las 
+    // Mismas ventanas
+    if (ventanasSeñal1Emg1.length !== ventanasSeñal2Emg2.length || 
+      ventanasSeñal2Emg2.length !== ventanasSeñal3Emg3.length ||
+      ventanasSeñal3Emg3.length !== ventanasSeñal4Emg4.length) {
+      alert("El número de ventanas seleccionadas tiene que ser igual en todos los sensores");
+      return;
+    }
+    if (ventanasSeñal1Emg1.length === 0 || ventanasSeñal2Emg2.length === 0 ||
+      ventanasSeñal3Emg3.length === 0 || ventanasSeñal4Emg4.length === 0) {
+      alert("Seleccione al menos una ventana por sensor");
+      return;
+    }
+
     const localArrayEmg1 = [];
     if (sensoresSelected >= 1) {
       ventanaReduxEmg1.map((e) => localArrayEmg1.push(e));
@@ -539,6 +543,8 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayEmg4.push(ventanasSeñal4Emg4);
     }
 
+
+
     const localArrayGiroscopio = [];
     if (giroscopioChecked) {
       ventanaReduxGiroscopio.map((e) => localArrayGiroscopio.push(e));
@@ -553,14 +559,10 @@ const Caracterizar = (props: CaracterizarProps) => {
 
     const localArrayFrecuencia = [];
     if (frecuenciaChecked) {
-      console.log('frecuencia check5');
       ventanaReduxFrecuencia.map((e) => localArrayFrecuencia.push(e));
-      console.log('frecuencia about to be stored', ventanasSeñalFrecuencia);
       localArrayFrecuencia.push(ventanasSeñalFrecuencia);
     }
 
-    // console.log('Esto tiene el estado', ventanasSeñalGiroscopio);
-    // console.log('Esto voy a guardar', localArrayGiroscopio);
 
     appDispatch(setVentanasArrayEmg1(localArrayEmg1));
     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
@@ -574,7 +576,6 @@ const Caracterizar = (props: CaracterizarProps) => {
       appDispatch(setCantidadSujetos(sujetos - 1));
       appDispatch(setIsLoading(true));
       appDispatch(setSignalsIteration(currentIteration + 1));
-      // appDispatch(selectedPatients(localPatients))
       navigate('/blank');
     } else {
       navigate('/caracterizar2');
@@ -585,7 +586,53 @@ const Caracterizar = (props: CaracterizarProps) => {
     retrieveSignal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log('p', selectedPatients);
+  const onClickUndo = () => {
+    setAllSelections((curr) => curr.slice(0, -1))
+    if (lastEMG === 'EMG1') {
+      setVentanasSeñal1Emg1((curr: any) => curr.slice(0, -1));
+      setColors1((curr) => curr.slice(0, -selectedLength))
+    } else if (lastEMG === 'EMG2') {
+      setVentanasSeñal2Emg2((curr: any) => curr.slice(0, -1));
+      const cleanedColors = colors2.map((color: string) => {
+        if (color === 'red') {
+          return 'blue';
+        } else {
+          return color;
+        }
+      })
+      setColors2([...cleanedColors]);
+    } else if (lastEMG === 'EMG3') {
+      setVentanasSeñal3Emg3((curr: any) => curr.slice(0, -1));
+      const cleanedColors = colors3.map((color: string) => {
+        if (color === 'red') {
+          return 'yellow';
+        } else {
+          return color;
+        }
+      })
+      setColors3([...cleanedColors]);
+    } else if (lastEMG === 'EMG4') {
+      const cleanedColors = colors4.map((color: string) => {
+        if (color === 'red') {
+          return 'green';
+        } else {
+          return color;
+        }
+      })
+      setVentanasSeñal4Emg4((curr: any) => curr.slice(0, -1));
+      setColors4([...cleanedColors]);
+    }
+    // Contains con nombre de sensores
+    if (giroscopioChecked) {
+      setVentanasSeñalGiroscopio((curr: any) => curr.slice(0, -1));
+    }
+    if (acelerometroChecked) {
+      setVentanasSeñalAcelerometro((curr: any) => curr.slice(0, -1));
+    }
+    if (frecuenciaChecked) {
+      setVentanasSeñalFrecuencia((curr: any) => curr.slice(0, -1));
+    }
+  }
   return (
     <div>
       <PlotP
@@ -594,6 +641,7 @@ const Caracterizar = (props: CaracterizarProps) => {
         currentIteration={currentIteration}
         storeSelections={storeSelections}
         gridLayout={gridLayout}
+        allSelections={allSelections}
       />
       <section className="display-center">
         Seleccione en una gráfica la ventana a caracterizar, despues presione
@@ -608,8 +656,8 @@ const Caracterizar = (props: CaracterizarProps) => {
         de características.
       </section>
       <section className="display-center">
-        <Button sx={styleButton} onClick={onClickSelect}>
-          Confirmar Ventana
+        <Button sx={styleButtonBiggerRed} onClick={onClickUndo}>
+          Descartar Ultima Ventana
         </Button>
       </section>
       <section className="display-center">

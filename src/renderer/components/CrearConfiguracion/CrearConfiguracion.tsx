@@ -3,24 +3,34 @@
 import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import { InputLabel, FormControl, MenuItem } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {
   styleButtonBiggerGreen, checkBoxConfig,
 } from '../VerPaciente/ButtonStyle';
+import { Dispatch, SetStateAction } from 'react';
 
 export interface CrearConfigProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
+  canales: string;
+  setCanales: Dispatch<SetStateAction<string>>
 }
 
 const CrearAnalisis = (props: CrearConfigProps) => {
-  const { onClickNav } = props;
+  const { onClickNav, canales, setCanales } = props;
   const variable = "EMG's"
+  
+  const handleChangeCanales = (event: SelectChangeEvent) => {
+    setCanales(event.target.value as string);
+  };
 
   const numofEmgs = () => {
     const emgs = [];
-
     for(let i=1; i<=8; i++) {
       emgs.push(
-        <option value={`${i}`} key={i}>{`${i}`}</option>
+        // <option value={`${i}`} key={i}>{`${i}`}</option>
+        <MenuItem key={i} value={i}>{`${i}`}</MenuItem>
+
       )
     }
     return emgs;
@@ -41,11 +51,27 @@ const CrearAnalisis = (props: CrearConfigProps) => {
               <h4>Descripción:</h4>
               <textarea className="second-input" name="descripcion" required/>
             </section>
-            <section className="display-flex">
+            <section className="display-flexAgregar">
               <h4>Canales {variable}:</h4>
-              <select className="third-input-canales" name="canales" required>
+              {/* <select className="third-input-canales" name="canales" required>
                 {numofEmgs()}
-              </select>
+              </select> */}
+              <section  className="list-box-sexo">
+                <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Canales</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="canales"
+                  label="Canales"
+                  value={canales}
+                  onChange={handleChangeCanales}
+                  required
+                >
+                  {numofEmgs()}
+                </Select>
+                </FormControl>
+              </section>
             </section>
             <section className='display-flex'>
                 <h4>Sensores Adicionales</h4>

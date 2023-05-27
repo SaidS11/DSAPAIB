@@ -16,6 +16,10 @@ declare global {
       ipcRenderer: {
         copiarArchivo(fileImagenDB: string, destino: string): unknown;
         copiarAr(arg0: (event: any, resp: any) => void): unknown;
+        sensores(): unknown;
+        senso(arg0: (event: any, resp: any) => void): unknown;
+        sensoresStop(): unknown;
+        sensoStop(): unknown;
         insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoMongo(archivo: string): unknown;
         buscarElementoM(archivo: string): Array<object>;

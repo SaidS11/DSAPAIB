@@ -50,18 +50,10 @@ const VideoDemo = (props: VideoDemoProps) => {
         </video>
       </section>
       <section className="display-center">
-        {probando && (
-          <Button sx={styleButtonBigger} onClick={onClickDetener}>
-            Detener
-          </Button>
-        )}
         {!probando && (
           <>
             <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
               Iniciar Adquisición
-            </Button>
-            <Button sx={styleButtonBigger} onClick={onClickProbar}>
-              Captura de Sensores
             </Button>
             <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
               Regresar

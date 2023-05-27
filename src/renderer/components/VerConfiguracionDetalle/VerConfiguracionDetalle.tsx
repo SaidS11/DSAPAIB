@@ -68,7 +68,7 @@ const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
               ) : (
                 <Checkbox disabled sx={checkBoxConfig} name="ritmo" value="0" />
               )}
-              {resp[0].frecuencia === true ? (
+              {resp[0].frecuencia_cardiaca === true ? (
                 <Checkbox
                   checked
                   disabled

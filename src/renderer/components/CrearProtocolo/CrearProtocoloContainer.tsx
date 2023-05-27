@@ -15,8 +15,11 @@ interface Config {
 const CrearProtocoloContainer = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({});
+  const [configuration, setConfiguration] = useState('');
+
   const doctor = useCustomSelector((state) => state.login.loggedUser);
   const appDispatch = useCustomDispatch();
+
   // Load Data for the rows
   async function loadData() {
     console.log('Fui llamado');
@@ -74,7 +77,7 @@ const CrearProtocoloContainer = () => {
 
   return (
     <div>
-      <CrearProtocolo onClickCrear={onClickCrear} data={data}/>
+      <CrearProtocolo onClickCrear={onClickCrear} data={data} configuration={configuration} setConfiguration={setConfiguration}/>
     </div>
   );
 };

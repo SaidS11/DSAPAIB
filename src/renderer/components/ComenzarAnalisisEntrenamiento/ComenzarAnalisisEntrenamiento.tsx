@@ -12,7 +12,7 @@ import {
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { useMemo, useState } from 'react';
+import { Dispatch, FormEvent, SetStateAction, useMemo, useState } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -29,15 +29,15 @@ interface ComenzarAnalisisEntrenamientoProps {
   data: any;
   dataAlgoritmo: any;
   options: TableOptions<{ col1: string, col2: string }>;
-  onClickNav: (arg0: any) => void;
+  onClickNav: (arg0: FormEvent<HTMLFormElement>) => void;
   onClickStop: () => void;
   toggleModal: any;
   modelo: string;
-  setModelo: any;
-  setProtocolo: any;
+  setModelo: Dispatch<SetStateAction<string>>;
+  setProtocolo: Dispatch<SetStateAction<string>>;
   protocolo: string; 
-  setFiltroSexo: any;
-  filtroSexo: any;
+  setFiltroSexo: Dispatch<SetStateAction<string>>;
+  filtroSexo: string;
   // setSelectedPatientsLocal: any;
 }
 
@@ -186,7 +186,7 @@ const ComenzarAnalisisEntrenamiento = (
           </section>
           }
           <section className="display-flexAgregar">
-            <h3>Numero de Iteraciones: </h3>
+            <h3>Numero de K(Folds): </h3>
             <input type="number" name="iteraciones" required min="1" max="500" />
           </section>
           <section className="display-flexAgregar">

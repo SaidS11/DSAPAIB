@@ -10,6 +10,8 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
+import { InputLabel, FormControl, MenuItem } from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface VerProtocolo2Props {
@@ -48,11 +50,21 @@ const VerProtocolo2 = (
             <h3>Descripción: </h3>
             <textarea className="second-input" name="descripcion" value={resp[0].descripcion === null ? "..." : resp[0].descripcion} required disabled />
           </section>
-          <section className="display-flex" style = {{ marginRight: "20%" }}>
+          <section className="display-flexAgregar" style = {{ marginRight: "20%" }}>
             <h3>Configuracion: </h3>
-            <select className="third-input-canales">
-                <option value={`${resp[0].configuracion}`}>{resp[0].configuracion}</option>
-            </select>
+            <section  className="list-box-sexo">
+              <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Configuración</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="config"
+                label="Configuración"
+              >
+                <MenuItem key={resp[0].configuracion} value={`${resp[0].configuracion}`}>{resp[0].configuracion}</MenuItem>
+              </Select>
+            </FormControl>
+            </section>
           </section>
         <br />
       <div className='display-center'>
