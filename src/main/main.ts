@@ -762,18 +762,31 @@ app2.delete('/borrarElementoMongo', async (req: Request, res: Response) => {
 // /////////////////////PARTE DE ARCHIVOS///////////////////////
 app2.post('/moverArchivos', async (req: Request, res: Response) => {
   try {
-    const { ruta } = req.body;
+    const { ruta, fileName } = req.body;
+    const direc = __dirname;
+    console.log("Direc", direc)
+    const regex = /\\/g;
+    const direcParsed = direc.replace(regex, '/');
+    const rutaAcomodada = ruta.replace(regex, '/');
+    console.log("Direcparded", direcParsed);
+    const direcFinal = direcParsed.slice(0, -4);
+    console.log("direcfinal", direcFinal)
     const destino =
-      'C:/Users/play_/OneDrive/Escritorio/electron-app/src/main/public/text.mp4';
-    console.log(ruta);
-    await fs.copyFile(ruta, destino, (err) => {
+      `${direcFinal}main/public/${fileName}`;
+    console.log(fileName);
+    console.log(rutaAcomodada);
+    console.log(destino);
+    await fs.copyFile(rutaAcomodada, destino, (err) => {
       if (err) {
-        res.send('Error al copiar el archivo:');
+        console.log("Error", err)
+        res.send('Error al copiar el archivo:  ');
       } else {
+        console.log("OK")
         res.send('Archivo copiado exitosamente.');
       }
     });
   } catch (error) {
+    console.log("ERROR", error)
     res.status(500).json({ error: 'Error al insertar datos' });
   }
 });

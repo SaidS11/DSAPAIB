@@ -97,18 +97,18 @@ const CrearConfiguracionMultimediaContainer = () => {
         const {files} = imgObj
         const file = files![0]
         const fileNameImagen = file.name
-        console.log(fileNameImagen)
         const rutaImagen = file.path
-        console.log(rutaImagen)
-        const destinoImagen = `.\\src\\main\\public\\${fileNameImagen}`
+        console.log("RUTA imagen", rutaImagen);
+        console.log("Filename imagen", fileNameImagen);
         const datosImagen = {
-          ruta: rutaImagen
+          ruta: rutaImagen,
+          fileName: fileNameImagen
         }
-        /* const response = await fetch("http://localhost:8000/moverArchivos", {
+        const response = await fetch("http://localhost:8000/moverArchivos", {
           method: 'POST',
           body: JSON.stringify(datosImagen),
           headers: {'Content-Type': 'application/json'}
-        }); */
+        });
         // window.electron.ipcRenderer.copiarArchivo(fileImagenDB, destino);
 
 
@@ -116,11 +116,11 @@ const CrearConfiguracionMultimediaContainer = () => {
         const file2 = files2![0]
         fileNameVideo = file2.name
         const rutaVideo = file2.path
-        console.log(rutaVideo)
-        console.log(fileNameVideo)
-        const destinoVideo = `.\\src\\main\\public\\${fileNameVideo}`
+        console.log("RUTA VIDEO", rutaVideo);
+        console.log("Filename VIDEO", fileNameVideo)
         const datosVideo = {
-          ruta: rutaVideo
+          ruta: rutaVideo,
+          fileName: fileNameVideo
         }
 
         const response2 = await fetch("http://localhost:8000/moverArchivos", {

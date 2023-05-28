@@ -16,7 +16,7 @@ export interface CrearConfigProps {
   setCanales: Dispatch<SetStateAction<string>>
 }
 
-const CrearAnalisis = (props: CrearConfigProps) => {
+const CrearConfiguracion = (props: CrearConfigProps) => {
   const { onClickNav, canales, setCanales } = props;
   const variable = "EMG's"
   
@@ -104,4 +104,4 @@ const CrearAnalisis = (props: CrearConfigProps) => {
       );
 };
 
-export default CrearAnalisis;
+export default CrearConfiguracion;
