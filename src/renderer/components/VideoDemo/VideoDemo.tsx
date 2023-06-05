@@ -1,38 +1,20 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import React from 'react';
 import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
-  styleButtonBigger,
 } from '../VerPaciente/ButtonStyle';
-import ProbarSensores from '../ProbarSensores/ProbarSensores';
 import './VideoDemo.css';
 
 export interface VideoDemoProps {
   onClickNav: () => void;
   url: string;
-  onClickProbar: () => void;
-  onClickDetener: () => void;
   onClickBack: () => void;
   probando: boolean;
-  sensores: number;
 }
 
 const VideoDemo = (props: VideoDemoProps) => {
-  const {
-    onClickNav,
-    url,
-    onClickProbar,
-    onClickDetener,
-    onClickBack,
-    probando,
-    sensores,
-  } = props;
+  const { onClickNav, url, onClickBack, probando } = props;
   // const navigate = useNavigate();
 
   return (

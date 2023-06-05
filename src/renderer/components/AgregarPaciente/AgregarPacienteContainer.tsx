@@ -1,29 +1,43 @@
-// eslint-disable-next-line import/no-named-as-default
 import { useNavigate } from 'react-router-dom';
 import {
   setErrorDetails,
   setFailUpload,
+  setFallosAlCargar,
   setIsLoading,
   setIsUploaded,
 } from '../../../redux/slices/StatusSlice';
-// eslint-disable-next-line import/no-named-as-default
 import { useCustomDispatch } from '../../../redux/hooks';
 import {
   setUsuarioPaciente,
   setDatosPaciente,
 } from '../../../redux/slices/PacienteSlice';
 import AgregarPaciente from './AgregarPaciente';
+import { apiEndpoint } from '../Utilities/Constants';
+
+interface Cols {
+  col1: string;
+  col2: string;
+  col3: string;
+  col4: string;
+  col5: string;
+}
+
+interface PacienteInterface {
+  email: string;
+  telefono: string;
+  fechaNacimiento: Date;
+  nombrePaciente: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  sexo: string;
+  peso: number;
+  estatura: number;
+}
 
 const AgregarPacienteContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
-  interface Cols {
-    col1: string;
-    col2: string;
-    col3: string;
-    col4: string;
-    col5: string;
-  }
+
   let dataPaciente: Cols[] = [];
   async function insertData(data: any) {
     const user =
@@ -41,39 +55,72 @@ const AgregarPacienteContainer = () => {
     appDispatch(setUsuarioPaciente(user.toLowerCase()));
     appDispatch(setDatosPaciente(dataPaciente));
     dataPaciente = [];
-    window.Bridge.insertPaciente(
-      user.toLowerCase(),
-      data.email,
-      data.telefono,
-      data.fechaNacimiento,
-      data.nombrePaciente,
-      data.apellidoPaterno,
-      data.apellidoMaterno
+    // window.Bridge.insertPaciente(
+    //   user.toLowerCase(),
+    //   data.email,
+    //   data.telefono,
+    //   data.fechaNacimiento,
+    //   data.nombrePaciente,
+    //   data.apellidoPaterno,
+    //   data.apellidoMaterno
+    // );
+    const pacienteObj = {
+      usuario: user.toLowerCase(),
+      email: data.email,
+      telefono: data.telefono,
+      fechaNacimiento: data.fechaNacimiento,
+      nombre: data.nombrePaciente,
+      apellidoP: data.apellidoPaterno,
+      apellidoM: data.apellidoMaterno,
+      sexo: data.sexo,
+      peso: data.peso,
+      estatura: data.estatura,
+    };
+    const insertImplementacion = await fetch(
+      `${apiEndpoint}/insertarPaciente`,
+      {
+        method: 'POST',
+        body: JSON.stringify(pacienteObj),
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
-  }
-  window.Bridge.insertP((event: any, resp: any) => {
-    if (resp[0] === 0) {
-      console.log('Despacho error', resp[1]);
-      appDispatch(setFailUpload(true));
-      appDispatch(setIsLoading(false));
-      appDispatch(setErrorDetails(resp[1]));
-    } else {
-      console.log('Correcto');
-      appDispatch(setIsLoading(false));
-      appDispatch(setIsUploaded(true));
-      navigate('/verPaciente');
+    if (insertImplementacion.status === 500) {
+      // alert("Error al copiar los archivos: " + response.statusText);
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(
+        setErrorDetails(
+          `Error al agregar al paciente: ${insertImplementacion.statusText}`
+        )
+      );
+      return;
     }
-  });
+    appDispatch(setIsUploaded(true));
+  }
+  // window.Bridge.insertP((event: any, resp: any) => {
+  //   if (resp[0] === 0) {
+  //     console.log('Despacho error', resp[1]);
+  //     appDispatch(setFailUpload(true));
+  //     appDispatch(setIsLoading(false));
+  //     appDispatch(setErrorDetails(resp[1]));
+  //   } else {
+  //     console.log('Correcto');
+  //     appDispatch(setIsLoading(false));
+  //     appDispatch(setIsUploaded(true));
+  //     navigate('/verPaciente');
+  //   }
+  // });
 
-  const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
-    // appDispatch(setIsLoading(true));
+  const onClickNav = async (e: React.FormEvent<HTMLFormElement>) => {
+    appDispatch(setIsLoading(true));
     e.preventDefault();
     /* navigate('/escogerConfiguracion'); */
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
-    const data = Object.fromEntries(new FormData(form).entries());
-    // console.log('la data', data);
-    insertData(data);
+    const formData = Object.fromEntries(new FormData(form).entries());
+    const dataPaciente = formData as unknown;
+    await insertData(dataPaciente);
+    appDispatch(setIsLoading(false));
+    navigate('/verPaciente');
   };
   return (
     <div>

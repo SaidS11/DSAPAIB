@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import { setConfigPrimerPaso } from '../../../redux/slices/ConfiguracionSlice';
 // eslint-disable-next-line import/no-named-as-default
 import { useCustomDispatch } from '../../../redux/hooks';
 import CrearConfiguracion from './CrearConfiguracion';
-import { useState } from 'react';
 
 const CrearConfiguracionContainer = () => {
   const navigate = useNavigate();

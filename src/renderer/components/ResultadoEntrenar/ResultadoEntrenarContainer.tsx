@@ -2,10 +2,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DialogProps } from '@mui/material/Dialog';
-import { setIsLoading, setIsUploaded } from '../../../redux/slices/StatusSlice';
+import {
+  setErrorDetails,
+  setFallosAlCargar,
+  setIsLoading,
+  setIsUploaded,
+} from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import ResultadoEntrenar from './ResultadoEntrenar';
-import { AnalisisParamsInterface } from '../Utilities/Constants';
+import { AnalisisParamsInterface, apiEndpoint } from '../Utilities/Constants';
 import ModalVerMas from '../Utilities/ModalVerMas';
 import SaveModelModal from '../Utilities/SaveModelModal';
 
@@ -47,97 +52,124 @@ const ResultadoEntrenarContainer = () => {
   const precisionPromedio = parsedResp[4];
   const desviacion = parsedResp[5];
   const respAnalisis = parsedResp[6];
-  console.log('This is resp', respAnalisis);
   const banderaExistente = parsedResp[7];
-  console.log('this is flag', banderaExistente);
   const precisionPromedioParsed = parseInt(precisionPromedio, 10) * 100;
   const precisionPromParsString = precisionPromedioParsed.toString();
-  console.log('Crosses', precisionPromedio, desviacion);
   const crossParsed = `Precision promedio de ${precisionPromedio} con una desviacion estandar de ${desviacion}`;
   // "Precision promedio de %0.2f con una desviacion estandar de %0.2f"
   /* if (precision === '00') {
     precision = `${parsedResp[1].substring(1, 1)}00`;
   } */
-  console.log('precision', precision);
   const [open, setOpen] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
+  const [open2, setOpen2] = useState(false);
+  const tipo = parsedResp[0];
+
   const toggleModalVerMas = (scrollType: DialogProps['scroll']) => {
     setOpen(!open);
     setScroll(scrollType);
   };
 
-  const [open2, setOpen2] = useState(false);
   const toggleModalGuardar = () => {
     setOpen2(!open2);
   };
-  const tipo = parsedResp[0];
-  async function updateData() {
-    appDispatch(setIsLoading(true));
-    window.electron.ipcRenderer.updateImplementacion(
-      precisionPromParsString,
-      desviacion,
-      '1',
-      'nombre asignado'
-    );
-  }
-  window.electron.ipcRenderer.updateIm((event: any, respLocal: any) => {
-    console.log('Esta es', respLocal);
-    appDispatch(setIsLoading(false));
-    appDispatch(setIsUploaded(true));
-  });
 
-  const onClickSave = useCallback(() => {
-    // toggleModalGuardar()
-    // setOpen2(!open2);
-
-    appDispatch(setIsLoading(true));
-
+  async function actualizarModelo() {
     const customResults = {
       Precisión: precision,
       F1: f1,
       Recall: recall,
     };
+
     const customStrResults = JSON.stringify(customResults);
+
+    const modeloObj = {
+      resultados: customStrResults,
+      entrenado: '1',
+      nombre: nombreSeleccionado,
+    };
+    const updateModelo = await fetch(`${apiEndpoint}/actualizarModelo`, {
+      method: 'PATCH',
+      body: JSON.stringify(modeloObj),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (updateModelo.status === 500) {
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(
+        setErrorDetails(
+          `Error al insertar la configuracion: ${updateModelo.statusText}`
+        )
+      );
+      return;
+    }
+    appDispatch(setIsUploaded(true));
+  }
+
+  async function insertModelo() {
+    const customResults = {
+      Precisión: precision,
+      F1: f1,
+      Recall: recall,
+    };
+
+    const customStrResults = JSON.stringify(customResults);
+
+    const implementacionObj = {
+      nombre: nombreSeleccionado,
+      algoritmo_ia: algoritmoSeleccionado,
+      protocolo: protocoloUsado,
+      entrenado: true,
+      resultados: customStrResults,
+    };
+    const insertModeloRequest = await fetch(`${apiEndpoint}/insertarModelo`, {
+      method: 'POST',
+      body: JSON.stringify(implementacionObj),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (insertModeloRequest.status === 500) {
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(
+        setErrorDetails(
+          `Error al insertar la configuracion: ${insertModeloRequest.statusText}`
+        )
+      );
+      return;
+    }
+    appDispatch(setIsUploaded(true));
+  }
+
+  // async function updateData() {
+  //   appDispatch(setIsLoading(true));
+  //   window.electron.ipcRenderer.updateImplementacion(
+  //     precisionPromParsString,
+  //     desviacion,
+  //     '1',
+  //     'nombre asignado'
+  //   );
+  // }
+  // window.electron.ipcRenderer.updateIm((event: any, respLocal: any) => {
+  //   console.log('Esta es', respLocal);
+  //   appDispatch(setIsLoading(false));
+  //   appDispatch(setIsUploaded(true));
+  // });
+
+  const onClickSave = useCallback(async () => {
+    // toggleModalGuardar()
+    // setOpen2(!open2);
     appDispatch(setIsLoading(true));
     if (banderaExistente === 'true') {
-      window.electron.ipcRenderer.updateModelo(
-        customStrResults,
-        '1',
-        nombreSeleccionado
-      );
+      await actualizarModelo();
     } else {
-      window.electron.ipcRenderer.insertModeloIA(
-        nombreSeleccionado,
-        algoritmoSeleccionado,
-        true,
-        protocoloUsado || 'undefined',
-        customStrResults
-      );
+      await insertModelo();
     }
     setIsSaved(true);
+    appDispatch(setIsLoading(false));
 
     // navigate('/video');
     // updateData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  window.electron.ipcRenderer.updateMod((event: any, respLocal: any) => {
-    console.log('Esta es', respLocal);
-    appDispatch(setIsLoading(false));
-    appDispatch(setIsUploaded(true));
-  });
-  window.electron.ipcRenderer.insertModIA((event: any, respInsert: any) => {
-    if (respInsert > 0) {
-      console.log('insert', respInsert[0]);
-      if (respInsert[0] === 0) {
-        console.log('Failed', respInsert[1]);
-      }
-    } else {
-      console.log(respInsert);
-    }
-    appDispatch(setIsLoading(false));
-    appDispatch(setIsUploaded(true));
-  });
 
   const onClickProbar = () => {
     if (probando === false) {

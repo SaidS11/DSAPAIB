@@ -1,13 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-props-no-spreading */
 import Button from '@mui/material/Button';
-import {
-  useTable,
-  TableOptions,
-  useSortBy,
-  useFilters,
-  HeaderGroup,
-} from 'react-table';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -21,20 +14,10 @@ interface VerModeloProps {
 
 const VerModelo = (props: VerModeloProps) => {
   const { resp } = props;
-  const numofModels = () => {
-    const models = [];
-
-    // eslint-disable-next-line no-plusplus
-    for (let i = 1; i <= 3; i++) {
-      models.push(<option value={`Modelo${i}`}>{`Modelo ${i}`}</option>);
-    }
-    return models;
-  };
   const [tipo, setTipo] = useState(resp.algoritmo_ia);
   const handleChange = (event: SelectChangeEvent) => {
     const word = event.target.value;
     setTipo(word);
-    console.log(word);
   };
 
   return (

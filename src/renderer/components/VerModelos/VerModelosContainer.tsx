@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
@@ -32,13 +31,10 @@ const VerModelosContainer = () => {
   const datarRetrieved: Cols[] = [];
   // Load Data for the rows
   async function loadData() {
-    console.log('Fui llamado');
     appDispatch(setIsLoading(true));
     const resp: Config[] =
       (await window.electron.ipcRenderer.selectModNom()) as Array<Config>;
-    console.log('Esta es', resp);
     if (resp.length > 0) {
-      console.log('si es', resp);
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < resp.length; i++) {
         datarRetrieved.push({
@@ -46,14 +42,10 @@ const VerModelosContainer = () => {
         });
       }
       setData(datarRetrieved);
-    } else {
-      console.log('nada');
     }
     appDispatch(setIsLoading(false));
   }
-  console.log('estoy rendereando antes de detalle');
   useEffect(() => {
-    console.log('updated lista config');
     loadData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,10 +63,7 @@ const VerModelosContainer = () => {
   }
   window.electron.ipcRenderer.selectImplementacionPorN((event: any, resp: any) => {
     if (resp.length > 0) {
-      console.log('Este es el detalle click', resp);
       appDispatch(setModeloDetalle(resp[0]));
-    } else {
-      console.log('nada en detalle');
     }
     appDispatch(setIsLoading(false));
     navigate('/verModelo');

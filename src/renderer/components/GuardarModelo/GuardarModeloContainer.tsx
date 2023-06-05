@@ -151,7 +151,7 @@ const GuardarModeloContainer = () => {
   const onClickBack = () => {
     navigate('/entrenar');
   };
-  
+
   return (
     <GuardarModelo
       dataAlgoritmo={dataAlgoritmo}

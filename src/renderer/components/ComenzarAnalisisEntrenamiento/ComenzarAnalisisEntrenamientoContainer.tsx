@@ -18,12 +18,13 @@ import {
 } from '../../../redux/slices/StatusSlice';
 import ComenzarAnalisisEntrenamiento from './ComenzarAnalisisEntrenamiento';
 import ModalVerMas from '../Utilities/ModalVerMas';
-import { PacientesAnalisisMongo } from '../Utilities/Constants';
+import { PacientesAnalisisMongo, apiEndpoint } from '../Utilities/Constants';
 
 interface Config {
   modelo: string;
   algoritmo: string;
 }
+// 'Error|n_splits=3 cannot be greater than the number of members in each class.'
 
 const ComenzarAnalisisEntrenamientoContainer = () => {
   const [dataParam, setDataParam] = useState({});
@@ -71,10 +72,20 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     appDispatch(setIsLoading(true));
     const document = { protocol: protocolo };
     const jsonDocument = JSON.stringify(document);
+    console.log('JSON', jsonDocument);
     try {
+      // console.log("TRYING")
+      // const resPacientes = await fetch(`${apiEndpoint}/buscarElementoMongo`, {
+      //   method: 'GET',
+      //   body: JSON.stringify(jsonDocument),
+      //   headers: {'Content-Type': 'application/json'}
+      // });
+      // console.log("RespPacientes", resPacientes);
+
       const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
         jsonDocument
       )) as Array<PacientesAnalisisMongo>;
+
       for (let i = 0; i < pacientes.length; i += 1) {
         datarRetrieved.push({
           col1: pacientes[i].name,
@@ -83,7 +94,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
       }
       setData(datarRetrieved);
     } catch (error: any) {
-      alert('Error while retrieving data');
+      console.log('er', error);
+      alert(`Error while retrieving data${error}`);
     }
     appDispatch(setIsLoading(false));
   }
@@ -172,17 +184,16 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
 
   const onClickNav = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = document.querySelector('form') as
-      | HTMLFormElement
-      | undefined;
+    const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
-    const numIteraciones = parseInt(dataF.iteraciones.toString())
+    const numIteraciones = parseInt(dataF.iteraciones.toString());
     if (selectedPatients.length <= 0) {
       alert('Seleccione al menos un paciente');
-    } else if (selectedPatients.length > numIteraciones) {
-      alert('Los K folds no pueden ser menores al numero de pacientes seleccionados');
-    } else {
-      
+    }
+    // else if (selectedPatients.length > numIteraciones) {
+    //   alert('Los K folds no pueden ser menores al numero de pacientes seleccionados');
+    // }
+    else {
       console.log('la data', dataF);
       appDispatch(setPredictMode(false));
       appDispatch(setAnalisisParams(dataF));

@@ -1,18 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { useTable, Column } from 'react-table';
-import MaUTable from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-
-import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import {  Column } from 'react-table';
+import React from 'react';
 import { useCustomSelector } from '../../../redux/hooks';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
-
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import ResultsTable from './ResultsTable';
 
 interface ResultsTableContainerInterface {
@@ -70,7 +58,6 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
 
   // const respStringTest = '{"colMediaABSEMG1":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaEMG1":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSEMG1":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colMedianaEMG2":{"0":8.5,"1":16.0,"2":8.5,"3":16.0,"4":4.5,"5":14.5,"6":4.5,"7":14.5},"colRMSEMG2":{"0":8.57,"1":16.06,"2":8.57,"3":16.06,"4":4.81,"5":14.6,"6":4.81,"7":14.6},"colMediaABSGiroscopio":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaGiroscopio":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSGiroscopio":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"colMediaABSAcelerometro":{"0":3.33,"1":10.75,"2":3.33,"3":10.75,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colMedianaAcelerometro":{"0":3.0,"1":10.5,"2":3.0,"3":10.5,"4":2.5,"5":8.0,"6":2.5,"7":8.0},"colRMSAcelerometro":{"0":3.56,"1":10.85,"2":3.56,"3":10.85,"4":2.55,"5":8.12,"6":2.55,"7":8.12},"etiqueta":{"0":"sano","1":"diabetico","2":"sano","3":"diabetico","4":"sano","5":"sano","6":"sano","7":"sano"},"nombre":{"0":"Karla","1":"Karla","2":"Martha Garcia Lopez","3":"Martha Garcia Lopez","4":"Sujeto Prueba 1","5":"Sujeto Prueba 1","6":"Sujeto Prueba 2","7":"Sujeto Prueba 2"}}'
   const parsedRespObj = JSON.parse(stringObjData);
-  console.log('this is parsed', parsedRespObj);
 
   const getData = () => {
     const objSensoresData: Cols[] = [];
@@ -132,7 +119,6 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
       }
 
       Object.assign(dataJson, { etiqueta: parsedRespObj.etiqueta[i] });
-      console.log('Calculated1', dataJson);
       objSensoresData.push(dataJson);
     }
     return objSensoresData;
@@ -143,7 +129,6 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-  console.log('DAta', data);
 
   const sensoresNames = ['EMG1', 'EMG2', 'EMG3', 'EMG4'];
   const sensoresExtraNames = ['GSR Promedio', 'Acelerometro Promedio'];

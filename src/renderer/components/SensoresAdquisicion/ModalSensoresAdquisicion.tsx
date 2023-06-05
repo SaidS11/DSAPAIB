@@ -30,19 +30,12 @@ export interface ModalProps {
 }
 
 export default function ModalSensoresAdquisicion(props: ModalProps) {
-  const {
-    toggleModal,
-    open,
-    setPortSelected,
-    setBaudSelected,
-  } = props;
+  const { toggleModal, open, setPortSelected, setBaudSelected } = props;
   const [puerto, setPuerto] = React.useState('');
   const [baudRate, setBaudRate] = React.useState('9600');
   const [puertos, setPuertos] = React.useState([]);
 
-
   const handleChangePuerto = (event: SelectChangeEvent) => {
-    console.log('puerto', event.target.value as string);
     setPuerto(event.target.value as string);
     setPortSelected(event.target.value as string);
   };
@@ -61,9 +54,8 @@ export default function ModalSensoresAdquisicion(props: ModalProps) {
   };
   window.Bridge.cargarP((event: any, ports: any) => {
     const nombresSet = ports;
-    console.log('reading', ports);
     const select: any = [];
-    for (let i = 0; i < nombresSet.length; i+=1) {
+    for (let i = 0; i < nombresSet.length; i += 1) {
       // select.push(<MenuItem value={nombresSet[i].path}>{nombresSet[i].path}</MenuItem>)
       select.push(
         <MenuItem key={nombresSet[i].path} value={nombresSet[i].path}>

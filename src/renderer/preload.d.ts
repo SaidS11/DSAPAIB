@@ -55,6 +55,8 @@ declare global {
         selectModIA(): Array<ModeloIAInterface>;
         preAnalisisPython(datos: string): unknown;
         preAnalisisP(arg0: (event: any, resp: any) => void): unknown;
+        arduinoTest(): unknown;
+        arduinoT(arg0: (event: any, resp: any) => void): unknown;
         insertModeloIA(
           nombre: string,
           algoritmo_ia: string,

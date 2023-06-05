@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/prop-types */
 import Plot from 'react-plotly.js';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import {
-  styleButtonBiggerGreen, styleButtonBiggerRed
+  styleButtonBiggerGreen,
+  styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 
 const SensoresAdquisicion = ({
@@ -152,38 +154,6 @@ const SensoresAdquisicion = ({
     trace8,
   ];
 
-  let numY = 0;
-  let numX = 0;
-
-  const onClickAdd = () => {
-    numX = dataX.at(-1) + 2;
-    numY = dataY.at(-1) + 1;
-    console.log(dataX);
-
-    setDataX(dataX.concat(numX));
-    setDataY(dataY.concat(numY));
-
-    setDataX2(dataX2.concat(numX + 3));
-    setDataY2(dataY2.concat(numY + 1));
-
-    setDataX3(dataX3.concat(numX + 10));
-    setDataY3(dataY3.concat(numY));
-
-    setDataX4(dataX4.concat(numX + 1));
-    setDataY4(dataY4.concat(numY));
-
-    setDataX5(dataX5.concat(numX + 12));
-    setDataY5(dataY5.concat(numY));
-
-    setDataX6(dataX6.concat(numX + 8));
-    setDataY6(dataY6.concat(numY));
-
-    setDataX7(dataX7.concat(numX + 9));
-    setDataY7(dataY7.concat(numY + 3));
-
-    setDataX8(dataX8.concat(numX + 5));
-    setDataY8(dataY8.concat(numY));
-  };
   const numOfPlots = () => {
     const times = 8 - sensoresSelected;
     // eslint-disable-next-line no-plusplus
@@ -222,21 +192,14 @@ const SensoresAdquisicion = ({
   };
   const gridLayout = numOfPlots();
   const processSelections = (segment) => {
-    console.log('Sele', segment);
-    const myPlot = document.getElementById('myDiv');
     let pn = '';
     let tn = '';
     const colorsL = [...colors];
-    console.log('colors before', colorsL);
 
     for (let i = 0; i < segment.points.length; i += 1) {
       pn = segment.points[i].pointNumber;
       tn = segment.points[i].curveNumber;
     }
-    console.log('Colors after', colorsL);
-    const upd = {
-      marker: { colors: colorsL },
-    };
     setColors([...colorsL]);
   };
 
@@ -255,7 +218,7 @@ const SensoresAdquisicion = ({
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
         onSelected={(selection) => processSelections(selection)}
-        onRestyle={(d) => console.log('Res', d)}
+        // onRestyle={(d) => console.log('Res', d)}
         divId="myDiv"
       />
       <section className="display-center">
@@ -274,7 +237,6 @@ const SensoresAdquisicion = ({
           Detener Lectura
         </Button>
       </section>
-
     </div>
   );
 };

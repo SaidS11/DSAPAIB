@@ -34,9 +34,6 @@ function Navegacion(props: NavProps) {
               <NavDropdown.Item onClick={() => onClickNav('probarSensores')}>
                 Probar Sensores
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('caracterizar')}>
-                Caracterizar
-              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Análisis" id="collasible-nav-dropdown">
               <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
@@ -82,10 +79,14 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Algoritmo" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('verAlgoritmos')}>
+              <NavDropdown.Item
+                onClick={() => onClickNav('verImplementaciones')}
+              >
                 Ver Algoritmo
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('verModelos')}>
+              <NavDropdown.Item
+                onClick={() => onClickNav('verImplementaciones')}
+              >
                 Ver Implementaciones
               </NavDropdown.Item>
               <NavDropdown.Item

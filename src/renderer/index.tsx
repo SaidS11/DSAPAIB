@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
-import { StrictMode } from 'react';
+// import { StrictMode } from 'react';
 import { Provider } from 'react-redux';
 import { store as CustomStore } from '../redux/store';
 import App from './App';

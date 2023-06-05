@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-named-as-default
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
@@ -14,6 +13,7 @@ import {
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
+import { apiEndpoint } from '../Utilities/Constants';
 
 interface ConfLocal {
   emgs: number;
@@ -55,7 +55,10 @@ const VideoDemoContainer = () => {
   const onClickBack = () => {
     navigate('/colocacionMuestra');
   };
-  const url = `${multimediaObj[0].link_video}`;
+  const urlRetrieved = `${multimediaObj[0].link_video}`;
+  const url = urlRetrieved.includes('http')
+    ? urlRetrieved
+    : `${apiEndpoint}/${multimediaObj[0].link_video}`;
 
   async function loadConfig() {
     appDispatch(setIsLoading(true));
@@ -102,24 +105,17 @@ const VideoDemoContainer = () => {
       window.Bridge.loadPort(portSelected, baudSelected);
       // window.Bridge.sensoresNewTest()
     } else {
+      // Sustituir con modal de error
       alert('Seleccione una cantidad');
     }
-    console.log(
-      'Amount and port, and baud',
-      portSelected,
-      baudSelected
-    );
   };
   return (
     <div>
       <VideoDemo
         onClickNav={onClickNav}
         url={url}
-        onClickProbar={onClickProbar}
-        onClickDetener={onClickDetener}
         onClickBack={onClickBack}
         probando={probando}
-        sensores={sensores}
       />
       {open && (
         <ModalSensoresAdquisicion
@@ -130,9 +126,11 @@ const VideoDemoContainer = () => {
         />
       )}
       <section className="display-center">
-        <h3>Para probar si los sensores funcionan correctamente presione Comenzar</h3>
+        <h3>
+          Para probar si los sensores funcionan correctamente presione Comenzar
+        </h3>
       </section>
-      <SensoresAdquisicionContainer mode={"TEST"} shouldStop={false}/>
+      <SensoresAdquisicionContainer mode="TEST" shouldStop={false} />
       <br />
     </div>
   );

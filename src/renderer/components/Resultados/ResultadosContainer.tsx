@@ -1,17 +1,14 @@
-// eslint-disable-next-line import/no-named-as-default
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setMongoInsertObject } from 'redux/slices/SeñalesSlice';
 import {
   setFailUpload,
   setIsLoading,
   setIsUploaded,
 } from '../../../redux/slices/StatusSlice';
-// eslint-disable-next-line import/no-named-as-default
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
-import { setIsLogged } from '../../../redux/slices/LoginSlice';
 import Resultados from './Resultados';
 import SaveEtiquetaModal from '../Utilities/SaveEtiquetaModal';
-import { setMongoInsertObject } from 'redux/slices/SeñalesSlice';
 
 interface ConfLocal {
   emgs: number;
@@ -213,8 +210,6 @@ const ResultadosContainer = () => {
   const [signalRetrieved, setSignalRetrieved] = useState(false);
   const retrieveSignal = () => {
 
-    console.log('Señales', objetoMongo.signals);
-    console.log('this is RespObj', objetoMongo);
     const { emg1 } = objetoMongo.signals;
     const { emg2 } = objetoMongo.signals;
     const { emg3 } = objetoMongo.signals;
@@ -263,24 +258,20 @@ const ResultadosContainer = () => {
       }
 
       if (giroscopioChecked) {
-        console.log('giroscopio checked ');
         giroscopioSignalLocalX.push(giroscopio[i].x);
         giroscopioSignalLocalY.push(giroscopio[i].y);
       }
       if (acelerometroChecked) {
-        console.log('acelerometro checked');
         acelerometroSignalLocalX.push(acelerometro[i].x);
         acelerometroSignalLocalY.push(acelerometro[i].y);
       }
       if (frecuenciaChecked) {
-        console.log('frecuencia checked');
         frecuenciaSignalLocalX.push(frecuencia[i].x);
         frecuenciaSignalLocalY.push(frecuencia[i].y);
       }
     }
     if (sensoresSelected >= 1) {
-      console.log('This is x', xArrayEmg1);
-      console.log('This is y', yArrayEmg1);
+
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);
     }
@@ -299,7 +290,6 @@ const ResultadosContainer = () => {
       setDataY4Emg4(yArray4Emg4);
     }
 
-    console.log('This is xGSR', giroscopioSignalLocalX);
     if (giroscopioChecked) {
       setGiroscopioDataX(giroscopioSignalLocalX);
       setGiroscopioDataY(giroscopioSignalLocalY);
@@ -341,7 +331,6 @@ const ResultadosContainer = () => {
       dataAux.push(trace7);
     }
     // setDataReady(dataArr);
-    console.log('sensores', totalSensores);
     // impar aumenta las columns
     let dynamicRows = 0;
     let dynamicColumns = 0;
@@ -370,9 +359,9 @@ const ResultadosContainer = () => {
       rows: dynamicRows,
       columns: dynamicColumns,
       pattern: 'independent',
-    }
+    };
     // setIsDataReady(true);
-    console.log("This is dataAux", dataAux);
+
     setData(dataAux);
     setIsDataReady(true);
     setGrid(objGrid);
@@ -384,7 +373,6 @@ const ResultadosContainer = () => {
     // const [gridLayoutAux, dataAux] = numOfPlots();
     // setGrid(gridLayoutAux);
     appDispatch(setIsLoading(false));
-
   }, [signalRetrieved]);
   useEffect(() => {
     appDispatch(setIsLoading(true));
@@ -393,24 +381,20 @@ const ResultadosContainer = () => {
     // const [gridLayoutAux, dataAux] = numOfPlots();
     // setGrid(gridLayoutAux);
     appDispatch(setIsLoading(false));
-
   }, []);
-  
+
   const onClickCrear = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // navigate('/escogerConfiguracion');
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const dataR = Object.fromEntries(new FormData(form).entries());
-    console.log('la data', dataR);
     if (dataR.etiqueta === '') {
-      console.log("Seguro que vacio");
       setOpen(!open);
     } else {
-      const objCopy = {...objetoMongo}
-      const etiquetaLocal = dataR.etiqueta as string
+      const objCopy = { ...objetoMongo };
+      const etiquetaLocal = dataR.etiqueta as string;
       objCopy.etiqueta = etiquetaLocal;
-      console.log("to be inserted", objCopy);
       appDispatch(setMongoInsertObject(objCopy));
       const jsonDocument = JSON.stringify(objCopy);
       appDispatch(setIsLoading(true));
@@ -419,15 +403,11 @@ const ResultadosContainer = () => {
     }
   };
 
-
   window.electron.ipcRenderer.insertarElementoM((event: any, resp: any) => {
-
     if (resp[0] === 0) {
-      console.log('Despacho error', resp[1]);
       appDispatch(setFailUpload(true));
       appDispatch(setIsLoading(false));
     } else {
-      console.log('Correcto');
       appDispatch(setIsLoading(false));
       appDispatch(setIsUploaded(true));
       navigate('/verPaciente');
@@ -437,21 +417,20 @@ const ResultadosContainer = () => {
   if (isDataReady === false) {
     return <div />;
   }
-  console.log("N")
   return (
     <div>
       <Resultados
-        onClickGuardar={onClickGuardar}
-        onClickProbar={onClickProbar}
         onClickBack={onClickBack}
-        probando={probando}
-        sensores={sensores}
         dataArr={data}
         gridLayout={grid}
         onClickCrear={onClickCrear}
       />
       {open && (
-        <SaveEtiquetaModal toggleModalGuardar={toggleModalGuardar} open={open} objMongo={objetoMongo} />
+        <SaveEtiquetaModal
+          toggleModalGuardar={toggleModalGuardar}
+          open={open}
+          objMongo={objetoMongo}
+        />
       )}
     </div>
   );

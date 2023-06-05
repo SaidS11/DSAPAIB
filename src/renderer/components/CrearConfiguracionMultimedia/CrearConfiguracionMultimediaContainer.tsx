@@ -4,8 +4,9 @@
 import AWS from 'aws-sdk';
 import { useNavigate } from 'react-router-dom';
 import CrearConfiguracionMultimedia from './CrearConfiguracionMultimedia';
-import { setFailUploadS3, setIsLoading, setIsUploadedS3 } from '../../../redux/slices/StatusSlice';
+import { setErrorDetails, setFallosAlCargar, setIsLoading, setIsUploadedS3 } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch , useCustomSelector } from '../../../redux/hooks';
+import { ConfigurationInterface, apiEndpoint } from '../Utilities/Constants';
 
 /* const bucketName = 'piediabe-modular';
 const bucketRegion = 'us-west-1';
@@ -22,7 +23,7 @@ const CrearConfiguracionMultimediaContainer = () => {
   const navigate = useNavigate();
   const loggedUser = useCustomSelector((state) => state.login.loggedUser);
   console.log('key to upload ', loggedUser)
-  const primerConfig = useCustomSelector((state) => state.config.configPrimerPaso);
+  const primerConfig = useCustomSelector((state) => state.config.configPrimerPaso) as ConfigurationInterface;
   console.log(primerConfig);
   const appDispatch = useCustomDispatch();
   const fileName = '';
@@ -31,6 +32,51 @@ const CrearConfiguracionMultimediaContainer = () => {
   const onClickBack = () => {
     navigate('/CrearConfiguracion');
   };
+
+  const insertConfiguration = async(fileNameImagen: string, fileNameVideo: string) => {
+    const configurationBody = {
+      nombre: primerConfig.nombreConfig,
+      giroscopio: primerConfig.giroscopio,
+      frecuencia_cardiaca: primerConfig.frecuencia,
+      rimto_cardiaco: primerConfig.ritmo,
+      emgs: primerConfig.canales,
+      acelerometro: primerConfig.acelerometro,
+      subido: "1",
+      descripcion: primerConfig.descripcion
+    }
+    const insertConf = await fetch(`${apiEndpoint}/insertarConfiguracion`, {
+      method: 'POST',
+      body: JSON.stringify(configurationBody),
+      headers: {'Content-Type': 'application/json'}
+    });
+    if (insertConf.status === 500){
+      // alert("Error al copiar los archivos: " + response.statusText);
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Error al insertar la configuracion: ${  insertConf.statusText}`));
+      return;
+    } 
+    const multimediaObj = {
+      nombre: "Multimedia",
+      link_video: fileNameVideo,
+      link_imagen: fileNameImagen,
+      subido: "1",
+      configuracion: primerConfig.nombreConfig
+    }
+    console.log("MultiOBj", multimediaObj);
+    const insertMultimedia = await fetch(`${apiEndpoint}/insertarMultimedia`, {
+      method: 'POST',
+      body: JSON.stringify(multimediaObj),
+      headers: {'Content-Type': 'application/json'}
+    });
+    if (insertMultimedia.status === 500){
+      // alert("Error al copiar los archivos: " + response.statusText);
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Error al insertar la multimedia: ${  insertMultimedia.statusText}`));
+      
+    }
+
+  }
+
   const onClickUpload = async () => {
     const imgObj = document.getElementById(
       'file-upload'
@@ -63,7 +109,7 @@ const CrearConfiguracionMultimediaContainer = () => {
         s3.upload(params, function (err: any, res: any) {
           if (err) {
             // alert(err);
-            appDispatch(setFailUploadS3(true));
+            appDispatch(setFallosAlCargar(true));
           } else {
             // alert('Successfully uploaded data img');
             appDispatch(setIsUploadedS3(true));
@@ -85,7 +131,7 @@ const CrearConfiguracionMultimediaContainer = () => {
           if (err) {
             appDispatch(setIsLoading(false));
             // alert(err);
-            appDispatch(setFailUploadS3(true));
+            appDispatch(setFallosAlCargar(true));
           } else {
             appDispatch(setIsLoading(false));
             appDispatch(setIsUploadedS3(true));
@@ -104,14 +150,7 @@ const CrearConfiguracionMultimediaContainer = () => {
           ruta: rutaImagen,
           fileName: fileNameImagen
         }
-        const response = await fetch("http://localhost:8000/moverArchivos", {
-          method: 'POST',
-          body: JSON.stringify(datosImagen),
-          headers: {'Content-Type': 'application/json'}
-        });
-        // window.electron.ipcRenderer.copiarArchivo(fileImagenDB, destino);
-
-
+      
         const files2 = videoObj.files
         const file2 = files2![0]
         fileNameVideo = file2.name
@@ -123,57 +162,72 @@ const CrearConfiguracionMultimediaContainer = () => {
           fileName: fileNameVideo
         }
 
-        const response2 = await fetch("http://localhost:8000/moverArchivos", {
+        appDispatch(setIsLoading(true));
+        const response = await fetch(`${apiEndpoint}/moverArchivos`, {
+          method: 'POST',
+          body: JSON.stringify(datosImagen),
+          headers: {'Content-Type': 'application/json'}
+        });
+
+        const response2 = await fetch(`${apiEndpoint}/moverArchivos`, {
           method: 'POST',
           body: JSON.stringify(datosVideo),
           headers: {'Content-Type': 'application/json'}
         });
+        console.log("Resp 1", response);
+        console.log("Resp 2", response2);
 
-
-        // bawait window.electron.ipcRenderer.copiarArchivo(fileVideoDB, destino);
-        // insertConf(primerConfig);
-
+        appDispatch(setIsLoading(false));
+        if (response.status === 500){
+          // alert("Error al copiar los archivos: " + response.statusText);
+          appDispatch(setFallosAlCargar(true));
+          appDispatch(setErrorDetails(`Error al copiar los archivos: ${  response.statusText}`))
+        } else if (response2.status === 500) { 
+          appDispatch(setFallosAlCargar(true));
+          appDispatch(setErrorDetails(`Error al copiar los archivos: ${  response2.statusText}`))
+          // alert("Error al copiar los archivos: " + response2.statusText);
+        } else {
+          // insertConf(primerConfig);
+          appDispatch(setIsLoading(true));
+          await insertConfiguration(fileNameImagen, fileNameVideo);
+          appDispatch(setIsLoading(false));
+          navigate('/verConfiguracion');
+        }
       }
       else {
         console.log('nada');
         alert('Seleccione los archivos');
       }
 
-      window.electron.ipcRenderer.copiarAr((event: any, resp: any) => {
-        if (resp > 0) {
-          console.log(resp);
-        } else {
-          console.log(resp);
-        }
-      });
+      // async function insertConf(data: any) {
+      //   appDispatch(setIsLoading(true));
+      //   window.Bridge.insertConfiguracion(data.nombreConfig, data.giroscopio, data.frecuencia, data.ritmo, data.canales, data.acelerometro, "1", data.descripcion );
+      // }
+      // window.Bridge.insertC((event: any, resp: any) => {
+      //   if (resp.length > 0) {
+      //     console.log('si es', resp);
+      //   } else {
+      //     console.log('nada');
+      //   }
+      //   appDispatch(setIsLoading(false));
+      //   insertFiles(fileNameVideo, fileName, primerConfig);
+      // });
 
-      async function insertConf(data: any) {
-        appDispatch(setIsLoading(true));
-        window.Bridge.insertConfiguracion(data.nombreConfig, data.giroscopio, data.frecuencia, data.ritmo, data.canales, data.acelerometro, "1", data.descripcion );
-      }
-      window.Bridge.insertC((event: any, resp: any) => {
-        if (resp.length > 0) {
-          console.log('si es', resp);
-        } else {
-          console.log('nada');
-        }
-        appDispatch(setIsLoading(false));
-        insertFiles(fileNameVideo, fileName, primerConfig);
-      });
+      // async function insertFiles(link_video: string, link_img: string, data: any) {
+      //   appDispatch(setIsLoading(true));
+      //   window.Bridge.insertMultimedia("Multimedia", link_video, link_img, "1", data.nombreConfig );
+      // }
+      // window.Bridge.insertM((event: any, resp: any) => {
+      //   if (resp.length > 0) {
+      //     console.log('si es', resp);
+      //   } else {
+      //     console.log('nada');
+      //   }
+      //   appDispatch(setIsLoading(false));
+      //   navigate('/verConfiguracion');
+      // });
 
-      async function insertFiles(link_video: string, link_img: string, data: any) {
-        appDispatch(setIsLoading(true));
-        window.Bridge.insertMultimedia("Multimedia", link_video, link_img, "1", data.nombreConfig );
-      }
-      window.Bridge.insertM((event: any, resp: any) => {
-        if (resp.length > 0) {
-          console.log('si es', resp);
-        } else {
-          console.log('nada');
-        }
-        appDispatch(setIsLoading(false));
-        navigate('/verConfiguracion');
-      });
+
       /* appDispatch(setIsLoading(true));
       const s3 = new AWS.S3({
         apiVersion: '2006-03-01',

@@ -143,7 +143,7 @@ const EnhancedTable = ({
           // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          Cell: ({ row }) => { 
+          Cell: ({ row }) => {
             return (
               <div>
                 <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
@@ -221,26 +221,23 @@ const EnhancedTable = ({
             return (
               <TableRow {...row.getRowProps()}>
                 {row.cells.map((cell) => {
-                  {if(Object.keys(selectedRowIds).length > 0) {
-                    if(cell.row.isSelected) {
-                      return (
-                        <TableCell {...cell.getCellProps()}>
-                          {cell.render('Cell')}
-                        </TableCell>
-                      );
+                  {
+                    if (Object.keys(selectedRowIds).length > 0) {
+                      if (cell.row.isSelected) {
+                        return (
+                          <TableCell {...cell.getCellProps()}>
+                            {cell.render('Cell')}
+                          </TableCell>
+                        );
+                      }
+                      return <TableCell {...cell.getCellProps()} />;
                     }
-                    return (
-                      <TableCell {...cell.getCellProps()}>
-                      </TableCell>
-                    )
-                  } else {
                     return (
                       <TableCell {...cell.getCellProps()}>
                         {cell.render('Cell')}
                       </TableCell>
                     );
                   }
-                }
                   // {Object.keys(selectedRowIds).length > 0
                   //   return (
                   //     <TableCell {...cell.getCellProps()}>

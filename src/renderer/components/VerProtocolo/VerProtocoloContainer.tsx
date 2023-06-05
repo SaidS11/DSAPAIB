@@ -33,16 +33,12 @@ const VerProtocoloContainer = () => {
     appDispatch(setIsLoading(true));
     const resp = await window.electron.ipcRenderer.selectPrs();
     if (resp.length > 0) {
-      console.log('si es protoco', resp);
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < resp.length; i++) {
+      for (let i = 0; i < resp.length; i+=1) {
         datarRetrieved.push({
           col1: resp[i].nombre,
         });
       }
       setData(datarRetrieved);
-    } else {
-      console.log('nada');
     }
     appDispatch(setIsLoading(false));
 
@@ -73,7 +69,6 @@ const VerProtocoloContainer = () => {
   }, []);
 
   useEffect(() => {
-    console.log('updated lista proto');
     loadData();
   }, []);
   const options: TableOptions<{

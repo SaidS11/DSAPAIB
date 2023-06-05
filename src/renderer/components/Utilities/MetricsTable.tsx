@@ -9,13 +9,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import '../../../../assets/Iconos/style.css';
-import { AnalisisParamsInterface } from './Constants';
 
-interface PacientesContentProps {
-  metricsData: AnalisisParamsInterface;
-}
-const MetricsTable = (props: PacientesContentProps) => {
-  const { metricsData } = props;
+const MetricsTable = () => {
   // const classes = useClasses(TableStyles);
   interface Cols {
     col1: string;

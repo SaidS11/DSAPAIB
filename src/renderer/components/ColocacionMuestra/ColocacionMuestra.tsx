@@ -32,10 +32,20 @@ const ColocacionMuestra = (props: ColocacionProps) => {
         <h1>Demostración de colocación de Instrumentos</h1>
       </section>
       <section className="display-center">
-        <h3>Siga las instrucciones y conecte el dispositivo de adquisición al equipo</h3>
+        <h3>
+          Siga las instrucciones y conecte el dispositivo de adquisición al
+          equipo
+        </h3>
       </section>
-      <section className="display-center">
-        <img src={url} alt="imagen-protocolo" />
+      <section
+        className="display-center"
+        style={{ margin: 'auto', maxWidth: '50%' }}
+      >
+        <img
+          src={url}
+          alt="imagen-protocolo"
+          style={{ maxHeight: '100%', maxWidth: '100%' }}
+        />
       </section>
       <section className="display-center space-divEscogerColocacionM">
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>

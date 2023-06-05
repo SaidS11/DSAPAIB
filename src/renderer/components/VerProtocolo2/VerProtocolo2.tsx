@@ -11,7 +11,7 @@ import {
   HeaderGroup,
 } from 'react-table';
 import { InputLabel, FormControl, MenuItem } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface VerProtocolo2Props {

@@ -1,5 +1,7 @@
 colMediaABSEMG1,colMedianaEMG1,colRMSEMG1,colMediaABSEMG2,colMedianaEMG2,colRMSEMG2,colMediaABSEMG3,colMedianaEMG3,colRMSEMG3,colMediaABSEMG4,colMedianaEMG4,colRMSEMG4,colMediaABSFrecuencia,colMedianaFrecuencia,colRMSFrecuencia,etiqueta,nombre
-5,5,5.20,6,6,6.06,5,5,5.20,5,5,5.20,5,5,5.20,Diabetico,Martha Garcia Lopez
-15.50,15.5,15.59,16,16,16.06,16,16,16.12,16.50,16.5,16.59,15.50,15.5,15.59,Diabetico,Martha Garcia Lopez
-4,4,4.24,5,5,5.39,6.50,6.5,6.72,6.50,6.5,6.72,4,4,4.24,Diabetico,Isaac Rayas Chacon
-14,14,14.07,16,16,16.06,15.50,15.5,15.59,16,16,16.12,14,14,14.07,Diabetico,Isaac Rayas Chacon
+5.25,5.5,5.45,5,5,5.39,5,5,5.39,5.60,6,5.90,5.25,5.5,5.45,Diabetico,Isaac Rayas Chacon
+15.20,15,15.30,16.50,16.5,16.59,16.50,16.5,16.59,16.50,16.5,16.54,15.20,15,15.30,Diabetico,Isaac Rayas Chacon
+4.50,4.5,4.81,6.60,7,6.86,5.50,5.5,5.76,5.50,5.5,5.76,4.50,4.5,4.81,Diabetico,Carlos Silva Chacon
+16,16,16.06,17,17,17.06,17,17,17.06,16.50,16.5,16.59,16,16,16.06,Diabetico,Carlos Silva Chacon
+5,5,5.39,5.50,5.5,5.76,5.50,5.5,5.96,4.50,4.5,4.64,5,5,5.39,Sano,Probando pr pr
+16,16,16.06,16.50,16.5,16.59,16,16,16.06,16,16,16.12,16,16,16.06,Sano,Probando pr pr

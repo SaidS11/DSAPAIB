@@ -60,7 +60,6 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>
       </section>
-
       <section className="display-center">
         <h3>Tabla con resultados por sujeto</h3>
       </section>
@@ -110,26 +109,24 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           </Button>
         </section>
       </div>
-      {!predictMode && 
-      <section className="display-center">
-        <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
-          Guardar Modelo
-        </Button>
-        <Button sx={styleButtonBigger} onClick={onClickCambiar}>
-          Cambiar Algoritmo
-        </Button>
-        <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
-          Cancelar
-        </Button>
-      </section>
-      } { predictMode &&
-
+      {!predictMode && (
         <section className="display-center">
-        <Button sx={styleButtonBiggerRed}>
-          Cancelar
-        </Button>
-      </section>
-      }
+          <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
+            Guardar Modelo
+          </Button>
+          <Button sx={styleButtonBigger} onClick={onClickCambiar}>
+            Cambiar Algoritmo
+          </Button>
+          <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+            Cancelar
+          </Button>
+        </section>
+      )}{' '}
+      {predictMode && (
+        <section className="display-center">
+          <Button sx={styleButtonBiggerRed}>Cancelar</Button>
+        </section>
+      )}
       <br />
     </div>
   );

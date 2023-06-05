@@ -52,7 +52,6 @@ const VerProtocolo2Container = () => {
       []
     );
     useEffect(() => {
-      console.log('updated lista proto');
       loadPacientes();
     }, []);
     const options: TableOptions<{
@@ -65,7 +64,6 @@ const VerProtocolo2Container = () => {
       navigate('/verProtocolo');
     };
     const largo = data.length;
-    console.log('El largo', largo)
   return <VerProtocolo2 options={options} resp={resp} onClickIrRegresar={onClickIrRegresar} largo={largo} />;
 };
 

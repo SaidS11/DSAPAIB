@@ -72,7 +72,7 @@ export default function ModalSensores(props: ModalProps) {
     const nombresSet = ports;
     console.log('reading', ports);
     const select: any = [];
-    for (let i = 0; i < nombresSet.length; i+=1) {
+    for (let i = 0; i < nombresSet.length; i += 1) {
       // select.push(<MenuItem value={nombresSet[i].path}>{nombresSet[i].path}</MenuItem>)
       select.push(
         <MenuItem key={nombresSet[i].path} value={nombresSet[i].path}>

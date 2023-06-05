@@ -1,13 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import React, { useCallback } from 'react';
 import { Button } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import {
   styleButtonBigger,
@@ -33,15 +27,12 @@ export interface ModalProps {
 
 export default function SaveModelModal(props: ModalProps) {
   const { toggleModalGuardar, open } = props;
-
-  /*   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false); */
   const navigate = useNavigate();
 
   const navigateToModels = () => {
     navigate('/guardarModelo');
   };
+
   return (
     <div>
       <Modal

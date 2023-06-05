@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import ModalSensores from './ModalSensores';
 import { useNavigate } from 'react-router-dom';
+import ModalSensores from './ModalSensores';
 
 const ProbarSensoresBlank = () => {
   const navigate = useNavigate();

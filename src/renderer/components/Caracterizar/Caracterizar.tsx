@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 /* eslint-disable react/prop-types */
 import PlotP from './PlotP';
-import { PlotSelectionEvent, Shape } from "plotly.js";
+import { PlotSelectionEvent, Shape } from 'plotly.js';
 import './Caracterizar.css';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -24,14 +24,14 @@ import {
   setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
 import styleButton, {
-  styleButtonBiggerGreen, styleButtonBiggerRed,
+  styleButtonBiggerGreen,
+  styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 import { DataSignalsMongo } from '../Utilities/Constants';
 
-
 export type PlotSelectionState = PlotSelectionEvent & {
   selections?: Partial<Shape>[];
- };
+};
 
 interface CaracterizarProps {
   sensoresSelected: any;
@@ -66,17 +66,20 @@ const Caracterizar = (props: CaracterizarProps) => {
 
   const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
   const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
-  const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState<any>([]);
-
-  const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
-  const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
-  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] = useState<any>(
+  const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState<any>(
     []
   );
 
+  const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
+  const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
+  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] =
+    useState<any>([]);
+
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
-  const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState<any>([]);
+  const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState<any>(
+    []
+  );
 
   const sujetos = useCustomSelector((state) => state.señales.cantidadSujetos);
   const ventanaReduxEmg1 = useCustomSelector(
@@ -235,14 +238,14 @@ const Caracterizar = (props: CaracterizarProps) => {
   const retrieveSignal = async () => {
     appDispatch(setIsLoading(true));
 
-    const respuesta = await buscarElementoMongoFront() as Array<DataSignalsMongo>;
+    const respuesta =
+      (await buscarElementoMongoFront()) as Array<DataSignalsMongo>;
     appDispatch(setIsLoading(false));
-    
+
     const { signal1 } = respuesta[0]!.signals;
     const { signal2 } = respuesta[0].signals;
     const { signal3 } = respuesta[0].signals;
     const { signal4 } = respuesta[0].signals;
-
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -378,14 +381,12 @@ const Caracterizar = (props: CaracterizarProps) => {
   const [selectedLength, setSelectedLength] = useState(0);
   const [lastEMG, setLastEMG] = useState('');
   const gridLayout = numOfPlots();
-  const [allSelections, setAllSelections] = useState<
-   PlotSelectionState[]
- >([]);
+  const [allSelections, setAllSelections] = useState<PlotSelectionState[]>([]);
   const storeSelections = (segment: { points: any[] }) => {
     if (segment.points.length > 0) {
       setAllSelections((curr) => [...curr, segment]);
       selectedEmg = segment.points[0].fullData.name;
-      setLastEMG(selectedEmg)
+      setLastEMG(selectedEmg);
       const helperArr: any[] = [];
       segment.points.map((ele: { pointNumber: any }) =>
         helperArr.push(ele.pointNumber)
@@ -394,7 +395,7 @@ const Caracterizar = (props: CaracterizarProps) => {
       onClickSelect();
     }
   };
-  
+
   const onClickSelect = () => {
     if (selection.length > 0) {
       try {
@@ -412,7 +413,6 @@ const Caracterizar = (props: CaracterizarProps) => {
         const ventanasAcelerometroLocal = [];
         const ventanasFrecuenciaLocal = [];
 
-        
         setSelectedLength(selection.length);
         for (let i = 0; i < dataX2Emg2.length; i += 1) {
           if (i === selection[0]) {
@@ -427,8 +427,7 @@ const Caracterizar = (props: CaracterizarProps) => {
               colorsLocal3[i] = 'red';
             } else if (selectedEmg === 'EMG4') {
               ventanasLocalEmg4.push({ x: dataX4Emg4[i], y: dataY4Emg4[i] });
-            colorsLocal4[i] = 'red';
-
+              colorsLocal4[i] = 'red';
             }
             if (giroscopioChecked) {
               ventanasGiroscopioLocal.push({
@@ -448,7 +447,7 @@ const Caracterizar = (props: CaracterizarProps) => {
                 y: frecuenciaDataY[i],
               });
             }
-                        
+
             selection.shift();
           }
           if (selection.length === 0) {
@@ -460,8 +459,6 @@ const Caracterizar = (props: CaracterizarProps) => {
           const localArray = [...ventanasSeñal1Emg1];
           localArray.push(ventanasLocalEmg1);
           setVentanasSeñal1Emg1(localArray);
-
-          
 
           setColors1([...colorsLocal1]);
         } else if (selectedEmg === 'EMG2') {
@@ -505,17 +502,25 @@ const Caracterizar = (props: CaracterizarProps) => {
   };
 
   const onClickSave = () => {
-    // Comprobacion del numero de ventanas, todos los sensores tienen que tener las 
+    // Comprobacion del numero de ventanas, todos los sensores tienen que tener las
     // Mismas ventanas
-    if (ventanasSeñal1Emg1.length !== ventanasSeñal2Emg2.length || 
+    if (
+      ventanasSeñal1Emg1.length !== ventanasSeñal2Emg2.length ||
       ventanasSeñal2Emg2.length !== ventanasSeñal3Emg3.length ||
-      ventanasSeñal3Emg3.length !== ventanasSeñal4Emg4.length) {
-      alert("El número de ventanas seleccionadas tiene que ser igual en todos los sensores");
+      ventanasSeñal3Emg3.length !== ventanasSeñal4Emg4.length
+    ) {
+      alert(
+        'El número de ventanas seleccionadas tiene que ser igual en todos los sensores'
+      );
       return;
     }
-    if (ventanasSeñal1Emg1.length === 0 || ventanasSeñal2Emg2.length === 0 ||
-      ventanasSeñal3Emg3.length === 0 || ventanasSeñal4Emg4.length === 0) {
-      alert("Seleccione al menos una ventana por sensor");
+    if (
+      ventanasSeñal1Emg1.length === 0 ||
+      ventanasSeñal2Emg2.length === 0 ||
+      ventanasSeñal3Emg3.length === 0 ||
+      ventanasSeñal4Emg4.length === 0
+    ) {
+      alert('Seleccione al menos una ventana por sensor');
       return;
     }
 
@@ -543,8 +548,6 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayEmg4.push(ventanasSeñal4Emg4);
     }
 
-
-
     const localArrayGiroscopio = [];
     if (giroscopioChecked) {
       ventanaReduxGiroscopio.map((e) => localArrayGiroscopio.push(e));
@@ -562,7 +565,6 @@ const Caracterizar = (props: CaracterizarProps) => {
       ventanaReduxFrecuencia.map((e) => localArrayFrecuencia.push(e));
       localArrayFrecuencia.push(ventanasSeñalFrecuencia);
     }
-
 
     appDispatch(setVentanasArrayEmg1(localArrayEmg1));
     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
@@ -587,38 +589,35 @@ const Caracterizar = (props: CaracterizarProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const onClickUndo = () => {
-    setAllSelections((curr) => curr.slice(0, -1))
+    setAllSelections((curr) => curr.slice(0, -1));
     if (lastEMG === 'EMG1') {
       setVentanasSeñal1Emg1((curr: any) => curr.slice(0, -1));
-      setColors1((curr) => curr.slice(0, -selectedLength))
+      setColors1((curr) => curr.slice(0, -selectedLength));
     } else if (lastEMG === 'EMG2') {
       setVentanasSeñal2Emg2((curr: any) => curr.slice(0, -1));
       const cleanedColors = colors2.map((color: string) => {
         if (color === 'red') {
           return 'blue';
-        } else {
-          return color;
         }
-      })
+        return color;
+      });
       setColors2([...cleanedColors]);
     } else if (lastEMG === 'EMG3') {
       setVentanasSeñal3Emg3((curr: any) => curr.slice(0, -1));
       const cleanedColors = colors3.map((color: string) => {
         if (color === 'red') {
           return 'yellow';
-        } else {
-          return color;
         }
-      })
+        return color;
+      });
       setColors3([...cleanedColors]);
     } else if (lastEMG === 'EMG4') {
       const cleanedColors = colors4.map((color: string) => {
         if (color === 'red') {
           return 'green';
-        } else {
-          return color;
         }
-      })
+        return color;
+      });
       setVentanasSeñal4Emg4((curr: any) => curr.slice(0, -1));
       setColors4([...cleanedColors]);
     }
@@ -632,7 +631,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     if (frecuenciaChecked) {
       setVentanasSeñalFrecuencia((curr: any) => curr.slice(0, -1));
     }
-  }
+  };
   return (
     <div>
       <PlotP

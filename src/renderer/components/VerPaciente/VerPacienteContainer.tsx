@@ -4,7 +4,6 @@ import { TableOptions, Column } from 'react-table';
 import { useCustomSelector, useCustomDispatch } from '../../../redux/hooks';
 import {
   setIsLoading,
-  setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
 import VerPaciente from './VerPaciente';
 import { PacientesAnalisisMongo } from '../Utilities/Constants';
@@ -19,8 +18,6 @@ const VerPacienteContainer = () => {
   const datosArray = useCustomSelector((state) => state.datos.datosPaciente);
   const appDispatch = useCustomDispatch();
   const navigate = useNavigate();
-  console.log('user', usuario);
-  console.log('DatosArray', datosArray[0]);
   const [data, setData] = useState<Cols[]>([]);
 
   const datarRetrieved: Cols[] = [];
@@ -70,7 +67,6 @@ const VerPacienteContainer = () => {
   };
 
   useEffect(() => {
-    console.log('updated');
     loadPacientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

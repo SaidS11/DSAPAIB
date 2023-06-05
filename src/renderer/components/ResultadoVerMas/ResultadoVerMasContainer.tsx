@@ -1,10 +1,6 @@
 // eslint-disable-next-line import/no-named-as-default
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
-// eslint-disable-next-line import/no-named-as-default
-import { useCustomDispatch } from '../../../redux/hooks';
-import { setIsLogged } from '../../../redux/slices/LoginSlice';
 import ResultadoVerMas from './ResultadoVerMas';
 
 const ResultadoVerMasContainer = () => {
@@ -26,12 +22,7 @@ const ResultadoVerMasContainer = () => {
 
   return (
     <div>
-      <ResultadoVerMas
-        onClickNav={onClickNav}
-        onClickProbar={onClickProbar}
-        onClickDetener={onClickDetener}
-        probando={probando}
-      />
+      <ResultadoVerMas onClickNav={onClickNav} onClickProbar={onClickProbar} />
     </div>
   );
 };

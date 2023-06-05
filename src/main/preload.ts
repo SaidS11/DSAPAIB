@@ -189,6 +189,12 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.invoke('preAnalisisPython', datos);
     },
     preAnalisisP: (callback: any) => ipcRenderer.on('preAnalisisP', callback),
+
+    arduinoTest() {
+      ipcRenderer.invoke('arduinoTest');
+    },
+    arduinoT: (callback: any) => ipcRenderer.on('arduinoT', callback),
+
     on(channel: Channels, func: (...args: unknown[]) => void) {
       const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
         func(...args);

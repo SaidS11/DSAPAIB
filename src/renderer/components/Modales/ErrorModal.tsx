@@ -5,8 +5,8 @@ import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import { styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
-import { setFailUploadS3 } from '../../../redux/slices/StatusSlice';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { setFallosAlCargar } from '../../../redux/slices/StatusSlice';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 
 const style = {
   position: 'absolute' as const,
@@ -24,12 +24,13 @@ const style = {
 export default function ErrorModal() {
   const [open, setOpen] = useState(true);
   const appDispatch = useCustomDispatch();
+  const msg = useCustomSelector((state) => state.status.errorDetails)
   /*   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); */
   const toggleModal = () => {
     setOpen(!open);
-    appDispatch(setFailUploadS3(false));
+    appDispatch(setFallosAlCargar(false));
   };
   return (
     <div>
@@ -41,9 +42,12 @@ export default function ErrorModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Ha ocurrido un error en la carga
+            Ha ocurrido un error
           </Typography>
-            <Button sx={styleButtonBiggerRed} onClick={toggleModal}>Continuar</Button>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            {msg}
+          </Typography>
+          <Button sx={styleButtonBiggerRed} onClick={toggleModal}>Continuar</Button>
         </Box>
       </Modal>
     </div>

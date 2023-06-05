@@ -5,10 +5,10 @@ import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import { InputLabel, FormControl, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Dispatch, SetStateAction } from 'react';
 import {
   styleButtonBiggerGreen, checkBoxConfig,
 } from '../VerPaciente/ButtonStyle';
-import { Dispatch, SetStateAction } from 'react';
 
 export interface CrearConfigProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;

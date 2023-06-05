@@ -19,7 +19,6 @@ const obtenerPorcentaje = (valor: string) => {
 
 const ResultadosAnalisisContainer = () => {
   const navigate = useNavigate();
-  const [probando, setProbando] = useState(false);
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const toggleModal = (scrollType: DialogProps['scroll']) => {
@@ -31,16 +30,13 @@ const ResultadosAnalisisContainer = () => {
   };
   const resp = useCustomSelector((state) => state.responses.pythonResponse);
   const analisis = useCustomSelector((state) => state.config.analisisParams);
-  console.log('Recibi esto', resp);
   const parsedResp = resp.split('|');
-  console.log('Parsed', parsedResp);
   const precision = obtenerPorcentaje(parsedResp[1]);
   const f1 = obtenerPorcentaje(parsedResp[2]);
   const recall = obtenerPorcentaje(parsedResp[3]);
   /* if (precision === '00') {
     precision = `${parsedResp[1].substring(1, 1)}00`;
   } */
-  console.log('presicion', precision);
   const tipo = parsedResp[0];
 
   return (

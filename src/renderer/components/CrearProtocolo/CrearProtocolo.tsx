@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import Button from '@mui/material/Button';
-import {
-  styleButtonBiggerGreen,
-} from '../VerPaciente/ButtonStyle';
 import { InputLabel, FormControl, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Dispatch, SetStateAction } from 'react';
+import {
+  styleButtonBiggerGreen,
+} from '../VerPaciente/ButtonStyle';
 
 export interface CrearProtocoloProps {
   onClickCrear: (arg0: React.FormEvent<HTMLFormElement>) => void;
@@ -45,7 +45,7 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
             <form className="analisis-form" onSubmit={onClickCrear}>
               <section className="display-flex">
                 <h4>Nombre:</h4>
-                <input className="first-input" type="text" name="nombreProtocolo" required/>
+                <input className="first-input" type="text" name="nombre" required/>
               </section>
               <section className="display-flex">
                 <h4>Descripción:</h4>
@@ -62,7 +62,7 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    name="config"
+                    name="configuracion"
                     label="Configuración"
                     value={configuration}
                     onChange={handleChangeConfiguration}

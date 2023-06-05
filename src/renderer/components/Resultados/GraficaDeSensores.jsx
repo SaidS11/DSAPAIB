@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Plot from 'react-plotly.js';
 
 const GraficaDeSensores = ({ dataArr, gridLayout }) => {

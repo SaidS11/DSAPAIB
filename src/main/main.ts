@@ -142,6 +142,8 @@ async function insertarDatosPaciente(
       estatura,
     ];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -191,27 +193,18 @@ async function insertarDatosImplementacion(
   nombre: string,
   descripcion: string,
   algoritmo_ia: string,
-  parametros: string,
-  precision: string,
-  desviacion_estandar: string,
-  entrenado: string
+  parametros: string
 ): Promise<boolean> {
   const client = new Client(credenciales);
   await client.connect();
 
   try {
     const query =
-      'INSERT INTO implementacion (nombre, descripcion, algoritmo_ia, parametros, precision, desviacion_estandar, entrenado) VALUES ($1, $2, $3, $4, $5, $6, $7)';
-    const values = [
-      nombre,
-      descripcion,
-      algoritmo_ia,
-      parametros,
-      precision,
-      desviacion_estandar,
-      entrenado,
-    ];
+      'INSERT INTO implementacion (nombre, descripcion, algoritmo_ia, parametros ) VALUES ($1, $2, $3, $4)';
+    const values = [nombre, descripcion, algoritmo_ia, parametros];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -229,22 +222,15 @@ app2.post('/insertarImplementacion', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       algoritmo_ia,
       parametros,
-      precision,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      desviacion_estandar,
-      entrenado,
     } = req.body;
     const result = await insertarDatosImplementacion(
       nombre,
       descripcion,
       algoritmo_ia,
-      parametros,
-      precision,
-      desviacion_estandar,
-      entrenado
+      parametros
     );
     if (result) {
-      res.status(200).json({ message: 'Datos insertados correctamente' });
+      res.status(200).json({ message: 'Datos insertados correctamente ' });
     } else {
       res.status(500).json({ error: 'Error al insertar datos' });
     }
@@ -269,6 +255,8 @@ async function insertarDatosModelo(
       'INSERT INTO modelo (nombre, algoritmo_ia, protocolo, entrenado, resultados) VALUES ($1, $2, $3, $4, $5)';
     const values = [nombre, algoritmo_ia, protocolo, entrenado, resultados];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -313,6 +301,8 @@ async function insertarDatosRegistro(
       'INSERT INTO registro (datos_crudos, fecha, paciente, protocolo_adquisicion) VALUES ($1, $2, $3, $4)';
     const values = [datos_crudos, fecha, paciente, protocolo_adquisicion];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -369,6 +359,8 @@ async function insertarDatosConfiguracion(
       descripcion,
     ];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -428,6 +420,8 @@ async function insertarDatosMultimedia(
       'INSERT INTO multimedia (nombre, link_video, link_imagen, subido, configuracion) VALUES ($1, $2, $3, $4, $5)';
     const values = [nombre, link_video, link_imagen, subido, configuracion];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -440,6 +434,7 @@ app2.post('/insertarMultimedia', async (req: Request, res: Response) => {
     // Obtener los datos enviados en la solicitud
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { nombre, link_video, link_imagen, subido, configuracion } = req.body;
+    console.log('Recibido', link_imagen);
     const result = await insertarDatosMultimedia(
       nombre,
       link_video,
@@ -448,7 +443,7 @@ app2.post('/insertarMultimedia', async (req: Request, res: Response) => {
       configuracion
     );
     if (result) {
-      res.status(200).json({ message: 'Datos insertados correctamente' });
+      res.status(200).json({ message: 'Datos insertados correctamente ' });
     } else {
       res.status(500).json({ error: 'Error al insertar datos' });
     }
@@ -472,6 +467,8 @@ async function insertarDatosProtocoloAdquisicion(
       'INSERT INTO protocolo_adquisicion (nombre, doctor, configuracion, descripcion) VALUES ($1, $2, $3, $4)';
     const values = [nombre, doctor, configuracion, descripcion];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -520,6 +517,8 @@ async function actualizarImplementacion(
       'UPDATE implementacion SET precision = $1, desviacion_estandar = $2, entrenado = $3 WHERE nombre = $4';
     const values = [precision, desviacion, entrenado, nombre];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -562,6 +561,8 @@ async function actualizarModelo(
       ' UPDATE modelo SET resultados = $1, entrenado = $2 WHERE nombre = $3';
     const values = [resultados, entrenado, nombre];
     await client.query(query, values);
+    await client.end();
+
     return true;
   } catch (error) {
     console.error('Error al insertar datos', error);
@@ -675,7 +676,39 @@ app2.post('/insertarElementoMongo', async (req: Request, res: Response) => {
   }
 });
 // ///////////////////////
-async function buscarElementoMongo2(query: string) {
+// async function buscarElementoMongo2(query: string) {
+//   try {
+//     const queryJSON = JSON.parse(query);
+//     await client.connect();
+//     const collection = client.db('Modular').collection('Señales');
+//     const result = await collection.find(queryJSON).toArray();
+//     return result;
+//   } catch (error) {
+//     console.log('Ha ocurrido un error', error);
+//   } finally {
+//     await client.close();
+//   }
+// }
+// app2.get('/buscarElementoMongo', async (req: Request, res: Response) => {
+//   try {
+//     console.log("Fetching");
+//     const json = req.body;
+//     const jsonstring = JSON.stringify(json);
+//     console.log(jsonstring);
+//     const result = await buscarElementoMongo2(jsonstring);
+//     if (result) {
+//       res.send(result);
+//     } else {
+//       res.status(500).json({ error: 'Error al recuperar los datos' });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: 'Error al recuperar los datos' });
+//   }
+// });
+
+async function buscarElementoMongo(query: string) {
+  console.log('Buscandop');
+
   try {
     const queryJSON = JSON.parse(query);
     await client.connect();
@@ -683,26 +716,16 @@ async function buscarElementoMongo2(query: string) {
     const result = await collection.find(queryJSON).toArray();
     return result;
   } catch (error) {
-    console.log('Ha ocurrido un error', error);
+    console.log('Ha ocurrido un error ', error);
   } finally {
     await client.close();
   }
 }
-app2.get('/buscarElementoMongo', async (req: Request, res: Response) => {
-  try {
-    const json = req.body;
-    const jsonstring = JSON.stringify(json);
-    console.log(jsonstring);
-    const result = await buscarElementoMongo2(jsonstring);
-    if (result) {
-      res.send(result);
-    } else {
-      res.status(500).json({ error: 'Error Insertando datos' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Error al insertar datos' });
-  }
-});
+
+ipcMain.handle('buscarElementoMongo', async (event, archivo: string) =>
+  buscarElementoMongo(archivo)
+);
+
 // ///////////////////
 async function buscarTodoMongo2() {
   try {
@@ -764,30 +787,20 @@ app2.post('/moverArchivos', async (req: Request, res: Response) => {
   try {
     const { ruta, fileName } = req.body;
     const direc = __dirname;
-    console.log("Direc", direc)
     const regex = /\\/g;
     const direcParsed = direc.replace(regex, '/');
     const rutaAcomodada = ruta.replace(regex, '/');
-    console.log("Direcparded", direcParsed);
     const direcFinal = direcParsed.slice(0, -4);
-    console.log("direcfinal", direcFinal)
-    const destino =
-      `${direcFinal}main/public/${fileName}`;
-    console.log(fileName);
-    console.log(rutaAcomodada);
-    console.log(destino);
+    const destino = `${direcFinal}main/public/${fileName}`;
     await fs.copyFile(rutaAcomodada, destino, (err) => {
       if (err) {
-        console.log("Error", err)
-        res.send('Error al copiar el archivo:  ');
+        res.status(500).json({ error: `Error al copiar el archivo ${err}` });
       } else {
-        console.log("OK")
         res.send('Archivo copiado exitosamente.');
       }
     });
   } catch (error) {
-    console.log("ERROR", error)
-    res.status(500).json({ error: 'Error al insertar datos' });
+    res.status(500).json({ error: `Error al insertar datos ${error}` });
   }
 });
 // /////////////////////////////////// Fin Cagadero Pona///////////////////////////////////
@@ -1579,8 +1592,8 @@ ipcMain.on('loadPort', async (event, opcion, baud) => {
     console.log('PUERTO', serialPort.path);
     console.log('BAUD', serialPort.baudRate);
     parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
-  } catch(error) {
-    console.log("ERROR  ", error);
+  } catch (error) {
+    console.log('ERROR  ', error);
   }
 });
 let startFlag = false;
@@ -1655,9 +1668,6 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 //   return hr;
 // }
 
-
-
-
 async function sensores() {
   if (!serialPort.isOpen) {
     serialPort.open();
@@ -1691,6 +1701,19 @@ ipcMain.on('sensores', async (event) => {
   });
 });
 
+app2.post('/recibirDatos', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    if (!serialPort.isOpen) {
+      serialPort.open();
+      parser.resume();
+    }
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al leer' });
+  }
+});
+
 async function sensoresStop() {
   // parser.off('data', console.log);
   console.log('Closing');
@@ -1701,7 +1724,7 @@ async function sensoresStop() {
     // parser._readableState.length = 0
   }
   // parser.write('\x03')
-  return "Closed";
+  return 'Closed';
 }
 ipcMain.handle('sensoresStop', sensoresStop);
 
@@ -1880,6 +1903,33 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
         } else {
           console.log(results);
           mainWindow?.webContents.send('preAnalisisP', results![0]);
+        }
+      }
+    );
+  } catch (e: any) {
+    console.log('Error', e);
+  }
+});
+
+ipcMain.handle('arduinoTest', async (event) => {
+  const options = {
+    args: [''],
+  };
+  console.log('Llamado Arduino Test');
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+  try {
+    PythonShell.run(
+      `${direcFinal}/pythonScripts/arduinoTest.py`,
+      options,
+      function (err, results) {
+        if (err) {
+          console.log('err', err);
+        } else {
+          console.log(results);
+          mainWindow?.webContents.send('arduinoT', results![0]);
         }
       }
     );

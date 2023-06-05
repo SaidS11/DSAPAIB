@@ -1,10 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import { Button } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import React from 'react';
 import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
@@ -16,12 +11,10 @@ import './ResultadoVerMas.css';
 export interface ResultadoVerMasProps {
   onClickNav: () => void;
   onClickProbar: () => void;
-  onClickDetener: () => void;
-  probando: boolean;
 }
 
 const ResultadoVerMas = (props: ResultadoVerMasProps) => {
-  const { onClickNav, onClickProbar, onClickDetener, probando } = props;
+  const { onClickNav, onClickProbar } = props;
   // const navigate = useNavigate();
 
   return (
@@ -32,9 +25,9 @@ const ResultadoVerMas = (props: ResultadoVerMasProps) => {
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
-      <section>
+      {/* <section>
         <ProbarSensores sensoresSelected={8} />
-      </section>
+      </section> */}
       <section className="display-center">
         <h3 style={{ fontWeight: 'bold' }}>Proceso de Clasificación</h3>
       </section>

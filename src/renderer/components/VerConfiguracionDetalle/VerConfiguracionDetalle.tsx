@@ -5,16 +5,16 @@ import styleButton, {
   styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 import './VerConfiguracionDetalle.css';
+import { MultimediaObj } from '../Utilities/Constants';
 
 export interface VerConfiguracionDetalleProps {
   onClickNav: () => void;
   resp: any;
-  multimedia: any;
+  multimedia: Array<MultimediaObj>;
 }
 
 const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
   const { onClickNav, resp, multimedia } = props;
-  console.log('esta es la resp', resp);
   const variable = "EMG's";
   return (
     <div>

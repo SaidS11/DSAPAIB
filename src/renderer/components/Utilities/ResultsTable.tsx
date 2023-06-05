@@ -1,23 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable array-callback-return */
-import { useNavigate } from 'react-router-dom';
-import { useTable, Column, useSortBy } from 'react-table';
-import MaUTable from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-restricted-syntax */
+import { useTable, useSortBy } from 'react-table';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import TableSortLabel from '@mui/material/TableSortLabel';
-
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import { useCustomSelector } from '../../../redux/hooks';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
-
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface Cols {
   nombre?: string;
@@ -70,14 +59,12 @@ const initialHidden = (cols: any) => {
   return helperArray;
 };
 const ResultsTable = (props: ResultsProps) => {
-  const { options, dataInitial, columns } = props;
+  const { dataInitial, columns } = props;
   const [currentLabel, setCurrentLabel] = useState('Expandir');
-  const [currentData, setCurrentData] = useState([]);
+
   function prepareShortData() {
-    console.log('ACTUAL', currentLabel);
     if (currentLabel === 'Expandir') {
       const shortData: { nombre: any; etiqueta: any }[] = [];
-      console.log('This data was received', dataInitial);
       const tablaHash = new Map();
       dataInitial.map((registro: any) => {
         if (tablaHash.has(registro.nombre)) {
@@ -87,11 +74,9 @@ const ResultsTable = (props: ResultsProps) => {
           tablaHash.set(registro.nombre, [registro]);
         }
       });
-      console.log('This data was parsed', tablaHash);
       const tablaHashEtiquetas = new Map();
       tablaHash.forEach((value, key) => {
         value.map((registro: any) => {
-          console.log('Nombre y etiqueta', registro.nombre, registro.etiqueta);
           if (tablaHashEtiquetas.has(registro.etiqueta)) {
             const prev = tablaHashEtiquetas.get(registro.etiqueta);
             tablaHashEtiquetas.set(registro.etiqueta, prev + 1);
@@ -108,16 +93,15 @@ const ResultsTable = (props: ResultsProps) => {
             maxValue = value;
           }
         }
-        console.log('La clave con el valor máximo es:', maxKey);
         shortData.push({ nombre: key, etiqueta: maxKey });
         tablaHashEtiquetas.clear();
       });
-      console.log('Finished', shortData);
       const preparedData = shortData;
       return preparedData;
     }
     return dataInitial;
   }
+
   const dataParsed = prepareShortData();
   const data = React.useMemo(
     (): Cols[] => [...dataParsed],
@@ -133,8 +117,6 @@ const ResultsTable = (props: ResultsProps) => {
     prepareRow,
     allColumns,
     visibleColumns,
-    getToggleHideAllColumnsProps,
-    state,
   } = useTable(
     {
       columns,
@@ -178,6 +160,7 @@ const ResultsTable = (props: ResultsProps) => {
     // }
     // return <span className="icon-arrow-long-down" />;
   };
+
   return (
     <div>
       <div>

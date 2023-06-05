@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useCustomDispatch, useCustomSelector } from 'redux/hooks';
-import { setRealTimeSignal } from 'redux/slices/SeñalesSlice';
-import ModalSensoresAdquisicion from './ModalSensoresAdquisicion';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
+import { setRealTimeSignal } from '../../../redux/slices/SeñalesSlice';
 import SensoresAdquisicion from './SensoresAdquisicion';
-import { RealTimeSignalInterface } from '../Utilities/Constants';
-
 interface SensoresAdquisicionInterface {
   mode: string;
   shouldStop: boolean;
 }
 
 const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
-
-  const { mode,shouldStop } = props;
+  const { mode, shouldStop } = props;
   /* const dataX: Number[] = [];
   const dataY: Number[] = []; */
   const [isReady, setIsReady] = useState(false);
@@ -37,7 +33,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   const [dataXEmg1, setDataXEmg1] = useState<any>([...startingNumbers]);
   const [dataYEmg1, setDataYEmg1] = useState<any>([]);
-  
+
   const [dataXEmg2, setDataXEmg2] = useState<any>([...startingNumbers]);
   const [dataYEmg2, setDataYEmg2] = useState<any>([]);
 
@@ -46,10 +42,11 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   const [dataXEmg4, setDataXEmg4] = useState([]);
   const [dataYEmg4, setDataYEmg4] = useState([]);
-  const appDispatch = useCustomDispatch(); 
+  const appDispatch = useCustomDispatch();
 
-  
-  const sensorTest = useCustomSelector((state) => state.señales.cantidadSensores);
+  const sensorTest = useCustomSelector(
+    (state) => state.señales.cantidadSensores
+  );
   const sensoresSelected = 3;
 
   async function stopSensoresNew() {
@@ -66,36 +63,36 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   // Procesamiento de la señal
   let bufferdatos = '';
-  const latidos = 0;
-  const HR = 0;
-  const buffer = '';
-  const sum = 0;
-  const sumSpo2 = 0;
-  const giroscopioAverage = 0;
-  const hr = 0;
-  const volt = 0;
-  const hrOhms = 0;
-  const Impedancia = 0;
-  const contador = 0;
-  const contadorFrecuencia = 0;
-  const DCIR = 0;
-  const ACIR = 0;
-  const contadorFrecuenciaRED = 0;
-  const sumFrecuenciaRED = 0;
-  const DCRED = 0;
-  const ACRED = 0;
-  const Aoyagi = 0;
-  const frecuencia = 0;
-  const emg1Arr: any = [];
-  const emg2Arr: any = [];
-  const emg3Arr: any = [];
-  const emg4Arr: any = [];
+  // const latidos = 0;
+  // const HR = 0;
+  // const buffer = '';
+  // const sum = 0;
+  // const sumSpo2 = 0;
+  // const giroscopioAverage = 0;
+  // const hr = 0;
+  // const volt = 0;
+  // const hrOhms = 0;
+  // const Impedancia = 0;
+  // const contador = 0;
+  // const contadorFrecuencia = 0;
+  // const DCIR = 0;
+  // const ACIR = 0;
+  // const contadorFrecuenciaRED = 0;
+  // const sumFrecuenciaRED = 0;
+  // const DCRED = 0;
+  // const ACRED = 0;
+  // const Aoyagi = 0;
+  // const frecuencia = 0;
+  // const emg1Arr: any = [];
+  // const emg2Arr: any = [];
+  // const emg3Arr: any = [];
+  // const emg4Arr: any = [];
 
-  const giroscopioArr: any = [];
-  const frecuenciaArr: any = [];
-  const acelerometroArr: any = [];
+  // const giroscopioArr: any = [];
+  // const frecuenciaArr: any = [];
+  // const acelerometroArr: any = [];
+
   async function startSensors() {
-    console.log('Starting on component');
     setIsReady(true);
     window.Bridge.sensoresNewTest();
   }
@@ -107,24 +104,19 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   // Fin procesamiento
 
   async function loadSensores() {
-    console.log('Getting message');
     setIsReady(true);
     window.electron.ipcRenderer.sensores();
   }
-  // const [data, setData] = useState('');
-  // let data = '';
-  const [datosAux, setDatosAux] = useState<Array<string>>([]);
-  // const testData: Array<string> = [...datosAux];
+
   const testData: Array<string> = [];
   const testData2: Array<string> = [];
   const testData3: Array<string> = [];
 
   window.electron.ipcRenderer.senso((event: any, resp: any) => {
-    if(shouldStop) {
+    if (shouldStop) {
       detenerIntervalo();
       stopSensores();
     }
-    // console.log("reading");
     const dataLocal = resp;
     bufferdatos = dataLocal;
     const decode = decodeURIComponent(bufferdatos);
@@ -141,13 +133,13 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   const [globalData3, setGlobalData3] = useState<any>([]);
   // let intervalID: string | number | NodeJS.Timeout | undefined;
   // objectStored
-  function intervalFunction (){
-    // console.log("interval");    
+  function intervalFunction() {
+    // console.log("interval");
     const objectToStore = {};
     if (sensoresSelected >= 1) {
       // setDataYEmg1((prev: any) => {
-        //   return [...prev.slice(1), ...newA];
-        // });
+      //   return [...prev.slice(1), ...newA];
+      // });
       Object.assign(objectToStore, {
         emg1: [...globalData, ...testData],
       });
@@ -168,7 +160,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
       });
       // objectToStore.emg2 = [...globalData2, ...testData2]
       setGlobalData2([...globalData2, ...testData2]);
-      setDataYEmg2(testData2.slice(-dataXEmg2.length))
+      setDataYEmg2(testData2.slice(-dataXEmg2.length));
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg2((prev: any) => {
       //   return prev;
@@ -187,7 +179,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
       });
       // objectToStore.emg3 = [...globalData3, ...testData3]
       setGlobalData3([...globalData3, ...testData3]);
-      setDataYEmg3(testData3.slice(-dataXEmg3.length))
+      setDataYEmg3(testData3.slice(-dataXEmg3.length));
 
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg3((prev: any) => {
@@ -206,18 +198,17 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
       // setDataXEmg4(innerXEmg4);
     }
     appDispatch(setRealTimeSignal(objectToStore));
-  // }
+    // }
   }
   const auxFunc = (intervalToClean: any) => {
-    console.log("About to clean");
     clearInterval(intervalToClean);
-  }
+  };
   const cleanUpTimed = (intervalToClean: any) => {
     setTimeout(() => auxFunc(intervalToClean), 5000);
-  }
+  };
   let timeoutID: string | number | NodeJS.Timeout | undefined;
   function iniciarIntervalo() {
-    timeoutID = setTimeout(function() {
+    timeoutID = setTimeout(function () {
       intervalFunction();
       iniciarIntervalo(); // Vuelve a iniciar el intervalo
     }, 100); // Elige el tiempo deseado (en milisegundos) para el intervalo
@@ -227,18 +218,15 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   }
   useEffect(() => {
     let intervalID;
-    if(isReady) {
-      console.log("Starting");
+    if (isReady) {
       // intervalID = setInterval(intervalFunction, 100);
       iniciarIntervalo();
     } else {
-      console.log("unable to start");
       detenerIntervalo();
       // clearInterval(intervalID);
     }
-  }, [isReady])
+  }, [isReady]);
   async function stopSensores() {
-    console.log('Getting message stop');
     // detenerIntervalo();
     setIsReady(false);
     console.log('FInal', globalData);
@@ -272,10 +260,10 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
     stopSensores();
   };
   useEffect(() => {
-    if(mode === "LIVE") {
+    if (mode === 'LIVE') {
       loadSensores();
     }
-  }, [])
+  }, []);
   return (
     <div>
       <SensoresAdquisicion
@@ -298,7 +286,6 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
         onClickStopNew={onClickStopNew}
         onClickStartNew={onClickStartNew}
       />
-
     </div>
   );
 };

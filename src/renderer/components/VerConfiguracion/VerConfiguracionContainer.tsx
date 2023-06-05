@@ -16,12 +16,13 @@ interface Config {
   nombre: string;
 }
 
+interface Cols {
+  col1: string;
+}
+
 const VerConfiguracionContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
-  interface Cols {
-    col1: string;
-  }
   const [data, setData] = useState<Cols[]>([]);
   const columns: Array<Column<{ col1: string }>> = React.useMemo(
     () => [
@@ -36,87 +37,55 @@ const VerConfiguracionContainer = () => {
 
   // Load Data for the rows
   async function loadData() {
-    console.log('Fui llamado');
     appDispatch(setIsLoading(true));
     const resp: Config[] =
       (await window.electron.ipcRenderer.selectC()) as Array<Config>;
-    console.log('Esta es', resp);
     if (resp.length > 0) {
-      console.log('si es', resp);
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < resp.length; i++) {
+      for (let i = 0; i < resp.length; i+=1) {
         datarRetrieved.push({
           col1: resp[i].nombre,
         });
       }
       setData(datarRetrieved);
-    } else {
-      console.log('nada');
-    }
+    } 
     appDispatch(setIsLoading(false));
   }
-  console.log('estoy rendereando antes de detalle');
+
   useEffect(() => {
-    console.log('updated lista config');
     loadData();
   }, []);
+
   async function loadDataMultimedia(nameConf: string, resp: any) {
-    // appDispatch(setConfigDetalle(resp));
     const respMulti = await window.electron.ipcRenderer.selectMC(nameConf);
     return respMulti;
   }
-  // window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('esta es la multimedia', resp);
-  //     appDispatch(setConfigMultimedia(resp));
-  //     navigate('/verConfiguracionDetalle');
-  //   } else {
-  //     console.log('nada en multimedia');
-  //   }
-  //   appDispatch(setIsLoading(false));
-  // });
+
   async function loadDataDetalle(nameConf: string) {
-    // appDispatch(setIsLoading(true));
     const resp = await window.electron.ipcRenderer.selectCD(nameConf);
     return resp;
   }
-  // window.electron.ipcRenderer.selectCD(async (event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('Este es el datelle click', resp);
-  //     // appDispatch(setConfigDetalle(resp));
-  //     return resp;
-  //   } else {
-  //     console.log('nada en detalle');
-  //     return 0;
-  //   }
-  // appDispatch(setIsLoading(false));
-  // loadDataMultimedia(resp[0].nombre, resp);
-  // });
 
   const onClickRow = useCallback(async (element: any) => {
-    console.log(element);
-    console.log(element.cells);
-    // console.log(element.cells[0].value)
     appDispatch(setIsLoading(true));
     const respuesta = await loadDataDetalle(element.cells[0].value);
-    console.log('this is final resp', respuesta);
     const respuestaMultimedia = await loadDataMultimedia(
       respuesta[0].nombre,
       respuesta
     );
-    console.log('this is multi', respuestaMultimedia);
     appDispatch(setConfigName(element.cells[0].value));
     appDispatch(setConfigDetalle(respuesta));
     appDispatch(setConfigMultimedia(respuestaMultimedia));
     appDispatch(setIsLoading(false));
     navigate('/verConfiguracionDetalle');
   }, []);
+
   const options: TableOptions<{
     col1: string;
   }> = {
     data,
     columns,
   };
+  
   return <VerConfiguracion options={options} onClickRow={onClickRow} />;
 };
 

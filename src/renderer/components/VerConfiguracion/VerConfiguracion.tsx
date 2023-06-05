@@ -1,6 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/jsx-key */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import {
   useTable,
   TableOptions,
@@ -8,15 +6,7 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
-// import TableStylesList from "./TableStylesList";
 
-interface Cols {
-  col1: string;
-  col2: string;
-  col3: string;
-  col4: string;
-  col5: string;
-}
 interface VerConfiguracionProps {
   options: TableOptions<{ col1: string }>;
   onClickRow: (arg0: any) => void;

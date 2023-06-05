@@ -4,7 +4,8 @@ import './ProbarSensores.css';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import styleButton, {
-  styleButtonBiggerGreen, styleButtonBiggerRed
+  styleButtonBiggerGreen,
+  styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 
 const ProbarSensores = ({

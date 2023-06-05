@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import React from 'react';
 import NavegacionContainer from './components/Navegacion/NavegacionContainer';
 import CrearAnalisisContainer from './components/CrearAnalisis/CrearAnalisisContainer';
 import VerAnalisisContainer from './components/VerAnalisis/VerAnalisisContainer';
@@ -10,7 +9,7 @@ import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisi
 import PrediccionContainer from './components/Prediccion/PrediccionContainer';
 import VerProtocoloContainer from './components/VerProtocolo/VerProtocoloContainer';
 import VerProtocolo2Container from './components/VerProtocolo2/VerProtocolo2Container';
-import VerAlgoritmoContainer from './components/VerAlgoritmo/VerAlgoritmoContainer';
+import VerImplementacionContainer from './components/VerImplementacion/VerImplementacionContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
@@ -41,17 +40,15 @@ import Blank from './components/Caracterizar/Blank';
 import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import CrearImplementacionContainer from './components/CrearAlgoritmo/CrearAlgoritmoContainer';
-import VerAlgoritmosContainer from './components/VerAlgoritmos/VerAlgoritmosContainer';
+import CrearImplementacionContainer from './components/CrearImplementacion/CrearImplementacionContainer';
+import VerImplementacionesContainer from './components/VerImplementaciones/VerImplementacionesContainer';
 import VerModeloContainer from './components/VerModelo/VerModeloContainer';
 import VerModelosContainer from './components/VerModelos/VerModelosContainer';
 import Test from './components/CaracterizarParte2/Test';
-import ResultsTableContainer from './components/Utilities/ResultsTableContainer';
 import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloContainer';
 import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
 import ProbarSensoresBlank from './components/ProbarSensores/ProbarSensoresBlank';
 import SensoresAdquisicionContainer from './components/SensoresAdquisicion/SensoresAdquisicionContainer';
-import ModalSensoresAdquisicion from './components/SensoresAdquisicion/ModalSensoresAdquisicion';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -61,7 +58,9 @@ export default function App() {
   const subidaExitosaS3 = useCustomSelector(
     (state) => state.status.isUploadedS3
   );
-  const subidaFalloS3 = useCustomSelector((state) => state.status.failUploadS3);
+  const fallosAlCargar = useCustomSelector(
+    (state) => state.status.fallosAlCargar
+  );
   console.log(isLogged);
   if (isLogged) {
     return (
@@ -120,7 +119,10 @@ export default function App() {
               element={<CrearImplementacionContainer />}
             />
             <Route path="/verModelo" element={<VerModeloContainer />} />
-            <Route path="/verModelos" element={<VerModelosContainer />} />
+            <Route
+              path="/verImplementaciones"
+              element={<VerModelosContainer />}
+            />
             <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
             <Route
               path="/verProtocoloDetalle"
@@ -161,23 +163,31 @@ export default function App() {
             />
             <Route
               path="/sensoresAdquisicion"
-              element={<SensoresAdquisicionContainer />}
+              element={
+                <SensoresAdquisicionContainer mode="" shouldStop={false} />
+              }
             />
             {/* <Route
               path="/modalSensores"
               element={<ModalSensoresAdquisicion />}
             /> */}
-            
+
             <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
             <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
-            <Route path="/verAlgoritmos" element={<VerAlgoritmosContainer />} />
-            <Route path="/verAlgoritmo" element={<VerAlgoritmoContainer />} />
+            <Route
+              path="/verImplementaciones"
+              element={<VerImplementacionesContainer />}
+            />
+            <Route
+              path="/verImplementacion"
+              element={<VerImplementacionContainer />}
+            />
           </Routes>
           <>{loading && <Loading />}</>
           <>{subidaExitosa && <CreadoExitosamente />}</>
           <>{subidaFallo && <ErrorCrear />}</>
           <>{subidaExitosaS3 && <CargaExitosaModal />}</>
-          <>{subidaFalloS3 && <ErrorModal />}</>
+          <>{fallosAlCargar && <ErrorModal />}</>
         </Container>
       </div>
     );

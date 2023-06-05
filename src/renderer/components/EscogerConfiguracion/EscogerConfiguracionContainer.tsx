@@ -27,42 +27,15 @@ const EscogerConfiguracionContainer = () => {
     appDispatch(setConfigCompleta(resp));
     appDispatch(setIsLoading(false));
     navigate('/colocacionMuestra');
-
-    // window.electron.ipcRenderer.selectConfiguracionDetalle(name);
   }
-  // window.electron.ipcRenderer.selectCD((event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('Esta es la config completa', resp);
-  //     appDispatch(setConfigCompleta(resp));
-  //     navigate('/colocacionMuestra');
-  //   } else {
-  //     console.log('nada en CD');
-  //   }
-  //   appDispatch(setIsLoading(false));
-  // });
 
   // Get Multimedia to Display
   async function loadMulti(dataP: any) {
-    // console.log('load multi', data);
-    // appDispatch(setIsLoading(true));
     nameConfig = dataP[0].configuracion;
     const respMulti = await window.electron.ipcRenderer.selectMC(nameConfig);
     appDispatch(setConfigMultimedia(respMulti));
     loadConfCompleta(nameConfig);
-
-    // window.electron.ipcRenderer.selectMultimediaConfig(nameConfig);
-    /* loadConfCompleta(data[0].configuracion); */
   }
-  // window.electron.ipcRenderer.selectMC((event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('Esta es la multimedia', resp);
-  //   } else {
-  //     console.log('nada en MC');
-  //   }
-  //   // appDispatch(setIsLoading(false));
-  //   appDispatch(setConfigMultimedia(resp));
-  //   loadConfCompleta(nameConfig);
-  // });
 
   // Get data from selected Protocol
   async function loadConf() {
@@ -70,18 +43,6 @@ const EscogerConfiguracionContainer = () => {
     const respConf = await window.electron.ipcRenderer.selectCN(protocolo);
     loadMulti(respConf);
   }
-  // window.electron.ipcRenderer.selectCN((event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('Esta es la config', resp);
-  //     setData(resp);
-  //   } else {
-  //     console.log('nada en CN');
-  //   }
-  //   // appDispatch(setIsLoading(false));
-
-  //   // appDispatch(setIsLoading(false));
-  //   loadMulti(resp);
-  // });
 
   const onClickNav = () => {
     if (protocolo === '') {
@@ -107,18 +68,8 @@ const EscogerConfiguracionContainer = () => {
     const localResp = await window.electron.ipcRenderer.selectPrs();
     setData(localResp);
     appDispatch(setIsLoading(false));
-
-    // window.Bridge.selectProtocolos();
   }
-  // window.Bridge.selectPrs((event: any, resp: any) => {
-  //   if (resp.length > 0) {
-  //     console.log('si es', resp);
-  //     setData(resp);
-  //   } else {
-  //     console.log('nada');
-  //   }
-  //   appDispatch(setIsLoading(false));
-  // });
+
   useEffect(() => {
     console.log('updated');
     loadData();

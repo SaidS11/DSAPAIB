@@ -16,12 +16,12 @@ const PlotP = ({
         autosize: true,
         grid: gridLayout,
         shapes: allSelections
-           ? allSelections.flatMap((x) =>
-               x.selections
-                 ? { ...x.selections[0], line: { dash: "solid" } }
-                 : []
-             )
-           : undefined
+          ? allSelections.flatMap((x) =>
+              x.selections
+                ? { ...x.selections[0], line: { dash: 'solid' } }
+                : []
+            )
+          : undefined,
       }}
       config={{ scrollZoom: true, displaylogo: false }}
       useResizeHandler

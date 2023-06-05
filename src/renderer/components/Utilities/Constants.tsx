@@ -1,5 +1,3 @@
-import { float } from 'aws-sdk/clients/cloudfront';
-
 export interface PacientesAnalisis {
   nombre: string;
   apellido_paterno: string;
@@ -38,7 +36,7 @@ export interface Algoritmo {
   algoritmo_ia: string;
   parametros: object;
   presicion: number;
-  desviacion_estandar: float;
+  desviacion_estandar: number;
   entrenado: boolean;
 }
 
@@ -112,14 +110,26 @@ export interface MongoInsertObjectInterface {
 }
 
 export interface RealTimeSignalInterface {
-  emg1?: Array<any>
-  emg2?: Array<any>
-  emg3?: Array<any>
-  emg4?: Array<any>
-  frecuencia?: Array<any>
-  giroscopio?: Array<any>
-  acelerometro?: Array<any>
+  emg1?: Array<any>;
+  emg2?: Array<any>;
+  emg3?: Array<any>;
+  emg4?: Array<any>;
+  frecuencia?: Array<any>;
+  giroscopio?: Array<any>;
+  acelerometro?: Array<any>;
 }
+
+export interface ConfigurationInterface {
+  nombreConfig: string;
+  descripcion: string;
+  canales: string;
+  ritmo: string;
+  frecuencia: string;
+  giroscopio: string;
+  acelerometro: string;
+}
+
+export const apiEndpoint = 'http://localhost:8000';
 export const datosDePrueba =
   '[[{"colMediaABSEMG1":"4.50","colMedianaEMG1":"4.5","colRMSEMG1":"4.64","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.64","colMediaABSGiroscopio":"4.50","colMedianaGiroscopio":"4.5","colRMSGiroscopio":"4.64","colMediaABSAcelerometro":"4.50","colMedianaAcelerometro":"4.5","colRMSAcelerometro":"4.64","etiqueta":"Diabetico","nombre":"Martha Garcia Lopez"},{"colMediaABSEMG1":13,"colMedianaEMG1":"13","colRMSEMG1":"13.03","colMediaABSEMG2":"15","colMedianaEMG2":"15","colRMSEMG2":"15.02","colMediaABSGiroscopio":13,"colMedianaGiroscopio":"13","colRMSGiroscopio":"13.03","colMediaABSAcelerometro":13,"colMedianaAcelerometro":"13","colRMSAcelerometro":"13.03","etiqueta":"Diabetico","nombre":"Martha Garcia Lopez"}],[{"colMediaABSEMG1":5,"colMedianaEMG1":"5","colRMSEMG1":"5.20","colMediaABSEMG2":"3.5","colMedianaEMG2":"3.5","colRMSEMG2":"3.67","colMediaABSGiroscopio":5,"colMedianaGiroscopio":"5","colRMSGiroscopio":"5.20","colMediaABSAcelerometro":5,"colMedianaAcelerometro":"5","colRMSAcelerometro":"5.20","etiqueta":"Diabetico","nombre":"Carlos Silva Chacon"},{"colMediaABSEMG1":15,"colMedianaEMG1":"15","colRMSEMG1":"15.02","colMediaABSEMG2":"16.5","colMedianaEMG2":"16.5","colRMSEMG2":"16.54","colMediaABSGiroscopio":15,"colMedianaGiroscopio":"15","colRMSGiroscopio":"15.02","colMediaABSAcelerometro":15,"colMedianaAcelerometro":"15","colRMSAcelerometro":"15.02","etiqueta":"Diabetico","nombre":"Carlos Silva Chacon"}],[{"colMediaABSEMG1":3,"colMedianaEMG1":"3","colRMSEMG1":"3.32","colMediaABSEMG2":"2","colMedianaEMG2":"2","colRMSEMG2":"2.16","colMediaABSGiroscopio":3,"colMedianaGiroscopio":"3","colRMSGiroscopio":"3.32","colMediaABSAcelerometro":3,"colMedianaAcelerometro":"3","colRMSAcelerometro":"3.32","etiqueta":"Sano","nombre":"Probando pr pr"},{"colMediaABSEMG1":15,"colMedianaEMG1":"15","colRMSEMG1":"15.08","colMediaABSEMG2":"11","colMedianaEMG2":"11","colRMSEMG2":"11.09","colMediaABSGiroscopio":15,"colMedianaGiroscopio":"15","colRMSGiroscopio":"15.08","colMediaABSAcelerometro":15,"colMedianaAcelerometro"15.08","colMediaABSAcelerometro":15,"colMedianaAcelerometro":"15","colRMSAcelerometro":"15.08","etiqueta":"Sano","nombre":"Probando pr pr"}],[{"colMediaABSEMG1":"4.50","colMedianaEMG1":"4.5","colRMSEMG1":"4.64","colMolRMSEMG2":"4.64","colMediaABSGiroscopio":"4.50","cediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.64","colMediaABSGiroscopio":"4.50","colMedianaGiroscopio":"4.5","colRMSGiroscopio":"4.64","colMediaABSAcelerometro":"4.50","colMedianaAcelerometro":"4.5","colRMSAcelerometro":"4.64naEMG1":"13","colRMSEMG1":"13.03","colMediaA","etiqueta":"Diabetico","nombre":"Martha Garcia Lopez"},{"colMediaABSEMG1":13,"colMedianaEMG1":"13","colRMSEMG1":"13.03","colMediaABSEMG2":"15","colMedianaEMG2":"15","colRMSEMG2":"15.02","colMDiabetico","nombre":"Martha Garcia Lopez"}],ediaABSGiroscopio":13,"colMedianaGiroscopio":"13","colRMSGiroscopio":"13.03","colMediaABSAcelerometro":13,"colMedianaAcelerometro":"13","colRMSAcelerometro":"13.03","etiqueta":"Diabetico","nombre":"Martha Garcia Lopez"}],[{"colMediaABSEMGediaABSAcelerometro":5,"colMedianaAcelerometro":"5","colRMST1":5,"colMedianaEMG1":"5","colRMSEMG1":"5.20","colMediaABSEMG2":"3.5","colMedianaEMG2":"3.5","colRMSEMG2":"3.67","colMediaABSGiroscopio":5,"colMedianaGiroscopio":"5","colRMSGiroscopio":"5.20","colMediaABSAcelerometro":5,"c:"16.54","colMediaABSGiroscopio":15,"colMedianaGiroscopio"olMedianaAcelerometro":"5","colRMSAcelerometro":"5.20","etiqueta":"Diabetico","nombre":"Carlos Silva Chacon"},{"colMediaABSEMG1":15,"colMedianaEMG1":"15","colRMSEMG1":"15.02","colMediaABSEMG2":"16.5","colMediaRMSEMG1":"3.32","colMediaABSEMG2":"2","colMenaEMG2":"16.5","colRMSEMG2":"16.54","colMediaABSGiroscopio":15,"colMedianaGiroscopio":"15","colRMSGiroscopio":"15.02","colMediaABSAcelerometro":15,"colMedianaAcelerometro":"15","colRMSAcelerometro":"15.02","etiqueta":"Diabetico","nombre": pr"},{"colMediaABSEMG1":15,"colMedianaEMG1""Carlos Silva Chacon"}],[{"colMediaABSEMG1":3,"colMedianaEMG1":"3","colRMSEMG1":"3.32","colMediaABSEMG2":"2","colMedianaEMG2":"2","colRMSEMG2":"2.16","colMediaABSGiroscopio":3,"colMedianaGiroscopio":"3","col15","colRMSAcelerometro":"15.08","etiqueta":"Sano","RMSGiroscopio":"3.32","colMediaABSAcelerometro":3,"colMedianaAcelerometro":"3","colRMSAcelerometro":"3.32","etiqueta":"Sano","nombre":"Probando pr pr"},{"colMediaABSEMG1":15,"colMedianaEMG1":"15","colRMSEMG1":"15.08","colMediaABSEMG2":"11","colMedianaEMG2":"11","colRMSEMG2":"11.09","colMediaABSGiroscopio":15,"colMedianaGiroscopio":"15","colRMSGiroscopio":"15.08","colMediaABSAcelerometro":15,"colMedianaAcelerometro":"15","colRMSAcelerometro":"15.08","etiqueta":"Sano","nombre":"Probando pr pr"}]]';
 export const datosDePrueba2 =

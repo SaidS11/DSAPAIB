@@ -109,7 +109,14 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
           </section>
           <section className="display-flexAgregar">
             <h4>Peso: (kg)</h4>
-            <input type="number" id="peso" name="peso" min="10" max="500" />
+            <input
+              required
+              type="number"
+              id="peso"
+              name="peso"
+              min="10"
+              max="500"
+            />
             <h4>Estatura: (cm)</h4>
             <input
               type="number"

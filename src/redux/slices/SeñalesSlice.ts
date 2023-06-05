@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { MongoInsertObjectInterface, RealTimeSignalInterface } from 'renderer/components/Utilities/Constants';
+import {
+  MongoInsertObjectInterface,
+  RealTimeSignalInterface,
+} from 'renderer/components/Utilities/Constants';
 
 export interface SignalObj {
   length: number;
   x: number;
   y: number;
 }
-
-
 
 export interface ISeñales {
   sensoresPrueba: number;
@@ -77,7 +78,6 @@ export const SeñalesSlice = createSlice({
   name: 'señales',
   initialState,
   reducers: {
-    
     setSensoresPrueba: (
       state,
       action: PayloadAction<ISeñales['sensoresPrueba']>
@@ -234,10 +234,12 @@ export const SeñalesSlice = createSlice({
     setPredictMode: (state, action: PayloadAction<ISeñales['predictMode']>) => {
       state.predictMode = action.payload;
     },
-    setRealTimeSignal: (state, action: PayloadAction<ISeñales['realTimeSignal']>) => {
+    setRealTimeSignal: (
+      state,
+      action: PayloadAction<ISeñales['realTimeSignal']>
+    ) => {
       state.realTimeSignal = action.payload;
     },
-    
   },
 });
 

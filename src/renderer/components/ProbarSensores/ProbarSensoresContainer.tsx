@@ -29,7 +29,7 @@ const ProbarSensoresContainer = () => {
 
   const [dataXEmg1, setDataXEmg1] = useState<any>([...startingNumbers]);
   const [dataYEmg1, setDataYEmg1] = useState<any>([]);
-  
+
   const [dataXEmg2, setDataXEmg2] = useState<any>([...startingNumbers]);
   const [dataYEmg2, setDataYEmg2] = useState<any>([]);
 
@@ -149,7 +149,7 @@ const ProbarSensoresContainer = () => {
   const [globalData3, setGlobalData3] = useState<any>([]);
   // let intervalID: string | number | NodeJS.Timeout | undefined;
 
-  function intervalFunction (){
+  function intervalFunction() {
     // console.log("interval");
     setGlobalData([...globalData, ...testData]);
     setGlobalData2([...globalData2, ...testData2]);
@@ -169,7 +169,7 @@ const ProbarSensoresContainer = () => {
       // setDataYEmg2((prev: any) => {
       //   return [...prev.slice(1), ...testData2];
       // });
-      setDataYEmg2(testData2.slice(-dataXEmg2.length))
+      setDataYEmg2(testData2.slice(-dataXEmg2.length));
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg2((prev: any) => {
       //   return prev;
@@ -183,7 +183,7 @@ const ProbarSensoresContainer = () => {
       // setDataYEmg3((prev: any) => {
       //   return [...prev.slice(1), ...testData3];
       // });
-      setDataYEmg3(testData3.slice(-dataXEmg3.length))
+      setDataYEmg3(testData3.slice(-dataXEmg3.length));
 
       // setDataXEmg1(innerXEmg1);
       // setDataXEmg3((prev: any) => {
@@ -200,18 +200,18 @@ const ProbarSensoresContainer = () => {
       // setDataYEmg4(emg4Arr);
       // setDataXEmg4(innerXEmg4);
     }
-  // }
+    // }
   }
   const auxFunc = (intervalToClean: any) => {
-    console.log("About to clean");
+    console.log('About to clean');
     clearInterval(intervalToClean);
-  }
+  };
   const cleanUpTimed = (intervalToClean: any) => {
     setTimeout(() => auxFunc(intervalToClean), 5000);
-  }
+  };
   let timeoutID: string | number | NodeJS.Timeout | undefined;
   function iniciarIntervalo() {
-    timeoutID = setTimeout(function() {
+    timeoutID = setTimeout(function () {
       intervalFunction();
       iniciarIntervalo(); // Vuelve a iniciar el intervalo
     }, 100); // Elige el tiempo deseado (en milisegundos) para el intervalo
@@ -221,16 +221,16 @@ const ProbarSensoresContainer = () => {
   }
   useEffect(() => {
     let intervalID;
-    if(isReady) {
-      console.log("Starting");
+    if (isReady) {
+      console.log('Starting');
       // intervalID = setInterval(intervalFunction, 100);
       iniciarIntervalo();
     } else {
-      console.log("unable to start");
+      console.log('unable to start');
       detenerIntervalo();
       // clearInterval(intervalID);
     }
-  }, [isReady])
+  }, [isReady]);
   async function stopSensores() {
     console.log('Getting message stop');
     // detenerIntervalo();
@@ -260,8 +260,12 @@ const ProbarSensoresContainer = () => {
   // });
 
   const onClickStart = async () => {
-    loadSensores();
+    window.electron.ipcRenderer.arduinoTest();
+    // loadSensores();
   };
+  window.electron.ipcRenderer.arduinoT((event: any, resp: any) => {
+    console.log('Esta es', resp);
+  });
   const onClickStop = async () => {
     stopSensores();
   };
