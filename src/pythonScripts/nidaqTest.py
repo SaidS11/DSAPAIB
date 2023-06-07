@@ -17,11 +17,7 @@ def funcion_a_ejecutar():
     tiempo_inicial = time.time()
     while time.time() - tiempo_inicial < duracion:
         line = task.read()
-        string = line.decode()
-        stripped_string = string.strip()
-        valores = stripped_string.split(',')
-        valores.pop()
-        returnedList.append(valores)
+        returnedList.append(line)
         # print("reading", valores)
         # tiempo_actual = time.time()
 

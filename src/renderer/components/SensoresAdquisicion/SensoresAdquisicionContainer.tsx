@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setRealTimeSignal } from '../../../redux/slices/SeñalesSlice';
 import SensoresAdquisicion from './SensoresAdquisicion';
+
 interface SensoresAdquisicionInterface {
   mode: string;
   shouldStop: boolean;

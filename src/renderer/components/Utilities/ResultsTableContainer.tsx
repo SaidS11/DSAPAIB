@@ -1,4 +1,4 @@
-import {  Column } from 'react-table';
+import { Column } from 'react-table';
 import React from 'react';
 import { useCustomSelector } from '../../../redux/hooks';
 import ResultsTable from './ResultsTable';

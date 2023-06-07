@@ -1922,7 +1922,7 @@ ipcMain.handle('arduinoTest', async (event) => {
   const direcFinal = direcParsed.slice(0, -4);
   try {
     PythonShell.run(
-      `${direcFinal}/pythonScripts/arduinoTest.py`,
+      `${direcFinal}/pythonScripts/nidaqTest.py`,
       options,
       function (err, results) {
         if (err) {

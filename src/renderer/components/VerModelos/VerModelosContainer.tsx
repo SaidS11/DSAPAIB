@@ -47,7 +47,7 @@ const VerModelosContainer = () => {
   }
   useEffect(() => {
     loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const options: TableOptions<{
@@ -56,18 +56,20 @@ const VerModelosContainer = () => {
     data,
     columns,
   };
-  
+
   async function loadDataDetalle(nameConf: string) {
     appDispatch(setIsLoading(true));
     window.electron.ipcRenderer.selectImplementacionPorNombre(nameConf);
   }
-  window.electron.ipcRenderer.selectImplementacionPorN((event: any, resp: any) => {
-    if (resp.length > 0) {
-      appDispatch(setModeloDetalle(resp[0]));
+  window.electron.ipcRenderer.selectImplementacionPorN(
+    (event: any, resp: any) => {
+      if (resp.length > 0) {
+        appDispatch(setModeloDetalle(resp[0]));
+      }
+      appDispatch(setIsLoading(false));
+      navigate('/verModelo');
     }
-    appDispatch(setIsLoading(false));
-    navigate('/verModelo');
-  });
+  );
 
   const onClickRow = (element: any) => {
     console.log(element);

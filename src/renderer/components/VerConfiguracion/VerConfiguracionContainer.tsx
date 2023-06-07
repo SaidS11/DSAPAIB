@@ -41,13 +41,13 @@ const VerConfiguracionContainer = () => {
     const resp: Config[] =
       (await window.electron.ipcRenderer.selectC()) as Array<Config>;
     if (resp.length > 0) {
-      for (let i = 0; i < resp.length; i+=1) {
+      for (let i = 0; i < resp.length; i += 1) {
         datarRetrieved.push({
           col1: resp[i].nombre,
         });
       }
       setData(datarRetrieved);
-    } 
+    }
     appDispatch(setIsLoading(false));
   }
 
@@ -85,7 +85,7 @@ const VerConfiguracionContainer = () => {
     data,
     columns,
   };
-  
+
   return <VerConfiguracion options={options} onClickRow={onClickRow} />;
 };
 

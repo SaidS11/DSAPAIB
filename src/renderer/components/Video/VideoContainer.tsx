@@ -20,7 +20,7 @@ const VideoContainer = () => {
   const multimediaObj = useCustomSelector(
     (state) => state.config.configMultimedia
   );
-  
+
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
@@ -47,7 +47,7 @@ const VideoContainer = () => {
     }
   };
   const video = document.getElementById('myVideo') as HTMLMediaElement | null;
-  
+
   video?.addEventListener('play', (event) => {
     console.log(
       'The Boolean paused property is now false. Either the ' +
@@ -59,15 +59,10 @@ const VideoContainer = () => {
     ? urlRetrieved
     : `${apiEndpoint}/${multimediaObj[0].link_video}`;
 
-  useEffect(() => {
-  }, [video]);
+  useEffect(() => {}, [video]);
   return (
     <div>
-      <Video
-        onClickNav={onClickNav}
-        url={url}
-        onClickCancel={onClickCancel}
-      />
+      <Video onClickNav={onClickNav} url={url} onClickCancel={onClickCancel} />
       <SensoresAdquisicionContainer mode="LIVE" shouldStop={shouldStop} />
     </div>
   );

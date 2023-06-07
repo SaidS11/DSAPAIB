@@ -209,7 +209,6 @@ const ResultadosContainer = () => {
 
   const [signalRetrieved, setSignalRetrieved] = useState(false);
   const retrieveSignal = () => {
-
     const { emg1 } = objetoMongo.signals;
     const { emg2 } = objetoMongo.signals;
     const { emg3 } = objetoMongo.signals;
@@ -271,7 +270,6 @@ const ResultadosContainer = () => {
       }
     }
     if (sensoresSelected >= 1) {
-
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);
     }

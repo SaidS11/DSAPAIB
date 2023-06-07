@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TableOptions, Column } from 'react-table';
 import { useCustomSelector, useCustomDispatch } from '../../../redux/hooks';
-import {
-  setIsLoading,
-} from '../../../redux/slices/StatusSlice';
+import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import VerPaciente from './VerPaciente';
 import { PacientesAnalisisMongo } from '../Utilities/Constants';
 

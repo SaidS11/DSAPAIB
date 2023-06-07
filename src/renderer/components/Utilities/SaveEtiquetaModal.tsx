@@ -3,13 +3,13 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useCustomDispatch } from '../../../redux/hooks';
-import { setMongoInsertObject } from '../../../redux/slices/SeñalesSlice';
 import {
   setIsLoading,
   setFailUpload,
   setIsUploaded,
 } from 'redux/slices/StatusSlice';
+import { useCustomDispatch } from '../../../redux/hooks';
+import { setMongoInsertObject } from '../../../redux/slices/SeñalesSlice';
 import { MongoInsertObjectInterface } from './Constants';
 import {
   styleButtonBigger,
