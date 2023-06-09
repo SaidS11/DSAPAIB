@@ -1733,15 +1733,15 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 let serialPortMultiple1 = new SerialPort({
   path: 'COM5',
-  baudRate: 9600,
+  baudRate: 115000,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
 });
 
 let serialPortMultiple2 = new SerialPort({
-  path: 'COM3',
-  baudRate: 9600,
+  path: 'COM8',
+  baudRate: 115000,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
