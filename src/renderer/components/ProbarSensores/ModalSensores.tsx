@@ -52,8 +52,12 @@ export default function ModalSensores(props: ModalProps) {
 
   const handleChangePuerto = (event: SelectChangeEvent) => {
     console.log('puerto', event.target.value as string);
-    setPuerto(event.target.value as string);
+    // setPuerto(event.target.value as string);
     setPortSelected(event.target.value as string);
+
+    setPuerto("COM1");
+
+    setPortSelected("COM1");
   };
 
   // const handleChangeBaud = () => {
