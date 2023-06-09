@@ -275,9 +275,9 @@ const ProbarSensoresContainer = () => {
   // });
 
   const onClickStart = async () => {
-    loadSensores();
+    // loadSensores();
     // loadSensoresMultiples();
-    // window.electron.ipcRenderer.arduinoTest();
+    window.electron.ipcRenderer.arduinoTest();
   };
   window.electron.ipcRenderer.arduinoT((event: any, resp: any) => {
     console.log('Esta es', resp);
