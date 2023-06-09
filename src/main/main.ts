@@ -1756,13 +1756,19 @@ ipcMain.on('multiplesSensores', async (event) => {
   // console.log(resp);
 
 
-  for (let i = 0; i < ports.length; i+=1) {
-    console.log("Try on port ", ports[i])
-    if (!ports[i].isOpen) {
-      console.log("Port Open", ports[i])
-      ports[i].open();
-    }
-  }
+  // for (let i = 0; i < ports.length; i+=1) {
+  //   console.log("Try on port ", ports[i])
+  //   if (!ports[i].isOpen) {
+  //     console.log("Port Open", ports[i])
+  //     ports[i].open();
+  //   }
+  // }
+  ports[0].open();
+  ports[1].open();
+
+  console.log("Port1 is open?", ports[0].isOpen);
+  console.log("Port2 is open?", ports[1].isOpen);
+
   
   parserMultiple1.resume();
   parserMultiple2.resume();
