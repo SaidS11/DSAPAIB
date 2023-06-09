@@ -1757,10 +1757,10 @@ ipcMain.on('multiplesSensores', async (event) => {
 
 
   for (let i = 0; i < ports.length; i+=1) {
+    console.log("Try on port ", ports[i])
     if (!ports[i].isOpen) {
       console.log("Port Open", ports[i])
       ports[i].open();
-      
     }
   }
   
