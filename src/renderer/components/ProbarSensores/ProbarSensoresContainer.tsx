@@ -118,6 +118,16 @@ const ProbarSensoresContainer = () => {
 
   // Fin procesamiento
 
+  async function loadSensoresMultiples() {
+    console.log('Getting message');
+    setIsReady(true);
+    window.electron.ipcRenderer.multiplesSensores();
+  }
+  window.electron.ipcRenderer.multiplesSenso((event: any, resp: any) => {
+    console.log("Resp", resp);
+  });
+
+
   async function loadSensores() {
     console.log('Getting message');
     setIsReady(true);
@@ -132,7 +142,7 @@ const ProbarSensoresContainer = () => {
   const testData3: Array<string> = [];
 
   window.electron.ipcRenderer.senso((event: any, resp: any) => {
-    // console.log("reading");
+    console.log("Resp", resp);
     const dataLocal = resp;
     bufferdatos = dataLocal;
     const decode = decodeURIComponent(bufferdatos);
@@ -247,6 +257,11 @@ const ProbarSensoresContainer = () => {
     // clearInterval(intervalFunction);
     const resp = await window.electron.ipcRenderer.sensoStop();
   }
+  async function stopSensoresMultiple() {
+    console.log('Getting message stop');
+    setIsReady(false);
+    const resp = await window.electron.ipcRenderer.sensoresStopMulti();
+  }
   // window.electron.ipcRenderer.sensoStop((event: any, resp: any) => {
   //   // appDispatch(setIsLoading(true));
   //   // console.log(resp);
@@ -260,14 +275,16 @@ const ProbarSensoresContainer = () => {
   // });
 
   const onClickStart = async () => {
-    window.electron.ipcRenderer.arduinoTest();
-    // loadSensores();
+    loadSensores();
+    // loadSensoresMultiples();
+    // window.electron.ipcRenderer.arduinoTest();
   };
   window.electron.ipcRenderer.arduinoT((event: any, resp: any) => {
     console.log('Esta es', resp);
   });
   const onClickStop = async () => {
     stopSensores();
+    // stopSensoresMultiple();
   };
   return (
     <div>

@@ -15,6 +15,14 @@ contextBridge.exposeInMainWorld('electron', {
       ipcRenderer.send('sensoresStop');
     },
     sensoStop: (callback: any) => ipcRenderer.invoke('sensoresStop', callback),
+    multiplesSensores(nombre: string) {
+      ipcRenderer.send('multiplesSensores', nombre);
+    },
+    multiplesSenso: (callback: any) => ipcRenderer.on('multiplesSenso', callback),
+    sensoresStopMultiple() {
+      ipcRenderer.send('sensoresStopMultiple');
+    },
+    sensoresStopMulti: (callback: any) => ipcRenderer.invoke('sensoresStopMulti', callback),
     selectConfiguracion() {
       ipcRenderer.send('selectConfiguracion');
     },

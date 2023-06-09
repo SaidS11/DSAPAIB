@@ -1701,18 +1701,18 @@ ipcMain.on('sensores', async (event) => {
   });
 });
 
-app2.post('/recibirDatos', async (req: Request, res: Response) => {
-  try {
-    // Obtener los datos enviados en la solicitud
-    if (!serialPort.isOpen) {
-      serialPort.open();
-      parser.resume();
-    }
-  } catch (error) {
-    console.error('Error al insertar datos', error);
-    res.status(500).json({ error: 'Error al leer' });
-  }
-});
+// app2.post('/recibirDatos', async (req: Request, res: Response) => {
+//   try {
+//     // Obtener los datos enviados en la solicitud
+//     if (!serialPort.isOpen) {
+//       serialPort.open();
+//       parser.resume();
+//     }
+//   } catch (error) {
+//     console.error('Error al insertar datos', error);
+//     res.status(500).json({ error: 'Error al leer' });
+//   }
+// });
 
 async function sensoresStop() {
   // parser.off('data', console.log);
@@ -1727,6 +1727,71 @@ async function sensoresStop() {
   return 'Closed';
 }
 ipcMain.handle('sensoresStop', sensoresStop);
+
+
+
+
+let serialPortMultiple1 = new SerialPort({
+  path: 'COM3',
+  baudRate: 9600,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+});
+
+let serialPortMultiple2 = new SerialPort({
+  path: 'COM3',
+  baudRate: 9600,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+});
+
+const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
+const parserMultiple1 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+
+ipcMain.on('multiplesSensores', async (event) => {
+  // const resp = await sensores();
+  // console.log(resp);
+
+
+  for (let i = 0; i < ports.length; i+=1) {
+    if (!ports[i].isOpen) {
+      ports[i].open();
+      parserMultiple1.resume();
+      parserMultiple2.resume();
+    }
+  }
+  
+  console.log('Inner sensor Multiple');
+  parserMultiple1.on('data', (chunk: any) => {
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
+  });
+
+  parserMultiple2.on('data', (chunk: any) => {
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+  });
+
+});
+
+async function sensoresStopMultiple() {
+  // parser.off('data', console.log);
+  console.log('Closing');
+  for (let i = 0; i < ports.length; i+=1) {
+    if (ports[i].isOpen) {
+      ports[i].close();
+      parserMultiple1.pause();
+      parserMultiple2.pause();
+    }
+  }
+  
+  // parser.write('\x03')
+  return 'Closed';
+}
+ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
+
+
 
 // ipcMain.handle('sensoresStop', async (event) => {
 //   const resp = await sensoresStop();

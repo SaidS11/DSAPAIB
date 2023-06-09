@@ -20,6 +20,10 @@ declare global {
         senso(arg0: (event: any, resp: any) => void): unknown;
         sensoresStop(): unknown;
         sensoStop(): unknown;
+        multiplesSensores(): unknown;
+        multiplesSenso(arg0: (event: any, resp: any) => void): unknown;
+        sensoresStopMultiple(): unknown;
+        sensoresStopMulti(): unknown;
         insertarElementoM(arg0: (event: any, resp: any) => void): unknown;
         insertarElementoMongo(archivo: string): unknown;
         buscarElementoM(archivo: string): Array<object>;

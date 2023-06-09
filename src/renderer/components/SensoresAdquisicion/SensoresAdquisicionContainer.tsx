@@ -132,71 +132,31 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   const [globalData, setGlobalData] = useState<any>([]);
   const [globalData2, setGlobalData2] = useState<any>([]);
   const [globalData3, setGlobalData3] = useState<any>([]);
-  // let intervalID: string | number | NodeJS.Timeout | undefined;
-  // objectStored
+
   function intervalFunction() {
-    // console.log("interval");
     const objectToStore = {};
     if (sensoresSelected >= 1) {
-      // setDataYEmg1((prev: any) => {
-      //   return [...prev.slice(1), ...newA];
-      // });
       Object.assign(objectToStore, {
         emg1: [...globalData, ...testData],
       });
-      // objectToStore.emg1 = [...globalData, ...testData]
       setGlobalData([...globalData, ...testData]);
       setDataYEmg1(testData.slice(-dataXEmg1.length));
-      // setDataXEmg1(innerXEmg1);
-      // setDataXEmg1((prev: any) => {
-      //   return prev;
-      // });
     }
     if (sensoresSelected >= 2) {
-      // setDataYEmg2((prev: any) => {
-      //   return [...prev.slice(1), ...testData2];
-      // });
       Object.assign(objectToStore, {
         emg2: [...globalData2, ...testData2],
       });
-      // objectToStore.emg2 = [...globalData2, ...testData2]
       setGlobalData2([...globalData2, ...testData2]);
       setDataYEmg2(testData2.slice(-dataXEmg2.length));
-      // setDataXEmg1(innerXEmg1);
-      // setDataXEmg2((prev: any) => {
-      //   return prev;
-      // });
-      // emg2Arr.push(separado[1]);
-      // const innerXEmg2: any = [...Array(emg2Arr.length).keys()];
-      // setDataYEmg2(emg2Arr);
-      // setDataXEmg2(innerXEmg2);
     }
     if (sensoresSelected >= 3) {
-      // setDataYEmg3((prev: any) => {
-      //   return [...prev.slice(1), ...testData3];
-      // });
       Object.assign(objectToStore, {
         emg3: [...globalData3, ...testData3],
       });
-      // objectToStore.emg3 = [...globalData3, ...testData3]
       setGlobalData3([...globalData3, ...testData3]);
       setDataYEmg3(testData3.slice(-dataXEmg3.length));
-
-      // setDataXEmg1(innerXEmg1);
-      // setDataXEmg3((prev: any) => {
-      //   return prev;
-      // });
-      // emg3Arr.push(separado[2]);
-      // const innerXEmg3: any = [...Array(emg3Arr.length).keys()];
-      // setDataYEmg3(emg3Arr);
-      // setDataXEmg3(innerXEmg3);
     }
     if (sensoresSelected >= 4) {
-      // objectToStore.emg3 = [...globalData3, ...testData3]
-      // emg4Arr.push(separado[4]);
-      // const innerXEmg4: any = [...Array(emg4Arr.length).keys()];
-      // setDataYEmg4(emg4Arr);
-      // setDataXEmg4(innerXEmg4);
     }
     appDispatch(setRealTimeSignal(objectToStore));
     // }
