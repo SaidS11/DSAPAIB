@@ -1737,6 +1737,7 @@ let serialPortMultiple1 = new SerialPort({
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
+  autoOpen: true
 });
 
 let serialPortMultiple2 = new SerialPort({
@@ -1745,6 +1746,7 @@ let serialPortMultiple2 = new SerialPort({
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
+  autoOpen: true
 });
 
 const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
@@ -1778,10 +1780,10 @@ ipcMain.on('multiplesSensores', async (event) => {
     mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
   });
 
-  parserMultiple2.on('data', (chunk: any) => {
-    console.log(chunk + " sensor2")
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
-  });
+  // parserMultiple2.on('data', (chunk: any) => {
+  //   console.log(chunk + " sensor2")
+  //   mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+  // });
 
 });
 
