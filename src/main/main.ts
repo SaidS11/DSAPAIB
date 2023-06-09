@@ -1758,12 +1758,14 @@ ipcMain.on('multiplesSensores', async (event) => {
 
   for (let i = 0; i < ports.length; i+=1) {
     if (!ports[i].isOpen) {
+      console.log("Port Open", ports[i])
       ports[i].open();
-      parserMultiple1.resume();
-      parserMultiple2.resume();
+      
     }
   }
   
+  parserMultiple1.resume();
+  parserMultiple2.resume();
   console.log('Inner sensor Multiple');
   parserMultiple1.on('data', (chunk: any) => {
     console.log(chunk + " sensor1")
