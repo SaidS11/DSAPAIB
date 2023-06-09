@@ -1732,7 +1732,7 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 
 let serialPortMultiple1 = new SerialPort({
-  path: 'COM3',
+  path: 'COM5',
   baudRate: 9600,
   dataBits: 8,
   stopBits: 1,
