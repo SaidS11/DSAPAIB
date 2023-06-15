@@ -42,7 +42,16 @@ const LoginContainer = () => {
     }
   });
 
-  const onClickLogin = () => {
+  const onClickLogin = async() => {
+    const respuesta = await fetch('http://localhost:8000/selectAlgoritmos')
+    const data = await respuesta.json();
+    console.log("Fetch sin parametros", data);
+
+    let nombre = 'Arbol de Decisión'
+    const respuestaparam = await fetch(`http://localhost:8000/selectModelosIAPorAlgoritmo?algoritmo=${nombre}`)
+    const dataparam = await respuestaparam.json();
+    console.log("Fetch con parametros: ", dataparam);
+    
     // Get user
     /* const usDocument = document.getElementById('user') as HTMLInputElement | null;
     const passDocument = document.getElementById('password') as HTMLInputElement | null;
