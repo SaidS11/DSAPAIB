@@ -600,7 +600,7 @@ const client = new MongoClient(uri, {
 // --------------ConexionMongoLocal--------------
 
 // To run MongoDB in local mode have to be installed mongo server from: https://www.mongodb.com/try/download/community
-// After installation need to be created the foler in path: C:\data and  C:\data\db
+// After installation need to be created the folder in path: C:\data and  C:\data\db
 // Final step is run the server located in: C:\Program Files\MongoDB\Server\6.0\bin\mongod.exe
 
 /* const uri = 'mongodb://0.0.0.0:27017/';
@@ -957,6 +957,520 @@ async function iniciarSesion(user: string, pass: string) {
   console.log(query.rows);
   return query.rows;
 }
+
+
+// //////////////////////NUEVO EXPRESS /////////////////////
+async function iniciarSesion2(user: any, pass:any) {
+  try {
+    const result = await pool.query(
+      ' SELECT usuario FROM doctor WHERE usuario = $1 AND password = crypt($2, password) ',
+      [user, pass]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/iniciarSesion', async (req: Request, res: Response) => {
+  const user = req.query.user;
+  const pass = req.query.pass;
+try {
+    const result = await iniciarSesion2(user, pass);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// /////////////////
+async function selectPaciente2(nombre: any, apellidoP: any, apellidoM: any, email: any) {
+  try {
+    const result = await pool.query(
+      ' select * from paciente where nombre = $1 and apellido_paterno = $2 and apellido_materno = $3 and email = $4 ',
+      [nombre, apellidoP, apellidoM, email]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectPaciente', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+  const apellidoP = req.query.apellidoP;
+  const apellidoM = req.query.apellidoM;
+  const email = req.query.email
+try {
+    const result = await selectPaciente2(nombre, apellidoP, apellidoM, email);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// //////////////
+async function selectPacientes2() {
+  try {
+    const result = await pool.query(
+      ' select * from paciente'
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectPacientes', async (req: Request, res: Response) => {
+try {
+    const result = await selectPacientes2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// //////////////////
+async function selectPacientesImplementacionNombreIA2(nombre: any) {
+
+  try {
+    const result = await pool.query(
+      ' SELECT * FROM implementacion where algoritmo_ia = $1',
+      [nombre]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectPacientesImplementacionNombreIA', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectPacientesImplementacionNombreIA2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ///////////////////////
+async function selectPacientesImplementacionPorNombre2(nombre: any) {
+
+  try {
+    const result = await pool.query(
+      ' SELECT * FROM implementacion where nombre = $1',
+      [nombre]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectPacientesImplementacionPorNombre', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectPacientesImplementacionPorNombre2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// //////////////////
+async function selectModelosNombre2() {
+  try {
+    const result = await pool.query(
+      ' select nombre, algoritmo_ia from implementacion '
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectModelosNombre', async (req: Request, res: Response) => {
+try {
+    const result = await selectModelosNombre2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// /////////////////
+async function selectAlgoritmos2() {
+
+  try {
+    const result = await pool.query(
+      ' select * from implementacion '
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectAlgoritmos', async (req: Request, res: Response) => {
+try {
+  console.log('fetch algoritmosIA')
+    const result = await selectAlgoritmos2();
+  if (result) {
+    console.log(result)
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// /////////////////
+async function selectProtocolos2() {
+
+  try {
+    const result = await pool.query(
+      ' select nombre from protocolo_adquisicion'
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectProtocolos', async (req: Request, res: Response) => {
+try {
+    const result = await selectProtocolos2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// ///////////////
+async function selectModelosIA2() {
+
+  try {
+    const result = await pool.query(
+      ' select * from modelo '
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectModelosIA', async (req: Request, res: Response) => {
+try {
+    const result = await selectModelosIA2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// ////////////////
+async function selectModelosIAPorAlgoritmo2(algoritmo: any) {
+
+  try {
+    const result = await pool.query(
+      ' select * from modelo where algoritmo_ia = $1 ',
+      [algoritmo]
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectModelosIAPorAlgoritmo', async (req: Request, res: Response) => {
+  const algoritmo = req.query.algoritmo;
+try {
+    const result = await selectModelosIAPorAlgoritmo2(algoritmo);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// ////////////////
+async function selectModelosIAPorAlgoritmoEntrenado2(algoritmo: any) {
+
+  try {
+    const result = await pool.query(
+      'select * from modelo where algoritmo_ia = $1 and entrenado = true',
+      [algoritmo]
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectModelosIAPorAlgoritmoEntrenado', async (req: Request, res: Response) => {
+  const algoritmo = req.query.algoritmo;
+try {
+    const result = await selectModelosIAPorAlgoritmoEntrenado2(algoritmo);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+// ////////////////
+async function selectConfiguracionNombre2(nombre: any) {
+
+  try {
+    const result = await pool.query(
+      ' select configuracion from protocolo_adquisicion where nombre = $1 ',
+      [nombre]
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectConfiguracionNombre', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectConfiguracionNombre2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectMultimediaConfig2(nombre: any) {
+
+  try {
+    const result = await pool.query(
+      ' select * from multimedia where configuracion = $1 ',
+      [nombre]
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectMultimediaConfig', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectMultimediaConfig2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectConfiguracion2() {
+
+  try {
+    const result = await pool.query(
+      ' select nombre from configuracion '
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectConfiguracion', async (req: Request, res: Response) => {
+try {
+    const result = await selectConfiguracion2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectAlgoritmosIA2() {
+
+  try {
+    const result = await pool.query(
+      ' SELECT * FROM algoritmos_ia'
+      );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectAlgoritmosIA', async (req: Request, res: Response) => {
+try {
+    const result = await selectAlgoritmosIA2();
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectRegistrosProtocolo2(nombre: any) {
+  try {
+    const result = await pool.query(
+      ' select paciente from registro where protocolo_adquisicion = $1 ',
+      [nombre]);
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectRegistrosProtocolo', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectRegistrosProtocolo2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectProtocoloDetalle2(nombre: any) {
+  try {
+    const result = await pool.query(
+      ' select * from protocolo_adquisicion where nombre = $1 ',
+      [nombre]);
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectProtocoloDetalle', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectProtocoloDetalle2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
+// ////////////////
+async function selectConfiguracionDetalle2(nombre: any) {
+  try {
+    const result = await pool.query(
+      ' select * from configuracion where nombre = $1 ',
+      [nombre]);
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectConfiguracionDetalle', async (req: Request, res: Response) => {
+  const nombre = req.query.nombre;
+try {
+    const result = await selectConfiguracionDetalle2(nombre);
+  if (result) {
+    res.send(result);
+  } else {
+    res.status(500).json({ error: 'Error Buscando Datos' });
+  }
+} catch (error) {
+  res.status(500).json({ error: 'Error buscando datoseee' });
+}
+})
+
 
 // ipcMain.on('loggearDoctor', async () => {
 //   await conexionPrincipalMongo();
@@ -1750,8 +2264,8 @@ let serialPortMultiple2 = new SerialPort({
 });
 
 // const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
-// const parserMultiple1 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-// const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+// const parserMultiple1 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' }));
+// const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 let parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 ipcMain.on('multiplesSensores', async (event) => {
@@ -1773,7 +2287,7 @@ ipcMain.on('multiplesSensores', async (event) => {
   // console.log("Port2 is open?", ports[1].isOpen);
 
   console.log("Port2 is open?", serialPortMultiple2.isOpen);
-  
+
   // parserMultiple1.resume();
   parserMultiple2.resume();
 
@@ -1801,7 +2315,7 @@ async function sensoresStopMultiple() {
   //     parserMultiple2.pause();
   //   }
   // }
-  
+
   // parser.write('\x03')
   return 'Closed';
 }
