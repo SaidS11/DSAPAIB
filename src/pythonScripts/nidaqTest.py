@@ -13,17 +13,24 @@ def funcion_a_ejecutar():
     while time.time() - tiempo_inicial < duracion:
         with nidaqmx.Task() as task:
             task.ai_channels.add_ai_voltage_chan("Dev1/ai0")
-            line = task.read()
-            returnedList.append({"EMG1": line})
+            # line = task.read()
+            # returnedList.append({"EMG1": line})
             task.ai_channels.add_ai_voltage_chan("Dev1/ai1")
-            line = task.read()
-            returnedList.append({"EMG2": line})
+            # line = task.read()
+            # returnedList.append({"EMG2": line})
             task.ai_channels.add_ai_voltage_chan("Dev1/ai2")
-            line = task.read()
-            returnedList.append({"EMG3": line})
+            # line = task.read()
+            # returnedList.append({"EMG3": line})
             task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
+            # line = task.read()
+            # returnedList.append({"EMG4": line})
             line = task.read()
-            returnedList.append({"EMG4": line})
+
+            returnedList.append({"EMG1": line[0]})
+            returnedList.append({"EMG2": line[1]})
+            returnedList.append({"EMG3": line[2]})
+            returnedList.append({"EMG4": line[3]})
+
         # print("reading", valores)
         # tiempo_actual = time.time()
 
