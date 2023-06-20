@@ -14,7 +14,16 @@ def funcion_a_ejecutar():
         with nidaqmx.Task() as task:
             task.ai_channels.add_ai_voltage_chan("Dev1/ai0")
             line = task.read()
-            returnedList.append(line)
+            returnedList.append({"EMG1": line})
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai1")
+            line = task.read()
+            returnedList.append({"EMG2": line})
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai2")
+            line = task.read()
+            returnedList.append({"EMG3": line})
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
+            line = task.read()
+            returnedList.append({"EMG4": line})
         # print("reading", valores)
         # tiempo_actual = time.time()
 
