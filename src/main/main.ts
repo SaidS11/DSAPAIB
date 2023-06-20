@@ -1732,7 +1732,7 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 
 let serialPortMultiple1 = new SerialPort({
-  path: 'COM5',
+  path: 'COM6',
   baudRate: 115000,
   dataBits: 8,
   stopBits: 1,
@@ -1741,7 +1741,7 @@ let serialPortMultiple1 = new SerialPort({
 });
 
 let serialPortMultiple2 = new SerialPort({
-  path: 'COM8',
+  path: 'COM9',
   baudRate: 115000,
   dataBits: 8,
   stopBits: 1,
@@ -1749,40 +1749,44 @@ let serialPortMultiple2 = new SerialPort({
   autoOpen: true
 });
 
-// const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
-// const parserMultiple1 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-// const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
+const parserMultiple1 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
 
-let parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+// const ports: SerialPort[] = [serialPortMultiple2];
+// const parserMultiple2 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+
+
+// let parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 ipcMain.on('multiplesSensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
 
 
-  // for (let i = 0; i < ports.length; i+=1) {
-  //   console.log("Try on port ", ports[i])
-  //   if (!ports[i].isOpen) {
-  //     console.log("Port Open", ports[i])
-  //     ports[i].open();
-  //   }
-  // }
+  for (let i = 0; i < ports.length; i+=1) {
+    console.log("Try on port ", ports[i].path)
+    if (!ports[i].isOpen) {
+      console.log("Port Open", ports[i].path)
+      ports[i].open();
+    }
+  }
   // ports[0].open();
   // ports[1].open();
 
-  // console.log("Port1 is open?", ports[0].isOpen);
-  // console.log("Port2 is open?", ports[1].isOpen);
+  console.log("Port1 is open?", ports[0].isOpen);
+  console.log("Port2 is open?", ports[1].isOpen);
 
-  console.log("Port2 is open?", serialPortMultiple2.isOpen);
+  // console.log("Port2 is open?", ports[0].isOpen);
   
-  // parserMultiple1.resume();
+  parserMultiple1.resume();
   parserMultiple2.resume();
 
 
-  console.log('Inner sensor Multiple');
-  // parserMultiple1.on('data', (chunk: any) => {
-  //   console.log(chunk + " sensor1")
-  //   mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
-  // });
+  console.log('Inner sensor Multiple ');
+  parserMultiple1.on('data', (chunk: any) => {
+    console.log(chunk + " sensor1")
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
+  });
 
   parserMultiple2.on('data', (chunk: any) => {
     console.log(chunk + " sensor2")
@@ -1794,13 +1798,13 @@ ipcMain.on('multiplesSensores', async (event) => {
 async function sensoresStopMultiple() {
   // parser.off('data', console.log);
   console.log('Closing');
-  // for (let i = 0; i < ports.length; i+=1) {
-  //   if (ports[i].isOpen) {
-  //     ports[i].close();
-  //     parserMultiple1.pause();
-  //     parserMultiple2.pause();
-  //   }
-  // }
+  for (let i = 0; i < ports.length; i+=1) {
+    if (ports[i].isOpen) {
+      ports[i].close();
+      // parserMultiple1.pause();
+      parserMultiple2.pause();
+    }
+  }
   
   // parser.write('\x03')
   return 'Closed';
