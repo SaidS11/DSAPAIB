@@ -2183,12 +2183,15 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // }
 
 async function sensores() {
+  console.log("FUNCTION")
   if (!serialPort.isOpen) {
+    console.log("IF")
     serialPort.open();
     parser.resume();
   }
-  console.log('Inner sensor');
+  console.log('Inner sensor entered');
   parser.on('data', (chunk: any) => {
+    console.log("READING", chunk);
     // try {
     //   event.reply('senso', chunk);
     // } catch (err) {
