@@ -143,15 +143,15 @@ const ProbarSensoresContainer = () => {
 
   window.electron.ipcRenderer.senso((event: any, resp: any) => {
     console.log("Resp", resp);
-    // const dataLocal = resp;
-    // bufferdatos = dataLocal;
-    // const decode = decodeURIComponent(bufferdatos);
-    // const separado = decode.split(',');
-    // if (separado.length >= sensoresSelected) {
-    //   testData.push(separado[0]);
-    //   testData2.push(separado[1]);
-    //   testData3.push(separado[2]);
-    // }
+    const dataLocal = resp;
+    bufferdatos = dataLocal;
+    const decode = decodeURIComponent(bufferdatos);
+    const separado = decode.split(',');
+    if (separado.length >= sensoresSelected) {
+      testData.push(separado[0]);
+      testData2.push(separado[1]);
+      testData3.push(separado[2]);
+    }
   });
 
   const [globalData, setGlobalData] = useState<any>([]);
