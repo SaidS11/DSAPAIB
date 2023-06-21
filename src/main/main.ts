@@ -2079,8 +2079,8 @@ ipcMain.on(
 
 // Arduino
 let serialPort = new SerialPort({
-  path: 'COM3',
-  baudRate: 3000,
+  path: 'COM8',
+  baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
@@ -2246,7 +2246,7 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 
 let serialPortMultiple1 = new SerialPort({
-  path: 'COM5',
+  path: 'COM6',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,

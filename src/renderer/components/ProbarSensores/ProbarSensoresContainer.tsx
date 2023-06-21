@@ -131,7 +131,7 @@ const ProbarSensoresContainer = () => {
   async function loadSensores() {
     console.log('Getting message');
     setIsReady(true);
-    // window.electron.ipcRenderer.sensores();
+    window.electron.ipcRenderer.sensores();
   }
   // const [data, setData] = useState('');
   // let data = '';
@@ -141,18 +141,18 @@ const ProbarSensoresContainer = () => {
   const testData2: Array<string> = [];
   const testData3: Array<string> = [];
 
-  // window.electron.ipcRenderer.senso((event: any, resp: any) => {
-  //   console.log("Resp", resp);
-  //   const dataLocal = resp;
-  //   bufferdatos = dataLocal;
-  //   const decode = decodeURIComponent(bufferdatos);
-  //   const separado = decode.split(',');
-  //   if (separado.length >= sensoresSelected) {
-  //     testData.push(separado[0]);
-  //     testData2.push(separado[1]);
-  //     testData3.push(separado[2]);
-  //   }
-  // });
+  window.electron.ipcRenderer.senso((event: any, resp: any) => {
+    console.log("Resp", resp);
+    // const dataLocal = resp;
+    // bufferdatos = dataLocal;
+    // const decode = decodeURIComponent(bufferdatos);
+    // const separado = decode.split(',');
+    // if (separado.length >= sensoresSelected) {
+    //   testData.push(separado[0]);
+    //   testData2.push(separado[1]);
+    //   testData3.push(separado[2]);
+    // }
+  });
 
   const [globalData, setGlobalData] = useState<any>([]);
   const [globalData2, setGlobalData2] = useState<any>([]);
@@ -275,8 +275,8 @@ const ProbarSensoresContainer = () => {
   // });
 
   const onClickStart = async () => {
-    // loadSensores();
-    loadSensoresMultiples();
+    loadSensores();
+    // loadSensoresMultiples();
     // window.electron.ipcRenderer.arduinoTest();
   };
 
@@ -285,8 +285,8 @@ const ProbarSensoresContainer = () => {
   });
 
   const onClickStop = async () => {
-    // stopSensores();
-    stopSensoresMultiple();
+    stopSensores();
+    // stopSensoresMultiple();
   };
   return (
     <div>
