@@ -2084,6 +2084,7 @@ let serialPort = new SerialPort({
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
+  autoOpen: true,
 });
 
 let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
@@ -2203,12 +2204,19 @@ async function sensores() {
 ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
+  console.log("FUNCTION")
+
   if (!serialPort.isOpen) {
+    console.log("IF")
+
     serialPort.open();
     parser.resume();
   }
-  console.log('Inner sensor ');
+  console.log('Inner sensor entered');
+
   parser.on('data', (chunk: any) => {
+    console.log("READING", chunk);
+
     // try {
     //   event.reply('senso', chunk);
     // } catch (err) {
