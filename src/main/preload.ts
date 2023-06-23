@@ -193,13 +193,13 @@ contextBridge.exposeInMainWorld('electron', {
     //   );
     // },
     // analisisP: (callback: any) => ipcRenderer.invoke('analisisPython', callback),
-    preAnalisisPython(datos: string) {
+    preAnalisisPython(datos: string,) {
       ipcRenderer.invoke('preAnalisisPython', datos);
     },
     preAnalisisP: (callback: any) => ipcRenderer.on('preAnalisisP', callback),
 
-    arduinoTest() {
-      ipcRenderer.invoke('arduinoTest');
+    arduinoTest(duration: string, cantidadEmgs: string) {
+      ipcRenderer.invoke('arduinoTest', duration, cantidadEmgs);
     },
     arduinoT: (callback: any) => ipcRenderer.on('arduinoT', callback),
 

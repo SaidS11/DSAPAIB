@@ -2323,13 +2323,13 @@ ipcMain.on('multiplesSensores', async (event) => {
 async function sensoresStopMultiple() {
   // parser.off('data', console.log);
   console.log('Closing');
-  // for (let i = 0; i < ports.length; i+=1) {
-  //   if (ports[i].isOpen) {
-  //     ports[i].close();
-  //     parserMultiple1.pause();
-  //     parserMultiple2.pause();
-  //   }
-  // }
+  for (let i = 0; i < ports.length; i+=1) {
+    if (ports[i].isOpen) {
+      ports[i].close();
+      parserMultiple1.pause();
+      parserMultiple2.pause();
+    }
+  }
   
   // parser.write('\x03')
   return 'Closed';
@@ -2521,9 +2521,9 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
   }
 });
 
-ipcMain.handle('arduinoTest', async (event) => {
+ipcMain.handle('arduinoTest', async (event, duration: string, cantidadEmgs: string) => {
   const options = {
-    args: [''],
+    args: [duration, cantidadEmgs],
   };
   console.log('Llamado Arduino Test');
   const direc = __dirname;

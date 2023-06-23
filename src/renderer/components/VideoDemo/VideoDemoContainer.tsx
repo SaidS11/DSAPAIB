@@ -35,9 +35,16 @@ const VideoDemoContainer = () => {
   const sensores = confObj[0].emgs;
 
   const onClickNav = async () => {
-    appDispatch(setCleanAllSensors(true));
-    const resp = await window.electron.ipcRenderer.sensoStop();
-    navigate('/video');
+    console.log("Navigating")
+    const v: HTMLVideoElement = document.getElementById("myVideo") as HTMLVideoElement;
+    v!.addEventListener("loadeddata",function(ev){
+      console.log("Duracion", v!.duration);
+    },true);
+    console.log("Duracion", v!.duration);
+
+    // appDispatch(setCleanAllSensors(true));
+    // const resp = await window.electron.ipcRenderer.sensoStop();
+    // navigate('/video');
   };
 
   const onClickProbar = () => {
@@ -60,6 +67,7 @@ const VideoDemoContainer = () => {
     ? urlRetrieved
     : `${apiEndpoint}/${multimediaObj[0].link_video}`;
 
+  
   async function loadConfig() {
     appDispatch(setIsLoading(true));
 

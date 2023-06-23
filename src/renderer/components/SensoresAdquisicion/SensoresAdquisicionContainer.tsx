@@ -122,10 +122,26 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
     bufferdatos = dataLocal;
     const decode = decodeURIComponent(bufferdatos);
     const separado = decode.split(',');
+    const regexNumero = /(\d+)/;
     if (separado.length >= sensoresSelected) {
-      testData.push(separado[0]);
-      testData2.push(separado[1]);
-      testData3.push(separado[2]);
+      for(let i =  0; i < separado.length; i +=1) {
+        // Obtenemos el valor numerico separando la entreda recibida
+        const valorSeparado = separado[i].match(regexNumero) || ["NULL:", "0"];
+        const valorNumerico = valorSeparado[1];
+
+        if(separado[i].includes("GSR")) {
+          testData.push(valorNumerico);
+        } else if(separado[i].includes("TEMP")) {
+          testData2.push(valorNumerico);
+        } else if(separado[i].includes("FREC")) {
+          testData3.push(valorNumerico);
+        }
+      }
+
+      //Original
+      // testData.push(separado[0]);
+      // testData2.push(separado[1]);
+      // testData3.push(separado[2]);
     }
   });
 
