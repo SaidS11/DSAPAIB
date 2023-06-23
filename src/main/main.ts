@@ -2308,15 +2308,17 @@ ipcMain.on('multiplesSensores', async (event) => {
 
 
   console.log('Inner sensor Multiple ');
+  
+  parserMultiple2.on('data', (chunk: any) => {
+    console.log(chunk + " sensor2")
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+  });
+
   parserMultiple1.on('data', (chunk: any) => {
     console.log(chunk + " sensor1")
     mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
   });
 
-  parserMultiple2.on('data', (chunk: any) => {
-    console.log(chunk + " sensor2")
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
-  });
 
 });
 
