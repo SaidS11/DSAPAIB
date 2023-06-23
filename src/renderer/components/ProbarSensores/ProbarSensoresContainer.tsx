@@ -126,7 +126,7 @@ const ProbarSensoresContainer = () => {
     window.electron.ipcRenderer.multiplesSensores();
   }
   window.electron.ipcRenderer.multiplesSenso((event: any, resp: any) => {
-    console.log("RESP", resp);
+    // console.log("RESP", resp);
     sensor1.push(resp);
   });
 
@@ -263,9 +263,9 @@ const ProbarSensoresContainer = () => {
   async function stopSensoresMultiple() {
     console.log('Getting message stop');
     // setIsReady(false);
-    const resp = await window.electron.ipcRenderer.sensoresStopMulti();
     console.log("SENSOR1", sensor1);
     console.log("SENSOR2", sensor2);
+    const resp = await window.electron.ipcRenderer.sensoresStopMulti();
 
   }
   // window.electron.ipcRenderer.sensoStop((event: any, resp: any) => {
