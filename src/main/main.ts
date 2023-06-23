@@ -2266,7 +2266,7 @@ let serialPortMultiple1 = new SerialPort({
 });
 
 let serialPortMultiple2 = new SerialPort({
-  path: 'COM5',
+  path: 'COM11',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
