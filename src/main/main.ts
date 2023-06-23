@@ -2340,7 +2340,7 @@ async function sensoresStopMultiple() {
   mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
   
   // parser.write('\x03')
-  return 'Closed';
+  return arreglo1 + "||||" + arreglo2;
 }
 ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
 
