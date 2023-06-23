@@ -2257,7 +2257,7 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 
 let serialPortMultiple1 = new SerialPort({
-  path: 'COM8',
+  path: 'COM11',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
@@ -2266,7 +2266,7 @@ let serialPortMultiple1 = new SerialPort({
 });
 
 let serialPortMultiple2 = new SerialPort({
-  path: 'COM11',
+  path: 'COM8',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
