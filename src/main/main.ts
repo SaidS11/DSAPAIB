@@ -2304,15 +2304,15 @@ ipcMain.on('multiplesSensores', async (event) => {
   // console.log("Port2 is open?", ports[0].isOpen);
   
   parserMultiple1.resume();
-  parserMultiple2.resume();
+  // parserMultiple2.resume();
 
 
   console.log('Inner sensor Multiple ');
   
-  parserMultiple2.on('data', (chunk: any) => {
-    console.log(chunk + " sensor2")
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
-  });
+  // parserMultiple2.on('data', (chunk: any) => {
+  //   console.log(chunk + " sensor2")
+  //   mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+  // });
 
   parserMultiple1.on('data', (chunk: any) => {
     console.log(chunk + " sensor1")
