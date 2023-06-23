@@ -2079,7 +2079,7 @@ ipcMain.on(
 
 // Arduino
 let serialPort = new SerialPort({
-  path: 'COM8',
+  path: 'COM11',
   baudRate: 9600,
   dataBits: 8,
   stopBits: 1,
