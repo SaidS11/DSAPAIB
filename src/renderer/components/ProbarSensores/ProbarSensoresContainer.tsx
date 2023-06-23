@@ -117,8 +117,8 @@ const ProbarSensoresContainer = () => {
   };
 
   // Fin procesamiento
-  const sensor1: any = [];
-  const sensor2: any = [];
+  const sensor1: Array<String> = [];
+  const sensor2: Array<String> = [];
 
   async function loadSensoresMultiples() {
     console.log('Getting message');
@@ -262,7 +262,7 @@ const ProbarSensoresContainer = () => {
   }
   async function stopSensoresMultiple() {
     console.log('Getting message stop');
-    setIsReady(false);
+    // setIsReady(false);
     const resp = await window.electron.ipcRenderer.sensoresStopMulti();
     console.log("SENSOR1", sensor1);
     console.log("SENSOR2", sensor2);
