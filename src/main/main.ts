@@ -2281,6 +2281,8 @@ const parserMultiple2 = ports[1].pipe(new ReadlineParser({ delimiter: '\r\n' }))
 // const ports: SerialPort[] = [serialPortMultiple2];
 // const parserMultiple2 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
 
+const arreglo1: Array<String> = [];
+const arreglo2: Array<String> = [];
 
 // let parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 ipcMain.on('multiplesSensores', async (event) => {
@@ -2311,12 +2313,15 @@ ipcMain.on('multiplesSensores', async (event) => {
   
   parserMultiple2.on('data', (chunk: any) => {
     console.log(chunk + " sensor2")
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+    arreglo1.push(chunk);
+    // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
   });
 
   parserMultiple1.on('data', (chunk: any) => {
     console.log(chunk + " sensor1")
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
+    arreglo2.push(chunk);
+
+    // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
   });
 
 
@@ -2332,6 +2337,7 @@ async function sensoresStopMultiple() {
       parserMultiple2.pause();
     }
   }
+  mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
   
   // parser.write('\x03')
   return 'Closed';
