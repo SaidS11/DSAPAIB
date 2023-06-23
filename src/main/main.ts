@@ -2313,13 +2313,13 @@ ipcMain.on('multiplesSensores', async (event) => {
   
   parserMultiple2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
-    arreglo1.push(chunk);
+    arreglo2.push(chunk);
     // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
   });
 
   parserMultiple1.on('data', async(chunk: any) => {
     console.log(chunk + " sensor1")
-    arreglo2.push(chunk);
+    arreglo1.push(chunk);
     // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
   });
 
