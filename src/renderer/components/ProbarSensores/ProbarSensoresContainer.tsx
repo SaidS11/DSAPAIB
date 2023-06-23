@@ -126,6 +126,7 @@ const ProbarSensoresContainer = () => {
     window.electron.ipcRenderer.multiplesSensores();
   }
   window.electron.ipcRenderer.multiplesSenso((event: any, resp: any) => {
+    console.log("RESP", resp);
     if(resp.includes("sensor1")) {
       sensor1.push(resp);
     } else {
