@@ -288,8 +288,8 @@ const ProbarSensoresContainer = () => {
 
   const onClickStart = async () => {
     // loadSensores();
-    loadSensoresMultiples();
-    // window.electron.ipcRenderer.arduinoTest("5", "4");
+    // loadSensoresMultiples();
+    window.electron.ipcRenderer.arduinoTest("5", "4");
   };
   // USAR FUNCION DE EXPRESS PARA NIDAQ
   window.electron.ipcRenderer.arduinoT((event: any, resp: any) => {
