@@ -317,6 +317,7 @@ const ProbarSensoresContainer = () => {
   }
 
   const onClickStart = async () => {
+    loadSensoresMultiples();
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
     console.log("DATOS", startNidaq);
 
@@ -329,7 +330,7 @@ const ProbarSensoresContainer = () => {
 
 
     // loadSensores();
-    loadSensoresMultiples();
+    
     // window.electron.ipcRenderer.arduinoTest("5", "4");
   };
   // USAR FUNCION DE EXPRESS PARA NIDAQ
