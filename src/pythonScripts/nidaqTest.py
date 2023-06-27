@@ -90,8 +90,8 @@ def controlador():
     print(returnedList)
 
 
-# controlador()
-def testFunc():
-    print("Duration", duracion, "Type", type(duracion))
+controlador()
+# def testFunc():
+#     print("Duration", duracion, "Type", type(duracion))
 
-testFunc()
+# testFunc()
