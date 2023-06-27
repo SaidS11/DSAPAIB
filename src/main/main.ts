@@ -31,21 +31,21 @@ import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 // --------------------Conexion PostgreAWS--------------
-// const credenciales = {
-//   user: 'postgres',
-//   host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
-//   database: 'ModularDB',
-//   password: '219748227',
-// };
+const credenciales = {
+  user: 'postgres',
+  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
+  database: 'ModularDB',
+  password: '219748227',
+};
 
 // --------------Conexion PostgreLocal--------------
 // The file of backup is already extract it
-const credenciales = {
-  user: 'postgres',
-  host: 'localhost',
-  database: 'ModularLocal',
-  password: 'hola1234',
-};
+// const credenciales = {
+//   user: 'postgres',
+//   host: 'localhost',
+//   database: 'ModularLocal',
+//   password: 'hola1234',
+// };
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
