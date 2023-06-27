@@ -20,7 +20,7 @@ import { Pool, Client } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
-import { Json } from 'aws-sdk/clients/robomaker';
+import { spawnSync } from 'child_process';
 import * as fs from 'fs';
 import installExtension, {
   REDUX_DEVTOOLS,
@@ -31,21 +31,21 @@ import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 // --------------------Conexion PostgreAWS--------------
-const credenciales = {
-  user: 'postgres',
-  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
-  database: 'ModularDB',
-  password: '219748227',
-};
+// const credenciales = {
+//   user: 'postgres',
+//   host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
+//   database: 'ModularDB',
+//   password: '219748227',
+// };
 
 // --------------Conexion PostgreLocal--------------
 // The file of backup is already extract it
-/* const credenciales = {
+const credenciales = {
   user: 'postgres',
   host: 'localhost',
-  database: 'Modular',
-  password: '219748227',
-}; */
+  database: 'ModularLocal',
+  password: 'hola1234',
+};
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
@@ -2553,4 +2553,41 @@ ipcMain.handle('arduinoTest', async (event, duration: string, cantidadEmgs: stri
   } catch (e: any) {
     console.log('Error', e);
   }
+});
+
+app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
+  const duracion = req.query.duracion as string;
+  const cantidadEmgs = req.query.cantidadEmgs as string;
+
+  // process.dlopen = () => {
+  //   throw new Error('Load native module is not safe')
+  // }
+  // const worker = new Worker('script.js')
+
+  console.log("PARAMS", duracion, cantidadEmgs);
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+  
+  // const worker = new Worker(path.join(rootPath, 'worker.js'));
+  const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
+  // console.log("Work", worker);
+  // const pythonProcess = await spawnSync('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
+
+  // const result = pythonProcess.stdout?.toString()?.trim();
+  // const error = pythonProcess.stderr?.toString()?.trim();
+  // const strResult = result;
+  // console.log("PY", pythonProcess);
+  // console.log("RES", result);
+  // // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
+  // const status = result === 'OK';
+  // if (status) {
+  //   res.send(strResult)
+  // } else {
+  //   console.log(error)
+  //   res.send(JSON.stringify({ status: 200, message: strResult }))
+  //   // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
+  // }
+
 });

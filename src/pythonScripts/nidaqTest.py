@@ -5,6 +5,8 @@ import sys
 
 
 # ser = serial.Serial('COM5', 9600, timeout=1)
+# ser.readline()
+
 returnedList = list()
 returnedDict = dict({
     "emg1": [],
@@ -88,5 +90,8 @@ def controlador():
     print(returnedList)
 
 
-controlador()
-# print("Duration", duracion, "Type", type(duracion))
+# controlador()
+def testFunc():
+    print("Duration", duracion, "Type", type(duracion))
+
+testFunc()

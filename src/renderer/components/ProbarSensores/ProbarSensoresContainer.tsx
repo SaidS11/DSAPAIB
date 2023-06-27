@@ -3,6 +3,7 @@ import { useCustomDispatch } from 'redux/hooks';
 import { setIsLoading } from 'redux/slices/StatusSlice';
 import ModalSensores from './ModalSensores';
 import ProbarSensores from './ProbarSensores';
+import { apiEndpoint } from '../Utilities/Constants';
 
 const ProbarSensoresContainer = () => {
   /* const dataX: Number[] = [];
@@ -286,10 +287,50 @@ const ProbarSensoresContainer = () => {
   //   // appDispatch(setIsLoading(false));
   // });
 
+  
+  function parseEMG(data: string) {
+    const inputString = data;
+
+    // Paso 1: Convertir el string en un array de objetos
+    const inputData = JSON.parse(inputString);
+
+    const emgData: any = {};
+
+    // Paso 3: Recorrer cada elemento del array
+    inputData.forEach(function(item: any) {
+      // Paso 4: Extraer la clave y el valor de cada objeto
+      const key = Object.keys(item)[0];
+      const value = item[key];
+
+      // Paso 5: Verificar si la clave ya existe en el objeto EMG
+      if (emgData.hasOwnProperty(key)) {
+        // Si existe, agregar el valor al array existente
+        emgData[key].push(value);
+      } else {
+        // Si no existe, crear un nuevo array con el valor
+        emgData[key] = [value];
+      }
+    });
+
+    // Paso 6: Convertir el objeto EMG en un string JSON
+    const outputString = JSON.stringify(emgData);
+  }
+
   const onClickStart = async () => {
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
+    console.log("DATOS", startNidaq);
+
+    const data = await startNidaq.json();
+
+    console.log("RESP", data);
+
+    // parseEMG(data);
+
+
+
     // loadSensores();
     // loadSensoresMultiples();
-    window.electron.ipcRenderer.arduinoTest("5", "4");
+    // window.electron.ipcRenderer.arduinoTest("5", "4");
   };
   // USAR FUNCION DE EXPRESS PARA NIDAQ
   window.electron.ipcRenderer.arduinoT((event: any, resp: any) => {
