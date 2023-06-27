@@ -327,7 +327,7 @@ const ProbarSensoresContainer = () => {
     console.log("RESP", data.message);
 
 
-    const arduinoDATA = await startNidaq.json();
+    const arduinoDATA = await startArduinos.json();
 
     console.log("ARDUINO", arduinoDATA.message);
 
