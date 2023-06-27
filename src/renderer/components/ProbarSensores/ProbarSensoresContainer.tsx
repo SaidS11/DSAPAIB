@@ -318,7 +318,7 @@ const ProbarSensoresContainer = () => {
 
   const onClickStart = async () => {
     loadSensoresMultiples();
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
     console.log("DATOS", startNidaq);
 
     const data = await startNidaq.json();
