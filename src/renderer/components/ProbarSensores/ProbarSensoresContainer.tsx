@@ -127,12 +127,12 @@ const ProbarSensoresContainer = () => {
     window.electron.ipcRenderer.multiplesSensores();
   }
   window.electron.ipcRenderer.multiplesSenso((event: any, resp: any) => {
-    // console.log("RESP", resp);
-    // if(resp.includes("sensor1")) {
-    //   sensor1.push(resp);
-    // } else {
-    //   sensor2.push(resp);
-    // }
+    console.log("RESP", resp);
+    if(resp.includes("sensor1")) {
+      sensor1.push(resp);
+    } else {
+      sensor2.push(resp);
+    }
   });
 
 
@@ -272,7 +272,7 @@ const ProbarSensoresContainer = () => {
     console.log("SENSOR2", sensor2);
     const resp = await window.electron.ipcRenderer.sensoresStopMulti();
 
-    console.log("Resp", resp);
+    // console.log("Resp", resp);
 
   }
   // window.electron.ipcRenderer.sensoStop((event: any, resp: any) => {
@@ -329,7 +329,7 @@ const ProbarSensoresContainer = () => {
 
 
     // loadSensores();
-    // loadSensoresMultiples();
+    loadSensoresMultiples();
     // window.electron.ipcRenderer.arduinoTest("5", "4");
   };
   // USAR FUNCION DE EXPRESS PARA NIDAQ

@@ -2313,14 +2313,14 @@ ipcMain.on('multiplesSensores', async (event) => {
   
   parserMultiple2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
-    arreglo2.push(chunk);
-    // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+    // arreglo2.push(chunk);
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
   });
 
   parserMultiple1.on('data', async(chunk: any) => {
     console.log(chunk + " sensor1")
-    arreglo1.push(chunk);
-    // mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
+    // arreglo1.push(chunk);
+    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
   });
 
 
@@ -2336,10 +2336,10 @@ async function sensoresStopMultiple() {
       parserMultiple2.pause();
     }
   }
-  mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
+  // mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
   
   // parser.write('\x03')
-  return arreglo1 + "||||" + arreglo2;
+  // return arreglo1 + "||||" + arreglo2;
 }
 ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
 
