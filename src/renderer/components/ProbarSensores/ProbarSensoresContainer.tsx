@@ -322,7 +322,7 @@ const ProbarSensoresContainer = () => {
 
     const data = await startNidaq.json();
 
-    console.log("RESP", data);
+    console.log("RESP", data.message);
 
     // parseEMG(data);
 
