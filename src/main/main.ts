@@ -2571,23 +2571,23 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   const direcFinal = direcParsed.slice(0, -4);
   
   // const worker = new Worker(path.join(rootPath, 'worker.js'));
-  const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
+  // const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
   // console.log("Work", worker);
-  // const pythonProcess = await spawnSync('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
+  const pythonProcess = await spawnSync('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
 
-  // const result = pythonProcess.stdout?.toString()?.trim();
-  // const error = pythonProcess.stderr?.toString()?.trim();
-  // const strResult = result;
-  // console.log("PY", pythonProcess);
-  // console.log("RES", result);
-  // // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
-  // const status = result === 'OK';
-  // if (status) {
-  //   res.send(strResult)
-  // } else {
-  //   console.log(error)
-  //   res.send(JSON.stringify({ status: 200, message: strResult }))
-  //   // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
-  // }
+  const result = pythonProcess.stdout?.toString()?.trim();
+  const error = pythonProcess.stderr?.toString()?.trim();
+  const strResult = result;
+  console.log("PY", pythonProcess);
+  console.log("RES", result);
+  // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
+  const status = result === 'OK';
+  if (status) {
+    res.send(strResult)
+  } else {
+    console.log(error)
+    res.send(JSON.stringify({ status: 200, message: strResult }))
+    // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
+  }
 
 });
