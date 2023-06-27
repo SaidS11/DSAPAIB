@@ -2326,6 +2326,25 @@ ipcMain.on('multiplesSensores', async (event) => {
 
 });
 
+
+app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
+  console.log("Port1 is open?", ports[0].isOpen);
+  console.log("Port2 is open?", ports[1].isOpen);
+
+  console.log('Inner sensor Multiple ');
+  
+  parserMultiple2.on('data', async(chunk: any) => {
+    console.log(chunk + " sensor2")
+    arreglo2.push(chunk);
+  });
+
+  parserMultiple1.on('data', async(chunk: any) => {
+    console.log(chunk + " sensor1")
+    arreglo1.push(chunk);
+  });
+}) 
+
+
 async function sensoresStopMultiple() {
   // parser.off('data', console.log);
   console.log('Closing');
@@ -2343,7 +2362,18 @@ async function sensoresStopMultiple() {
 }
 ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
 
+app2.get("/stopArduinos", async (req: Request, res: Response) => {
+  console.log('Closing');
+  for (let i = 0; i < ports.length; i+=1) {
+    if (ports[i].isOpen) {
+      ports[i].close();
+      parserMultiple1.pause();
+      parserMultiple2.pause();
+    }
+  }
+  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2] }))
 
+}) 
 
 // ipcMain.handle('sensoresStop', async (event) => {
 //   const resp = await sensoresStop();

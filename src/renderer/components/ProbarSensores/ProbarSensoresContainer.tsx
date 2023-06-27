@@ -317,13 +317,19 @@ const ProbarSensoresContainer = () => {
   }
 
   const onClickStart = async () => {
-    loadSensoresMultiples();
+    // loadSensoresMultiples();
+    const startArduinos = await fetch(`${apiEndpoint}/multiplesArduinos`);
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
     console.log("DATOS", startNidaq);
 
     const data = await startNidaq.json();
 
     console.log("RESP", data.message);
+
+
+    const arduinoDATA = await startNidaq.json();
+
+    console.log("ARDUINO", arduinoDATA.message);
 
     // parseEMG(data);
 
@@ -339,8 +345,14 @@ const ProbarSensoresContainer = () => {
   });
 
   const onClickStop = async () => {
+
+    const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
+    const arduinoSTOP = await stopArduinos.json();
+
+    console.log("ARDUINO STOP", arduinoSTOP.message);
     // stopSensores();
-    stopSensoresMultiple();
+
+    // stopSensoresMultiple();
   };
   return (
     <div>
