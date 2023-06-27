@@ -319,7 +319,7 @@ const ProbarSensoresContainer = () => {
   const onClickStart = async () => {
     // loadSensoresMultiples();
 
-    const startArduinos = await fetch(`${apiEndpoint}/multiplesArduinos`);
+    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     console.log("START ARDUINOS");
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
     console.log("DATOS", startNidaq);
