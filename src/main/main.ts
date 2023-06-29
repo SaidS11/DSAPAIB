@@ -2610,7 +2610,7 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   // const worker = new Worker(path.join(rootPath, 'worker.js'));
   // const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
   // console.log("Work", worker);
-  const pythonProcess = await spawnSync('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
+  const pythonProcess = await spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
 
   const result = pythonProcess.stdout?.toString()?.trim();
   const error = pythonProcess.stderr?.toString()?.trim();

@@ -96,7 +96,7 @@ def controlador():
     #     hilo.cancel()
     
     with open('./TEST.txt','w') as file:
-        file.write(returnedList)
+        file.write(str(returnedList))
     # print(returnedList)
 
 
