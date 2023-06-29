@@ -95,7 +95,9 @@ def controlador():
     # if hilo.is_alive():
     #     hilo.cancel()
     
-    print(returnedList)
+    with open('./TEST.txt','w') as file:
+        file.write(returnedList)
+    # print(returnedList)
 
 
 controlador()
