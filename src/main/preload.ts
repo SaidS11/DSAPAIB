@@ -301,7 +301,7 @@ function selectConfiguracion() {
 
 function insertConfiguracion(
   configuracionNombre: string,
-  configuracionGiroscopio: any,
+  configuracionGsr: any,
   configuracionFrecuencia: any,
   configuracionRitmoCardiaco: any,
   configuracionEmgs: any,
@@ -312,7 +312,7 @@ function insertConfiguracion(
   ipcRenderer.send(
     'insertConfiguracion',
     configuracionNombre,
-    configuracionGiroscopio,
+    configuracionGsr,
     configuracionFrecuencia,
     configuracionRitmoCardiaco,
     configuracionEmgs,

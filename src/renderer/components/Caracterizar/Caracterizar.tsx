@@ -14,7 +14,7 @@ import {
   setVentanasArrayEmg2,
   setVentanasArrayEmg3,
   setVentanasArrayEmg4,
-  setVentanasArrayGiroscopio,
+  setVentanasArrayGsr,
   setVentanasArrayAcelerometro,
   setCantidadSujetos,
   setVentanasArrayFrecuencia,
@@ -38,7 +38,7 @@ interface CaracterizarProps {
   selectedPatients: any;
   selectedProtocol: any;
   currentIteration: any;
-  giroscopioChecked: any;
+  gsrChecked: any;
   frecuenciaChecked: any;
   acelerometroChecked: any;
 }
@@ -49,7 +49,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     selectedPatients,
     selectedProtocol,
     currentIteration,
-    giroscopioChecked,
+    gsrChecked,
     frecuenciaChecked,
     acelerometroChecked,
   } = props;
@@ -64,9 +64,9 @@ const Caracterizar = (props: CaracterizarProps) => {
   const [ventanasSeñal3Emg3, setVentanasSeñal3Emg3] = useState<any>([]);
   const [ventanasSeñal4Emg4, setVentanasSeñal4Emg4] = useState<any>([]);
 
-  const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
-  const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
-  const [ventanasSeñalGiroscopio, setVentanasSeñalGiroscopio] = useState<any>(
+  const [gsrDataX, setGsrDataX] = useState([0]);
+  const [gsrDataY, setGsrDataY] = useState([0]);
+  const [ventanasSeñalGsr, setVentanasSeñalGsr] = useState<any>(
     []
   );
 
@@ -94,8 +94,8 @@ const Caracterizar = (props: CaracterizarProps) => {
   const ventanaReduxEmg4 = useCustomSelector(
     (state) => state.señales.ventanasArrayEmg4
   );
-  const ventanaReduxGiroscopio = useCustomSelector(
-    (state) => state.señales.ventanasArrayGiroscopio
+  const ventanaReduxGsr = useCustomSelector(
+    (state) => state.señales.ventanasArrayGsr
   );
   const ventanaReduxAcelerometro = useCustomSelector(
     (state) => state.señales.ventanasArrayAcelerometro
@@ -262,8 +262,8 @@ const Caracterizar = (props: CaracterizarProps) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const colors2 = [];
 
-    const giroscopioSignalLocalX = [];
-    const giroscopioSignalLocalY = [];
+    const gsrSignalLocalX = [];
+    const gsrSignalLocalY = [];
 
     const acelerometroSignalLocalX = [];
     const acelerometroSignalLocalY = [];
@@ -292,9 +292,9 @@ const Caracterizar = (props: CaracterizarProps) => {
         colors4.push('green');
       }
 
-      if (giroscopioChecked) {
-        giroscopioSignalLocalX.push(signal3[i].x);
-        giroscopioSignalLocalY.push(signal3[i].y);
+      if (gsrChecked) {
+        gsrSignalLocalX.push(signal3[i].x);
+        gsrSignalLocalY.push(signal3[i].y);
       }
       if (acelerometroChecked) {
         acelerometroSignalLocalX.push(signal4[i].x);
@@ -327,9 +327,9 @@ const Caracterizar = (props: CaracterizarProps) => {
       setColors4(colors4);
     }
 
-    if (giroscopioChecked) {
-      setGiroscopioDataX(giroscopioSignalLocalX);
-      setGiroscopioDataY(giroscopioSignalLocalY);
+    if (gsrChecked) {
+      setGsrDataX(gsrSignalLocalX);
+      setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
       setAcelerometroDataX(acelerometroSignalLocalX);
@@ -409,7 +409,7 @@ const Caracterizar = (props: CaracterizarProps) => {
         const ventanasLocalEmg3 = [];
         const ventanasLocalEmg4 = [];
 
-        const ventanasGiroscopioLocal = [];
+        const ventanasGsrLocal = [];
         const ventanasAcelerometroLocal = [];
         const ventanasFrecuenciaLocal = [];
 
@@ -429,10 +429,10 @@ const Caracterizar = (props: CaracterizarProps) => {
               ventanasLocalEmg4.push({ x: dataX4Emg4[i], y: dataY4Emg4[i] });
               colorsLocal4[i] = 'red';
             }
-            if (giroscopioChecked) {
-              ventanasGiroscopioLocal.push({
-                x: giroscopioDataX[i],
-                y: giroscopioDataY[i],
+            if (gsrChecked) {
+              ventanasGsrLocal.push({
+                x: gsrDataX[i],
+                y: gsrDataY[i],
               });
             }
             if (acelerometroChecked) {
@@ -478,10 +478,10 @@ const Caracterizar = (props: CaracterizarProps) => {
           setColors4([...colorsLocal4]);
         }
         // Contains con nombre de sensores
-        if (giroscopioChecked) {
-          const localArrayGiroscopio = [...ventanasSeñalGiroscopio];
-          localArrayGiroscopio.push(ventanasGiroscopioLocal);
-          setVentanasSeñalGiroscopio(localArrayGiroscopio);
+        if (gsrChecked) {
+          const localArrayGsr = [...ventanasSeñalGsr];
+          localArrayGsr.push(ventanasGsrLocal);
+          setVentanasSeñalGsr(localArrayGsr);
         }
         if (acelerometroChecked) {
           const localArrayAcelerometro = [...ventanasSeñalAcelerometro];
@@ -548,10 +548,10 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayEmg4.push(ventanasSeñal4Emg4);
     }
 
-    const localArrayGiroscopio = [];
-    if (giroscopioChecked) {
-      ventanaReduxGiroscopio.map((e) => localArrayGiroscopio.push(e));
-      localArrayGiroscopio.push(ventanasSeñalGiroscopio);
+    const localArrayGsr = [];
+    if (gsrChecked) {
+      ventanaReduxGsr.map((e) => localArrayGsr.push(e));
+      localArrayGsr.push(ventanasSeñalGsr);
     }
 
     const localArrayAcelerometro = [];
@@ -570,7 +570,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
     appDispatch(setVentanasArrayEmg3(localArrayEmg3));
     appDispatch(setVentanasArrayEmg4(localArrayEmg4));
-    appDispatch(setVentanasArrayGiroscopio(localArrayGiroscopio));
+    appDispatch(setVentanasArrayGsr(localArrayGsr));
     appDispatch(setVentanasArrayAcelerometro(localArrayAcelerometro));
     appDispatch(setVentanasArrayFrecuencia(localArrayFrecuencia));
 
@@ -622,8 +622,8 @@ const Caracterizar = (props: CaracterizarProps) => {
       setColors4([...cleanedColors]);
     }
     // Contains con nombre de sensores
-    if (giroscopioChecked) {
-      setVentanasSeñalGiroscopio((curr: any) => curr.slice(0, -1));
+    if (gsrChecked) {
+      setVentanasSeñalGsr((curr: any) => curr.slice(0, -1));
     }
     if (acelerometroChecked) {
       setVentanasSeñalAcelerometro((curr: any) => curr.slice(0, -1));
@@ -673,7 +673,7 @@ Caracterizar.propTypes = {
   selectedPatients: PropTypes.array.isRequired,
   selectedProtocol: PropTypes.string.isRequired,
   currentIteration: PropTypes.number.isRequired,
-  giroscopioChecked: PropTypes.bool.isRequired,
+  gsrChecked: PropTypes.bool.isRequired,
   frecuenciaChecked: PropTypes.bool.isRequired,
   acelerometroChecked: PropTypes.bool.isRequired,
 };

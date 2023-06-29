@@ -53,7 +53,7 @@ const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
             <div>
               <h4>Ritmo Cardiaco:</h4>
               <h4>Frecuencia Cardiaca:</h4>
-              <h4>Giroscopio:</h4>
+              <h4>Gsr:</h4>
               <h4>Acelerometro:</h4>
             </div>
             <div>
@@ -84,19 +84,19 @@ const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
                   value="0"
                 />
               )}
-              {resp[0].giroscopio === true ? (
+              {resp[0].gsr === true ? (
                 <Checkbox
                   checked
                   disabled
                   sx={checkBoxConfig}
-                  name="giroscopio"
+                  name="gsr"
                   value="1"
                 />
               ) : (
                 <Checkbox
                   disabled
                   sx={checkBoxConfig}
-                  name="giroscopio"
+                  name="gsr"
                   value="0"
                 />
               )}

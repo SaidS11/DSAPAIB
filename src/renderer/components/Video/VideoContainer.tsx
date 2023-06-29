@@ -63,7 +63,7 @@ const VideoContainer = () => {
   return (
     <div>
       <Video onClickNav={onClickNav} url={url} onClickCancel={onClickCancel} />
-      <SensoresAdquisicionContainer mode="LIVE" shouldStop={shouldStop} />
+      {/* <SensoresAdquisicionContainer mode="LIVE" shouldStop={shouldStop} /> */}
     </div>
   );
 };

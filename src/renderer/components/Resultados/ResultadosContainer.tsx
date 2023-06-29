@@ -39,8 +39,8 @@ const ResultadosContainer = () => {
   const objetoMongo = useCustomSelector(
     (state) => state.señales.mongoInsertObject
   );
-  const giroscopioChecked = useCustomSelector(
-    (state) => state.señales.giroscopioIsChecked
+  const gsrChecked = useCustomSelector(
+    (state) => state.señales.gsrIsChecked
   );
   const acelerometroChecked = useCustomSelector(
     (state) => state.señales.acelerometroIsChecked
@@ -49,8 +49,8 @@ const ResultadosContainer = () => {
     (state) => state.señales.frecuenciaIsChecked
   );
 
-  const [giroscopioDataX, setGiroscopioDataX] = useState([0]);
-  const [giroscopioDataY, setGiroscopioDataY] = useState([0]);
+  const [gsrDataX, setGsrDataX] = useState([0]);
+  const [gsrDataY, setGsrDataY] = useState([0]);
 
   const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
   const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
@@ -164,13 +164,13 @@ const ResultadosContainer = () => {
   // const [dataX5, setDataX5] = useState([0]);
   // const [dataY5, setDataY5] = useState([0]);
   const trace5 = {
-    x: giroscopioDataX,
-    y: giroscopioDataY,
+    x: gsrDataX,
+    y: gsrDataY,
     xaxis: 'x5',
     yaxis: 'y5',
     type: 'scatter',
     // mode: 'markers+lines',
-    name: 'Giroscopio',
+    name: 'Gsr',
   };
 
   // const [dataX6, setDataX6] = useState([0]);
@@ -214,7 +214,7 @@ const ResultadosContainer = () => {
     const { emg3 } = objetoMongo.signals;
     const { emg4 } = objetoMongo.signals;
     const { acelerometro } = objetoMongo.signals;
-    const { giroscopio } = objetoMongo.signals;
+    const { gsr } = objetoMongo.signals;
     const { frecuencia } = objetoMongo.signals;
 
     const xArrayEmg1 = [];
@@ -229,8 +229,8 @@ const ResultadosContainer = () => {
     const xArray4Emg4 = [];
     const yArray4Emg4 = [];
 
-    const giroscopioSignalLocalX = [];
-    const giroscopioSignalLocalY = [];
+    const gsrSignalLocalX = [];
+    const gsrSignalLocalY = [];
 
     const acelerometroSignalLocalX = [];
     const acelerometroSignalLocalY = [];
@@ -256,9 +256,9 @@ const ResultadosContainer = () => {
         yArray4Emg4.push(emg4[i].y);
       }
 
-      if (giroscopioChecked) {
-        giroscopioSignalLocalX.push(giroscopio[i].x);
-        giroscopioSignalLocalY.push(giroscopio[i].y);
+      if (gsrChecked) {
+        gsrSignalLocalX.push(gsr[i].x);
+        gsrSignalLocalY.push(gsr[i].y);
       }
       if (acelerometroChecked) {
         acelerometroSignalLocalX.push(acelerometro[i].x);
@@ -288,9 +288,9 @@ const ResultadosContainer = () => {
       setDataY4Emg4(yArray4Emg4);
     }
 
-    if (giroscopioChecked) {
-      setGiroscopioDataX(giroscopioSignalLocalX);
-      setGiroscopioDataY(giroscopioSignalLocalY);
+    if (gsrChecked) {
+      setGsrDataX(gsrSignalLocalX);
+      setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
       setAcelerometroDataX(acelerometroSignalLocalX);
@@ -319,7 +319,7 @@ const ResultadosContainer = () => {
     if (sensoresSelected >= 4) {
       dataAux.push(trace4);
     }
-    if (giroscopioChecked) {
+    if (gsrChecked) {
       dataAux.push(trace5);
     }
     if (frecuenciaChecked) {

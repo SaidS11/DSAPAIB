@@ -10,8 +10,8 @@ const ProbarSensoresContainer = () => {
   const dataY: Number[] = []; */
   const [isReady, setIsReady] = useState(false);
   const onClickAdd = () => {};
-  const [dataXGiroscopio, setDataXGiroscopio] = useState([]);
-  const [dataYGiroscopio, setDataYGiroscopio] = useState([]);
+  const [dataXGsr, setDataXGsr] = useState([]);
+  const [dataYGsr, setDataYGsr] = useState([]);
 
   const [dataXFrecuencia, setDataXFrecuencia] = useState([]);
   const [dataYFrecuencia, setDataYFrecuencia] = useState([]);
@@ -84,7 +84,7 @@ const ProbarSensoresContainer = () => {
   const buffer = '';
   const sum = 0;
   const sumSpo2 = 0;
-  const giroscopioAverage = 0;
+  const gsrAverage = 0;
   const hr = 0;
   const volt = 0;
   const hrOhms = 0;
@@ -104,7 +104,7 @@ const ProbarSensoresContainer = () => {
   const emg3Arr: any = [];
   const emg4Arr: any = [];
 
-  const giroscopioArr: any = [];
+  const gsrArr: any = [];
   const frecuenciaArr: any = [];
   const acelerometroArr: any = [];
   async function startSensors() {
@@ -281,8 +281,8 @@ const ProbarSensoresContainer = () => {
   //   // console.log('This was collected', arr);
   //   // const innerX: any = [...Array(arr.length).keys()];
   //   // console.log('Inner', innerX);
-  //   // setDataYGiroscopio(arr);
-  //   // setDataXGiroscopio(innerX);
+  //   // setDataYGsr(arr);
+  //   // setDataXGsr(innerX);
   //   // appDispatch(setIsLoading(false));
   //   // appDispatch(setIsLoading(false));
   // });
@@ -328,6 +328,7 @@ const ProbarSensoresContainer = () => {
 
     console.log("RESP", data.message);
 
+    // INCLX: 120, INCLY: 39, INCLZ: 10,
 
     // const arduinoDATA = await startArduinos.json();
 
@@ -369,8 +370,8 @@ const ProbarSensoresContainer = () => {
         dataYEmg2={dataYEmg2}
         dataXEmg3={dataXEmg3}
         dataYEmg3={dataYEmg3}
-        dataXGiroscopio={dataXGiroscopio}
-        dataYGiroscopio={dataYGiroscopio}
+        dataXGsr={dataXGsr}
+        dataYGsr={dataYGsr}
         dataXFrecuencia={dataXFrecuencia}
         dataYFrecuencia={dataYFrecuencia}
         dataXAcelerometro={dataXAcelerometro}

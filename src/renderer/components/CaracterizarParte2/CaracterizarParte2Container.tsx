@@ -78,8 +78,8 @@ const CaracterizarParte2Container = () => {
     (state) => state.señales.ventanasArrayEmg4
   );
 
-  const ventanaSeñalGiroscopio = useCustomSelector(
-    (state) => state.señales.ventanasArrayGiroscopio
+  const ventanaSeñalGsr = useCustomSelector(
+    (state) => state.señales.ventanasArrayGsr
   );
   const ventanaSeñalAcelerometro = useCustomSelector(
     (state) => state.señales.ventanasArrayAcelerometro
@@ -97,8 +97,8 @@ const CaracterizarParte2Container = () => {
   const selectedPatients = useCustomSelector(
     (state) => state.config.selectedPatients
   );
-  const giroscopioChecked = useCustomSelector(
-    (state) => state.señales.giroscopioIsChecked
+  const gsrChecked = useCustomSelector(
+    (state) => state.señales.gsrIsChecked
   );
   const acelerometroChecked = useCustomSelector(
     (state) => state.señales.acelerometroIsChecked
@@ -114,7 +114,7 @@ const CaracterizarParte2Container = () => {
   const ventanasArrayEmg3: any[] = [];
   const ventanasArrayEmg4: any[] = [];
 
-  const ventanasArrayGiroscopio: any[] = [];
+  const ventanasArrayGsr: any[] = [];
   const ventanasArrayAcelerometro: any[] = [];
   const ventanaArrayFrecuencia: any[] = [];
 
@@ -122,7 +122,7 @@ const CaracterizarParte2Container = () => {
   let ventanaArrEmg2: any[] = [];
   let ventanaArrEmg3: any[] = [];
   let ventanaArrEmg4: any[] = [];
-  let ventanaGiroscopio: any[] = [];
+  let ventanaGsr: any[] = [];
   let ventanaAcelerometro: any[] = [];
   let ventanaFrecuencia: any[] = [];
 
@@ -198,21 +198,21 @@ const CaracterizarParte2Container = () => {
     }
   }
 
-  if (giroscopioChecked) {
+  if (gsrChecked) {
     // GSR
     for (let i = 0; i < cantidadSujetos; i += 1) {
-      const largo = ventanaSeñalGiroscopio[i].length;
-      ventanaGiroscopio = [];
+      const largo = ventanaSeñalGsr[i].length;
+      ventanaGsr = [];
       for (let c = 0; c < largo; c += 1) {
         const { ventana, sumVentana } = getElementsAndSum(
-          ventanaSeñalGiroscopio[i][c]
+          ventanaSeñalGsr[i][c]
         );
         const mediaAbsoluta = (
-          sumVentana / ventanaSeñalGiroscopio[i][c].length
+          sumVentana / ventanaSeñalGsr[i][c].length
         ).toString();
-        ventanaGiroscopio.push([ventana, sumVentana, mediaAbsoluta]);
+        ventanaGsr.push([ventana, sumVentana, mediaAbsoluta]);
       }
-      ventanasArrayGiroscopio.push(ventanaGiroscopio);
+      ventanasArrayGsr.push(ventanaGsr);
     }
   }
 
@@ -266,12 +266,12 @@ const CaracterizarParte2Container = () => {
           ventanasArrayEmg2={ventanasArrayEmg2}
           ventanasArrayEmg3={ventanasArrayEmg3}
           ventanasArrayEmg4={ventanasArrayEmg4}
-          ventanasArrayGiroscopio={ventanasArrayGiroscopio}
+          ventanasArrayGsr={ventanasArrayGsr}
           ventanasArrayAcelerometro={ventanasArrayAcelerometro}
           ventanaArrayFrecuencia={ventanaArrayFrecuencia}
           selectedPatients={selectedPatients}
           patientNumber={i}
-          giroscopioChecked={giroscopioChecked}
+          gsrChecked={gsrChecked}
           acelerometroChecked={acelerometroChecked}
           frecuenciaChecked={frecuenciaChecked}
         />

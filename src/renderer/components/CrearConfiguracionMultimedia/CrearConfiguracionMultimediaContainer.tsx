@@ -36,7 +36,7 @@ const CrearConfiguracionMultimediaContainer = () => {
   const insertConfiguration = async(fileNameImagen: string, fileNameVideo: string) => {
     const configurationBody = {
       nombre: primerConfig.nombreConfig,
-      giroscopio: primerConfig.giroscopio,
+      gsr: primerConfig.gsr,
       frecuencia_cardiaca: primerConfig.frecuencia,
       rimto_cardiaco: primerConfig.ritmo,
       emgs: primerConfig.canales,
@@ -201,7 +201,7 @@ const CrearConfiguracionMultimediaContainer = () => {
 
       // async function insertConf(data: any) {
       //   appDispatch(setIsLoading(true));
-      //   window.Bridge.insertConfiguracion(data.nombreConfig, data.giroscopio, data.frecuencia, data.ritmo, data.canales, data.acelerometro, "1", data.descripcion );
+      //   window.Bridge.insertConfiguracion(data.nombreConfig, data.gsr, data.frecuencia, data.ritmo, data.canales, data.acelerometro, "1", data.descripcion );
       // }
       // window.Bridge.insertC((event: any, resp: any) => {
       //   if (resp.length > 0) {

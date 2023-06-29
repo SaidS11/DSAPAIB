@@ -19,8 +19,10 @@ const SensoresAdquisicion = ({
   dataYEmg2,
   dataXEmg3,
   dataYEmg3,
-  dataXGiroscopio,
-  dataYGiroscopio,
+  dataXEmg4,
+  dataYEmg4,
+  dataXGsr,
+  dataYGsr,
   dataXFrecuencia,
   dataYFrecuencia,
   dataXAcelerometro,
@@ -85,8 +87,8 @@ const SensoresAdquisicion = ({
   const [dataX4, setDataX4] = useState([0]);
   const [dataY4, setDataY4] = useState([0]);
   const trace4 = {
-    x: dataX4,
-    y: dataY4,
+    x: dataXEmg4,
+    y: dataYEmg4,
     xaxis: 'x4',
     yaxis: 'y4',
     type: 'scatter',

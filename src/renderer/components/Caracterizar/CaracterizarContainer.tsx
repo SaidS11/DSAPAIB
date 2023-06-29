@@ -3,7 +3,7 @@ import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import {
   setCantidadSensores,
-  setGiroscopioIsChecked,
+  setGsrIsChecked,
   setFrecuenciaIsChecked,
   setAcelerometroIsChecked,
   setExtraSensorsChecked,
@@ -31,7 +31,7 @@ const CaracterizarContainer = () => {
 
   const [sensoresSelected, setSensoresSelected] = useState(0);
   const [emgs, setEmgs] = useState(0);
-  const [giroscopioChecked, setGiroscopioChecked] = useState(false);
+  const [gsrChecked, setGsrChecked] = useState(false);
   const [frecuenciaChecked, setFrecuenciaChecked] = useState(false);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [acelerometroChecked, setAcelerometroChecked] = useState(false);
@@ -63,20 +63,20 @@ const CaracterizarContainer = () => {
     console.log('this is config', resp);
     const cantidadEmgs = resp[0].emgs;
     setSensoresSelected(cantidadEmgs);
-    const { giroscopio } = resp[0];
-    setGiroscopioChecked(resp[0].giroscopio);
+    const { gsr } = resp[0];
+    setGsrChecked(resp[0].gsr);
     const { frecuencia_cardiaca } = resp[0];
     setFrecuenciaChecked(resp[0].frecuencia_cardiaca);
     const { acelerometro } = resp[0];
     setAcelerometroChecked(resp[0].acelerometro);
     console.log(
-      `This is config EMGS: ${cantidadEmgs}, giroscopio ${giroscopio}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
+      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
     );
-    appDispatch(setGiroscopioIsChecked(giroscopio));
+    appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
     appDispatch(
-      setExtraSensorsChecked([giroscopio, acelerometro, frecuencia_cardiaca])
+      setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
     setConfigLoaded(true);
     appDispatch(setIsLoading(false));
@@ -95,7 +95,7 @@ const CaracterizarContainer = () => {
           selectedPatients={selectedPatients}
           selectedProtocol={selectedProtocol}
           currentIteration={currentIteration}
-          giroscopioChecked={giroscopioChecked}
+          gsrChecked={gsrChecked}
           frecuenciaChecked={frecuenciaChecked}
           acelerometroChecked={acelerometroChecked}
         />

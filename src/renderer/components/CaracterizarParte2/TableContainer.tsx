@@ -34,9 +34,9 @@ interface Cols {
   colMedianaAcelerometro?: string;
   colRMSAcelerometro?: string;
   // GSR
-  colMediaABSGiroscopio?: string;
-  colMedianaGiroscopio?: string;
-  colRMSGiroscopio?: string;
+  colMediaABSGsr?: string;
+  colMedianaGsr?: string;
+  colRMSGsr?: string;
 
   // SPO2
   colMediaABSFrecuencia?: string;
@@ -104,12 +104,12 @@ interface TableContainerProps {
   ventanasArrayEmg2: any;
   ventanasArrayEmg3: any;
   ventanasArrayEmg4: any;
-  ventanasArrayGiroscopio: any;
+  ventanasArrayGsr: any;
   ventanasArrayAcelerometro: any;
   ventanaArrayFrecuencia: any;
   selectedPatients: Array<SelectedPatientObj>;
   patientNumber: number;
-  giroscopioChecked: boolean;
+  gsrChecked: boolean;
   acelerometroChecked: boolean;
   frecuenciaChecked: boolean;
 }
@@ -122,12 +122,12 @@ const TableContainer = (props: TableContainerProps) => {
     ventanasArrayEmg2,
     ventanasArrayEmg3,
     ventanasArrayEmg4,
-    ventanasArrayGiroscopio,
+    ventanasArrayGsr,
     ventanasArrayAcelerometro,
     ventanaArrayFrecuencia,
     selectedPatients,
     patientNumber,
-    giroscopioChecked,
+    gsrChecked,
     acelerometroChecked,
     frecuenciaChecked,
   } = props;
@@ -213,16 +213,16 @@ const TableContainer = (props: TableContainerProps) => {
           ),
         });
       }
-      if (giroscopioChecked) {
+      if (gsrChecked) {
         Object.assign(dataJson, {
-          colMediaABSGiroscopio: returnFixed(
-            ventanasArrayGiroscopio[numeroDeSujeto][i][2]
+          colMediaABSGsr: returnFixed(
+            ventanasArrayGsr[numeroDeSujeto][i][2]
           ) as string,
-          colMedianaGiroscopio: calcularMediana(
-            ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+          colMedianaGsr: calcularMediana(
+            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
           ),
-          colRMSGiroscopio: calcularRms(
-            ventanasArrayGiroscopio[numeroDeSujeto][i][0] as Array<number>
+          colRMSGsr: calcularRms(
+            ventanasArrayGsr[numeroDeSujeto][i][0] as Array<number>
           ),
         });
       }
@@ -308,21 +308,21 @@ const TableContainer = (props: TableContainerProps) => {
         ],
       });
     }
-    if (giroscopioChecked) {
+    if (gsrChecked) {
       internalArray.push({
         Header: 'GSR Promedio',
         columns: [
           {
             Header: 'Media absoluta',
-            accessor: `colMediaABSGiroscopio`,
+            accessor: `colMediaABSGsr`,
           },
           {
             Header: 'Mediana',
-            accessor: `colMedianaGiroscopio`,
+            accessor: `colMedianaGsr`,
           },
           {
             Header: 'RMS',
-            accessor: `colRMSGiroscopio`,
+            accessor: `colRMSGsr`,
           },
         ],
       });

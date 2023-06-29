@@ -20,7 +20,7 @@ import { Pool, Client } from 'pg';
 import { PythonShell } from 'python-shell';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
-import { spawnSync } from 'child_process';
+import { spawnSync, spawn } from 'child_process';
 import * as fs from 'fs';
 import installExtension, {
   REDUX_DEVTOOLS,
@@ -31,21 +31,21 @@ import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 // --------------------Conexion PostgreAWS--------------
-const credenciales = {
-  user: 'postgres',
-  host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
-  database: 'ModularDB',
-  password: '219748227',
-};
+// const credenciales = {
+//   user: 'postgres',
+//   host: 'modulardb.coxrmuefwyts.us-east-1.rds.amazonaws.com',
+//   database: 'ModularDB',
+//   password: '219748227',
+// };
 
 // --------------Conexion PostgreLocal--------------
 // The file of backup is already extract it
-// const credenciales = {
-//   user: 'postgres',
-//   host: 'localhost',
-//   database: 'ModularLocal',
-//   password: 'hola1234',
-// };
+const credenciales = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'ModularLocal',
+  password: 'hola1234',
+};
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
@@ -334,7 +334,7 @@ app2.post('/insertarRegistro', async (req: Request, res: Response) => {
 // //////////////////
 async function insertarDatosConfiguracion(
   nombre: string,
-  giroscopio: string,
+  gsr: string,
   frecuencia_cardiaca: string,
   rimto_cardiaco: string,
   emgs: string,
@@ -347,10 +347,10 @@ async function insertarDatosConfiguracion(
 
   try {
     const query =
-      'INSERT INTO configuracion (nombre, giroscopio, frecuencia_cardiaca, rimto_cardiaco, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+      'INSERT INTO configuracion (nombre, gsr, frecuencia_cardiaca, rimto_cardiaco, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
     const values = [
       nombre,
-      giroscopio,
+      gsr,
       frecuencia_cardiaca,
       rimto_cardiaco,
       emgs,
@@ -374,7 +374,7 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const {
       nombre,
-      giroscopio,
+      gsr,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       frecuencia_cardiaca,
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -386,7 +386,7 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
     } = req.body;
     const result = await insertarDatosConfiguracion(
       nombre,
-      giroscopio,
+      gsr,
       frecuencia_cardiaca,
       rimto_cardiaco,
       emgs,
@@ -1843,7 +1843,7 @@ ipcMain.handle('selectAlgoritmosIA', selectAlgoritmosIA);
 
 async function insertConfiguracion(
   configuracionNombre: string,
-  configuracionGiroscopio: any,
+  configuracionGsr: any,
   configuracionFrecuenciaCardiaca: any,
   configuracionRitmoCardiaco: any,
   configuracionEmgs: any,
@@ -1855,7 +1855,7 @@ async function insertConfiguracion(
     ' insert into configuracion values($1, $2, $3, $4, $5, $6, $7, $8)  ',
     [
       configuracionNombre,
-      configuracionGiroscopio,
+      configuracionGsr,
       configuracionFrecuenciaCardiaca,
       configuracionRitmoCardiaco,
       configuracionEmgs,
@@ -1873,7 +1873,7 @@ ipcMain.on(
   async (
     event,
     configuracionNombre: string,
-    configuracionGiroscopio: any,
+    configuracionGsr: any,
     configuracionFrecuenciaCardiaca: any,
     configuracionRitmoCardiaco: any,
     configuracionEmgs: any,
@@ -1883,7 +1883,7 @@ ipcMain.on(
   ) => {
     const resp = await insertConfiguracion(
       configuracionNombre,
-      configuracionGiroscopio,
+      configuracionGsr,
       configuracionFrecuenciaCardiaca,
       configuracionRitmoCardiaco,
       configuracionEmgs,
@@ -2089,6 +2089,33 @@ let serialPort = new SerialPort({
 
 let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 
+
+
+let serialPortArduino1 = new SerialPort({
+  path: 'COM5',
+  baudRate: 115200,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+  autoOpen: true
+});
+
+let serialPortArduino2 = new SerialPort({
+  path: 'COM8',
+  baudRate: 4800,
+  dataBits: 8,
+  stopBits: 1,
+  parity: 'none',
+  autoOpen: true
+});
+
+const arduinoPorts: SerialPort[] = [serialPortArduino1, serialPortArduino2];
+let arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+let arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+
+
+
+
 ipcMain.on('loadPort', async (event, opcion, baud) => {
   try {
     if (serialPort.isOpen) {
@@ -2162,7 +2189,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 //   serialPort.open();
 //   let buffer = '';
 //   let sum = 0;
-//   let giroscopioAverage = 0;
+//   let gsrAverage = 0;
 //   let hr = 0;
 //   console.log('ANTES DEE');
 //   parser.on('data', async (chunk: any) => {
@@ -2173,9 +2200,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 //       console.log(buffer);
 //       sum += parseInt(buffer);
 //     }
-//     giroscopioAverage = sum / 10;
-//     console.log('Giroscopio Average', giroscopioAverage);
-//     hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
+//     gsrAverage = sum / 10;
+//     console.log('Gsr Average', gsrAverage);
+//     hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
 //     console.log('GSR', hr);
 //     // const resp = await sleep(10000);
 //     // console.log("Resp", resp);
@@ -2256,68 +2283,48 @@ ipcMain.handle('sensoresStop', sensoresStop);
 
 
 
-let serialPortMultiple1 = new SerialPort({
-  path: 'COM5',
-  baudRate: 115200,
-  dataBits: 8,
-  stopBits: 1,
-  parity: 'none',
-  autoOpen: true
-});
 
-let serialPortMultiple2 = new SerialPort({
-  path: 'COM8',
-  baudRate: 4800,
-  dataBits: 8,
-  stopBits: 1,
-  parity: 'none',
-  autoOpen: true
-});
 
-const ports: SerialPort[] = [serialPortMultiple1, serialPortMultiple2];
-const parserMultiple1 = serialPortMultiple1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-const parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-
-// const ports: SerialPort[] = [serialPortMultiple2];
-// const parserMultiple2 = ports[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+// const arduinoPorts: SerialPort[] = [serialPortArduino2];
+// const arduinoParser2 = arduinoPorts[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
 
 const arreglo1: Array<String> = [];
 const arreglo2: Array<String> = [];
 
-// let parserMultiple2 = serialPortMultiple2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+// let arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 ipcMain.on('multiplesSensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
 
 
-  // for (let i = 0; i < ports.length; i+=1) {
-  //   console.log("Try on port ", ports[i].path)
-  //   if (!ports[i].isOpen) {
-  //     console.log("Port Open", ports[i].path)
-  //     ports[i].open();
+  // for (let i = 0; i < arduinoPorts.length; i+=1) {
+  //   console.log("Try on port ", arduinoPorts[i].path)
+  //   if (!arduinoPorts[i].isOpen) {
+  //     console.log("Port Open", arduinoPorts[i].path)
+  //     arduinoPorts[i].open();
   //   }
   // }
-  // ports[0].open();
-  // ports[1].open();
+  // arduinoPorts[0].open();
+  // arduinoPorts[1].open();
 
-  console.log("Port1 is open?", ports[0].isOpen);
-  console.log("Port2 is open?", ports[1].isOpen);
+  console.log("Port1 is open?", arduinoPorts[0].isOpen);
+  console.log("Port2 is open?", arduinoPorts[1].isOpen);
 
-  // console.log("Port2 is open?", ports[0].isOpen);
+  // console.log("Port2 is open?", arduinoPorts[0].isOpen);
   
-  // parserMultiple1.resume();
-  // parserMultiple2.resume();
+  // arduinoParser.resume();
+  // arduinoParser2.resume();
 
 
   console.log('Inner sensor Multiple ');
   
-  parserMultiple2.on('data', async(chunk: any) => {
+  arduinoParser2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
     // arreglo2.push(chunk);
     mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
   });
 
-  parserMultiple1.on('data', async(chunk: any) => {
+  arduinoParser.on('data', async(chunk: any) => {
     console.log(chunk + " sensor1")
     // arreglo1.push(chunk);
     mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
@@ -2328,17 +2335,17 @@ ipcMain.on('multiplesSensores', async (event) => {
 
 
 app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
-  console.log("Port1 is open?", ports[0].isOpen);
-  console.log("Port2 is open?", ports[1].isOpen);
+  console.log("Port1 is open?", arduinoPorts[0].isOpen);
+  console.log("Port2 is open?", arduinoPorts[1].isOpen);
 
   console.log('Inner sensor Multiple ');
   
-  parserMultiple2.on('data', async(chunk: any) => {
+  arduinoParser2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
     arreglo2.push(chunk);
   });
 
-  parserMultiple1.on('data', async(chunk: any) => {
+  arduinoParser.on('data', async(chunk: any) => {
     console.log(chunk + " sensor1")
     arreglo1.push(chunk);
   });
@@ -2348,11 +2355,11 @@ app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
 async function sensoresStopMultiple() {
   // parser.off('data', console.log);
   console.log('Closing');
-  for (let i = 0; i < ports.length; i+=1) {
-    if (ports[i].isOpen) {
-      ports[i].close();
-      parserMultiple1.pause();
-      parserMultiple2.pause();
+  for (let i = 0; i < arduinoPorts.length; i+=1) {
+    if (arduinoPorts[i].isOpen) {
+      arduinoPorts[i].close();
+      arduinoParser.pause();
+      arduinoParser2.pause();
     }
   }
   // mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
@@ -2364,11 +2371,11 @@ ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
 
 app2.get("/stopArduinos", async (req: Request, res: Response) => {
   console.log('Closing');
-  for (let i = 0; i < ports.length; i+=1) {
-    if (ports[i].isOpen) {
-      ports[i].close();
-      parserMultiple1.pause();
-      parserMultiple2.pause();
+  for (let i = 0; i < arduinoPorts.length; i+=1) {
+    if (arduinoPorts[i].isOpen) {
+      arduinoPorts[i].close();
+      arduinoParser.pause();
+      arduinoParser2.pause();
     }
   }
   res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2] }))
@@ -2608,8 +2615,8 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   const result = pythonProcess.stdout?.toString()?.trim();
   const error = pythonProcess.stderr?.toString()?.trim();
   const strResult = result;
-  console.log("PY", pythonProcess);
-  console.log("RES", result);
+  // console.log("PY", pythonProcess);
+  // console.log("RES", result);
   // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
   const status = result === 'OK';
   if (status) {

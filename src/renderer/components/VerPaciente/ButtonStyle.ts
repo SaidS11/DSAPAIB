@@ -269,7 +269,7 @@ export const checkBoxConfig = {
   paddingTop: '0px',
 };
 
-export const checkBoxConfigGiroscopio = {
+export const checkBoxConfigGsr = {
   marginLeft: '330px',
 };
 

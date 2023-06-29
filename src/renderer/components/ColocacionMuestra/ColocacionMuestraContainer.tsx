@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
-  setGiroscopioIsChecked,
+  setGsrIsChecked,
   setAcelerometroIsChecked,
   setFrecuenciaIsChecked,
   setExtraSensorsChecked,
@@ -39,17 +39,17 @@ const ColocacionMuestraContainer = () => {
     );
     console.log('this is config', resp);
     const cantidadEmgs = resp[0].emgs;
-    const { giroscopio } = resp[0];
+    const { gsr } = resp[0];
     const { frecuencia_cardiaca } = resp[0];
     const { acelerometro } = resp[0];
     console.log(
-      `This is config EMGS : ${cantidadEmgs}, giroscopio ${giroscopio}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
+      `This is config EMGS : ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
     );
-    appDispatch(setGiroscopioIsChecked(giroscopio));
+    appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
     appDispatch(
-      setExtraSensorsChecked([giroscopio, acelerometro, frecuencia_cardiaca])
+      setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
     appDispatch(setIsLoading(false));
     return resp;

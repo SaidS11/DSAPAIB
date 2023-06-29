@@ -122,7 +122,7 @@ const PrediccionContainer = () => {
   //   console.log("Los sensores", resp);
   //   // let buffer = '';
   //   // let sum = 0;
-  //   // let giroscopioAverage = 0;
+  //   // let gsrAverage = 0;
   //   // let hr = 0;
   //   // for (let i = 0; i < 10; i++) {
   //   //   buffer = '';
@@ -130,9 +130,9 @@ const PrediccionContainer = () => {
   //   //   console.log(buffer);
   //   //   sum += parseInt(buffer);
   //   // }
-  //   // giroscopioAverage = sum / 10;
-  //   // console.log('Giroscopio Average', giroscopioAverage);
-  //   // hr = ((1024 + 2 * giroscopioAverage) * 1000) / (512 - giroscopioAverage);
+  //   // gsrAverage = sum / 10;
+  //   // console.log('Gsr Average', gsrAverage);
+  //   // hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
   //   // console.log('GSR', hr);
   // });
   // async function stopSensores() {

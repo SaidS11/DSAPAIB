@@ -80,13 +80,13 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
               <div >
                 <h4>Ritmo Cardiaco:</h4>
                 <h4>Frecuencia Cardiaca:</h4>
-                <h4>Giroscopio:</h4>
+                <h4>Gsr:</h4>
                 <h4>Acelerometro:</h4>
               </div>
               <div>
                 <Checkbox  sx={checkBoxConfig} name="ritmo" value="1"  />
                 <Checkbox   sx={checkBoxConfig} name="frecuencia" value="1"  />
-                <Checkbox  sx={checkBoxConfig} name="giroscopio" value="1"  />
+                <Checkbox  sx={checkBoxConfig} name="gsr" value="1"  />
                 <Checkbox   sx={checkBoxConfig} name="acelerometro" value="1"  />
               </div>
             </div>

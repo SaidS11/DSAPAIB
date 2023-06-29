@@ -22,8 +22,8 @@ const ProcesamientoPrevioBlankContainer = () => {
   const sensoresSelected = useCustomSelector(
     (state) => state.señales.cantidadSensores
   );
-  const giroscopioChecked = useCustomSelector(
-    (state) => state.señales.giroscopioIsChecked
+  const gsrChecked = useCustomSelector(
+    (state) => state.señales.gsrIsChecked
   );
   const acelerometroChecked = useCustomSelector(
     (state) => state.señales.acelerometroIsChecked
@@ -72,9 +72,9 @@ const ProcesamientoPrevioBlankContainer = () => {
       });
     }
 
-    if (giroscopioChecked) {
+    if (gsrChecked) {
       Object.assign(signals, {
-        giroscopio: parseSignalsIntoObjects(xEmg1, yEmg1),
+        gsr: parseSignalsIntoObjects(xEmg1, yEmg1),
       });
     }
 
@@ -104,7 +104,7 @@ const ProcesamientoPrevioBlankContainer = () => {
 
   useEffect(() => {
     let cantidadTotal = sensoresSelected;
-    if (giroscopioChecked) {
+    if (gsrChecked) {
       cantidadTotal += 1;
     }
     if (acelerometroChecked) {

@@ -70,7 +70,7 @@ serialPort.on('data', async (chunk) => {
                     contador = 0;
                     gsrAverage = sum / 10;
                     volt = (gsrAverage*5)/1023;
-                    console.log("Giroscopio Average", gsrAverage);
+                    console.log("Gsr Average", gsrAverage);
                     //hr = ((1024+2*gsrAverage)*1000) / (512-gsrAverage);
                     hrOhms = ((5+2*volt)*10000) / (2.5-volt);
                     Conductancia = 1/hrOhms;

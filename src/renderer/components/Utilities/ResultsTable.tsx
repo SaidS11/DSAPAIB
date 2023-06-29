@@ -31,9 +31,9 @@ interface Cols {
   colMedianaAcelerometro?: string;
   colRMSAcelerometro?: string;
   // GSR
-  colMediaABSGiroscopio?: string;
-  colMedianaGiroscopio?: string;
-  colRMSGiroscopio?: string;
+  colMediaABSGsr?: string;
+  colMedianaGsr?: string;
+  colRMSGsr?: string;
   // SPO2
   colMediaABSFrecuencia?: string;
   colMedianaFrecuencia?: string;

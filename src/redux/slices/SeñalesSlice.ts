@@ -19,7 +19,7 @@ export interface ISeñales {
   ventanasArrayEmg2: Array<any>;
   ventanasArrayEmg3: Array<any>;
   ventanasArrayEmg4: Array<any>;
-  ventanasArrayGiroscopio: Array<any>;
+  ventanasArrayGsr: Array<any>;
   ventanasArrayAcelerometro: Array<any>;
   ventanasArrayFrecuencia: Array<any>;
   cantidadSensores: number;
@@ -27,7 +27,7 @@ export interface ISeñales {
   cantidadSujetosRespaldo: number;
   datosAnalisisIA: Array<any>;
   cleanAllSensors: boolean;
-  giroscopioIsChecked: boolean;
+  gsrIsChecked: boolean;
   acelerometroIsChecked: boolean;
   frecuenciaIsChecked: boolean;
   extraSensorsChecked: Array<boolean>;
@@ -48,7 +48,7 @@ const initialState: ISeñales = {
   ventanasArrayEmg2: [],
   ventanasArrayEmg3: [],
   ventanasArrayEmg4: [],
-  ventanasArrayGiroscopio: [],
+  ventanasArrayGsr: [],
   ventanasArrayAcelerometro: [],
   ventanasArrayFrecuencia: [],
   cantidadSensores: 0,
@@ -56,7 +56,7 @@ const initialState: ISeñales = {
   cantidadSujetosRespaldo: 0,
   datosAnalisisIA: [],
   cleanAllSensors: false,
-  giroscopioIsChecked: false,
+  gsrIsChecked: false,
   acelerometroIsChecked: false,
   frecuenciaIsChecked: false,
   extraSensorsChecked: [],
@@ -120,11 +120,11 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.ventanasArrayEmg4 = action.payload;
     },
-    setVentanasArrayGiroscopio: (
+    setVentanasArrayGsr: (
       state,
-      action: PayloadAction<ISeñales['ventanasArrayGiroscopio']>
+      action: PayloadAction<ISeñales['ventanasArrayGsr']>
     ) => {
-      state.ventanasArrayGiroscopio = action.payload;
+      state.ventanasArrayGsr=action.payload;
     },
     setVentanasArrayAcelerometro: (
       state,
@@ -177,16 +177,16 @@ export const SeñalesSlice = createSlice({
       state.cleanAllSensors = action.payload;
       state.ventanasArrayEmg1 = [];
       state.ventanasArrayEmg2 = [];
-      state.ventanasArrayGiroscopio = [];
+      state.ventanasArrayGsr = [];
       state.ventanasArrayAcelerometro = [];
       state.ventanasArrayFrecuencia = [];
       state.realTimeSignal = {};
     },
-    setGiroscopioIsChecked: (
+    setGsrIsChecked: (
       state,
-      action: PayloadAction<ISeñales['giroscopioIsChecked']>
+      action: PayloadAction<ISeñales['gsrIsChecked']>
     ) => {
-      state.giroscopioIsChecked = action.payload;
+      state.gsrIsChecked = action.payload;
     },
     setAcelerometroIsChecked: (
       state,
@@ -254,13 +254,13 @@ export const {
   setCantidadSensores,
   setCantidadSujetos,
   setCantidadSujetosRespaldo,
-  setVentanasArrayGiroscopio,
+  setVentanasArrayGsr,
   setVentanasArrayAcelerometro,
   setVentanasArrayFrecuencia,
   setDatosAnalisisIA,
   setCleanDatosAnalisisIA,
   setCleanAllSensors,
-  setGiroscopioIsChecked,
+  setGsrIsChecked,
   setAcelerometroIsChecked,
   setFrecuenciaIsChecked,
   setTotalSensores,

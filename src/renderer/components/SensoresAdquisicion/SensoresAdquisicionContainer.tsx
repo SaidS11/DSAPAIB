@@ -14,8 +14,8 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   const dataY: Number[] = []; */
   const [isReady, setIsReady] = useState(false);
   const onClickAdd = () => {};
-  const [dataXGiroscopio, setDataXGiroscopio] = useState([]);
-  const [dataYGiroscopio, setDataYGiroscopio] = useState([]);
+  const [dataXGsr, setDataXGsr] = useState([]);
+  const [dataYGsr, setDataYGsr] = useState([]);
 
   const [dataXFrecuencia, setDataXFrecuencia] = useState([]);
   const [dataYFrecuencia, setDataYFrecuencia] = useState([]);
@@ -41,8 +41,8 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   const [dataXEmg3, setDataXEmg3] = useState<any>([...startingNumbers]);
   const [dataYEmg3, setDataYEmg3] = useState<any>([]);
 
-  const [dataXEmg4, setDataXEmg4] = useState([]);
-  const [dataYEmg4, setDataYEmg4] = useState([]);
+  const [dataXEmg4, setDataXEmg4] = useState([...startingNumbers]);
+  const [dataYEmg4, setDataYEmg4] = useState<any>([]);
   const appDispatch = useCustomDispatch();
 
   const sensorTest = useCustomSelector(
@@ -69,7 +69,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   // const buffer = '';
   // const sum = 0;
   // const sumSpo2 = 0;
-  // const giroscopioAverage = 0;
+  // const gsrAverage = 0;
   // const hr = 0;
   // const volt = 0;
   // const hrOhms = 0;
@@ -89,7 +89,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   // const emg3Arr: any = [];
   // const emg4Arr: any = [];
 
-  // const giroscopioArr: any = [];
+  // const gsrArr: any = [];
   // const frecuenciaArr: any = [];
   // const acelerometroArr: any = [];
 
@@ -148,6 +148,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   const [globalData, setGlobalData] = useState<any>([]);
   const [globalData2, setGlobalData2] = useState<any>([]);
   const [globalData3, setGlobalData3] = useState<any>([]);
+  const [globalData4, setGlobalData4] = useState<any>([]);
 
   function intervalFunction() {
     const objectToStore = {};
@@ -173,6 +174,11 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
       setDataYEmg3(testData3.slice(-dataXEmg3.length));
     }
     if (sensoresSelected >= 4) {
+      Object.assign(objectToStore, {
+        emg3: [...globalData3, ...testData3],
+      });
+      setGlobalData4([...globalData3, ...testData3]);
+      setDataYEmg4(testData3.slice(-dataXEmg3.length));
     }
     appDispatch(setRealTimeSignal(objectToStore));
     // }
@@ -224,8 +230,8 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   //   // console.log('This was collected', arr);
   //   // const innerX: any = [...Array(arr.length).keys()];
   //   // console.log('Inner', innerX);
-  //   // setDataYGiroscopio(arr);
-  //   // setDataXGiroscopio(innerX);
+  //   // setDataYGsr(arr);
+  //   // setDataXGsr(innerX);
   //   // appDispatch(setIsLoading(false));
   //   // appDispatch(setIsLoading(false));
   // });
@@ -254,8 +260,10 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
         dataYEmg2={dataYEmg2}
         dataXEmg3={dataXEmg3}
         dataYEmg3={dataYEmg3}
-        dataXGiroscopio={dataXGiroscopio}
-        dataYGiroscopio={dataYGiroscopio}
+        dataXEmg4={dataXEmg4}
+        dataYEmg4={dataYEmg4}
+        dataXGsr={dataXGsr}
+        dataYGsr={dataYGsr}
         dataXFrecuencia={dataXFrecuencia}
         dataYFrecuencia={dataYFrecuencia}
         dataXAcelerometro={dataXAcelerometro}

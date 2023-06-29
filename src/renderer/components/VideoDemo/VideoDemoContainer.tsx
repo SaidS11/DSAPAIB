@@ -4,7 +4,7 @@ import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import {
   setCantidadSensores,
-  setGiroscopioIsChecked,
+  setGsrIsChecked,
   setFrecuenciaIsChecked,
   setAcelerometroIsChecked,
   setExtraSensorsChecked,
@@ -14,6 +14,8 @@ import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
 import { apiEndpoint } from '../Utilities/Constants';
+import Button from '@mui/material/Button';
+import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 
 interface ConfLocal {
   emgs: number;
@@ -80,18 +82,18 @@ const VideoDemoContainer = () => {
     );
     console.log('this is config', resp);
     const cantidadEmgs = resp[0].emgs;
-    const { giroscopio } = resp[0];
+    const { gsr } = resp[0];
     const { frecuencia_cardiaca } = resp[0];
     const { acelerometro } = resp[0];
     console.log(
-      `This is config EMGS: ${cantidadEmgs}, giroscopio ${giroscopio}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
+      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
     );
     appDispatch(setCantidadSensores(cantidadEmgs));
-    appDispatch(setGiroscopioIsChecked(giroscopio));
+    appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
     appDispatch(
-      setExtraSensorsChecked([giroscopio, acelerometro, frecuencia_cardiaca])
+      setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
     appDispatch(setIsLoading(false));
 
@@ -117,6 +119,19 @@ const VideoDemoContainer = () => {
       alert('Seleccione una cantidad');
     }
   };
+
+  const onClickStart = async () => {
+    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
+
+    const data = await startNidaq.json();
+
+    if(data.message !== null) {
+      console.log("READY", data.message);
+    }
+
+  };
+
   return (
     <div>
       <VideoDemo
@@ -125,20 +140,27 @@ const VideoDemoContainer = () => {
         onClickBack={onClickBack}
         probando={probando}
       />
-      {open && (
+      {/* {open && (
         <ModalSensoresAdquisicion
           toggleModal={toggleModal}
           open={open}
           setPortSelected={setPortSelected}
           setBaudSelected={setBaudSelected}
         />
-      )}
+      )} */}
       <section className="display-center">
         <h3>
           Para probar si los sensores funcionan correctamente presione Comenzar
         </h3>
       </section>
-      <SensoresAdquisicionContainer mode="TEST" shouldStop={false} />
+      <Button
+        sx={styleButtonBiggerGreen}
+        style={{ fontSize: '20px' }}
+        onClick={onClickStart}
+      >
+        Comenzar
+      </Button>
+      {/* <SensoresAdquisicionContainer mode="TEST" shouldStop={false} /> */}
       <br />
     </div>
   );

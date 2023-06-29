@@ -25,8 +25,8 @@ const CrearConfiguracionContainer = () => {
     if (!('frecuencia' in data)) {
       data.frecuencia = '0';
     }
-    if (!('giroscopio' in data)) {
-      data.giroscopio = '0';
+    if (!('gsr' in data)) {
+      data.gsr = '0';
     }
     if (!('acelerometro' in data)) {
       data.acelerometro = '0';
