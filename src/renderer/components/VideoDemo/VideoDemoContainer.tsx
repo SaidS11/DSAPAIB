@@ -189,7 +189,7 @@ const VideoDemoContainer = () => {
 
   const onClickStart = async () => {
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=2&cantidadEmgs=4`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
 
     const data = await startNidaq.json();
 
