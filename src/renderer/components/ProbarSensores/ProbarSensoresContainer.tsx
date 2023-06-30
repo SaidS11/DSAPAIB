@@ -328,6 +328,11 @@ const ProbarSensoresContainer = () => {
 
     console.log("RESP", data.message);
 
+    if(data.message !== null) {
+      console.log("READY", data.message);
+      onClickStop();
+    }
+
     // INCLX: 120, INCLY: 39, INCLZ: 10,
 
     // const arduinoDATA = await startArduinos.json();
