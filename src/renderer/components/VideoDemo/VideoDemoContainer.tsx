@@ -230,15 +230,25 @@ const VideoDemoContainer = () => {
 
     console.log("ARDUINO STOP", arduinoSTOP.message);
 
+    const registrosCompletos = arduinoSTOP[0].filter((registro: any) => {
+      const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
+      return formatoCompleto.test(registro);
+    });
+
+    const registrosCompletos2 = arduinoSTOP[1].filter((registro: any) => {
+      const formatoCompleto = /\INCLX: \d+, INCLY: \d+\.\d+, INCLZ: \d+\b/;
+      return formatoCompleto.test(registro);
+    });
+
     const cantidadDeArduinos = 2;
     let objetoArduino = {};
     if (cantidadDeArduinos >= 1) {
-      const arduino1Data = arduinoSTOP[0];
+      const arduino1Data = registrosCompletos;
       const returnObj = parseArduinoData(arduino1Data)
       objetoArduino = {...objetoArduino, ...returnObj};
     }
     if (cantidadDeArduinos >= 2) {
-      const arduino2Data = arduinoSTOP[1];
+      const arduino2Data = registrosCompletos2;
       const returnObj = parseArduinoData(arduino2Data)
       objetoArduino = {...objetoArduino, ...returnObj};
     }
