@@ -9,6 +9,7 @@ import {
   setAcelerometroIsChecked,
   setExtraSensorsChecked,
   setCleanAllSensors,
+  setTemperaturaIsChecked,
 } from '../../../redux/slices/SeñalesSlice';
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
@@ -45,6 +46,29 @@ function parseEMG(data: string) {
     return outputObject;
 }
 
+function parseArduinoData(data: string) {
+  const pares = data.split(", ");
+
+  // Crear un objeto vacío para almacenar los datos
+  const datosObjeto: any = {};
+
+  // Iterar sobre cada par de clave y valor
+  for (let i = 0; i < pares.length; i++) {
+    // Separar la clave y el valor
+    const [clave, valor] = pares[i].split(": ");
+
+    // Verificar si la clave ya existe en el objeto
+    if (datosObjeto.hasOwnProperty(clave)) {
+      // Si la clave existe, agregar el valor al arreglo existente
+      datosObjeto[clave].push(Number(valor));
+    } else {
+      // Si la clave no existe, crear un nuevo arreglo con el valor
+      datosObjeto[clave] = [Number(valor)];
+    }
+  }
+  return datosObjeto;
+}
+
 interface ConfLocal {
   emgs: number;
 }
@@ -53,6 +77,8 @@ const VideoDemoContainer = () => {
   const appDispatch = useCustomDispatch();
   const [dataIsReady, setDataIsReady] = useState(false);
   const [emgData, setEmgData] = useState({});
+  const [arduino1Data, setArduino1Data] = useState({});
+
 
 
   const [probando, setProbando] = useState(false);
@@ -66,6 +92,9 @@ const VideoDemoContainer = () => {
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
   const cantidadEmgs = confObj[0].emgs;
+
+
+
 
   const onClickNav = async () => {
     console.log("Navigating")
@@ -112,17 +141,20 @@ const VideoDemoContainer = () => {
       respConf[0].configuracion
     );
     console.log('this is config', resp);
-    const cantidadEmgs = resp[0].emgs;
     const { gsr } = resp[0];
     const { frecuencia_cardiaca } = resp[0];
     const { acelerometro } = resp[0];
+    const { temperatura } = resp[0];
+
     console.log(
-      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
+      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro} temperatura ${temperatura}`
     );
     appDispatch(setCantidadSensores(cantidadEmgs));
     appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
+    appDispatch(setTemperaturaIsChecked(temperatura));
+
     appDispatch(
       setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
@@ -138,7 +170,8 @@ const VideoDemoContainer = () => {
   const [baudSelected, setBaudSelected] = useState(9600);
   const [portSelected, setPortSelected] = useState('');
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
   const toggleModal = () => {
     if (portSelected !== '' && baudSelected !== 0) {
       setOpen(!open);
@@ -164,11 +197,27 @@ const VideoDemoContainer = () => {
     //   console.log("READY", data.message);
     //   stopArduinos();
     // }
-    const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"
-
+    if(cantidadEmgs > 0) {
+      const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"      
+      setEmgData(parseEMG(test));
+      console.log("EMG", emgData);
+    }
     
-    setEmgData(parseEMG(test));
-    console.log("EMG", emgData);
+    const cantidadDeArduinos = 2;
+    let objetoArduino = {};
+    if (cantidadDeArduinos >= 1) {
+      const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
+      const returnObj = parseArduinoData(arduino1Data)
+      objetoArduino = {...objetoArduino, ...returnObj};
+    }
+    if (cantidadDeArduinos >= 2) {
+      const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
+      const returnObj = parseArduinoData(arduino2Data)
+      objetoArduino = {...objetoArduino, ...returnObj};
+
+
+    }
+    setArduino1Data(objetoArduino);
     setDataIsReady(true);
   };
 
@@ -179,6 +228,8 @@ const VideoDemoContainer = () => {
     // const arduinoSTOP = await stopArduinos.json();
 
     // console.log("ARDUINO STOP", arduinoSTOP.message);
+
+    
   };
 
   return (
@@ -189,14 +240,14 @@ const VideoDemoContainer = () => {
         onClickBack={onClickBack}
         probando={probando}
       />
-      {/* {open && (
+      {open && (
         <ModalSensoresAdquisicion
           toggleModal={toggleModal}
           open={open}
           setPortSelected={setPortSelected}
           setBaudSelected={setBaudSelected}
         />
-      )} */}
+      )}
       <section className="display-center">
         <h3>
           Para probar si los sensores funcionan correctamente presione Comenzar
@@ -209,7 +260,7 @@ const VideoDemoContainer = () => {
           Comenzar
         </Button>
       </section>
-      {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData}/>)}
+      {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData} arduino1Data={arduino1Data} />)}
       {/* <SensoresAdquisicionContainer mode="TEST" shouldStop={false} /> */}
       <br />
     </div>

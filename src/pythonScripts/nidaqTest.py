@@ -25,21 +25,21 @@ def funcion_a_ejecutar():
 
     tiempo_inicial = time.time()
     while time.time() - tiempo_inicial < duracion:
-        returnedList.append({"EMG1": 0})
-        returnedList.append({"EMG2": 1})
-        returnedList.append({"EMG3": 2})
-        returnedList.append({"EMG4": 3})
-    #     with nidaqmx.Task() as task:
-    #         task.ai_channels.add_ai_voltage_chan("Dev1/ai0")
-    #         task.ai_channels.add_ai_voltage_chan("Dev1/ai1")
-    #         task.ai_channels.add_ai_voltage_chan("Dev1/ai2")
-    #         task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
-    #         line = task.read()
+        # returnedList.append({"EMG1": 0})
+        # returnedList.append({"EMG2": 1})
+        # returnedList.append({"EMG3": 2})
+        # returnedList.append({"EMG4": 3})
+        with nidaqmx.Task() as task:
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai0")
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai1")
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai2")
+            task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
+            line = task.read()
 
-    #         returnedList.append({"EMG1": line[0]})
-    #         returnedList.append({"EMG2": line[1]})  
-    #         returnedList.append({"EMG3": line[2]})  
-    #         returnedList.append({"EMG4": line[3]})  
+            returnedList.append({"EMG1": line[0]})
+            returnedList.append({"EMG2": line[1]})  
+            returnedList.append({"EMG3": line[2]})  
+            returnedList.append({"EMG4": line[3]})  
 
 
 

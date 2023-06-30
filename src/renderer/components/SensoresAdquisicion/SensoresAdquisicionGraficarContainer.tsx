@@ -1,17 +1,36 @@
 import Plot from 'react-plotly.js';
 import SensoresAdquisicionGraficar from './SensoresAdquisicionGraficar';
 import { numOfPlotsToRender } from '../Utilities/Constants';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { useState } from 'react';
 
 interface SensoresGraficaContainerInterfcace {
     cantidadEmgs: number;
     emgData: any;
+    arduino1Data: any;
 }
 
 const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInterfcace) => {
-    const { cantidadEmgs, emgData } = props;
+    const { cantidadEmgs, emgData, arduino1Data } = props;
     console.log("Cantidad", cantidadEmgs)
     console.log("Data", emgData);
+    console.log("ARD", arduino1Data);
+
+    const gsr = useCustomSelector(
+        (state) => state.señales.gsrIsChecked
+    );
+
+    const frecuencia_cardiaca = useCustomSelector(
+        (state) => state.señales.frecuenciaIsChecked
+    );
+
+    const acelerometro = useCustomSelector(
+        (state) => state.señales.acelerometroIsChecked
+    );
+
+    const temperatura = useCustomSelector(
+        (state) => state.señales.temperaturaIsChecked
+    );
 
     const gridLayout = numOfPlotsToRender(cantidadEmgs);
 
@@ -26,6 +45,19 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
     
     let dataY4Emg4;
     let dataX4Emg4;
+
+    let dataGsrX;
+    let dataGsrY;
+
+    let dataFrecuenciaX;
+    let dataFrecuenciaY;
+
+    let dataAcelerometroX;
+    let dataAcelerometroY;
+
+    let dataTemperaturaX;
+    let dataTemperaturaY;
+
 
 
     if(cantidadEmgs >= 1) {
@@ -49,7 +81,6 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
     }
 
     // Implememtar if para cuando los datos no tienen el mismo largo
-    // dataArr.psuh
 
     const trace1 = {
     x: dataXEmg1,
@@ -99,12 +130,23 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
     name: 'EMG4',
     };
 
-    const dataArr = [
-        trace1,
-        trace2,
-        trace3,
-        trace4,
-      ];
+    const dataArr = [];
+
+    if(cantidadEmgs >= 1) {
+        dataArr.push(trace1)
+    }
+
+    if(cantidadEmgs >= 2) {
+        dataArr.push(trace2)
+    }
+
+    if(cantidadEmgs >= 3) {
+        dataArr.push(trace3)
+    }
+
+    if(cantidadEmgs >= 4) {
+        dataArr.push(trace4)
+    }
 
   return <SensoresAdquisicionGraficar gridLayout={gridLayout} dataArr={dataArr}/>;
 };
