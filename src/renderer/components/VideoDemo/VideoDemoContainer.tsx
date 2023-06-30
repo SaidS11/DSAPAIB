@@ -240,7 +240,7 @@ const VideoDemoContainer = () => {
 
     console.log("REG1", registrosCompletos)
     const registrosCompletos2 = arreglo[1].filter((registro: string) => {
-      const formatoCompleto = /\INCLX: \d+, INCLY: \d+\.\d+, INCLZ: \d+\b/;
+      const formatoCompleto = /\bINCLX: \d+, INCLY: \d+\.\d+, INCLZ: \d+\b/;
       return formatoCompleto.test(registro);
     });
 
