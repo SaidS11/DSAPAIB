@@ -2345,12 +2345,16 @@ app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
   
   arduinoParser2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
-    arreglo2.push(chunk);
+    if(chunk.includes("HRLM") && chunk.includes("GSR") && chunk.includes("TC")) {
+      arreglo2.push(chunk);
+    }
   });
 
   arduinoParser.on('data', async(chunk: any) => {
     console.log(chunk + " sensor1")
-    arreglo1.push(chunk);
+    if(chunk.includes("INCLX") && chunk.includes("INCLY") && chunk.includes("INCLZ")) {
+      arreglo1.push(chunk);
+    }
   });
 }) 
 
