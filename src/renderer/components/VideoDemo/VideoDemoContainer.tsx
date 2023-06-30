@@ -188,46 +188,46 @@ const VideoDemoContainer = () => {
   
 
   const onClickStart = async () => {
-    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
-    // const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=2&cantidadEmgs=4`);
+    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=2&cantidadEmgs=4`);
 
-    // const data = await startNidaq.json();
+    const data = await startNidaq.json();
 
-    // if(data.message !== null) {
-    //   console.log("READY", data.message);
-    //   stopArduinos();
+    if(data.message !== null) {
+      console.log("READY", data.message);
+      stopArduinos();
+    }
+
+    // if(cantidadEmgs > 0) {
+    //   const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"      
+    //   setEmgData(parseEMG(test));
+    //   console.log("EMG", emgData);
     // }
-    if(cantidadEmgs > 0) {
-      const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"      
-      setEmgData(parseEMG(test));
-      console.log("EMG", emgData);
-    }
     
-    const cantidadDeArduinos = 2;
-    let objetoArduino = {};
-    if (cantidadDeArduinos >= 1) {
-      const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
-      const returnObj = parseArduinoData(arduino1Data)
-      objetoArduino = {...objetoArduino, ...returnObj};
-    }
-    if (cantidadDeArduinos >= 2) {
-      const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
-      const returnObj = parseArduinoData(arduino2Data)
-      objetoArduino = {...objetoArduino, ...returnObj};
+    // const cantidadDeArduinos = 2;
+    // let objetoArduino = {};
+    // if (cantidadDeArduinos >= 1) {
+    //   const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
+    //   const returnObj = parseArduinoData(arduino1Data)
+    //   objetoArduino = {...objetoArduino, ...returnObj};
+    // }
+    // if (cantidadDeArduinos >= 2) {
+    //   const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
+    //   const returnObj = parseArduinoData(arduino2Data)
+    //   objetoArduino = {...objetoArduino, ...returnObj};
 
 
-    }
-    setArduino1Data(objetoArduino);
-    setDataIsReady(true);
+    // }
+    // setArduino1Data(objetoArduino);
+    // setDataIsReady(true);
   };
 
   const stopArduinos = async () => {
     console.log("Stopping");
+    const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
+    const arduinoSTOP = await stopArduinos.json();
 
-    // const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
-    // const arduinoSTOP = await stopArduinos.json();
-
-    // console.log("ARDUINO STOP", arduinoSTOP.message);
+    console.log("ARDUINO STOP", arduinoSTOP.message);
 
     
   };
