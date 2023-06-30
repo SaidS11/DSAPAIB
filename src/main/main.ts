@@ -2339,6 +2339,9 @@ app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
   console.log("Port2 is open?", arduinoPorts[1].isOpen);
 
   console.log('Inner sensor Multiple ');
+
+  arduinoParser.resume();
+  arduinoParser2.resume();
   
   arduinoParser2.on('data', async(chunk: any) => {
     console.log(chunk + " sensor2")
