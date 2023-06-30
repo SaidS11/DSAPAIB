@@ -215,8 +215,6 @@ const VideoDemoContainer = () => {
     //   const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
     //   const returnObj = parseArduinoData(arduino2Data)
     //   objetoArduino = {...objetoArduino, ...returnObj};
-
-
     // }
     // setArduino1Data(objetoArduino);
     // setDataIsReady(true);
@@ -228,6 +226,21 @@ const VideoDemoContainer = () => {
     const arduinoSTOP = await stopArduinos.json();
 
     console.log("ARDUINO STOP", arduinoSTOP.message);
+
+    const cantidadDeArduinos = 2;
+    let objetoArduino = {};
+    if (cantidadDeArduinos >= 1) {
+      const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
+      const returnObj = parseArduinoData(arduino1Data)
+      objetoArduino = {...objetoArduino, ...returnObj};
+    }
+    if (cantidadDeArduinos >= 2) {
+      const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
+      const returnObj = parseArduinoData(arduino2Data)
+      objetoArduino = {...objetoArduino, ...returnObj};
+    }
+
+    console.log("OBJ", objetoArduino);
 
     
   };
