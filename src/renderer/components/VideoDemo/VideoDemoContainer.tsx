@@ -46,27 +46,30 @@ function parseEMG(data: string) {
     return outputObject;
 }
 
-function parseArduinoData(data: string) {
-  const pares = data.split(", ");
+function parseArduinoData(arreglo: any) {
+  const objetoTransformado: any = {};
 
-  // Crear un objeto vacío para almacenar los datos
-  const datosObjeto: any = {};
+  // Iterar sobre cada elemento del arreglo
+  for (let i = 0; i < arreglo.length; i++) {
+    // Eliminar espacios en blanco y dividir el elemento en pares de clave y valor
+    const pares = arreglo[i].trim().split(", ");
 
-  // Iterar sobre cada par de clave y valor
-  for (let i = 0; i < pares.length; i++) {
-    // Separar la clave y el valor
-    const [clave, valor] = pares[i].split(": ");
+    // Iterar sobre cada par de clave y valor
+    for (let j = 0; j < pares.length; j++) {
+      // Separar la clave y el valor
+      const [clave, valor] = pares[j].split(": ");
 
-    // Verificar si la clave ya existe en el objeto
-    if (datosObjeto.hasOwnProperty(clave)) {
-      // Si la clave existe, agregar el valor al arreglo existente
-      datosObjeto[clave].push(Number(valor));
-    } else {
-      // Si la clave no existe, crear un nuevo arreglo con el valor
-      datosObjeto[clave] = [Number(valor)];
+      // Verificar si la clave ya existe en el objeto
+      if (objetoTransformado.hasOwnProperty(clave)) {
+        // Si la clave existe, agregar el valor al arreglo existente
+        objetoTransformado[clave].push(Number(valor));
+      } else {
+        // Si la clave no existe, crear un nuevo arreglo con el valor
+        objetoTransformado[clave] = [Number(valor)];
+      }
     }
   }
-  return datosObjeto;
+return objetoTransformado;
 }
 
 interface ConfLocal {
@@ -230,12 +233,12 @@ const VideoDemoContainer = () => {
     const cantidadDeArduinos = 2;
     let objetoArduino = {};
     if (cantidadDeArduinos >= 1) {
-      const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
+      const arduino1Data = arduinoSTOP[0];
       const returnObj = parseArduinoData(arduino1Data)
       objetoArduino = {...objetoArduino, ...returnObj};
     }
     if (cantidadDeArduinos >= 2) {
-      const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
+      const arduino2Data = arduinoSTOP[1];
       const returnObj = parseArduinoData(arduino2Data)
       objetoArduino = {...objetoArduino, ...returnObj};
     }
