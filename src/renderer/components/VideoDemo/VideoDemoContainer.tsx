@@ -14,7 +14,7 @@ import {
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
-import { apiEndpoint } from '../Utilities/Constants';
+import { apiEndpoint, ardMessage } from '../Utilities/Constants';
 import Button from '@mui/material/Button';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
@@ -58,14 +58,25 @@ function parseArduinoData(arreglo: any) {
     for (let j = 0; j < pares.length; j++) {
       // Separar la clave y el valor
       const [clave, valor] = pares[j].split(": ");
-
       // Verificar si la clave ya existe en el objeto
       if (objetoTransformado.hasOwnProperty(clave)) {
         // Si la clave existe, agregar el valor al arreglo existente
-        objetoTransformado[clave].push(Number(valor));
+        if(valor.includes(",")) {
+          const correctValue = valor.split(",")[0];
+          objetoTransformado[clave].push(Number(correctValue));
+
+        } else {
+
+          objetoTransformado[clave].push(Number(valor));
+        }
       } else {
         // Si la clave no existe, crear un nuevo arreglo con el valor
-        objetoTransformado[clave] = [Number(valor)];
+        if(valor.includes(",")) {
+          const correctValue = valor.split(",")[0];
+          objetoTransformado[clave] = [Number(correctValue)];
+        } else {
+          objetoTransformado[clave] = [Number(valor)];
+        }
       }
     }
   }
@@ -201,6 +212,19 @@ const VideoDemoContainer = () => {
       stopArduinos();
     }
 
+    // const arreglo = ardMessage;
+    
+    // const registrosCompletos = arreglo.filter((registro: string) => {
+    //   const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
+    //   return formatoCompleto.test(registro);
+    // });
+
+    // let objetoArduino = {}
+    // const returnObj = parseArduinoData(registrosCompletos)
+    //   objetoArduino = {...objetoArduino, ...returnObj};
+
+    // console.log("OBJ", objetoArduino);
+
     // if(cantidadEmgs > 0) {
     //   const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"      
     //   setEmgData(parseEMG(test));
@@ -231,20 +255,21 @@ const VideoDemoContainer = () => {
     console.log("ARDUINO STOP", arduinoSTOP.message);
 
     const arreglo = arduinoSTOP.message
+
     
     const registrosCompletos = arreglo[0].filter((registro: string) => {
       const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
       return formatoCompleto.test(registro);
     });
 
-    console.log("PREV", arreglo[1]);
+    // console.log("PREV", arreglo[1]);
 
     const registrosCompletos2 = arreglo[1].filter((registro: string) => {
       const formatoCompleto = /INCLX: -?\d+(?:\.\d+)?, INCLY: -?\d+(?:\.\d+)?, INCLZ: -?\d+(?:\.\d+)?/;
       return formatoCompleto.test(registro);
     });
 
-    console.log("REG2", registrosCompletos2)
+    // console.log("REG2", registrosCompletos2)
 
     const cantidadDeArduinos = 2;
     let objetoArduino = {};
