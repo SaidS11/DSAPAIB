@@ -38,7 +38,7 @@ const CrearConfiguracionMultimediaContainer = () => {
       nombre: primerConfig.nombreConfig,
       gsr: primerConfig.gsr,
       frecuencia_cardiaca: primerConfig.frecuencia,
-      rimto_cardiaco: primerConfig.ritmo,
+      temperatura: primerConfig.temperatura,
       emgs: primerConfig.canales,
       acelerometro: primerConfig.acelerometro,
       subido: "1",

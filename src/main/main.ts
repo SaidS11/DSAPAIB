@@ -336,7 +336,7 @@ async function insertarDatosConfiguracion(
   nombre: string,
   gsr: string,
   frecuencia_cardiaca: string,
-  rimto_cardiaco: string,
+  temperatura: string,
   emgs: string,
   acelerometro: string,
   subido: string,
@@ -347,12 +347,12 @@ async function insertarDatosConfiguracion(
 
   try {
     const query =
-      'INSERT INTO configuracion (nombre, gsr, frecuencia_cardiaca, rimto_cardiaco, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+      'INSERT INTO configuracion (nombre, gsr, frecuencia_cardiaca, temperatura, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
     const values = [
       nombre,
       gsr,
       frecuencia_cardiaca,
-      rimto_cardiaco,
+      temperatura,
       emgs,
       acelerometro,
       subido,
@@ -378,7 +378,7 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       frecuencia_cardiaca,
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      rimto_cardiaco,
+      temperatura,
       emgs,
       acelerometro,
       subido,
@@ -388,7 +388,7 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
       nombre,
       gsr,
       frecuencia_cardiaca,
-      rimto_cardiaco,
+      temperatura,
       emgs,
       acelerometro,
       subido,
@@ -2610,21 +2610,30 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   // const worker = new Worker(path.join(rootPath, 'worker.js'));
   // const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
   // console.log("Work", worker);
-  const pythonProcess = await spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
+  const pythonProcess = spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
 
-  const result = pythonProcess.stdout?.toString()?.trim();
-  const error = pythonProcess.stderr?.toString()?.trim();
-  const strResult = result;
+  pythonProcess.on('exit', function (code: any, signal: any) {
+    const result = pythonProcess.stdout?.toString()?.trim();
+    const error = pythonProcess.stderr?.toString()?.trim();
+    const strResult = result;
+    console.log('child process exited with ' +
+                `code ${code} and signal ${signal}`);
+    res.send(JSON.stringify({ status: 200, message: 'child process exited with ' +
+    `code ${code} and signal ${signal}` }))
+    
+  });
+
+  
   // console.log("PY", pythonProcess);
   // console.log("RES", result);
   // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
-  const status = result === 'OK';
-  if (status) {
-    res.send(strResult)
-  } else {
-    console.log(error)
-    res.send(JSON.stringify({ status: 200, message: strResult }))
-    // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
-  }
+  // const status = result === 'OK';
+  // if (status) {
+  //   res.send(strResult)
+  // } else {
+  //   console.log(error)
+  //   res.send(JSON.stringify({ status: 200, message: strResult }))
+  //   // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
+  // }
 
 });

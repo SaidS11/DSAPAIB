@@ -78,13 +78,13 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
             </section>
             <div className='display-margin'>
               <div >
-                <h4>Ritmo Cardiaco:</h4>
+                <h4>Temperatura:</h4>
                 <h4>Frecuencia Cardiaca:</h4>
                 <h4>Gsr:</h4>
                 <h4>Acelerometro:</h4>
               </div>
               <div>
-                <Checkbox  sx={checkBoxConfig} name="ritmo" value="1"  />
+                <Checkbox  sx={checkBoxConfig} name="temperatura" value="1"  />
                 <Checkbox   sx={checkBoxConfig} name="frecuencia" value="1"  />
                 <Checkbox  sx={checkBoxConfig} name="gsr" value="1"  />
                 <Checkbox   sx={checkBoxConfig} name="acelerometro" value="1"  />

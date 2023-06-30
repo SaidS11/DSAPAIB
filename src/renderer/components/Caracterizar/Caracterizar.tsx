@@ -526,31 +526,31 @@ const Caracterizar = (props: CaracterizarProps) => {
 
     const localArrayEmg1 = [];
     if (sensoresSelected >= 1) {
-      ventanaReduxEmg1.map((e) => localArrayEmg1.push(e));
+      ventanaReduxEmg1.map((e: any) => localArrayEmg1.push(e));
       localArrayEmg1.push(ventanasSeñal1Emg1);
     }
 
     const localArrayEmg2 = [];
     if (sensoresSelected >= 2) {
-      ventanaReduxEmg2.map((e) => localArrayEmg2.push(e));
+      ventanaReduxEmg2.map((e: any) => localArrayEmg2.push(e));
       localArrayEmg2.push(ventanasSeñal2Emg2);
     }
 
     const localArrayEmg3 = [];
     if (sensoresSelected >= 3) {
-      ventanaReduxEmg3.map((e) => localArrayEmg3.push(e));
+      ventanaReduxEmg3.map((e: any) => localArrayEmg3.push(e));
       localArrayEmg3.push(ventanasSeñal3Emg3);
     }
 
     const localArrayEmg4 = [];
     if (sensoresSelected >= 4) {
-      ventanaReduxEmg4.map((e) => localArrayEmg4.push(e));
+      ventanaReduxEmg4.map((e: any) => localArrayEmg4.push(e));
       localArrayEmg4.push(ventanasSeñal4Emg4);
     }
 
     const localArrayGsr = [];
     if (gsrChecked) {
-      ventanaReduxGsr.map((e) => localArrayGsr.push(e));
+      ventanaReduxGsr.map((e: any) => localArrayGsr.push(e));
       localArrayGsr.push(ventanasSeñalGsr);
     }
 

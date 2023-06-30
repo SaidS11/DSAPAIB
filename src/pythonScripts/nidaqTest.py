@@ -2,7 +2,7 @@ import threading
 import time
 import nidaqmx
 import sys
-
+# import zlib
 
 # ser = serial.Serial('COM5', 9600, timeout=1)
 # ser.readline()
@@ -94,9 +94,10 @@ def controlador():
     # Si el hilo aún está vivo después del tiempo de duración, lo detiene
     # if hilo.is_alive():
     #     hilo.cancel()
-    
-    with open('./TEST.txt','w') as file:
-        file.write(str(returnedList))
+    strData = str(returnedList)
+    # compress = zlib.compress(strData)
+    with open('./TEST2.txt','w+') as file:
+        file.write(strData)
     # print(returnedList)
 
 

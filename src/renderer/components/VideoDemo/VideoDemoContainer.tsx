@@ -16,6 +16,34 @@ import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquis
 import { apiEndpoint } from '../Utilities/Constants';
 import Button from '@mui/material/Button';
 import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
+
+function parseEMG(data: string) {
+
+  const parsedArray = JSON.parse(data.replace(/'/g, '"'));
+
+    // Creamos un objeto para almacenar los valores
+    const outputObject: any = {};
+
+    // Iteramos sobre el array de objetos
+    parsedArray.forEach((obj: any) => {
+      // Obtenemos la clave y el valor del objeto
+      const key = Object.keys(obj)[0];
+      const value = obj[key];
+      
+      // Si la clave no existe en el objeto de salida, la inicializamos como un array vacío
+      if (!outputObject[key]) {
+        outputObject[key] = [];
+      }
+      
+      // Agregamos el valor al array correspondiente
+      outputObject[key].push(value);
+    });
+
+    // Imprimimos el objeto de salida en formato JSON
+    console.log(JSON.stringify(outputObject));
+    return outputObject;
+}
 
 interface ConfLocal {
   emgs: number;
@@ -23,6 +51,9 @@ interface ConfLocal {
 const VideoDemoContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
+  const [dataIsReady, setDataIsReady] = useState(false);
+  const [emgData, setEmgData] = useState({});
+
 
   const [probando, setProbando] = useState(false);
   const multimediaObj = useCustomSelector(
@@ -34,7 +65,7 @@ const VideoDemoContainer = () => {
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
-  const sensores = confObj[0].emgs;
+  const cantidadEmgs = confObj[0].emgs;
 
   const onClickNav = async () => {
     console.log("Navigating")
@@ -120,16 +151,34 @@ const VideoDemoContainer = () => {
     }
   };
 
+  const sensoresSelected = 4;
+  
+
   const onClickStart = async () => {
     // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
+    // const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=2&cantidadEmgs=4`);
 
-    const data = await startNidaq.json();
+    // const data = await startNidaq.json();
 
-    if(data.message !== null) {
-      console.log("READY", data.message);
-    }
+    // if(data.message !== null) {
+    //   console.log("READY", data.message);
+    //   stopArduinos();
+    // }
+    const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"
 
+    
+    setEmgData(parseEMG(test));
+    console.log("EMG", emgData);
+    setDataIsReady(true);
+  };
+
+  const stopArduinos = async () => {
+    console.log("Stopping");
+
+    // const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
+    // const arduinoSTOP = await stopArduinos.json();
+
+    // console.log("ARDUINO STOP", arduinoSTOP.message);
   };
 
   return (
@@ -152,14 +201,15 @@ const VideoDemoContainer = () => {
         <h3>
           Para probar si los sensores funcionan correctamente presione Comenzar
         </h3>
+        <Button
+          sx={styleButtonBiggerGreen}
+          style={{ fontSize: '20px' }}
+          onClick={onClickStart}
+        >
+          Comenzar
+        </Button>
       </section>
-      <Button
-        sx={styleButtonBiggerGreen}
-        style={{ fontSize: '20px' }}
-        onClick={onClickStart}
-      >
-        Comenzar
-      </Button>
+      {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData}/>)}
       {/* <SensoresAdquisicionContainer mode="TEST" shouldStop={false} /> */}
       <br />
     </div>

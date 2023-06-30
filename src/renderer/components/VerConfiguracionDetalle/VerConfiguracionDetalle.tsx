@@ -57,16 +57,16 @@ const VerConfiguracionDetalle = (props: VerConfiguracionDetalleProps) => {
               <h4>Acelerometro:</h4>
             </div>
             <div>
-              {resp[0].rimto_cardiaco === true ? (
+              {resp[0].temperatura === true ? (
                 <Checkbox
                   disabled
                   checked
                   sx={checkBoxConfig}
-                  name="ritmo"
+                  name="temperatura"
                   value="1"
                 />
               ) : (
-                <Checkbox disabled sx={checkBoxConfig} name="ritmo" value="0" />
+                <Checkbox disabled sx={checkBoxConfig} name="temperatura" value="0" />
               )}
               {resp[0].frecuencia_cardiaca === true ? (
                 <Checkbox

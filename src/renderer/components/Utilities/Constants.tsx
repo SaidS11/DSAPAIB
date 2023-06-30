@@ -62,7 +62,7 @@ export interface ConfigDetalle {
   emgs: number;
   gsr: boolean;
   nombre: string;
-  ritmo_cardiaco: boolean;
+  temperatura: boolean;
   frecuencia_cardiaca: boolean;
   subido: boolean;
   acelerometro: boolean;
@@ -123,11 +123,44 @@ export interface ConfigurationInterface {
   nombreConfig: string;
   descripcion: string;
   canales: string;
-  ritmo: string;
+  temperatura: string;
   frecuencia: string;
   gsr: string;
   acelerometro: string;
 }
+
+export const numOfPlotsToRender = (sensoresSelected: number) => {
+ 
+  // impar aumenta las columns
+  let dynamicRows = 0;
+  let dynamicColumns = 0;
+  if (sensoresSelected === 1) {
+    dynamicRows = 1;
+    dynamicColumns = 1;
+  }
+  if (sensoresSelected === 2) {
+    dynamicRows = 1;
+    dynamicColumns = 2;
+  }
+  if (sensoresSelected > 2 && sensoresSelected < 5) {
+    dynamicRows = 2;
+    dynamicColumns = 2;
+  }
+  if (sensoresSelected > 4 && sensoresSelected < 7) {
+    dynamicRows = 2;
+    dynamicColumns = 3;
+  }
+  if (sensoresSelected >= 7) {
+    dynamicRows = 2;
+    dynamicColumns = 4;
+  }
+  const objGrid = {
+    rows: dynamicRows,
+    columns: dynamicColumns,
+    pattern: 'independent',
+  };
+  return objGrid;
+};
 
 export const apiEndpoint = 'http://localhost:8000';
 export const datosDePrueba =

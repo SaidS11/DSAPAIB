@@ -7,6 +7,7 @@ import {
   setFrecuenciaIsChecked,
   setAcelerometroIsChecked,
   setExtraSensorsChecked,
+  setTemperaturaIsChecked,
 } from '../../../redux/slices/SeñalesSlice';
 import ModalSensoresCaracterizar from './ModalSensoresCaracterizar';
 import Caracterizar from './Caracterizar';
@@ -35,6 +36,8 @@ const CaracterizarContainer = () => {
   const [frecuenciaChecked, setFrecuenciaChecked] = useState(false);
   const [configLoaded, setConfigLoaded] = useState(false);
   const [acelerometroChecked, setAcelerometroChecked] = useState(false);
+  const [temperaturaChecked, setTemperaturaChecked] = useState(false);
+
 
   console.log('Params', formParams);
   const selectedProtocol = formParams.protocolo;
@@ -69,14 +72,18 @@ const CaracterizarContainer = () => {
     setFrecuenciaChecked(resp[0].frecuencia_cardiaca);
     const { acelerometro } = resp[0];
     setAcelerometroChecked(resp[0].acelerometro);
+    const { temperatura } = resp[0];
+    setTemperaturaChecked(resp[0].temperatura);
     console.log(
       `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro}`
     );
     appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
+    appDispatch(setTemperaturaIsChecked(temperatura));
+
     appDispatch(
-      setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
+      setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca, temperatura])
     );
     setConfigLoaded(true);
     appDispatch(setIsLoading(false));

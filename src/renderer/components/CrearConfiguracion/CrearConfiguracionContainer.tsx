@@ -19,8 +19,8 @@ const CrearConfiguracionContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const data = Object.fromEntries(new FormData(form).entries());
-    if (!('ritmo' in data)) {
-      data.ritmo = '0';
+    if (!('temperatura' in data)) {
+      data.temperatura = '0';
     }
     if (!('frecuencia' in data)) {
       data.frecuencia = '0';

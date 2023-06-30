@@ -30,6 +30,7 @@ export interface ISeñales {
   gsrIsChecked: boolean;
   acelerometroIsChecked: boolean;
   frecuenciaIsChecked: boolean;
+  temperaturaIsChecked: boolean;
   extraSensorsChecked: Array<boolean>;
   totalSensores: number;
   signalsToStore: object;
@@ -59,6 +60,7 @@ const initialState: ISeñales = {
   gsrIsChecked: false,
   acelerometroIsChecked: false,
   frecuenciaIsChecked: false,
+  temperaturaIsChecked: false,
   extraSensorsChecked: [],
   totalSensores: 0,
   signalsToStore: {},
@@ -200,6 +202,12 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.frecuenciaIsChecked = action.payload;
     },
+    setTemperaturaIsChecked: (
+      state,
+      action: PayloadAction<ISeñales['temperaturaIsChecked']>
+    ) => {
+      state.temperaturaIsChecked = action.payload;
+    },
     setExtraSensorsChecked: (
       state,
       action: PayloadAction<ISeñales['extraSensorsChecked']>
@@ -263,6 +271,7 @@ export const {
   setGsrIsChecked,
   setAcelerometroIsChecked,
   setFrecuenciaIsChecked,
+  setTemperaturaIsChecked,
   setTotalSensores,
   setExtraSensorsChecked,
   setSignalsToStore,
