@@ -321,17 +321,17 @@ const ProbarSensoresContainer = () => {
 
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     console.log("START ARDUINOS");
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
-    console.log("DATOS", startNidaq);
+    // const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
+    // console.log("DATOS", startNidaq);
 
-    const data = await startNidaq.json();
+    // const data = await startNidaq.json();
 
-    console.log("RESP", data.message);
+    // console.log("RESP", data.message);
 
-    if(data.message !== null) {
-      console.log("READY", data.message);
-      onClickStop();
-    }
+    // if(data.message !== null) {
+    //   console.log("READY", data.message);
+    //   onClickStop();
+    // }
 
     // INCLX: 120, INCLY: 39, INCLZ: 10,
 
