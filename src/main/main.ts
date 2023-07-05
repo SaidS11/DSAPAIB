@@ -2659,6 +2659,9 @@ const convertObjToCsv = (signals: any) => {
   return csv;
 }
 
+app2.use(express.json({limit: '50mb'}));
+app2.use(express.urlencoded({limit: '50mb'}));
+
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
     // Obtener los datos enviados en la solicitud
