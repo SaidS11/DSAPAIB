@@ -61,22 +61,26 @@ function parseArduinoData(arreglo: any) {
       // Verificar si la clave ya existe en el objeto
       if (objetoTransformado.hasOwnProperty(clave)) {
         // Si la clave existe, agregar el valor al arreglo existente
-        if(valor.includes(",")) {
-          const correctValue = valor.split(",")[0];
-          objetoTransformado[clave].push(Number(correctValue));
+        objetoTransformado[clave].push(Number(valor));
 
-        } else {
+        // if(valor.includes(",")) {
+        //   const correctValue = valor.split(",")[0];
+        //   objetoTransformado[clave].push(Number(correctValue));
 
-          objetoTransformado[clave].push(Number(valor));
-        }
+        // } else {
+
+        //   objetoTransformado[clave].push(Number(valor));
+        // }
       } else {
         // Si la clave no existe, crear un nuevo arreglo con el valor
-        if(valor.includes(",")) {
-          const correctValue = valor.split(",")[0];
-          objetoTransformado[clave] = [Number(correctValue)];
-        } else {
-          objetoTransformado[clave] = [Number(valor)];
-        }
+        objetoTransformado[clave] = [Number(valor)];
+
+        // if(valor.includes(",")) {
+        //   const correctValue = valor.split(",")[0];
+        //   objetoTransformado[clave] = [Number(correctValue)];
+        // } else {
+        //   objetoTransformado[clave] = [Number(valor)];
+        // }
       }
     }
   }
