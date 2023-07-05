@@ -86,16 +86,21 @@ return objetoTransformado;
 interface ConfLocal {
   emgs: number;
 }
+
 const VideoDemoContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
   const [dataIsReady, setDataIsReady] = useState(false);
   const [emgData, setEmgData] = useState({});
   const [arduino1Data, setArduino1Data] = useState({});
-
-
-
   const [probando, setProbando] = useState(false);
+  const [baudSelected, setBaudSelected] = useState(9600);
+  const [portSelected, setPortSelected] = useState('');
+  const [open, setOpen] = useState(false);
+  const [cantidadArduinos, setCantidadArduinos] = useState(0);
+
+
+
   const multimediaObj = useCustomSelector(
     (state) => state.config.configMultimedia
   );
@@ -105,6 +110,7 @@ const VideoDemoContainer = () => {
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
+
   const cantidadEmgs = confObj[0].emgs;
 
 
@@ -159,9 +165,12 @@ const VideoDemoContainer = () => {
     const { frecuencia_cardiaca } = resp[0];
     const { acelerometro } = resp[0];
     const { temperatura } = resp[0];
+    const { arduinos } = resp[0];
+    setCantidadArduinos(arduinos);
+
 
     console.log(
-      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro} temperatura ${temperatura}`
+      `This is config EMGS: ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro} temperatura ${temperatura} y ${arduinos}`
     );
     appDispatch(setCantidadSensores(cantidadEmgs));
     appDispatch(setGsrIsChecked(gsr));
@@ -181,10 +190,6 @@ const VideoDemoContainer = () => {
     appDispatch(setCleanAllSensors(true));
   }, []);
 
-  const [baudSelected, setBaudSelected] = useState(9600);
-  const [portSelected, setPortSelected] = useState('');
-
-  const [open, setOpen] = useState(false);
 
   const toggleModal = () => {
     if (portSelected !== '' && baudSelected !== 0) {
@@ -201,6 +206,7 @@ const VideoDemoContainer = () => {
   const sensoresSelected = 4;
   
 
+ 
   const onClickStart = async () => {
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
@@ -212,6 +218,12 @@ const VideoDemoContainer = () => {
       stopArduinos();
     }
 
+    const testObj = {
+      gsr: [1,2,3,4,5,6],
+      temp: [4, 5, 6, 7]
+    }
+    
+    
     // const arreglo = ardMessage;
     
     // const registrosCompletos = arreglo.filter((registro: string) => {
@@ -272,7 +284,7 @@ const VideoDemoContainer = () => {
     // console.log("REG2", registrosCompletos2)
 
     const cantidadDeArduinos = 2;
-    let objetoArduino = {};
+    let objetoArduino: any = {};
     if (cantidadDeArduinos >= 1) {
       const arduino1Data = registrosCompletos;
       const returnObj = parseArduinoData(arduino1Data)
@@ -284,7 +296,32 @@ const VideoDemoContainer = () => {
       objetoArduino = {...objetoArduino, ...returnObj};
     }
 
+
+    // Limpieza de claves no permitidas
+    const posiblesClaves = ['INCLX', 'INCLY', 'INCLZ', 'HRLM', 'TC', 'GSR']
+    for (let clave in objetoArduino) {
+      
+    }
+  
+    // Obtener las claves del objeto
+    const clavesObjeto = Object.keys(objetoArduino);
+
+    // Iterar sobre las claves del objeto
+    for (let clave of clavesObjeto) {
+      // Verificar si la clave no está en el arreglo
+      if (!posiblesClaves.includes(clave)) {
+        // Eliminar la clave y su valor asociado del objeto
+        delete objetoArduino[clave];
+      }
+    }
+
     console.log("OBJ", objetoArduino);
+
+    const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv`, {
+      method: 'POST',
+      body: JSON.stringify(objetoArduino),
+      headers: {'Content-Type': 'application/json'}
+    });
 
     
   };
@@ -301,6 +338,7 @@ const VideoDemoContainer = () => {
         <ModalSensoresAdquisicion
           toggleModal={toggleModal}
           open={open}
+          arduinos={cantidadArduinos}
           setPortSelected={setPortSelected}
           setBaudSelected={setBaudSelected}
         />

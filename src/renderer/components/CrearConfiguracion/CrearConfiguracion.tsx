@@ -3,7 +3,7 @@
 import './CrearConfiguracion.css';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import { InputLabel, FormControl, MenuItem } from '@mui/material';
+import { InputLabel, FormControl, MenuItem, TextField } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Dispatch, SetStateAction } from 'react';
 import {
@@ -26,7 +26,7 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
 
   const numofEmgs = () => {
     const emgs = [];
-    for(let i=1; i<=8; i++) {
+    for(let i=1; i<=4; i++) {
       emgs.push(
         // <option value={`${i}`} key={i}>{`${i}`}</option>
         <MenuItem key={i} value={i}>{`${i}`}</MenuItem>
@@ -74,7 +74,7 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
               </section>
             </section>
             <section className='display-flex'>
-                <h4>Sensores Adicionales</h4>
+                <h4>Sensores Adicionales y formatos de captura permitidos según el sensor</h4>
             </section>
             <div className='display-margin'>
               <div >
@@ -84,12 +84,29 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
                 <h4>Acelerometro:</h4>
               </div>
               <div>
-                <Checkbox  sx={checkBoxConfig} name="temperatura" value="1"  />
-                <Checkbox   sx={checkBoxConfig} name="frecuencia" value="1"  />
-                <Checkbox  sx={checkBoxConfig} name="gsr" value="1"  />
-                <Checkbox   sx={checkBoxConfig} name="acelerometro" value="1"  />
+                <Checkbox sx={checkBoxConfig} name="temperatura" value="1"  />
+                <Checkbox sx={checkBoxConfig} name="frecuencia" value="1"  />
+                <Checkbox sx={checkBoxConfig} name="gsr" value="1"  />
+                <Checkbox sx={checkBoxConfig} name="acelerometro" value="1"  />
+              </div>
+              <div>
+                <h4>tc</h4>
+                <h4>hlrm</h4>
+                <h4>gsr</h4>
+                <h4>inclx, incly, inclz</h4>
               </div>
             </div>
+            <section className='display-flexAgregar'>
+                <h4>Cantidad de arduinos necesarios para la adquisición</h4>
+                <input
+                  type="number"
+                  id="arduinos"
+                  name="arduinos"
+                  min="1"
+                  max="2"
+                  required
+                />
+            </section>
 
             <section className='display-center'>
               <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"

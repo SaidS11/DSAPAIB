@@ -66,6 +66,7 @@ export interface ConfigDetalle {
   frecuencia_cardiaca: boolean;
   subido: boolean;
   acelerometro: boolean;
+  arduinos: number;
 }
 
 export interface SelectedModeloIAInterface {
@@ -120,6 +121,7 @@ export interface RealTimeSignalInterface {
 }
 
 export interface ConfigurationInterface {
+  arduinos: any;
   nombreConfig: string;
   descripcion: string;
   canales: string;

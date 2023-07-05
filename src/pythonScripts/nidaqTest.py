@@ -1,3 +1,4 @@
+import csv
 import threading
 import time
 import nidaqmx
@@ -36,10 +37,10 @@ def funcion_a_ejecutar():
             task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
             line = task.read()
 
-            returnedList.append({"EMG1": line[0]})
-            returnedList.append({"EMG2": line[1]})  
-            returnedList.append({"EMG3": line[2]})  
-            returnedList.append({"EMG4": line[3]})  
+            returnedList.append({"emg1": line[0]})
+            returnedList.append({"emg2": line[1]})  
+            returnedList.append({"emg3": line[2]})  
+            returnedList.append({"emg4": line[3]})  
 
 
 
@@ -94,10 +95,33 @@ def controlador():
     # Si el hilo aún está vivo después del tiempo de duración, lo detiene
     # if hilo.is_alive():
     #     hilo.cancel()
-    strData = str(returnedList)
-    # compress = zlib.compress(strData)
-    with open('./TEST2.txt','w+') as file:
-        file.write(strData)
+
+
+    result = {}
+
+    # Recorrer la lista y agrupar los valores por clave
+    for item in returnedList:
+        for key, value in item.items():
+            if key in result:
+                result[key].append(value)
+            else:
+                result[key] = [value]
+
+
+    keys = list(result.keys())
+    csv_file = "resultadoEmgs.csv"
+    with open(csv_file, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(keys)  # Escribir las claves como encabezados de las columnas
+        max_values = max(len(values) for values in result.values())  # Obtener la longitud máxima de las listas de valores
+        for i in range(max_values):
+            row = [result[key][i] if i < len(result[key]) else "" for key in keys]
+            writer.writerow(row)
+
+
+    # strData = str(returnedList)
+    # with open('./TEST2.txt','w+') as file:
+    #     file.write(strData)
     # print(returnedList)
 
 

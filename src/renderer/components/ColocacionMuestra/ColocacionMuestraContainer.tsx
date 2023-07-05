@@ -43,9 +43,11 @@ const ColocacionMuestraContainer = () => {
     const { frecuencia_cardiaca } = resp[0];
     const { acelerometro } = resp[0];
     const { temperatura } = resp[0];
+    const { arduinos } = resp[0];
+
 
     console.log(
-      `This is config EMGS : ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro} temperatura ${temperatura}`
+      `This is config EMGS : ${cantidadEmgs}, gsr ${gsr}, frecuencia_cardiaca ${frecuencia_cardiaca}, acelerometro ${acelerometro} temperatura ${temperatura} y ${arduinos}`
     );
     appDispatch(setGsrIsChecked(gsr));
     appDispatch(setAcelerometroIsChecked(acelerometro));

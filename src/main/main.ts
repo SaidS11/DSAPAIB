@@ -340,14 +340,15 @@ async function insertarDatosConfiguracion(
   emgs: string,
   acelerometro: string,
   subido: string,
-  descripcion: string
+  descripcion: string,
+  arduinos: number
 ): Promise<boolean> {
   const client = new Client(credenciales);
   await client.connect();
 
   try {
     const query =
-      'INSERT INTO configuracion (nombre, gsr, frecuencia_cardiaca, temperatura, emgs, acelerometro, subido, descripcion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+      'INSERT INTO configuracion (nombre, gsr, frecuencia_cardiaca, temperatura, emgs, acelerometro, subido, descripcion, arduinos) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)';
     const values = [
       nombre,
       gsr,
@@ -357,6 +358,7 @@ async function insertarDatosConfiguracion(
       acelerometro,
       subido,
       descripcion,
+      arduinos,
     ];
     await client.query(query, values);
     await client.end();
@@ -383,6 +385,7 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
       acelerometro,
       subido,
       descripcion,
+      arduinos,
     } = req.body;
     const result = await insertarDatosConfiguracion(
       nombre,
@@ -392,7 +395,8 @@ app2.post('/insertarConfiguracion', async (req: Request, res: Response) => {
       emgs,
       acelerometro,
       subido,
-      descripcion
+      descripcion,
+      arduinos
     );
     if (result) {
       res.status(200).json({ message: 'Datos insertados correctamente' });
@@ -2639,4 +2643,41 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   //   // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
   // }
 
+});
+
+const convertObjToCsv = (signals: any) => {
+  const claves = Object.keys(signals);
+  let csv = claves.join(',') + '\n';
+
+  const longitudMaxima = Math.max(...claves.map(clave => signals[clave].length));
+
+  for (let i = 0; i < longitudMaxima; i+=1) {
+    const fila = claves.map(clave => signals[clave][i] || '').join(',');
+    csv += fila + '\n';
+  }
+
+  return csv;
+}
+
+app2.post('/generarCsv', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    
+    console.log("Body", req.body);
+    const csvObj = convertObjToCsv(req.body);
+    console.log("CSV", csvObj);
+    const nombreArchivo = "test.csv"
+    fs.writeFile(nombreArchivo, csvObj, function(err) {
+      if (err) {
+        console.error('Error al guardar el archivo:', err);
+        throw err;
+      } else {
+        console.log('El archivo se ha guardado exitosamente:', nombreArchivo);
+      res.send(JSON.stringify({ status: 200, message: 'OK' }))
+      }
+    });
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
 });

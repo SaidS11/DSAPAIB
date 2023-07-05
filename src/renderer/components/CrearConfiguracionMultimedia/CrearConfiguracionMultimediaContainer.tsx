@@ -42,7 +42,8 @@ const CrearConfiguracionMultimediaContainer = () => {
       emgs: primerConfig.canales,
       acelerometro: primerConfig.acelerometro,
       subido: "1",
-      descripcion: primerConfig.descripcion
+      descripcion: primerConfig.descripcion,
+      arduinos: primerConfig.arduinos
     }
     const insertConf = await fetch(`${apiEndpoint}/insertarConfiguracion`, {
       method: 'POST',

@@ -17,8 +17,8 @@ const CrearConfiguracionContainer = () => {
     e.preventDefault();
     // navigate('/escogerConfiguracion');
     const form = document.querySelector('form') as HTMLFormElement | undefined;
-    // console.log('el form', form);
     const data = Object.fromEntries(new FormData(form).entries());
+
     if (!('temperatura' in data)) {
       data.temperatura = '0';
     }
