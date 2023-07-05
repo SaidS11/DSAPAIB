@@ -2106,7 +2106,7 @@ let serialPortArduino1 = new SerialPort({
 
 let serialPortArduino2 = new SerialPort({
   path: 'COM8',
-  baudRate: 4800,
+  baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
