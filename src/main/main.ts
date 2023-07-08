@@ -2113,7 +2113,7 @@ let serialPortArduino2 = new SerialPort({
   autoOpen: true
 });
 
-const arduinoPorts: SerialPort[] = [serialPortArduino1, serialPortArduino2];
+let arduinoPorts: SerialPort[] = [serialPortArduino1, serialPortArduino2];
 let arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
 let arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
 
@@ -2174,6 +2174,7 @@ ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
     });
     arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
     arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+    arduinoPorts = [serialPortArduino1, serialPortArduino2];
   } catch (error) {
     console.log('ERROR  ', error);
   }

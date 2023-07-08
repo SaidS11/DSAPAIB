@@ -150,6 +150,8 @@ export default function ModalSensoresAdquisicion(props: ModalProps) {
   // display: flex;
   //   justify-content: space-around;
   //   width: 100%;
+
+  
   return (
     <div  
     className={
