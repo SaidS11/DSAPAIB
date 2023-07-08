@@ -199,7 +199,7 @@ const VideoDemoContainer = () => {
         if(portSelected !== portSelected2) {
           setOpen(!open);
           // setIsReady(true);
-          window.Bridge.loadPort(portSelected, baudSelected);
+          window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
         } else {
           alert('Seleccione puertos distintos')
         }
@@ -227,7 +227,7 @@ const VideoDemoContainer = () => {
  
   const onClickStart = async () => {
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=10&cantidadEmgs=4`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=4`);
 
     const data = await startNidaq.json();
 
@@ -249,11 +249,11 @@ const VideoDemoContainer = () => {
     //   return formatoCompleto.test(registro);
     // });
 
-    // let objetoArduino = {}
+    // let objetoArduinoMultiple = {}
     // const returnObj = parseArduinoData(registrosCompletos)
-    //   objetoArduino = {...objetoArduino, ...returnObj};
+    //   objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
 
-    // console.log("OBJ", objetoArduino);
+    // console.log("OBJ", objetoArduinoMultiple);
 
     // if(cantidadEmgs > 0) {
     //   const test = "[{'EMG1': 0}, {'EMG2': 1}, {'EMG3': 2}, {'EMG4': 3}, {'EMG1': 1}, {'EMG2': 2}, {'EMG3': 3}, {'EMG4': 4}, {'EMG1': 5}, {'EMG2': 6}, {'EMG3': 7}, {'EMG4': 8}]"      
@@ -262,18 +262,18 @@ const VideoDemoContainer = () => {
     // }
     
     // const cantidadDeArduinos = 2;
-    // let objetoArduino = {};
+    // let objetoArduinoMultiple = {};
     // if (cantidadDeArduinos >= 1) {
     //   const arduino1Data: string = "HRLM: 120, TC: 30, GSR: 15, HRLM: 123, TC: 38, GSR: 25, HRLM: 130, TC: 40, GSR: 35";
     //   const returnObj = parseArduinoData(arduino1Data)
-    //   objetoArduino = {...objetoArduino, ...returnObj};
+    //   objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
     // }
     // if (cantidadDeArduinos >= 2) {
     //   const arduino2Data = "INCLX: 120, INCLY: 30, INCLZ: 15, INCLX: 123, INCLY: 38, INCLZ: 25, INCLX: 130, INCLY: 40, INCLZ: 35";
     //   const returnObj = parseArduinoData(arduino2Data)
-    //   objetoArduino = {...objetoArduino, ...returnObj};
+    //   objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
     // }
-    // setArduino1Data(objetoArduino);
+    // setArduino1Data(objetoArduinoMultiple);
     // setDataIsReady(true);
   };
 
@@ -286,6 +286,9 @@ const VideoDemoContainer = () => {
 
     const arreglo = arduinoSTOP.message
 
+    if(cantidadArduinos > 1) {
+
+    }
     // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
 
     
@@ -304,42 +307,72 @@ const VideoDemoContainer = () => {
     // console.log("REG2", registrosCompletos2)
 
     const cantidadDeArduinos = 2;
-    let objetoArduino: any = {};
+    let objetoArduinoMultiple: any = {};
+    let objetoArduino1;
+    let objetoArduino2;
+
     if (cantidadDeArduinos >= 1) {
       const arduino1Data = registrosCompletos;
       const returnObj = parseArduinoData(arduino1Data)
-      objetoArduino = {...objetoArduino, ...returnObj};
+      objetoArduino1 = returnObj;
+      objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
     }
     if (cantidadDeArduinos >= 2) {
       const arduino2Data = registrosCompletos2;
       const returnObj = parseArduinoData(arduino2Data)
-      objetoArduino = {...objetoArduino, ...returnObj};
+      objetoArduino2 = returnObj;
+      objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
     }
 
 
     // Limpieza de claves no permitidas
     const posiblesClaves = ['INCLX', 'INCLY', 'INCLZ', 'HRLM', 'TC', 'GSR']
-    for (let clave in objetoArduino) {
-      
-    }
   
     // Obtener las claves del objeto
-    const clavesObjeto = Object.keys(objetoArduino);
+    const clavesObjeto = Object.keys(objetoArduinoMultiple);
 
     // Iterar sobre las claves del objeto
     for (let clave of clavesObjeto) {
       // Verificar si la clave no está en el arreglo
       if (!posiblesClaves.includes(clave)) {
         // Eliminar la clave y su valor asociado del objeto
-        delete objetoArduino[clave];
+        delete objetoArduinoMultiple[clave];
       }
     }
 
-    console.log("OBJ", objetoArduino);
+    const clavesObjetoArduino1 = Object.keys(objetoArduino1);
 
-    const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv`, {
+    // Iterar sobre las claves del objeto
+    for (let clave of clavesObjetoArduino1) {
+      // Verificar si la clave no está en el arreglo
+      if (!posiblesClaves.includes(clave)) {
+        // Eliminar la clave y su valor asociado del objeto
+        delete objetoArduino1[clave];
+      }
+    }
+
+    const clavesObjetoArduino2 = Object.keys(objetoArduino2);
+
+    // Iterar sobre las claves del objeto
+    for (let clave of clavesObjetoArduino2) {
+      // Verificar si la clave no está en el arreglo
+      if (!posiblesClaves.includes(clave)) {
+        // Eliminar la clave y su valor asociado del objeto
+        delete objetoArduino2[clave];
+      }
+    }
+
+    console.log("OBJ", objetoArduinoMultiple);
+
+    const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino1Data"}`, {
       method: 'POST',
-      body: JSON.stringify(objetoArduino),
+      body: JSON.stringify(objetoArduino1),
+      headers: {'Content-Type': 'application/json'}
+    });
+
+    const insertImplementacion2 = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino2Data"}`, {
+      method: 'POST',
+      body: JSON.stringify(objetoArduino2),
       headers: {'Content-Type': 'application/json'}
     });
 

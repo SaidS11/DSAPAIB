@@ -389,6 +389,9 @@ function loadPort(opcion: string, baud: number) {
   ipcRenderer.send('loadPort', opcion, baud);
 }
 
+function loadMultiplePorts(opcion: string, baud: number, opcion2: string, baud2: number) {
+  ipcRenderer.send('loadMultiplePorts', opcion, baud, opcion2, baud2);
+}
 const indexBridge = {
   loggearDoctor,
   loggearD: (callback: any) => ipcRenderer.on('loggearD', callback),
@@ -401,6 +404,7 @@ const indexBridge = {
   // sensoresStop,
   // sensoStop: (callback: any) => ipcRenderer.on('sensoStop', callback),
   loadPort,
+  loadMultiplePorts,
   sensoresStopNewTest() {
     ipcRenderer.send('sensoresStopNewTest');
   },

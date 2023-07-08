@@ -2083,7 +2083,7 @@ ipcMain.on(
 
 // Arduino
 let serialPort = new SerialPort({
-  path: 'COM11',
+  path: 'COM15',
   baudRate: 9600,
   dataBits: 8,
   stopBits: 1,
@@ -2096,7 +2096,7 @@ let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Norm
 
 
 let serialPortArduino1 = new SerialPort({
-  path: 'COM5',
+  path: 'COM15',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
@@ -2105,7 +2105,7 @@ let serialPortArduino1 = new SerialPort({
 });
 
 let serialPortArduino2 = new SerialPort({
-  path: 'COM8',
+  path: 'COM16',
   baudRate: 4800,
   dataBits: 8,
   stopBits: 1,
@@ -2138,6 +2138,42 @@ ipcMain.on('loadPort', async (event, opcion, baud) => {
     console.log('PUERTO', serialPort.path);
     console.log('BAUD', serialPort.baudRate);
     parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
+  } catch (error) {
+    console.log('ERROR  ', error);
+  }
+});
+
+ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
+  try {
+    if (serialPortArduino1.isOpen) {
+      serialPortArduino1.close();
+      serialPortArduino1.destroy();
+    }
+    if (serialPortArduino2.isOpen) {
+      serialPortArduino2.close();
+      serialPortArduino2.destroy();
+    }
+    serialPortArduino1 = new SerialPort({
+      // path: `\\\\.\\` + opcion,
+      path: opcion,
+      baudRate: baud,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none',
+      autoOpen: true,
+    });
+
+    serialPortArduino2 = new SerialPort({
+      // path: `\\\\.\\` + opcion,
+      path: opcion2,
+      baudRate: baud2,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none',
+      autoOpen: true,
+    });
+    arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+    arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
   } catch (error) {
     console.log('ERROR  ', error);
   }
@@ -2665,11 +2701,11 @@ app2.use(express.urlencoded({limit: '50mb'}));
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
     // Obtener los datos enviados en la solicitud
-    
+    const nombre = req.query.nombre as string;
     console.log("Body", req.body);
     const csvObj = convertObjToCsv(req.body);
     console.log("CSV", csvObj);
-    const nombreArchivo = "test.csv"
+    const nombreArchivo = nombre || "arduinoData";
     fs.writeFile(nombreArchivo, csvObj, function(err) {
       if (err) {
         console.error('Error al guardar el archivo:', err);
