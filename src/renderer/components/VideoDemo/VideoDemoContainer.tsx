@@ -61,26 +61,22 @@ function parseArduinoData(arreglo: any) {
       // Verificar si la clave ya existe en el objeto
       if (objetoTransformado.hasOwnProperty(clave)) {
         // Si la clave existe, agregar el valor al arreglo existente
-        objetoTransformado[clave].push(Number(valor));
+        if(valor.includes(",")) {
+          const correctValue = valor.split(",")[0];
+          objetoTransformado[clave].push(Number(correctValue));
 
-        // if(valor.includes(",")) {
-        //   const correctValue = valor.split(",")[0];
-        //   objetoTransformado[clave].push(Number(correctValue));
+        } else {
 
-        // } else {
-
-        //   objetoTransformado[clave].push(Number(valor));
-        // }
+          objetoTransformado[clave].push(Number(valor));
+        }
       } else {
         // Si la clave no existe, crear un nuevo arreglo con el valor
-        objetoTransformado[clave] = [Number(valor)];
-
-        // if(valor.includes(",")) {
-        //   const correctValue = valor.split(",")[0];
-        //   objetoTransformado[clave] = [Number(correctValue)];
-        // } else {
-        //   objetoTransformado[clave] = [Number(valor)];
-        // }
+        if(valor.includes(",")) {
+          const correctValue = valor.split(",")[0];
+          objetoTransformado[clave] = [Number(correctValue)];
+        } else {
+          objetoTransformado[clave] = [Number(valor)];
+        }
       }
     }
   }
@@ -100,7 +96,9 @@ const VideoDemoContainer = () => {
   const [probando, setProbando] = useState(false);
   const [baudSelected, setBaudSelected] = useState(9600);
   const [portSelected, setPortSelected] = useState('');
-  const [open, setOpen] = useState(false);
+  const [baudSelected2, setBaudSelected2] = useState(9600);
+  const [portSelected2, setPortSelected2] = useState('');
+  const [open, setOpen] = useState(true);
   const [cantidadArduinos, setCantidadArduinos] = useState(0);
 
 
@@ -196,14 +194,30 @@ const VideoDemoContainer = () => {
 
 
   const toggleModal = () => {
-    if (portSelected !== '' && baudSelected !== 0) {
-      setOpen(!open);
-      // setIsReady(true);
-      window.Bridge.loadPort(portSelected, baudSelected);
-      // window.Bridge.sensoresNewTest()
+    if (cantidadArduinos > 1){
+      if ((portSelected !== '' && baudSelected !== 0) && (portSelected2 !== '' && baudSelected2 !== 0)) {
+        if(portSelected !== portSelected2) {
+          setOpen(!open);
+          // setIsReady(true);
+          window.Bridge.loadPort(portSelected, baudSelected);
+        } else {
+          alert('Seleccione puertos distintos')
+        }
+        // window.Bridge.sensoresNewTest()
+      } else {
+        // Sustituir con modal de error
+        alert('Seleccione una cantidad');
+      }
     } else {
-      // Sustituir con modal de error
-      alert('Seleccione una cantidad');
+      if (portSelected !== '' && baudSelected !== 0) {
+          setOpen(!open);
+          // setIsReady(true);
+          window.Bridge.loadPort(portSelected, baudSelected);
+        // window.Bridge.sensoresNewTest()
+      } else {
+        // Sustituir con modal de error
+        alert('Seleccione una cantidad');
+      }
     }
   };
 
@@ -271,6 +285,8 @@ const VideoDemoContainer = () => {
     console.log("ARDUINO STOP", arduinoSTOP.message);
 
     const arreglo = arduinoSTOP.message
+
+    // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
 
     
     const registrosCompletos = arreglo[0].filter((registro: string) => {
@@ -345,6 +361,8 @@ const VideoDemoContainer = () => {
           arduinos={cantidadArduinos}
           setPortSelected={setPortSelected}
           setBaudSelected={setBaudSelected}
+          setPortSelected2={setPortSelected2}
+          setBaudSelected2={setBaudSelected2}
         />
       )}
       <section className="display-center">

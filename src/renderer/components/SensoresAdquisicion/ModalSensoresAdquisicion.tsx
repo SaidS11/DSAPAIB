@@ -28,17 +28,26 @@ export interface ModalProps {
   arduinos: number;
   setPortSelected: React.Dispatch<React.SetStateAction<string>>;
   setBaudSelected: React.Dispatch<React.SetStateAction<number>>;
+  setPortSelected2: React.Dispatch<React.SetStateAction<string>>;
+  setBaudSelected2: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ModalSensoresAdquisicion(props: ModalProps) {
-  const { toggleModal, open, arduinos, setPortSelected, setBaudSelected } = props;
+  const { toggleModal, open, arduinos, setPortSelected, setBaudSelected, setBaudSelected2, setPortSelected2 } = props;
   const [puerto, setPuerto] = React.useState('');
   const [baudRate, setBaudRate] = React.useState('9600');
+  const [puerto2, setPuerto2] = React.useState('');
+  const [baudRate2, setBaudRate2] = React.useState('9600');
   const [puertos, setPuertos] = React.useState([]);
 
   const handleChangePuerto = (event: SelectChangeEvent) => {
     setPuerto(event.target.value as string);
     setPortSelected(event.target.value as string);
+  };
+
+  const handleChangePuerto2 = (event: SelectChangeEvent) => {
+    setPuerto2(event.target.value as string);
+    setPortSelected2(event.target.value as string);
   };
 
   // const handleChangeBaud = () => {
@@ -72,47 +81,96 @@ export default function ModalSensoresAdquisicion(props: ModalProps) {
 
   
 
-  const multiplesPuertos = useMemo(() => {
+  const multiplesPuertos = () => {
     const opciones : any = [];
     console.log("CALLED")
+    console.log("PUERTOS", puertos)
+    // className='multipleDisplay'
       opciones.push(
-        <><div>
-          
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Puertos</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={puerto}
-              label="Puertos"
-              onChange={handleChangePuerto}
-            >
-              {puertos}
-            </Select>
-          </FormControl><br />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="BaudRate"
-              type="text"
-              fullWidth
-              value={baudRate}
-              onChange={(event) => {
-                const num = parseInt(event.target.value, 10);
-                setBaudRate(event.target.value as string);
-                setBaudSelected(num);
-              } } />
-          </div></>
+        <>
+            <div>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Puertos</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={puerto}
+                  label="Puertos"
+                  onChange={handleChangePuerto}
+                >
+                  {puertos}
+                </Select>
+              </FormControl>
+              <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="BaudRate"
+                  type="text"
+                  fullWidth
+                  value={baudRate}
+                  onChange={(event) => {
+                    const num = parseInt(event.target.value, 10);
+                    setBaudRate(event.target.value as string);
+                    setBaudSelected(num);
+                  } } />
+            </div>
+            <div>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Puertos</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={puerto2}
+                  label="Puertos"
+                  onChange={handleChangePuerto2}
+                >
+                  {puertos}
+                </Select>
+              </FormControl>
+              <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="BaudRate"
+                  type="text"
+                  fullWidth
+                  value={baudRate2}
+                  onChange={(event) => {
+                    const num = parseInt(event.target.value, 10);
+                    setBaudRate2(event.target.value as string);
+                    setBaudSelected2(num);
+                  } } />
+            </div>
+          </>
       )
     return opciones;
-  }, [])
+  }
+
+  // display: flex;
+  //   justify-content: space-around;
+  //   width: 100%;
   return (
-    <div>
+    <div  
+    className={
+          arduinos > 1
+            ? 'arduinosMultiples'
+            : 'arduino'
+        }
+    >
       <Modal
         open={open}
         // onClose={toggleModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        // className={
+        //   arduinos > 1
+        //     ? 'arduinosMultiples'
+        //     : 'arduino'
+        // }
+        // style={arduinos > 1
+        //   ? {width: "600px"}
+        //   : {width: "100%"}}
       >
         <Box sx={style}>
           {arduinos > 1 && 
@@ -121,7 +179,7 @@ export default function ModalSensoresAdquisicion(props: ModalProps) {
             </Typography>
             <br />
             <div style={{ }}>
-              {multiplesPuertos}
+              {multiplesPuertos()}
             </div>
             <br /></>
           }

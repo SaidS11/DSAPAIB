@@ -44,7 +44,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 };
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
@@ -2106,7 +2106,7 @@ let serialPortArduino1 = new SerialPort({
 
 let serialPortArduino2 = new SerialPort({
   path: 'COM8',
-  baudRate: 115200,
+  baudRate: 4800,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
