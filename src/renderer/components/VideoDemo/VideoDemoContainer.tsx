@@ -364,13 +364,13 @@ const VideoDemoContainer = () => {
 
     console.log("OBJ", objetoArduinoMultiple);
 
-    const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino1Data"}`, {
+    const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino1Data.csv"}`, {
       method: 'POST',
       body: JSON.stringify(objetoArduino1),
       headers: {'Content-Type': 'application/json'}
     });
 
-    const insertImplementacion2 = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino2Data"}`, {
+    const insertImplementacion2 = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino2Data.csv"}`, {
       method: 'POST',
       body: JSON.stringify(objetoArduino2),
       headers: {'Content-Type': 'application/json'}
