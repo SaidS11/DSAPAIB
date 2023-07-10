@@ -241,50 +241,50 @@ const VideoDemoContainer = () => {
 
  
   const onClickStart = async () => {
-    // setBloqueoDeBoton(true);
-    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
-    // // Comprobacion de emgs sino hay timer para controlar arduinos
-    // const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=4`);
+    setBloqueoDeBoton(true);
+    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+    // Comprobacion de emgs sino hay timer para controlar arduinos
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=4`);
 
-    // const data = await startNidaq.json();
+    const data = await startNidaq.json();
 
-    // if(data.message !== null) {
-    //   console.log("READY", data.message);
-    //   stopArduinos();
-    // }
+    if(data.message !== null) {
+      console.log("READY", data.message);
+      stopArduinos();
+    }
 
     // TESTS
 
     
 
-    let returnedEmg;
+    // let returnedEmg;
 
-    if(cantidadEmgs > 0) {
-      const objFromCsv = await fetch(`${apiEndpoint}/obtenerObjDeCsv`);
+    // if(cantidadEmgs > 0) {
+    //   const objFromCsv = await fetch(`${apiEndpoint}/obtenerObjDeCsv`);
 
-      const dataEmg = await objFromCsv.json()
+    //   const dataEmg = await objFromCsv.json()
 
-      // console.log("RESP", dataEmg.message);
+    //   // console.log("RESP", dataEmg.message);
 
-      // setEmgData(parseEMG(test));
-      returnedEmg = parseEMG(dataEmg.message)
-      // console.log("EMG", returnedEmg);
-    }
-    // console.log("Objeto completo", ardMessage);
-    const nuevoGsr =  await calcularValorCorrectoGsr(ardMessage.GSR);
-    // console.log("Antes", ardMessage.GSR);
-    // console.log("NUEVO", nuevoGsr);
-    ardMessage.GSR = nuevoGsr
+    //   // setEmgData(parseEMG(test));
+    //   returnedEmg = parseEMG(dataEmg.message)
+    //   // console.log("EMG", returnedEmg);
+    // }
+    // // console.log("Objeto completo", ardMessage);
+    // const nuevoGsr =  await calcularValorCorrectoGsr(ardMessage.GSR);
+    // // console.log("Antes", ardMessage.GSR);
+    // // console.log("NUEVO", nuevoGsr);
+    // ardMessage.GSR = nuevoGsr
 
-    const objetoAdquirido = {...returnedEmg, ...ardMessage}
+    // const objetoAdquirido = {...returnedEmg, ...ardMessage}
 
-    console.log("OBJETO FINAL", objetoAdquirido);
+    // console.log("OBJETO FINAL", objetoAdquirido);
 
-    const objWrapper = {
-      signals: objetoAdquirido
-    }
+    // const objWrapper = {
+    //   signals: objetoAdquirido
+    // }
 
-    console.log("Wrapped OBJ", objWrapper);
+    // console.log("Wrapped OBJ", objWrapper);
 
 
     // setArduinoDataArg(ardMessage);
