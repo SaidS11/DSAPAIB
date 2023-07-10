@@ -440,7 +440,7 @@ const VideoDemoContainer = () => {
     } 
 
     else if (confObj[0].acelerometro) {
-      console.log(" ");
+      console.log("  ");
     }
 
     
