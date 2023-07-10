@@ -39,6 +39,8 @@ export interface ISeñales {
   gridLayout: any;
   predictMode: boolean;
   realTimeSignal: any;
+  emgDataAdquirida: any;
+  arduinoDataAdquirida: any;
 }
 
 const initialState: ISeñales = {
@@ -74,6 +76,8 @@ const initialState: ISeñales = {
   gridLayout: [],
   predictMode: false,
   realTimeSignal: {},
+  emgDataAdquirida: {},
+  arduinoDataAdquirida: {},
 };
 
 export const SeñalesSlice = createSlice({
@@ -248,6 +252,12 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.realTimeSignal = action.payload;
     },
+    setEmgDataAdquirida: (state, action: PayloadAction<ISeñales['emgDataAdquirida']>) => {
+      state.emgDataAdquirida = action.payload;
+    },
+    setArduinoDataAdquirida: (state, action: PayloadAction<ISeñales['arduinoDataAdquirida']>) => {
+      state.arduinoDataAdquirida = action.payload;
+    },
   },
 });
 
@@ -280,5 +290,7 @@ export const {
   setGridLayout,
   setPredictMode,
   setRealTimeSignal,
+  setEmgDataAdquirida,
+  setArduinoDataAdquirida,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

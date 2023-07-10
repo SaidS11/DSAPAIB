@@ -1,6 +1,7 @@
 import csv
 import threading
 import time
+import os
 import nidaqmx
 import sys
 # import zlib
@@ -17,6 +18,7 @@ returnedDict = dict({
 })
 duracion = int(sys.argv[1])
 cantidadEmgs = int(sys.argv[2])
+directorioActual = sys.argv[3]
 
 def funcion_a_ejecutar():
     # Código de la función que quieres ejecutar
@@ -109,7 +111,9 @@ def controlador():
 
 
     keys = list(result.keys())
-    csv_file = "resultadoEmgs.csv"
+
+
+    csv_file = directorioActual + "/main/archivosCsv/resultadoEmgs.csv"
     with open(csv_file, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(keys)  # Escribir las claves como encabezados de las columnas
@@ -126,7 +130,3 @@ def controlador():
 
 
 controlador()
-# def testFunc():
-#     print("Duration", duracion, "Type", type(duracion))
-
-# testFunc()

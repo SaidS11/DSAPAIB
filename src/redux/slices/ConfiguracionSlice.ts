@@ -21,6 +21,7 @@ export interface IStatus {
   modeloDetalle: Object;
   selectedPatients: Array<SelectedPatientObj>;
   selectedModels: Array<SelectedModeloIAInterface>;
+  duracionProtocolo: number;
 }
 
 const initialState: IStatus = {
@@ -54,6 +55,7 @@ const initialState: IStatus = {
       col5: {},
     },
   ],
+  duracionProtocolo: 0
 };
 
 export const ConfiguracionSlice = createSlice({
@@ -126,6 +128,9 @@ export const ConfiguracionSlice = createSlice({
     ) => {
       state.selectedModels = action.payload;
     },
+    setDuracionProtocolo: (state, action: PayloadAction<IStatus['duracionProtocolo']>) => {
+      state.duracionProtocolo = action.payload;
+    },
   },
 });
 
@@ -142,6 +147,7 @@ export const {
   setModeloDetalle,
   setSelectedPatients,
   setSelectedModels,
+  setDuracionProtocolo,
 } = ConfiguracionSlice.actions;
 export const selectConfigName = (state: RootState) => state.config.configName;
 export const selectConfigDetalle = (state: RootState) =>

@@ -7,16 +7,20 @@ import {
 } from '../VerPaciente/ButtonStyle';
 import './Resultados.css';
 import GraficaDeSensores from './GraficaDeSensores';
+import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
 
 export interface ResultadosProps {
   onClickBack: () => void;
   dataArr: any;
   gridLayout: any;
   onClickCrear: (arg0: React.FormEvent<HTMLFormElement>) => void;
+  emgDataAdquirida: any;
+  arduinoDataAdquirida: any;
+  sensoresSelected: any;
 }
 
 const Resultados = (props: ResultadosProps) => {
-  const { onClickBack, dataArr, gridLayout, onClickCrear } = props;
+  const { onClickBack, dataArr, gridLayout, onClickCrear, emgDataAdquirida, arduinoDataAdquirida, sensoresSelected} = props;
   // const navigate = useNavigate();
   return (
     <div>
@@ -26,7 +30,8 @@ const Resultados = (props: ResultadosProps) => {
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
-      <GraficaDeSensores dataArr={dataArr} gridLayout={gridLayout} />
+      {/* <GraficaDeSensores dataArr={dataArr} gridLayout={gridLayout} /> */}
+      <SensoresAdquisicionGraficarContainer cantidadEmgs={sensoresSelected} emgData={emgDataAdquirida} arduinoData={arduinoDataAdquirida} />
       <form onSubmit={onClickCrear}>
         <section className="display-flex">
           <h5>Etiqueta del registro: </h5>

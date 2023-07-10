@@ -11,10 +11,11 @@ export interface VideoDemoProps {
   url: string;
   onClickBack: () => void;
   probando: boolean;
+  bloqueoDeBoton: boolean;
 }
 
 const VideoDemo = (props: VideoDemoProps) => {
-  const { onClickNav, url, onClickBack, probando } = props;
+  const { onClickNav, url, onClickBack, probando, bloqueoDeBoton } = props;
   // const navigate = useNavigate();
 
   
@@ -35,7 +36,7 @@ const VideoDemo = (props: VideoDemoProps) => {
       <section className="display-center">
         {!probando && (
           <>
-            <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
+            <Button sx={styleButtonBiggerGreen} onClick={onClickNav} disabled={bloqueoDeBoton}>
               Iniciar Adquisición
             </Button>
             <Button sx={styleButtonBiggerRed} onClick={onClickBack}>

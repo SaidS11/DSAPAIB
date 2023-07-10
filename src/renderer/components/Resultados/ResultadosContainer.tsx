@@ -35,6 +35,14 @@ const ResultadosContainer = () => {
     (state) => state.señales.totalSensores
   );
 
+  const emgDataAdquirida = useCustomSelector(
+    (state) => state.señales.emgDataAdquirida
+  );
+
+  const arduinoDataAdquirida = useCustomSelector(
+    (state) => state.señales.arduinoDataAdquirida
+  );
+
   const usuario = useCustomSelector((state) => state.datos.usuarioPaciente);
   const objetoMongo = useCustomSelector(
     (state) => state.señales.mongoInsertObject
@@ -422,6 +430,9 @@ const ResultadosContainer = () => {
         dataArr={data}
         gridLayout={grid}
         onClickCrear={onClickCrear}
+        emgDataAdquirida={emgDataAdquirida}
+        arduinoDataAdquirida={arduinoDataAdquirida}
+        sensoresSelected={sensoresSelected}
       />
       {open && (
         <SaveEtiquetaModal

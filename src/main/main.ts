@@ -2654,7 +2654,7 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   // const worker = new Worker(path.join(rootPath, 'worker.js'));
   // const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
   // console.log("Work", worker);
-  const pythonProcess = spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs]);
+  const pythonProcess = spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs, direcFinal]);
 
   pythonProcess.on('exit', function (code: any, signal: any) {
     const result = pythonProcess.stdout?.toString()?.trim();
@@ -2707,7 +2707,13 @@ app2.post('/generarCsv', async (req: Request, res: Response) => {
     const csvObj = convertObjToCsv(req.body);
     console.log("CSV", csvObj);
     const nombreArchivo = nombre || "arduinoData";
-    fs.writeFile(nombreArchivo, csvObj, function(err) {
+
+    const direc = __dirname;
+    const regex = /\//i;
+    const direcParsed = direc.replace(regex, '/');
+    const direcFinal = direcParsed.slice(0, -4);
+
+    fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
       if (err) {
         console.error('Error al guardar el archivo:', err);
         throw err;
@@ -2720,4 +2726,53 @@ app2.post('/generarCsv', async (req: Request, res: Response) => {
     console.error('Error al insertar datos', error);
     res.status(500).json({ error: 'Error al insertar datos' });
   }
+});
+
+
+app2.get("/obtenerObjDeCsv", async (req: Request, res: Response, next: any)=>{
+
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+  
+
+  try {
+    const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
+    const filas = contenido.split('\n');
+    const cabeceras = filas[0].split(',');
+    const objetos = [];
+
+    for (let i = 1; i < filas.length; i++) {
+      const valores = filas[i].split(',');
+      const objeto: any = {};
+
+      for (let j = 0; j < cabeceras.length; j++) {
+        let clave = cabeceras[j];
+        let valor = valores[j];
+
+        if (clave !== undefined) {
+          clave = clave.trim();
+        }
+
+        if (valor !== undefined) {
+          valor = valor.trim();
+        }
+
+        objeto[clave] = valor;
+      }
+
+      objetos.push(objeto);
+    }
+    res.send(JSON.stringify({ status: 200, message: objetos }))
+  } catch (error) {
+    console.error('Error al leer el archivo:', error);
+    res.status(500).json({ error: 'Error al leer el archivo ' + error  });
+
+  }
+
+
+
+
+
 });
