@@ -2096,7 +2096,7 @@ let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Norm
 
 
 let serialPortArduino1 = new SerialPort({
-  path: 'COM15',
+  path: 'COM5',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
@@ -2105,7 +2105,7 @@ let serialPortArduino1 = new SerialPort({
 });
 
 let serialPortArduino2 = new SerialPort({
-  path: 'COM16',
+  path: 'COM8',
   baudRate: 4800,
   dataBits: 8,
   stopBits: 1,
@@ -2696,8 +2696,8 @@ const convertObjToCsv = (signals: any) => {
   return csv;
 }
 
-app2.use(express.json({limit: '50mb'}));
-app2.use(express.urlencoded({limit: '50mb'}));
+app2.use(express.json({limit: '500mb'}));
+app2.use(express.urlencoded({limit: '500mb'}));
 
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
@@ -2713,7 +2713,8 @@ app2.post('/generarCsv', async (req: Request, res: Response) => {
     const direcParsed = direc.replace(regex, '/');
     const direcFinal = direcParsed.slice(0, -4);
 
-    fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
+    // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
+    fs.writeFile(`D:/KAREN/Modular/electron-app/${nombreArchivo}`, csvObj, function(err) {
       if (err) {
         console.error('Error al guardar el archivo:', err);
         throw err;
@@ -2738,7 +2739,8 @@ app2.get("/obtenerObjDeCsv", async (req: Request, res: Response, next: any)=>{
   
 
   try {
-    const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
+    // const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
+    const contenido = fs.readFileSync(`D:/KAREN/Modular/electron-app/resultadoEmgs.csv`, 'utf-8');
     const filas = contenido.split('\n');
     const cabeceras = filas[0].split(',');
     const objetos = [];
