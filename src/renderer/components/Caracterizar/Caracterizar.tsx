@@ -15,7 +15,10 @@ import {
   setVentanasArrayEmg3,
   setVentanasArrayEmg4,
   setVentanasArrayGsr,
-  setVentanasArrayAcelerometro,
+  setVentanasArrayAcelerometroX,
+  setVentanasArrayAcelerometroY,
+  setVentanasArrayAcelerometroZ,
+  setVentanasArrayTemperatura,
   setCantidadSujetos,
   setVentanasArrayFrecuencia,
 } from '../../../redux/slices/SeñalesSlice';
@@ -38,9 +41,10 @@ interface CaracterizarProps {
   selectedPatients: any;
   selectedProtocol: any;
   currentIteration: any;
-  gsrChecked: any;
-  frecuenciaChecked: any;
-  acelerometroChecked: any;
+  gsrChecked: boolean;
+  frecuenciaChecked: boolean;
+  acelerometroChecked: boolean;
+  temperaturaChecked: boolean
 }
 
 const Caracterizar = (props: CaracterizarProps) => {
@@ -52,6 +56,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     gsrChecked,
     frecuenciaChecked,
     acelerometroChecked,
+    temperaturaChecked,
   } = props;
 
   const [colors1, setColors1] = useState(['#00000']);
@@ -70,14 +75,30 @@ const Caracterizar = (props: CaracterizarProps) => {
     []
   );
 
-  const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
-  const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
-  const [ventanasSeñalAcelerometro, setVentanasSeñalAcelerometro] =
+  const [acelerometroDataDeXEjeX, setAcelerometroDataDeXEjeX] = useState([0]);
+  const [acelerometroDataDeXEjeY, setAcelerometroDataDeXEjeY] = useState([0]);
+  const [ventanasSeñalAcelerometroDeX, setVentanasSeñalAcelerometroDeX] =
+    useState<any>([]);
+
+  const [acelerometroDataDeYEjeX, setAcelerometroDataDeYEjeX] = useState([0]);
+  const [acelerometroDataDeYEjeY, setAcelerometroDataDeYEjeY] = useState([0]);
+  const [ventanasSeñalAcelerometroDeY, setVentanasSeñalAcelerometroDeY] =
+    useState<any>([]);
+
+  const [acelerometroDataDeZEjeX, setAcelerometroDataDeZEjeX] = useState([0]);
+  const [acelerometroDataDeZEjeY, setAcelerometroDataDeZEjeY] = useState([0]);
+  const [ventanasSeñalAcelerometroDeZ, setVentanasSeñalAcelerometroDeZ] =
     useState<any>([]);
 
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
   const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState<any>(
+    []
+  );
+
+  const [temperaturaDataX, setTemperaturaDataX] = useState([0]);
+  const [temperaturaDataY, setTemperaturaDataY] = useState([0]);
+  const [ventanasSeñalTemperatura, setVentanasSeñalTemperatura] = useState<any>(
     []
   );
 
@@ -97,9 +118,22 @@ const Caracterizar = (props: CaracterizarProps) => {
   const ventanaReduxGsr = useCustomSelector(
     (state) => state.señales.ventanasArrayGsr
   );
-  const ventanaReduxAcelerometro = useCustomSelector(
-    (state) => state.señales.ventanasArrayAcelerometro
+  const ventanaReduxAcelerometroX = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroX
   );
+
+  const ventanaReduxAcelerometroY = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroY
+  );
+
+  const ventanaReduxAcelerometroZ = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroZ
+  );
+
+  const ventanaReduxTemperatura = useCustomSelector(
+    (state) => state.señales.ventanasArrayTemperatura
+  );
+
 
   const ventanaReduxFrecuencia = useCustomSelector(
     (state) => state.señales.ventanasArrayFrecuencia
@@ -240,12 +274,23 @@ const Caracterizar = (props: CaracterizarProps) => {
 
     const respuesta =
       (await buscarElementoMongoFront()) as Array<DataSignalsMongo>;
+    console.log("SIGNAL", respuesta);
     appDispatch(setIsLoading(false));
 
-    const { signal1 } = respuesta[0]!.signals;
-    const { signal2 } = respuesta[0].signals;
-    const { signal3 } = respuesta[0].signals;
-    const { signal4 } = respuesta[0].signals;
+    const { emg1 } = respuesta[0].signals;
+    const { emg2 } = respuesta[0].signals;
+    const { emg3 } = respuesta[0].signals;
+    const { emg4 } = respuesta[0].signals;
+
+    const { GSR } = respuesta[0].signals;
+    const { TC } = respuesta[0].signals;
+    const { HRLM } = respuesta[0].signals;
+    
+    const { INCLX } = respuesta[0].signals;
+    const { INCLY } = respuesta[0].signals;
+    const { INCLZ } = respuesta[0].signals;
+
+
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -265,44 +310,63 @@ const Caracterizar = (props: CaracterizarProps) => {
     const gsrSignalLocalX = [];
     const gsrSignalLocalY = [];
 
-    const acelerometroSignalLocalX = [];
-    const acelerometroSignalLocalY = [];
+    const acelerometroSignalLocalDeXEjeX = [];
+    const acelerometroSignalLocalDeXEjeY = [];
+
+    const acelerometroSignalLocalDeYEjeX = [];
+    const acelerometroSignalLocalDeYEjeY = [];
+
+    const acelerometroSignalLocalDeZEjeX = [];
+    const acelerometroSignalLocalDeZEjeY = [];
 
     const frecuenciaSignalLocalX = [];
     const frecuenciaSignalLocalY = [];
 
-    for (let i = 0; i < signal1.length; i += 1) {
+    const temperaturaSignalLocalX = [];
+    const temperaturaSignalLocalY = [];
+
+    for (let i = 0; i < emg1.length; i += 1) {
       if (sensoresSelected >= 1) {
-        xArrayEmg1.push(signal1[i].x);
-        yArrayEmg1.push(signal1[i].y);
+        xArrayEmg1.push(emg1[i].x);
+        yArrayEmg1.push(emg1[i].y);
       }
       if (sensoresSelected >= 2) {
-        xArray2Emg2.push(signal2[i].x);
-        yArray2Emg2.push(signal2[i].y);
+        xArray2Emg2.push(emg2[i].x);
+        yArray2Emg2.push(emg2[i].y);
         colors2.push('blue');
       }
       if (sensoresSelected >= 3) {
-        xArray3Emg3.push(signal3[i].x);
-        yArray3Emg3.push(signal3[i].y);
+        xArray3Emg3.push(emg3[i].x);
+        yArray3Emg3.push(emg3[i].y);
         colors3.push('yellow');
       }
       if (sensoresSelected >= 4) {
-        xArray4Emg4.push(signal4[i].x);
-        yArray4Emg4.push(signal4[i].y);
+        xArray4Emg4.push(emg4[i].x);
+        yArray4Emg4.push(emg4[i].y);
         colors4.push('green');
       }
 
       if (gsrChecked) {
-        gsrSignalLocalX.push(signal3[i].x);
-        gsrSignalLocalY.push(signal3[i].y);
+        gsrSignalLocalX.push(GSR[i].x);
+        gsrSignalLocalY.push(GSR[i].y);
       }
       if (acelerometroChecked) {
-        acelerometroSignalLocalX.push(signal4[i].x);
-        acelerometroSignalLocalY.push(signal4[i].y);
+        acelerometroSignalLocalDeXEjeX.push(INCLX[i].x);
+        acelerometroSignalLocalDeXEjeY.push(INCLX[i].y);
+
+        acelerometroSignalLocalDeYEjeX.push(INCLY[i].x);
+        acelerometroSignalLocalDeYEjeY.push(INCLY[i].y);
+
+        acelerometroSignalLocalDeZEjeX.push(INCLZ[i].x);
+        acelerometroSignalLocalDeZEjeY.push(INCLZ[i].y);
       }
       if (frecuenciaChecked) {
-        frecuenciaSignalLocalX.push(signal4[i].x);
-        frecuenciaSignalLocalY.push(signal4[i].y);
+        frecuenciaSignalLocalX.push(HRLM[i].x);
+        frecuenciaSignalLocalY.push(HRLM[i].y);
+      }
+      if (temperaturaChecked) {
+        temperaturaSignalLocalX.push(TC[i].x);
+        temperaturaSignalLocalY.push(TC[i].y);
       }
     }
     if (sensoresSelected >= 1) {
@@ -332,12 +396,23 @@ const Caracterizar = (props: CaracterizarProps) => {
       setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
-      setAcelerometroDataX(acelerometroSignalLocalX);
-      setAcelerometroDataY(acelerometroSignalLocalY);
+      setAcelerometroDataDeXEjeX(acelerometroSignalLocalDeXEjeX);
+      setAcelerometroDataDeXEjeY(acelerometroSignalLocalDeXEjeY);
+
+      setAcelerometroDataDeYEjeX(acelerometroSignalLocalDeYEjeX);
+      setAcelerometroDataDeYEjeY(acelerometroSignalLocalDeYEjeY);
+
+      setAcelerometroDataDeZEjeX(acelerometroSignalLocalDeZEjeX);
+      setAcelerometroDataDeZEjeY(acelerometroSignalLocalDeZEjeY);
     }
     if (frecuenciaChecked) {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
+    }
+    if (temperaturaChecked) {
+      setTemperaturaDataX(temperaturaSignalLocalX);
+      setTemperaturaDataY(temperaturaSignalLocalY);
+
     }
   };
 
@@ -368,6 +443,10 @@ const Caracterizar = (props: CaracterizarProps) => {
     if (sensoresSelected >= 7) {
       dynamicRows = 2;
       dynamicColumns = 4;
+    }
+    if (sensoresSelected >= 9) {
+      dynamicRows = 2;
+      dynamicColumns = 5;
     }
     const objGrid = {
       rows: dynamicRows,
@@ -410,8 +489,14 @@ const Caracterizar = (props: CaracterizarProps) => {
         const ventanasLocalEmg4 = [];
 
         const ventanasGsrLocal = [];
-        const ventanasAcelerometroLocal = [];
         const ventanasFrecuenciaLocal = [];
+        const ventanasTemperaturaLocal = [];
+
+        const ventanasAcelerometroLocalX = [];
+        const ventanasAcelerometroLocalY = [];
+        const ventanasAcelerometroLocalZ = [];
+
+
 
         setSelectedLength(selection.length);
         for (let i = 0; i < dataX2Emg2.length; i += 1) {
@@ -436,15 +521,33 @@ const Caracterizar = (props: CaracterizarProps) => {
               });
             }
             if (acelerometroChecked) {
-              ventanasAcelerometroLocal.push({
-                x: acelerometroDataX[i],
-                y: acelerometroDataY[i],
-              });
+
+              ventanasAcelerometroLocalX.push({
+                x: acelerometroDataDeXEjeX[i],
+                y: acelerometroDataDeXEjeY[i],
+              })
+
+              ventanasAcelerometroLocalY.push({
+                x: acelerometroDataDeYEjeX[i],
+                y: acelerometroDataDeYEjeY[i],
+              })
+
+              ventanasAcelerometroLocalZ.push({
+                x: acelerometroDataDeZEjeX[i],
+                y: acelerometroDataDeZEjeY[i],
+              })
             }
             if (frecuenciaChecked) {
               ventanasFrecuenciaLocal.push({
                 x: frecuenciaDataX[i],
                 y: frecuenciaDataY[i],
+              });
+            }
+
+            if (temperaturaChecked) {
+              ventanasTemperaturaLocal.push({
+                x: temperaturaDataX[i],
+                y: temperaturaDataY[i],
               });
             }
 
@@ -484,14 +587,28 @@ const Caracterizar = (props: CaracterizarProps) => {
           setVentanasSeñalGsr(localArrayGsr);
         }
         if (acelerometroChecked) {
-          const localArrayAcelerometro = [...ventanasSeñalAcelerometro];
-          localArrayAcelerometro.push(ventanasAcelerometroLocal);
-          setVentanasSeñalAcelerometro(localArrayAcelerometro);
+          const localArrayAcelerometroX = [...ventanasSeñalAcelerometroDeX];
+          localArrayAcelerometroX.push(ventanasAcelerometroLocalX);
+          setVentanasSeñalAcelerometroDeX(localArrayAcelerometroX);
+
+          const localArrayAcelerometroY = [...ventanasSeñalAcelerometroDeY];
+          localArrayAcelerometroY.push(ventanasAcelerometroLocalY);
+          setVentanasSeñalAcelerometroDeY(localArrayAcelerometroY);
+
+          const localArrayAcelerometroZ = [...ventanasSeñalAcelerometroDeZ];
+          localArrayAcelerometroZ.push(ventanasAcelerometroLocalZ);
+          setVentanasSeñalAcelerometroDeZ(localArrayAcelerometroZ);
         }
         if (frecuenciaChecked) {
           const localArrayFrecuencia = [...ventanasSeñalFrecuencia];
           localArrayFrecuencia.push(ventanasFrecuenciaLocal);
           setVentanasSeñalFrecuencia(localArrayFrecuencia);
+        }
+
+        if (temperaturaChecked) {
+          const localArrayTemperatura = [...ventanasSeñalTemperatura];
+          localArrayTemperatura.push(ventanasTemperaturaLocal);
+          setVentanasSeñalTemperatura(localArrayTemperatura);
         }
       } catch (ex: any) {
         alert(`Error ${ex}`);
@@ -554,10 +671,18 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayGsr.push(ventanasSeñalGsr);
     }
 
-    const localArrayAcelerometro = [];
+    const localArrayAcelerometroX = [];
+    const localArrayAcelerometroY = [];
+    const localArrayAcelerometroZ = [];
     if (acelerometroChecked) {
-      ventanaReduxAcelerometro.map((e) => localArrayAcelerometro.push(e));
-      localArrayAcelerometro.push(ventanasSeñalAcelerometro);
+      ventanaReduxAcelerometroX.map((e) => localArrayAcelerometroX.push(e));
+      localArrayAcelerometroX.push(ventanasSeñalAcelerometroDeX);
+    
+      ventanaReduxAcelerometroY.map((e) => localArrayAcelerometroY.push(e));
+      localArrayAcelerometroY.push(ventanasSeñalAcelerometroDeY);
+
+      ventanaReduxAcelerometroZ.map((e) => localArrayAcelerometroZ.push(e));
+      localArrayAcelerometroZ.push(ventanasSeñalAcelerometroDeZ);
     }
 
     const localArrayFrecuencia = [];
@@ -566,12 +691,22 @@ const Caracterizar = (props: CaracterizarProps) => {
       localArrayFrecuencia.push(ventanasSeñalFrecuencia);
     }
 
+    const localArrayTemperatura = [];
+    if (temperaturaChecked) {
+      ventanaReduxTemperatura.map((e) => localArrayTemperatura.push(e));
+      localArrayTemperatura.push(ventanasSeñalTemperatura);
+    }
+
     appDispatch(setVentanasArrayEmg1(localArrayEmg1));
     appDispatch(setVentanasArrayEmg2(localArrayEmg2));
     appDispatch(setVentanasArrayEmg3(localArrayEmg3));
     appDispatch(setVentanasArrayEmg4(localArrayEmg4));
     appDispatch(setVentanasArrayGsr(localArrayGsr));
-    appDispatch(setVentanasArrayAcelerometro(localArrayAcelerometro));
+    appDispatch(setVentanasArrayAcelerometroX(localArrayAcelerometroX));
+    appDispatch(setVentanasArrayAcelerometroY(localArrayAcelerometroY));
+    appDispatch(setVentanasArrayAcelerometroZ(localArrayAcelerometroZ));
+    appDispatch(setVentanasArrayTemperatura(localArrayTemperatura));
+
     appDispatch(setVentanasArrayFrecuencia(localArrayFrecuencia));
 
     if (sujetos !== 1) {
@@ -626,7 +761,13 @@ const Caracterizar = (props: CaracterizarProps) => {
       setVentanasSeñalGsr((curr: any) => curr.slice(0, -1));
     }
     if (acelerometroChecked) {
-      setVentanasSeñalAcelerometro((curr: any) => curr.slice(0, -1));
+      setVentanasSeñalAcelerometroDeX((curr: any) => curr.slice(0, -1));
+      setVentanasSeñalAcelerometroDeY((curr: any) => curr.slice(0, -1));
+      setVentanasSeñalAcelerometroDeZ((curr: any) => curr.slice(0, -1));
+
+    }
+    if (temperaturaChecked) {
+      setVentanasSeñalTemperatura((curr: any) => curr.slice(0, -1));
     }
     if (frecuenciaChecked) {
       setVentanasSeñalFrecuencia((curr: any) => curr.slice(0, -1));

@@ -81,11 +81,23 @@ const CaracterizarParte2Container = () => {
   const ventanaSeñalGsr = useCustomSelector(
     (state) => state.señales.ventanasArrayGsr
   );
-  const ventanaSeñalAcelerometro = useCustomSelector(
-    (state) => state.señales.ventanasArrayAcelerometro
+
+  const ventanaSeñalAcelerometroX = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroX
   );
+  const ventanaSeñalAcelerometroY = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroY
+  );
+  const ventanaSeñalAcelerometroZ = useCustomSelector(
+    (state) => state.señales.ventanasArrayAcelerometroZ
+  );
+
   const ventanaSeñalFrecuencia = useCustomSelector(
     (state) => state.señales.ventanasArrayFrecuencia
+  );
+
+  const ventanaSeñalTemperatura = useCustomSelector(
+    (state) => state.señales.ventanasArrayTemperatura
   );
 
   const cantidadSensores = useCustomSelector(
@@ -106,6 +118,10 @@ const CaracterizarParte2Container = () => {
   const frecuenciaChecked = useCustomSelector(
     (state) => state.señales.frecuenciaIsChecked
   );
+  const temperaturaChecked = useCustomSelector(
+    (state) => state.señales.temperaturaIsChecked
+  );
+
   console.log('This was stored', ventanaSeñalEmg1);
   console.log('This was stored 2', ventanaSeñalEmg2);
 
@@ -115,16 +131,26 @@ const CaracterizarParte2Container = () => {
   const ventanasArrayEmg4: any[] = [];
 
   const ventanasArrayGsr: any[] = [];
-  const ventanasArrayAcelerometro: any[] = [];
+  const ventanasArrayAcelerometroX: any[] = [];
+  const ventanasArrayAcelerometroY: any[] = [];
+  const ventanasArrayAcelerometroZ: any[] = [];
+
   const ventanaArrayFrecuencia: any[] = [];
+  const ventanaArrayTemperatura: any[] = [];
+
 
   let ventanaArrEmg1: any[] = [];
   let ventanaArrEmg2: any[] = [];
   let ventanaArrEmg3: any[] = [];
   let ventanaArrEmg4: any[] = [];
   let ventanaGsr: any[] = [];
-  let ventanaAcelerometro: any[] = [];
+  let ventanaAcelerometroX: any[] = [];
+  let ventanaAcelerometroY: any[] = [];
+  let ventanaAcelerometroZ: any[] = [];
+
   let ventanaFrecuencia: any[] = [];
+  let ventanaTemperatura: any[] = [];
+
 
   // EMG1
   if (cantidadSensores >= 1) {
@@ -235,20 +261,68 @@ const CaracterizarParte2Container = () => {
   }
 
   if (acelerometroChecked) {
-    // TEMP
+    // 
     for (let i = 0; i < cantidadSujetos; i += 1) {
-      const largo = ventanaSeñalAcelerometro[i].length;
-      ventanaAcelerometro = [];
+      const largo = ventanaSeñalAcelerometroX[i].length;
+      ventanaAcelerometroX = [];
       for (let c = 0; c < largo; c += 1) {
         const { ventana, sumVentana } = getElementsAndSum(
-          ventanaSeñalAcelerometro[i][c]
+          ventanaSeñalAcelerometroX[i][c]
         );
         const mediaAbsoluta = (
-          sumVentana / ventanaSeñalAcelerometro[i][c].length
+          sumVentana / ventanaSeñalAcelerometroX[i][c].length
         ).toString();
-        ventanaAcelerometro.push([ventana, sumVentana, mediaAbsoluta]);
+        ventanaAcelerometroX.push([ventana, sumVentana, mediaAbsoluta]);
       }
-      ventanasArrayAcelerometro.push(ventanaAcelerometro);
+      ventanasArrayAcelerometroX.push(ventanaSeñalAcelerometroX);
+    }
+
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalAcelerometroY[i].length;
+      ventanaAcelerometroY = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalAcelerometroY[i][c]
+        );
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalAcelerometroY[i][c].length
+        ).toString();
+        ventanaAcelerometroX.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayAcelerometroY.push(ventanaSeñalAcelerometroY);
+    }
+
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalAcelerometroZ[i].length;
+      ventanaAcelerometroZ = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalAcelerometroZ[i][c]
+        );
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalAcelerometroZ[i][c].length
+        ).toString();
+        ventanaAcelerometroZ.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanasArrayAcelerometroZ.push(ventanaSeñalAcelerometroZ);
+    }
+  }
+
+  if (temperaturaChecked) {
+    // TEMP
+    for (let i = 0; i < cantidadSujetos; i += 1) {
+      const largo = ventanaSeñalTemperatura[i].length;
+      ventanaTemperatura = [];
+      for (let c = 0; c < largo; c += 1) {
+        const { ventana, sumVentana } = getElementsAndSum(
+          ventanaSeñalTemperatura[i][c]
+        );
+        const mediaAbsoluta = (
+          sumVentana / ventanaSeñalTemperatura[i][c].length
+        ).toString();
+        ventanaTemperatura.push([ventana, sumVentana, mediaAbsoluta]);
+      }
+      ventanaArrayTemperatura.push(ventanaTemperatura);
     }
   }
 
@@ -267,13 +341,17 @@ const CaracterizarParte2Container = () => {
           ventanasArrayEmg3={ventanasArrayEmg3}
           ventanasArrayEmg4={ventanasArrayEmg4}
           ventanasArrayGsr={ventanasArrayGsr}
-          ventanasArrayAcelerometro={ventanasArrayAcelerometro}
+          ventanasArrayAcelerometroX={ventanasArrayAcelerometroX}
+          ventanasArrayAcelerometroY={ventanasArrayAcelerometroY}
+          ventanasArrayAcelerometroZ={ventanasArrayAcelerometroZ}
+          ventanaArrayTemperatura={ventanaArrayTemperatura}
           ventanaArrayFrecuencia={ventanaArrayFrecuencia}
           selectedPatients={selectedPatients}
           patientNumber={i}
           gsrChecked={gsrChecked}
           acelerometroChecked={acelerometroChecked}
           frecuenciaChecked={frecuenciaChecked}
+          temperaturaChecked={temperaturaChecked}
         />
       </div>
     );

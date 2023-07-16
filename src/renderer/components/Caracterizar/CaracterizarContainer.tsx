@@ -105,6 +105,7 @@ const CaracterizarContainer = () => {
           gsrChecked={gsrChecked}
           frecuenciaChecked={frecuenciaChecked}
           acelerometroChecked={acelerometroChecked}
+          temperaturaChecked={temperaturaChecked}
         />
 
         {/* {open && (

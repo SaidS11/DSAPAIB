@@ -29,10 +29,24 @@ interface Cols {
   colMediaABSEMG4?: string;
   colMedianaEMG4?: string;
   colRMSEMG4?: string;
-  // TEMP
-  colMediaABSAcelerometro?: string;
-  colMedianaAcelerometro?: string;
-  colRMSAcelerometro?: string;
+  // Acelerometro
+  colMediaABSAcelerometroX?: string;
+  colMedianaAcelerometroX?: string;
+  colRMSAcelerometroX?: string;
+
+  colMediaABSAcelerometroY?: string;
+  colMedianaAcelerometroY?: string;
+  colRMSAcelerometroY?: string;
+
+  colMediaABSAcelerometroZ?: string;
+  colMedianaAcelerometroZ?: string;
+  colRMSAcelerometroZ?: string;
+
+  // Temp
+  colMediaABSTemp?: string;
+  colMedianaTemp?: string;
+  colRMSTemp?: string;
+
   // GSR
   colMediaABSGsr?: string;
   colMedianaGsr?: string;
@@ -105,13 +119,17 @@ interface TableContainerProps {
   ventanasArrayEmg3: any;
   ventanasArrayEmg4: any;
   ventanasArrayGsr: any;
-  ventanasArrayAcelerometro: any;
+  ventanasArrayAcelerometroX: any;
+  ventanasArrayAcelerometroY: any;
+  ventanasArrayAcelerometroZ: any;
+  ventanaArrayTemperatura: any;
   ventanaArrayFrecuencia: any;
   selectedPatients: Array<SelectedPatientObj>;
   patientNumber: number;
   gsrChecked: boolean;
   acelerometroChecked: boolean;
   frecuenciaChecked: boolean;
+  temperaturaChecked: boolean;
 }
 const TableContainer = (props: TableContainerProps) => {
   const {
@@ -123,13 +141,17 @@ const TableContainer = (props: TableContainerProps) => {
     ventanasArrayEmg3,
     ventanasArrayEmg4,
     ventanasArrayGsr,
-    ventanasArrayAcelerometro,
+    ventanasArrayAcelerometroX,
+    ventanasArrayAcelerometroY,
+    ventanasArrayAcelerometroZ,
+    ventanaArrayTemperatura,
     ventanaArrayFrecuencia,
     selectedPatients,
     patientNumber,
     gsrChecked,
     acelerometroChecked,
     frecuenciaChecked,
+    temperaturaChecked,
   } = props;
 
   const appDispatch = useCustomDispatch();
@@ -228,16 +250,37 @@ const TableContainer = (props: TableContainerProps) => {
       }
       if (acelerometroChecked) {
         Object.assign(dataJson, {
-          colMediaABSAcelerometro: returnFixed(
-            ventanasArrayAcelerometro[numeroDeSujeto][i][2]
+          colMediaABSAcelerometroX: returnFixed(
+            ventanasArrayAcelerometroX[numeroDeSujeto][i][2]
           ) as string,
-          colMedianaAcelerometro: calcularMediana(
-            ventanasArrayAcelerometro[numeroDeSujeto][i][0] as Array<number>
+          colMedianaAcelerometroX: calcularMediana(
+            ventanasArrayAcelerometroX[numeroDeSujeto][i][0] as Array<number>
           ),
-          colRMSAcelerometro: calcularRms(
-            ventanasArrayAcelerometro[numeroDeSujeto][i][0] as Array<number>
+          colRMSAcelerometroX: calcularRms(
+            ventanasArrayAcelerometroX[numeroDeSujeto][i][0] as Array<number>
+          ),
+
+          colMediaABSAcelerometroY: returnFixed(
+            ventanasArrayAcelerometroY[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaAcelerometroY: calcularMediana(
+            ventanasArrayAcelerometroY[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSAcelerometroY: calcularRms(
+            ventanasArrayAcelerometroY[numeroDeSujeto][i][0] as Array<number>
+          ),
+
+          colMediaABSAcelerometroZ: returnFixed(
+            ventanasArrayAcelerometroZ[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaAcelerometroZ: calcularMediana(
+            ventanasArrayAcelerometroZ[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSAcelerometroZ: calcularRms(
+            ventanasArrayAcelerometroZ[numeroDeSujeto][i][0] as Array<number>
           ),
         });
+        
       }
 
       if (frecuenciaChecked) {
@@ -250,6 +293,20 @@ const TableContainer = (props: TableContainerProps) => {
           ),
           colRMSFrecuencia: calcularRms(
             ventanaArrayFrecuencia[numeroDeSujeto][i][0] as Array<number>
+          ),
+        });
+      }
+
+      if (temperaturaChecked) {
+        Object.assign(dataJson, {
+          colMediaABSTemperatura: returnFixed(
+            ventanaArrayTemperatura[numeroDeSujeto][i][2]
+          ) as string,
+          colMedianaTemperatura: calcularMediana(
+            ventanaArrayTemperatura[numeroDeSujeto][i][0] as Array<number>
+          ),
+          colRMSTemperatura: calcularRms(
+            ventanaArrayTemperatura[numeroDeSujeto][i][0] as Array<number>
           ),
         });
       }
@@ -333,15 +390,41 @@ const TableContainer = (props: TableContainerProps) => {
         columns: [
           {
             Header: 'Media absoluta',
-            accessor: `colMediaABSAcelerometro`,
+            accessor: `colMediaABSAcelerometroX`,
           },
           {
             Header: 'Mediana',
-            accessor: `colMedianaAcelerometro`,
+            accessor: `colMedianaAcelerometroX`,
           },
           {
             Header: 'RMS',
-            accessor: `colRMSAcelerometro`,
+            accessor: `colRMSAcelerometroX`,
+          },
+
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSAcelerometroY`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaAcelerometroY`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSAcelerometroY`,
+          },
+
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSAcelerometroZ`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaAcelerometroZ`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSAcelerometroZ`,
           },
         ],
       });
@@ -361,6 +444,26 @@ const TableContainer = (props: TableContainerProps) => {
           {
             Header: 'RMS',
             accessor: `colRMSFrecuencia`,
+          },
+        ],
+      });
+    }
+
+    if (temperaturaChecked) {
+      internalArray.push({
+        Header: 'Temperatura Promedio',
+        columns: [
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSTemperatura`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaTemperatura`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSTemperatura`,
           },
         ],
       });

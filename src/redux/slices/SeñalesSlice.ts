@@ -20,7 +20,10 @@ export interface ISeñales {
   ventanasArrayEmg3: Array<any>;
   ventanasArrayEmg4: Array<any>;
   ventanasArrayGsr: Array<any>;
-  ventanasArrayAcelerometro: Array<any>;
+  ventanasArrayAcelerometroX: Array<any>;
+  ventanasArrayAcelerometroY: Array<any>;
+  ventanasArrayAcelerometroZ: Array<any>;
+  ventanasArrayTemperatura: Array<any>;
   ventanasArrayFrecuencia: Array<any>;
   cantidadSensores: number;
   cantidadSujetos: number;
@@ -52,7 +55,10 @@ const initialState: ISeñales = {
   ventanasArrayEmg3: [],
   ventanasArrayEmg4: [],
   ventanasArrayGsr: [],
-  ventanasArrayAcelerometro: [],
+  ventanasArrayAcelerometroX: [],
+  ventanasArrayAcelerometroY: [],
+  ventanasArrayAcelerometroZ: [],
+  ventanasArrayTemperatura: [],
   ventanasArrayFrecuencia: [],
   cantidadSensores: 0,
   cantidadSujetos: 0,
@@ -132,11 +138,29 @@ export const SeñalesSlice = createSlice({
     ) => {
       state.ventanasArrayGsr=action.payload;
     },
-    setVentanasArrayAcelerometro: (
+    setVentanasArrayAcelerometroX: (
       state,
-      action: PayloadAction<ISeñales['ventanasArrayAcelerometro']>
+      action: PayloadAction<ISeñales['ventanasArrayAcelerometroX']>
     ) => {
-      state.ventanasArrayAcelerometro = action.payload;
+      state.ventanasArrayAcelerometroX = action.payload;
+    },
+    setVentanasArrayAcelerometroY: (
+      state,
+      action: PayloadAction<ISeñales['ventanasArrayAcelerometroY']>
+    ) => {
+      state.ventanasArrayAcelerometroY = action.payload;
+    },
+    setVentanasArrayAcelerometroZ: (
+      state,
+      action: PayloadAction<ISeñales['ventanasArrayAcelerometroZ']>
+    ) => {
+      state.ventanasArrayAcelerometroZ = action.payload;
+    },
+    setVentanasArrayTemperatura: (
+      state,
+      action: PayloadAction<ISeñales['ventanasArrayTemperatura']>
+    ) => {
+      state.ventanasArrayTemperatura = action.payload;
     },
     setVentanasArrayFrecuencia: (
       state,
@@ -184,7 +208,10 @@ export const SeñalesSlice = createSlice({
       state.ventanasArrayEmg1 = [];
       state.ventanasArrayEmg2 = [];
       state.ventanasArrayGsr = [];
-      state.ventanasArrayAcelerometro = [];
+      state.ventanasArrayAcelerometroX = [];
+      state.ventanasArrayAcelerometroY = [];
+      state.ventanasArrayAcelerometroZ = [];
+      state.ventanasArrayTemperatura = [];
       state.ventanasArrayFrecuencia = [];
       state.realTimeSignal = {};
     },
@@ -273,7 +300,10 @@ export const {
   setCantidadSujetos,
   setCantidadSujetosRespaldo,
   setVentanasArrayGsr,
-  setVentanasArrayAcelerometro,
+  setVentanasArrayAcelerometroX,
+  setVentanasArrayAcelerometroY,
+  setVentanasArrayAcelerometroZ,
+  setVentanasArrayTemperatura,
   setVentanasArrayFrecuencia,
   setDatosAnalisisIA,
   setCleanDatosAnalisisIA,
