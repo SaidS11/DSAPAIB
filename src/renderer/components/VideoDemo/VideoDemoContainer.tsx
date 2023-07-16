@@ -39,7 +39,7 @@ function parseEMG(arreglo: Array<Object>) {
   return nuevoObjeto;
 }
 
-async function calcularValorCorrectoGsr(arreglo: Array<number>) {
+function calcularValorCorrectoGsr(arreglo: Array<number>) {
   const nuevoArreglo = [];
 
   for (let i = 0; i < arreglo.length; i += 10) {
@@ -241,10 +241,11 @@ const VideoDemoContainer = () => {
 
  
   const onClickStart = async () => {
+    console.log("START")
     setBloqueoDeBoton(true);
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=4`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=30&cantidadEmgs=4`);
 
     const data = await startNidaq.json();
 
@@ -293,7 +294,6 @@ const VideoDemoContainer = () => {
   };
 
   const stopArduinos = async () => {
-    setBloqueoDeBoton(false);
 
     console.log("Stopping");
     const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
@@ -321,13 +321,13 @@ const VideoDemoContainer = () => {
         arregloArduinoSinAcelerometro = arreglo[0];
       }
 
-      const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
+      const registrosCompletos = arreglo[0].filter((registro: string) => {
         const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
         return formatoCompleto.test(registro);
       });
   
   
-      const registrosCompletos2 = arregloArduinoConAcelerometro.filter((registro: string) => {
+      const registrosCompletos2 = arreglo[1].filter((registro: string) => {
         const formatoCompleto = /INCLX: -?\d+(?:\.\d+)?, INCLY: -?\d+(?:\.\d+)?, INCLZ: -?\d+(?:\.\d+)?/;
         return formatoCompleto.test(registro);
       });
@@ -412,6 +412,7 @@ const VideoDemoContainer = () => {
       let returnedEmg;
 
       if(cantidadEmgs > 0) {
+
         const objFromCsv = await fetch(`${apiEndpoint}/obtenerObjDeCsv`);
 
         const dataEmg = await objFromCsv.json()
@@ -433,6 +434,7 @@ const VideoDemoContainer = () => {
 
       console.log("Wrapped OBJ", objWrapper);
 
+      setBloqueoDeBoton(false);
       setArduinoDataArg(objetoArduinoMultiple);
       setEmgData(returnedEmg);
       setDataIsReady(true);
