@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-named-as-default
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { type } from 'os';
 import { json } from 'stream/consumers';
 import { setIsLoading } from '../../../redux/slices/StatusSlice';
@@ -27,9 +27,11 @@ const LoginContainer = () => {
     setOpen(!open);
   };
 
-  async function loadData() {
+  async function loadData(doctorArg: string, passwordArg: string) {
     appDispatch(setIsLoading(true));
     window.Bridge.loggearDoctor(doctor, passw);
+    // window.Bridge.loggearDoctor(doctorArg, passwordArg);
+
   }
   window.Bridge.loggearD((event: any, resp: any) => {
     if (resp.length > 0) {
@@ -39,41 +41,36 @@ const LoginContainer = () => {
       appDispatch(setIsLoading(false));
     } else {
       toggleModal();
+      appDispatch(setIsLoading(false));
+
     }
   });
 
-  const onClickLogin = async() => {
-    const respuesta = await fetch('http://localhost:8000/selectAlgoritmos')
-    const data = await respuesta.json();
-    console.log("Fetch sin parametros", data);
+  const onClickLogin = async(e: React.FormEvent<HTMLFormElement>) => {    
+    e.preventDefault();
+    const form = document.querySelector('form') as HTMLFormElement | undefined;
+    const dataF = Object.fromEntries(new FormData(form).entries());
+    console.log('la data', dataF);
 
-    let nombre = 'Arbol de Decisión'
-    const respuestaparam = await fetch(`http://localhost:8000/selectModelosIAPorAlgoritmo?algoritmo=${nombre}`)
-    const dataparam = await respuestaparam.json();
-    console.log("Fetch con parametros: ", dataparam);
-    
+    const usuario = dataF.username.toString()
+    const password = dataF.password.toString()
     // Get user
-    /* const usDocument = document.getElementById('user') as HTMLInputElement | null;
-    const passDocument = document.getElementById('password') as HTMLInputElement | null;
-    console.log(usDocument?.value)
-    console.log(passDocument?.value)
-    if (usDocument !== null){
-      doctor = usDocument.value
-    }
-    if (passDocument !== null){
-      passw = passDocument.value
-    } */
-    loadData();
-    // insertarElementoMongoFront();
-    // buscarElementoMongoFront();
-    // seleccionarTodoMongoFront();
-    // borrarElementoMongoFront();
-    appDispatch(setCantidadSujetos(2));
-    appDispatch(setCantidadSujetosRespaldo(2));
+    loadData(usuario, password);
+
   };
+
+  const [passwordShown, setPasswordShown] = useState(false);
+  const togglePassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // When the handler is invoked
+    // inverse the boolean state of passwordShown
+    setPasswordShown(!passwordShown);
+  };
+
   return (
     <div>
-      <Login onClickLogin={onClickLogin} />
+      <Login onClickLogin={onClickLogin} passwordShown={passwordShown} togglePassword={togglePassword} setPasswordShown={setPasswordShown} />
       {open && <ModalDatos toggleModal={toggleModal} open={open} />}
       {loading && <Loading />}
     </div>

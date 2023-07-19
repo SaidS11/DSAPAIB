@@ -156,10 +156,10 @@ export const numOfPlotsToRender = (sensoresSelected: number) => {
     dynamicRows = 2;
     dynamicColumns = 4;
   }
-  f (sensoresSelected >= 9) {
+  if (sensoresSelected >= 9) {
     dynamicRows = 2;
     dynamicColumns = 5;
-  }i
+  }
   const objGrid = {
     rows: dynamicRows,
     columns: dynamicColumns,
