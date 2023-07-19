@@ -2714,8 +2714,8 @@ app2.post('/generarCsv', async (req: Request, res: Response) => {
     const direcFinal = direcParsed.slice(0, -4);
 
     // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
-    // fs.writeFile(`D:/KAREN/Modular/electron-app/${nombreArchivo}`, csvObj, function(err) {
-    fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
+    fs.writeFile(`D:/KAREN/Modular/electron-app/${nombreArchivo}`, csvObj, function(err) {
+    // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
       if (err) {
         console.error('Error al guardar el archivo:', err);
         throw err;
@@ -2741,9 +2741,9 @@ app2.get("/obtenerObjDeCsv", async (req: Request, res: Response, next: any)=>{
 
   try {
     // const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
-    const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
+    // const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
 
-    // const contenido = fs.readFileSync(`D:/KAREN/Modular/electron-app/resultadoEmgs.csv`, 'utf-8');
+    const contenido = fs.readFileSync(`D:/KAREN/Modular/electron-app/resultadoEmgs.csv`, 'utf-8');
     const filas = contenido.split('\n');
     const cabeceras = filas[0].split(',');
     const objetos = [];

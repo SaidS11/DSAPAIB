@@ -113,8 +113,8 @@ def controlador():
     keys = list(result.keys())
 
 
-    csv_file = directorioActual + "/main/archivosCsv/resultadoEmgs.csv"
-    # csv_file = "resultadoEmgs.csv"
+    # csv_file = directorioActual + "/main/archivosCsv/resultadoEmgs.csv"
+    csv_file = "resultadoEmgs.csv"
     with open(csv_file, mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(keys)  # Escribir las claves como encabezados de las columnas
