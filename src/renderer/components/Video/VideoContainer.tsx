@@ -151,7 +151,7 @@ const VideoContainer = () => {
   const adquisicion = async ()=> {
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=${duracion}&cantidadEmgs=${cantidadEmgs}`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=${cantidadEmgs}`);
 
     const data = await startNidaq.json();
 
