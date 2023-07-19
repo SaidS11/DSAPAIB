@@ -245,7 +245,7 @@ const VideoDemoContainer = () => {
     setBloqueoDeBoton(true);
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=30&cantidadEmgs=4`);
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
 
     const data = await startNidaq.json();
 
