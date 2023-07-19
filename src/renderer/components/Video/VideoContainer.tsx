@@ -297,7 +297,7 @@ const VideoContainer = () => {
       const objWrapper = {
         signals: objetoAdquirido
       }
-
+      console.log("Wrapped", objWrapper);
       appDispatch(setMongoInsertObject(objWrapper));
       appDispatch(setArduinoDataAdquirida(objetoArduinoMultiple));
       appDispatch(setEmgDataAdquirida(returnedEmg));
