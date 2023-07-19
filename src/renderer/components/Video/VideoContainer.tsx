@@ -301,7 +301,7 @@ const VideoContainer = () => {
       appDispatch(setMongoInsertObject(objWrapper));
       appDispatch(setArduinoDataAdquirida(objetoArduinoMultiple));
       appDispatch(setEmgDataAdquirida(returnedEmg));
-      navigate('/resultados');
+     // navigate('/resultados');
       // navigate('/procesamientoPrevio');
 
     } 
