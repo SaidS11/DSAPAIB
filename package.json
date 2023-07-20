@@ -290,7 +290,7 @@
     "patterns": [
       "!**/**",
       "src/main/**",
-      "!src/main/archivosCsv"
+      "!src/main/archivosCsv/"
     ],
     "logLevel": "quiet"
   }
