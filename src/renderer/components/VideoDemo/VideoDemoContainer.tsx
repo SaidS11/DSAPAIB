@@ -469,7 +469,7 @@ const VideoDemoContainer = () => {
         console.log("EMG", returnedEmg);
       }
 
-      const objetoAdquirido = {...returnedEmg, ...ardMessage}
+      const objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
 
       console.log("OBJETO FINAL", objetoAdquirido);
 
