@@ -119,6 +119,7 @@ const VideoDemoContainer = () => {
   const [portSelected, setPortSelected] = useState('');
   const [baudSelected2, setBaudSelected2] = useState(9600);
   const [portSelected2, setPortSelected2] = useState('');
+  // TESTS DONE
   const [open, setOpen] = useState(true);
   const [cantidadArduinos, setCantidadArduinos] = useState(0);
 

@@ -175,7 +175,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x5',
         yaxis: 'y5',
         type: 'scatter',
-        line: { color: 'light green' },
+        line: { color: 'brown' },
         mode: 'markers+lines',
         name: 'GSR',
     };
