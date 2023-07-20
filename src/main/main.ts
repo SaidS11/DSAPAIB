@@ -2091,7 +2091,7 @@ let serialPort = new SerialPort({
 let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 
 let serialPortArduino1 = new SerialPort({
-  path: 'COM5',
+  path: 'COM18',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
@@ -2100,7 +2100,7 @@ let serialPortArduino1 = new SerialPort({
 });
 
 let serialPortArduino2 = new SerialPort({
-  path: 'COM8',
+  path: 'COM18',
   baudRate: 4800,
   dataBits: 8,
   stopBits: 1,
