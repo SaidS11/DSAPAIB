@@ -210,8 +210,8 @@ const ResultadosContainer = () => {
   const trace7 = {
     x: temperaturaDataX,
     y: temperaturaDataY,
-    xaxis: 'x6',
-    yaxis: 'y6',
+    xaxis: 'x7',
+    yaxis: 'y7',
     type: 'scatter',
     // mode: 'markers+lines',
     name: 'Temperatura',
@@ -222,8 +222,8 @@ const ResultadosContainer = () => {
   const trace8 = {
     x: acelerometroInclXDataX,
     y: acelerometroInclXDataY,
-    xaxis: 'x7',
-    yaxis: 'y7',
+    xaxis: 'x8',
+    yaxis: 'y8',
     type: 'scatter',
     // mode: 'markers+lines',
     name: 'INCLX',
@@ -234,16 +234,16 @@ const ResultadosContainer = () => {
   const trace9 = {
     x: acelerometroInclYDataX,
     y: acelerometroInclYDataY,
-    xaxis: 'x8',
-    yaxis: 'y8',
+    xaxis: 'x9',
+    yaxis: 'y9',
     type: 'scatter',
     name: 'INCLY',
   };
   const trace10 = {
     x: acelerometroInclZDataX,
     y: acelerometroInclZDataY,
-    xaxis: 'x8',
-    yaxis: 'y8',
+    xaxis: 'x10',
+    yaxis: 'y10',
     type: 'scatter',
     name: 'INCLZ',
   };
@@ -375,13 +375,13 @@ const ResultadosContainer = () => {
     }
     if (acelerometroChecked) {
       setAcelerometroInclXDataX(acelerometroInclXDataX);
-      setAcelerometroInclXDataX(acelerometroInclXDataY);
+      setAcelerometroInclXDataY(acelerometroInclXDataY);
 
       setAcelerometroInclYDataX(acelerometroInclYDataX);
-      setAcelerometroInclYDataX(acelerometroInclYDataY);
+      setAcelerometroInclYDataY(acelerometroInclYDataY);
 
       setAcelerometroInclZDataX(acelerometroInclZDataX);
-      setAcelerometroInclZDataX(acelerometroInclZDataY);
+      setAcelerometroInclZDataY(acelerometroInclZDataY);
     }
     if (frecuenciaChecked) {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
