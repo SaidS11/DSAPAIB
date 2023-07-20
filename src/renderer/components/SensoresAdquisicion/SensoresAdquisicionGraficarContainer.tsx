@@ -175,7 +175,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x5',
         yaxis: 'y5',
         type: 'scatter',
-        line: { color: 'purple' },
+        line: { color: 'light green' },
         mode: 'markers+lines',
         name: 'GSR',
     };
@@ -230,7 +230,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x10',
         yaxis: 'y10',
         type: 'scatter',
-        line: { color: 'pink' },
+        line: { color: 'gray' },
         mode: 'markers+lines',
         name: 'INCLZ',
     };
