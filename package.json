@@ -289,7 +289,8 @@
   "electronmon": {
     "patterns": [
       "!**/**",
-      "src/main/**"
+      "src/main/**",
+      "!src/main/archivosCsv"
     ],
     "logLevel": "quiet"
   }

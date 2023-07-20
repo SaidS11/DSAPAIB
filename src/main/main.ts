@@ -962,9 +962,8 @@ async function iniciarSesion(user: string, pass: string) {
   return query.rows;
 }
 
-
 // //////////////////////NUEVO EXPRESS /////////////////////
-async function iniciarSesion2(user: any, pass:any) {
+async function iniciarSesion2(user: any, pass: any) {
   try {
     const result = await pool.query(
       ' SELECT usuario FROM doctor WHERE usuario = $1 AND password = crypt($2, password) ',
@@ -981,19 +980,24 @@ async function iniciarSesion2(user: any, pass:any) {
 app2.get('/iniciarSesion', async (req: Request, res: Response) => {
   const user = req.query.user;
   const pass = req.query.pass;
-try {
+  try {
     const result = await iniciarSesion2(user, pass);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // /////////////////
-async function selectPaciente2(nombre: any, apellidoP: any, apellidoM: any, email: any) {
+async function selectPaciente2(
+  nombre: any,
+  apellidoP: any,
+  apellidoM: any,
+  email: any
+) {
   try {
     const result = await pool.query(
       ' select * from paciente where nombre = $1 and apellido_paterno = $2 and apellido_materno = $3 and email = $4 ',
@@ -1011,24 +1015,22 @@ app2.get('/selectPaciente', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
   const apellidoP = req.query.apellidoP;
   const apellidoM = req.query.apellidoM;
-  const email = req.query.email
-try {
+  const email = req.query.email;
+  try {
     const result = await selectPaciente2(nombre, apellidoP, apellidoM, email);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // //////////////
 async function selectPacientes2() {
   try {
-    const result = await pool.query(
-      ' select * from paciente'
-    );
+    const result = await pool.query(' select * from paciente');
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1038,20 +1040,19 @@ async function selectPacientes2() {
 }
 
 app2.get('/selectPacientes', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectPacientes2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // //////////////////
 async function selectPacientesImplementacionNombreIA2(nombre: any) {
-
   try {
     const result = await pool.query(
       ' SELECT * FROM implementacion where algoritmo_ia = $1',
@@ -1065,23 +1066,25 @@ async function selectPacientesImplementacionNombreIA2(nombre: any) {
   }
 }
 
-app2.get('/selectPacientesImplementacionNombreIA', async (req: Request, res: Response) => {
-  const nombre = req.query.nombre;
-try {
-    const result = await selectPacientesImplementacionNombreIA2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+app2.get(
+  '/selectPacientesImplementacionNombreIA',
+  async (req: Request, res: Response) => {
+    const nombre = req.query.nombre;
+    try {
+      const result = await selectPacientesImplementacionNombreIA2(nombre);
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).json({ error: 'Error Buscando Datos' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error buscando datoseee' });
+    }
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+);
 
 // ///////////////////////
 async function selectPacientesImplementacionPorNombre2(nombre: any) {
-
   try {
     const result = await pool.query(
       ' SELECT * FROM implementacion where nombre = $1',
@@ -1095,25 +1098,28 @@ async function selectPacientesImplementacionPorNombre2(nombre: any) {
   }
 }
 
-app2.get('/selectPacientesImplementacionPorNombre', async (req: Request, res: Response) => {
-  const nombre = req.query.nombre;
-try {
-    const result = await selectPacientesImplementacionPorNombre2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+app2.get(
+  '/selectPacientesImplementacionPorNombre',
+  async (req: Request, res: Response) => {
+    const nombre = req.query.nombre;
+    try {
+      const result = await selectPacientesImplementacionPorNombre2(nombre);
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).json({ error: 'Error Buscando Datos' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error buscando datoseee' });
+    }
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+);
 // //////////////////
 async function selectModelosNombre2() {
   try {
     const result = await pool.query(
       ' select nombre, algoritmo_ia from implementacion '
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1123,24 +1129,21 @@ async function selectModelosNombre2() {
 }
 
 app2.get('/selectModelosNombre', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectModelosNombre2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // /////////////////
 async function selectAlgoritmos2() {
-
   try {
-    const result = await pool.query(
-      ' select * from implementacion '
-      );
+    const result = await pool.query(' select * from implementacion ');
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1150,26 +1153,25 @@ async function selectAlgoritmos2() {
 }
 
 app2.get('/selectAlgoritmos', async (req: Request, res: Response) => {
-try {
-  console.log('fetch algoritmosIA')
+  try {
+    console.log('fetch algoritmosIA');
     const result = await selectAlgoritmos2();
-  if (result) {
-    console.log(result)
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      console.log(result);
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // /////////////////
 async function selectProtocolos2() {
-
   try {
     const result = await pool.query(
       ' select nombre from protocolo_adquisicion'
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1179,24 +1181,21 @@ async function selectProtocolos2() {
 }
 
 app2.get('/selectProtocolos', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectProtocolos2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // ///////////////
 async function selectModelosIA2() {
-
   try {
-    const result = await pool.query(
-      ' select * from modelo '
-      );
+    const result = await pool.query(' select * from modelo ');
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1206,25 +1205,24 @@ async function selectModelosIA2() {
 }
 
 app2.get('/selectModelosIA', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectModelosIA2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 // ////////////////
 async function selectModelosIAPorAlgoritmo2(algoritmo: any) {
-
   try {
     const result = await pool.query(
       ' select * from modelo where algoritmo_ia = $1 ',
       [algoritmo]
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1233,27 +1231,29 @@ async function selectModelosIAPorAlgoritmo2(algoritmo: any) {
   }
 }
 
-app2.get('/selectModelosIAPorAlgoritmo', async (req: Request, res: Response) => {
-  const algoritmo = req.query.algoritmo;
-try {
-    const result = await selectModelosIAPorAlgoritmo2(algoritmo);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+app2.get(
+  '/selectModelosIAPorAlgoritmo',
+  async (req: Request, res: Response) => {
+    const algoritmo = req.query.algoritmo;
+    try {
+      const result = await selectModelosIAPorAlgoritmo2(algoritmo);
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).json({ error: 'Error Buscando Datos' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error buscando datoseee' });
+    }
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+);
 // ////////////////
 async function selectModelosIAPorAlgoritmoEntrenado2(algoritmo: any) {
-
   try {
     const result = await pool.query(
       'select * from modelo where algoritmo_ia = $1 and entrenado = true',
       [algoritmo]
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1262,27 +1262,29 @@ async function selectModelosIAPorAlgoritmoEntrenado2(algoritmo: any) {
   }
 }
 
-app2.get('/selectModelosIAPorAlgoritmoEntrenado', async (req: Request, res: Response) => {
-  const algoritmo = req.query.algoritmo;
-try {
-    const result = await selectModelosIAPorAlgoritmoEntrenado2(algoritmo);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+app2.get(
+  '/selectModelosIAPorAlgoritmoEntrenado',
+  async (req: Request, res: Response) => {
+    const algoritmo = req.query.algoritmo;
+    try {
+      const result = await selectModelosIAPorAlgoritmoEntrenado2(algoritmo);
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).json({ error: 'Error Buscando Datos' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error buscando datoseee' });
+    }
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+);
 // ////////////////
 async function selectConfiguracionNombre2(nombre: any) {
-
   try {
     const result = await pool.query(
       ' select configuracion from protocolo_adquisicion where nombre = $1 ',
       [nombre]
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1293,26 +1295,25 @@ async function selectConfiguracionNombre2(nombre: any) {
 
 app2.get('/selectConfiguracionNombre', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
-try {
+  try {
     const result = await selectConfiguracionNombre2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectMultimediaConfig2(nombre: any) {
-
   try {
     const result = await pool.query(
       ' select * from multimedia where configuracion = $1 ',
       [nombre]
-      );
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1323,25 +1324,22 @@ async function selectMultimediaConfig2(nombre: any) {
 
 app2.get('/selectMultimediaConfig', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
-try {
+  try {
     const result = await selectMultimediaConfig2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectConfiguracion2() {
-
   try {
-    const result = await pool.query(
-      ' select nombre from configuracion '
-      );
+    const result = await pool.query(' select nombre from configuracion ');
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1351,25 +1349,22 @@ async function selectConfiguracion2() {
 }
 
 app2.get('/selectConfiguracion', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectConfiguracion2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectAlgoritmosIA2() {
-
   try {
-    const result = await pool.query(
-      ' SELECT * FROM algoritmos_ia'
-      );
+    const result = await pool.query(' SELECT * FROM algoritmos_ia');
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1379,24 +1374,25 @@ async function selectAlgoritmosIA2() {
 }
 
 app2.get('/selectAlgoritmosIA', async (req: Request, res: Response) => {
-try {
+  try {
     const result = await selectAlgoritmosIA2();
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectRegistrosProtocolo2(nombre: any) {
   try {
     const result = await pool.query(
       ' select paciente from registro where protocolo_adquisicion = $1 ',
-      [nombre]);
+      [nombre]
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1407,24 +1403,25 @@ async function selectRegistrosProtocolo2(nombre: any) {
 
 app2.get('/selectRegistrosProtocolo', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
-try {
+  try {
     const result = await selectRegistrosProtocolo2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectProtocoloDetalle2(nombre: any) {
   try {
     const result = await pool.query(
       ' select * from protocolo_adquisicion where nombre = $1 ',
-      [nombre]);
+      [nombre]
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1435,24 +1432,25 @@ async function selectProtocoloDetalle2(nombre: any) {
 
 app2.get('/selectProtocoloDetalle', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
-try {
+  try {
     const result = await selectProtocoloDetalle2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
+});
 
 // ////////////////
 async function selectConfiguracionDetalle2(nombre: any) {
   try {
     const result = await pool.query(
       ' select * from configuracion where nombre = $1 ',
-      [nombre]);
+      [nombre]
+    );
     return result.rows;
   } catch (error) {
     console.log('Ha ocurrido un error', error);
@@ -1463,18 +1461,17 @@ async function selectConfiguracionDetalle2(nombre: any) {
 
 app2.get('/selectConfiguracionDetalle', async (req: Request, res: Response) => {
   const nombre = req.query.nombre;
-try {
+  try {
     const result = await selectConfiguracionDetalle2(nombre);
-  if (result) {
-    res.send(result);
-  } else {
-    res.status(500).json({ error: 'Error Buscando Datos' });
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
   }
-} catch (error) {
-  res.status(500).json({ error: 'Error buscando datoseee' });
-}
-})
-
+});
 
 // ipcMain.on('loggearDoctor', async () => {
 //   await conexionPrincipalMongo();
@@ -2093,15 +2090,13 @@ let serialPort = new SerialPort({
 
 let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n' })); // Normalizar la impresion
 
-
-
 let serialPortArduino1 = new SerialPort({
   path: 'COM5',
   baudRate: 115200,
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
-  autoOpen: true
+  autoOpen: true,
 });
 
 let serialPortArduino2 = new SerialPort({
@@ -2110,15 +2105,16 @@ let serialPortArduino2 = new SerialPort({
   dataBits: 8,
   stopBits: 1,
   parity: 'none',
-  autoOpen: true
+  autoOpen: true,
 });
 
 let arduinoPorts: SerialPort[] = [serialPortArduino1, serialPortArduino2];
-let arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-let arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-
-
-
+let arduinoParser = serialPortArduino1.pipe(
+  new ReadlineParser({ delimiter: '\r\n' })
+);
+let arduinoParser2 = serialPortArduino2.pipe(
+  new ReadlineParser({ delimiter: '\r\n' })
+);
 
 ipcMain.on('loadPort', async (event, opcion, baud) => {
   try {
@@ -2172,8 +2168,12 @@ ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
       parity: 'none',
       autoOpen: true,
     });
-    arduinoParser = serialPortArduino1.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
-    arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+    arduinoParser = serialPortArduino1.pipe(
+      new ReadlineParser({ delimiter: '\r\n' })
+    );
+    arduinoParser2 = serialPortArduino2.pipe(
+      new ReadlineParser({ delimiter: '\r\n' })
+    );
     arduinoPorts = [serialPortArduino1, serialPortArduino2];
   } catch (error) {
     console.log('ERROR  ', error);
@@ -2252,15 +2252,15 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // }
 
 async function sensores() {
-  console.log("FUNCTION")
+  console.log('FUNCTION');
   if (!serialPort.isOpen) {
-    console.log("IF")
+    console.log('IF');
     serialPort.open();
     parser.resume();
   }
   console.log('Inner sensor entered');
   parser.on('data', (chunk: any) => {
-    console.log("READING", chunk);
+    console.log('READING', chunk);
     // try {
     //   event.reply('senso', chunk);
     // } catch (err) {
@@ -2272,10 +2272,10 @@ async function sensores() {
 ipcMain.on('sensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
-  console.log("FUNCTION")
+  console.log('FUNCTION');
 
   if (!serialPort.isOpen) {
-    console.log("IF")
+    console.log('IF');
 
     serialPort.open();
     parser.resume();
@@ -2283,7 +2283,7 @@ ipcMain.on('sensores', async (event) => {
   console.log('Inner sensor entered');
 
   parser.on('data', (chunk: any) => {
-    console.log("READING", chunk);
+    console.log('READING', chunk);
 
     // try {
     //   event.reply('senso', chunk);
@@ -2321,13 +2321,8 @@ async function sensoresStop() {
 }
 ipcMain.handle('sensoresStop', sensoresStop);
 
-
-
-
-
-
 // const arduinoPorts: SerialPort[] = [serialPortArduino2];
-// const arduinoParser2 = arduinoPorts[0].pipe(new ReadlineParser({ delimiter: '\r\n' })); 
+// const arduinoParser2 = arduinoPorts[0].pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
 const arreglo1: Array<String> = [];
 const arreglo2: Array<String> = [];
@@ -2336,7 +2331,6 @@ const arreglo2: Array<String> = [];
 ipcMain.on('multiplesSensores', async (event) => {
   // const resp = await sensores();
   // console.log(resp);
-
 
   // for (let i = 0; i < arduinoPorts.length; i+=1) {
   //   console.log("Try on port ", arduinoPorts[i].path)
@@ -2348,58 +2342,53 @@ ipcMain.on('multiplesSensores', async (event) => {
   // arduinoPorts[0].open();
   // arduinoPorts[1].open();
 
-  console.log("Port1 is open?", arduinoPorts[0].isOpen);
-  console.log("Port2 is open?", arduinoPorts[1].isOpen);
+  console.log('Port1 is open?', arduinoPorts[0].isOpen);
+  console.log('Port2 is open?', arduinoPorts[1].isOpen);
 
   // console.log("Port2 is open?", arduinoPorts[0].isOpen);
-  
+
   // arduinoParser.resume();
   // arduinoParser2.resume();
 
-
   console.log('Inner sensor Multiple ');
-  
-  arduinoParser2.on('data', async(chunk: any) => {
-    console.log(chunk + " sensor2")
+
+  arduinoParser2.on('data', async (chunk: any) => {
+    console.log(chunk + ' sensor2');
     // arreglo2.push(chunk);
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor2");
+    mainWindow?.webContents.send('multiplesSenso', chunk + ' sensor2');
   });
 
-  arduinoParser.on('data', async(chunk: any) => {
-    console.log(chunk + " sensor1")
+  arduinoParser.on('data', async (chunk: any) => {
+    console.log(chunk + ' sensor1');
     // arreglo1.push(chunk);
-    mainWindow?.webContents.send('multiplesSenso', chunk + " sensor1");
+    mainWindow?.webContents.send('multiplesSenso', chunk + ' sensor1');
   });
-
-
 });
 
-
-app2.get("/multiplesArduinos", async (req: Request, res: Response) => {
-  console.log("Port1 is open?", arduinoPorts[0].isOpen);
-  console.log("Port2 is open?", arduinoPorts[1].isOpen);
+app2.get('/multiplesArduinos', async (req: Request, res: Response) => {
+  console.log('Port1 is open?', arduinoPorts[0].isOpen);
+  console.log('Port2 is open?', arduinoPorts[1].isOpen);
 
   console.log('Inner sensor Multiple ');
 
   arduinoParser.resume();
   arduinoParser2.resume();
-  
-  arduinoParser2.on('data', async(chunk: any) => {
-    console.log(chunk + " sensor2")
+
+  arduinoParser2.on('data', async (chunk: any) => {
+    console.log(chunk + ' sensor2');
     arreglo2.push(chunk);
   });
 
-  arduinoParser.on('data', async(chunk: any) => {
-    console.log(chunk + " sensor1")
+  arduinoParser.on('data', async (chunk: any) => {
+    console.log(chunk + ' sensor1');
     arreglo1.push(chunk);
   });
-}) 
-
+});
 
 async function sensoresStopMultiple() {
   // parser.off('data', console.log);
   console.log('Closing');
-  for (let i = 0; i < arduinoPorts.length; i+=1) {
+  for (let i = 0; i < arduinoPorts.length; i += 1) {
     if (arduinoPorts[i].isOpen) {
       arduinoPorts[i].close();
       arduinoParser.pause();
@@ -2407,24 +2396,23 @@ async function sensoresStopMultiple() {
     }
   }
   // mainWindow?.webContents.send('multiplesSenso', arreglo1 + "||||" + arreglo2);
-  
+
   // parser.write('\x03')
   // return arreglo1 + "||||" + arreglo2;
 }
 ipcMain.handle('sensoresStopMulti', sensoresStopMultiple);
 
-app2.get("/stopArduinos", async (req: Request, res: Response) => {
+app2.get('/stopArduinos', async (req: Request, res: Response) => {
   console.log('Closing');
-  for (let i = 0; i < arduinoPorts.length; i+=1) {
+  for (let i = 0; i < arduinoPorts.length; i += 1) {
     if (arduinoPorts[i].isOpen) {
       arduinoPorts[i].close();
       arduinoParser.pause();
       arduinoParser2.pause();
     }
   }
-  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2] }))
-
-}) 
+  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2] }));
+});
 
 // ipcMain.handle('sensoresStop', async (event) => {
 //   const resp = await sensoresStop();
@@ -2609,34 +2597,37 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
   }
 });
 
-ipcMain.handle('arduinoTest', async (event, duration: string, cantidadEmgs: string) => {
-  const options = {
-    args: [duration, cantidadEmgs],
-  };
-  console.log('Llamado Arduino Test');
-  const direc = __dirname;
-  const regex = /\//i;
-  const direcParsed = direc.replace(regex, '/');
-  const direcFinal = direcParsed.slice(0, -4);
-  try {
-    PythonShell.run(
-      `${direcFinal}/pythonScripts/nidaqTest.py`,
-      options,
-      function (err, results) {
-        if (err) {
-          console.log('err', err);
-        } else {
-          console.log(results);
-          mainWindow?.webContents.send('arduinoT', results![0]);
+ipcMain.handle(
+  'arduinoTest',
+  async (event, duration: string, cantidadEmgs: string) => {
+    const options = {
+      args: [duration, cantidadEmgs],
+    };
+    console.log('Llamado Arduino Test');
+    const direc = __dirname;
+    const regex = /\//i;
+    const direcParsed = direc.replace(regex, '/');
+    const direcFinal = direcParsed.slice(0, -4);
+    try {
+      PythonShell.run(
+        `${direcFinal}/pythonScripts/nidaqTest.py`,
+        options,
+        function (err, results) {
+          if (err) {
+            console.log('err', err);
+          } else {
+            console.log(results);
+            mainWindow?.webContents.send('arduinoT', results![0]);
+          }
         }
-      }
-    );
-  } catch (e: any) {
-    console.log('Error', e);
+      );
+    } catch (e: any) {
+      console.log('Error', e);
+    }
   }
-});
+);
 
-app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
+app2.get('/nidaq', async (req: Request, res: Response, next: any) => {
   const duracion = req.query.duracion as string;
   const cantidadEmgs = req.query.cantidadEmgs as string;
 
@@ -2645,29 +2636,38 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   // }
   // const worker = new Worker('script.js')
 
-  console.log("PARAMS", duracion, cantidadEmgs);
+  console.log('PARAMS', duracion, cantidadEmgs);
   const direc = __dirname;
   const regex = /\//i;
   const direcParsed = direc.replace(regex, '/');
   const direcFinal = direcParsed.slice(0, -4);
-  
+
   // const worker = new Worker(path.join(rootPath, 'worker.js'));
   // const worker = new Worker(`${direcFinal}/pythonScripts/testScript.js`);
   // console.log("Work", worker);
-  const pythonProcess = spawn('python', [`${direcFinal}/pythonScripts/nidaqTest.py`, duracion, cantidadEmgs, direcFinal]);
+  const pythonProcess = spawn('python', [
+    `${direcFinal}/pythonScripts/nidaqTest.py`,
+    duracion,
+    cantidadEmgs,
+    direcFinal,
+  ]);
 
   pythonProcess.on('exit', function (code: any, signal: any) {
     const result = pythonProcess.stdout?.toString()?.trim();
     const error = pythonProcess.stderr?.toString()?.trim();
     const strResult = result;
-    console.log('child process exited with ' +
-                `code ${code} and signal ${signal}`);
-    res.send(JSON.stringify({ status: 200, message: 'child process exited with ' +
-    `code ${code} and signal ${signal}` }))
-    
+    console.log(
+      'child process exited with ' + `code ${code} and signal ${signal}`
+    );
+    res.send(
+      JSON.stringify({
+        status: 200,
+        message:
+          'child process exited with ' + `code ${code} and signal ${signal}`,
+      })
+    );
   });
 
-  
   // console.log("PY", pythonProcess);
   // console.log("RES", result);
   // Comprobacion basada en el print cambiar de acuerdo a lo que se retornara
@@ -2679,71 +2679,76 @@ app2.get("/nidaq", async (req: Request, res: Response, next: any)=>{
   //   res.send(JSON.stringify({ status: 200, message: strResult }))
   //   // res.send(JSON.stringify({ status: 500, message: 'Server error' }))
   // }
-
 });
 
 const convertObjToCsv = (signals: any) => {
   const claves = Object.keys(signals);
   let csv = claves.join(',') + '\n';
 
-  const longitudMaxima = Math.max(...claves.map(clave => signals[clave].length));
+  const longitudMaxima = Math.max(
+    ...claves.map((clave) => signals[clave].length)
+  );
 
-  for (let i = 0; i < longitudMaxima; i+=1) {
-    const fila = claves.map(clave => signals[clave][i] || '').join(',');
+  for (let i = 0; i < longitudMaxima; i += 1) {
+    const fila = claves.map((clave) => signals[clave][i] || '').join(',');
     csv += fila + '\n';
   }
 
   return csv;
-}
+};
 
-app2.use(express.json({limit: '500mb'}));
-app2.use(express.urlencoded({limit: '500mb'}));
+app2.use(express.json({ limit: '500mb' }));
+app2.use(express.urlencoded({ limit: '500mb' }));
 
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
     // Obtener los datos enviados en la solicitud
     const nombre = req.query.nombre as string;
-    console.log("Body", req.body);
+    console.log('Body', req.body);
     const csvObj = convertObjToCsv(req.body);
-    console.log("CSV", csvObj);
-    const nombreArchivo = nombre || "arduinoData";
+    console.log('CSV', csvObj);
+    const nombreArchivo = nombre || 'arduinoData';
 
     const direc = __dirname;
     const regex = /\//i;
     const direcParsed = direc.replace(regex, '/');
     const direcFinal = direcParsed.slice(0, -4);
 
-    // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
-    fs.writeFile(`D:/KAREN/Modular/electron-app/${nombreArchivo}`, csvObj, function(err) {
-    // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
-      if (err) {
-        console.error('Error al guardar el archivo:', err);
-        throw err;
-      } else {
-        console.log('El archivo se ha guardado exitosamente:', nombreArchivo);
-      res.send(JSON.stringify({ status: 200, message: 'OK' }))
+    fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
+    // fs.writeFile(
+    //   `D:/KAREN/Modular/electron-app/${nombreArchivo}`,
+    //   csvObj,
+    //   function (err) {
+        // fs.writeFile(`${direcFinal}/main/archivosCsv/${nombreArchivo}`, csvObj, function(err) {
+        if (err) {
+          console.error('Error al guardar el archivo:', err);
+          throw err;
+        } else {
+          console.log('El archivo se ha guardado exitosamente:', nombreArchivo);
+          res.send(JSON.stringify({ status: 200, message: 'OK' }));
+        }
       }
-    });
+    );
   } catch (error) {
     console.error('Error al insertar datos', error);
     res.status(500).json({ error: 'Error al insertar datos' });
   }
 });
 
-
-app2.get("/obtenerObjDeCsv", async (req: Request, res: Response, next: any)=>{
-
+app2.get('/obtenerObjDeCsv', async (req: Request, res: Response, next: any) => {
   const direc = __dirname;
   const regex = /\//i;
   const direcParsed = direc.replace(regex, '/');
   const direcFinal = direcParsed.slice(0, -4);
-  
 
   try {
     // const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
-    // const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
+    const contenido = fs.readFileSync(`${direcFinal}/main/archivosCsv/resultadoEmgs.csv`, 'utf-8');
 
-    const contenido = fs.readFileSync(`D:/KAREN/Modular/electron-app/resultadoEmgs.csv`, 'utf-8');
+    // const contenido = fs.readFileSync(
+    //   `D:/KAREN/Modular/electron-app/resultadoEmgs.csv`,
+    //   'utf-8'
+    // );
     const filas = contenido.split('\n');
     const cabeceras = filas[0].split(',');
     const objetos = [];
@@ -2763,21 +2768,18 @@ app2.get("/obtenerObjDeCsv", async (req: Request, res: Response, next: any)=>{
         if (valor !== undefined) {
           valor = valor.trim();
         }
-
-        objeto[clave] = valor;
+        let num = parseFloat(valor);
+        if(isNaN(num)) {
+          num = 0;
+        }
+        objeto[clave] = num;
       }
 
       objetos.push(objeto);
     }
-    res.send(JSON.stringify({ status: 200, message: objetos }))
+    res.send(JSON.stringify({ status: 200, message: objetos }));
   } catch (error) {
     console.error('Error al leer el archivo:', error);
-    res.status(500).json({ error: 'Error al leer el archivo ' + error  });
-
+    res.status(500).json({ error: 'Error al leer el archivo ' + error });
   }
-
-
-
-
-
 });

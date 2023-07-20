@@ -8,6 +8,7 @@ import {
 import './Resultados.css';
 import GraficaDeSensores from './GraficaDeSensores';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
+import SensoresAdquisicionGraficar from '../SensoresAdquisicion/SensoresAdquisicionGraficar';
 
 export interface ResultadosProps {
   onClickBack: () => void;
@@ -31,7 +32,8 @@ const Resultados = (props: ResultadosProps) => {
         <h3>Analice o guarde los resultados</h3>
       </section>
       {/* <GraficaDeSensores dataArr={dataArr} gridLayout={gridLayout} /> */}
-      <SensoresAdquisicionGraficarContainer cantidadEmgs={sensoresSelected} emgData={emgDataAdquirida} arduinoData={arduinoDataAdquirida} />
+      <SensoresAdquisicionGraficar gridLayout={gridLayout} dataArr={dataArr}/>;
+      {/* <SensoresAdquisicionGraficarContainer cantidadEmgs={sensoresSelected} emgData={emgDataAdquirida} arduinoData={arduinoDataAdquirida} /> */}
       <form onSubmit={onClickCrear}>
         <section className="display-flex">
           <h5>Etiqueta del registro: </h5>

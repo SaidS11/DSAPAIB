@@ -57,14 +57,28 @@ const ResultadosContainer = () => {
     (state) => state.señales.frecuenciaIsChecked
   );
 
+  const temperaturaChecked = useCustomSelector(
+    (state) => state.señales.temperaturaIsChecked
+  );
+
+
   const [gsrDataX, setGsrDataX] = useState([0]);
   const [gsrDataY, setGsrDataY] = useState([0]);
 
-  const [acelerometroDataX, setAcelerometroDataX] = useState([0]);
-  const [acelerometroDataY, setAcelerometroDataY] = useState([0]);
+  const [acelerometroInclXDataX, setAcelerometroInclXDataX] = useState([0]);
+  const [acelerometroInclXDataY, setAcelerometroInclXDataY] = useState([0]);
+
+  const [acelerometroInclYDataX, setAcelerometroInclYDataX] = useState([0]);
+  const [acelerometroInclYDataY, setAcelerometroInclYDataY] = useState([0]);
+
+  const [acelerometroInclZDataX, setAcelerometroInclZDataX] = useState([0]);
+  const [acelerometroInclZDataY, setAcelerometroInclZDataY] = useState([0]);
 
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
+
+  const [temperaturaDataX, setTemperaturaDataX] = useState([0]);
+  const [temperaturaDataY, setTemperaturaDataY] = useState([0]);
 
   const [isDataReady, setIsDataReady] = useState(false);
   const [grid, setGrid] = useState<any>([]);
@@ -193,37 +207,61 @@ const ResultadosContainer = () => {
     name: 'Frecuencia',
   };
 
+  const trace7 = {
+    x: temperaturaDataX,
+    y: temperaturaDataY,
+    xaxis: 'x6',
+    yaxis: 'y6',
+    type: 'scatter',
+    // mode: 'markers+lines',
+    name: 'Temperatura',
+  };
+
   // const [dataX7, setDataX7] = useState([0]);
   // const [dataY7, setDataY7] = useState([0]);
-  const trace7 = {
-    x: acelerometroDataX,
-    y: acelerometroDataY,
+  const trace8 = {
+    x: acelerometroInclXDataX,
+    y: acelerometroInclXDataY,
     xaxis: 'x7',
     yaxis: 'y7',
     type: 'scatter',
     // mode: 'markers+lines',
-    name: 'Acelerometro',
+    name: 'INCLX',
   };
 
   const [dataX8, setDataX8] = useState([0]);
   const [dataY8, setDataY8] = useState([0]);
-  const trace8 = {
-    x: dataX8,
-    y: dataY8,
+  const trace9 = {
+    x: acelerometroInclYDataX,
+    y: acelerometroInclYDataY,
     xaxis: 'x8',
     yaxis: 'y8',
     type: 'scatter',
+    name: 'INCLY',
+  };
+  const trace10 = {
+    x: acelerometroInclZDataX,
+    y: acelerometroInclZDataY,
+    xaxis: 'x8',
+    yaxis: 'y8',
+    type: 'scatter',
+    name: 'INCLZ',
   };
 
   const [signalRetrieved, setSignalRetrieved] = useState(false);
   const retrieveSignal = () => {
+    console.log("RECEIVED", objetoMongo.signals)
     const { emg1 } = objetoMongo.signals;
     const { emg2 } = objetoMongo.signals;
     const { emg3 } = objetoMongo.signals;
     const { emg4 } = objetoMongo.signals;
-    const { acelerometro } = objetoMongo.signals;
-    const { gsr } = objetoMongo.signals;
-    const { frecuencia } = objetoMongo.signals;
+    const { INCLX } = objetoMongo.signals;
+    const { INCLY } = objetoMongo.signals;
+    const { INCLZ } = objetoMongo.signals;
+    const { GSR } = objetoMongo.signals;
+    const { HRLM } = objetoMongo.signals;
+    const { TC } = objetoMongo.signals;
+
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -240,43 +278,78 @@ const ResultadosContainer = () => {
     const gsrSignalLocalX = [];
     const gsrSignalLocalY = [];
 
-    const acelerometroSignalLocalX = [];
-    const acelerometroSignalLocalY = [];
+    const acelerometroInclXSignalLocalX = [];
+    const acelerometroInclXSignalLocalY = [];
+    const acelerometroInclYSignalLocalX = [];
+    const acelerometroInclYSignalLocalY = [];
+    const acelerometroInclZSignalLocalX = [];
+    const acelerometroInclZSignalLocalY = [];
 
     const frecuenciaSignalLocalX = [];
     const frecuenciaSignalLocalY = [];
 
-    for (let i = 0; i < emg1.length; i += 1) {
+    const temperaturaSignalLocalX = [];
+    const temperaturaSignalLocalY = [];
+
       if (sensoresSelected >= 1) {
-        xArrayEmg1.push(emg1[i].x);
-        yArrayEmg1.push(emg1[i].y);
+        for (let i = 0; i < emg1.length; i += 1) {
+          xArrayEmg1.push(emg1[i].x);
+          yArrayEmg1.push(emg1[i].y);
+        }
       }
+    
       if (sensoresSelected >= 2) {
-        xArray2Emg2.push(emg2[i].x);
-        yArray2Emg2.push(emg2[i].y);
+        for (let i = 0; i < emg2.length; i += 1) {
+          xArray2Emg2.push(emg2[i].x);
+          yArray2Emg2.push(emg2[i].y);
+        }
       }
       if (sensoresSelected >= 3) {
-        xArray3Emg3.push(emg3[i].x);
-        yArray3Emg3.push(emg3[i].y);
+        for (let i = 0; i < emg3.length; i += 1) {
+          xArray3Emg3.push(emg3[i].x);
+          yArray3Emg3.push(emg3[i].y);
+        }
       }
       if (sensoresSelected >= 4) {
-        xArray4Emg4.push(emg4[i].x);
-        yArray4Emg4.push(emg4[i].y);
+        for (let i = 0; i < emg4.length; i += 1) {
+          xArray4Emg4.push(emg4[i].x);
+          yArray4Emg4.push(emg4[i].y);
+        }
       }
 
+    
       if (gsrChecked) {
-        gsrSignalLocalX.push(gsr[i].x);
-        gsrSignalLocalY.push(gsr[i].y);
+        for (let i = 0; i < GSR.length; i += 1) {
+          gsrSignalLocalX.push(GSR[i].x);
+          gsrSignalLocalY.push(GSR[i].y);
+        }
       }
       if (acelerometroChecked) {
-        acelerometroSignalLocalX.push(acelerometro[i].x);
-        acelerometroSignalLocalY.push(acelerometro[i].y);
+        for (let i = 0; i < INCLX.length; i += 1) {
+          acelerometroInclXSignalLocalX.push(INCLX[i].x);
+          acelerometroInclXSignalLocalY.push(INCLX[i].y);
+        }
+        for (let i = 0; i < INCLY.length; i += 1) {
+          acelerometroInclYSignalLocalX.push(INCLY[i].x);
+          acelerometroInclYSignalLocalY.push(INCLY[i].y);
+        }
+        for (let i = 0; i < INCLZ.length; i += 1) {
+          acelerometroInclZSignalLocalX.push(INCLZ[i].x);
+          acelerometroInclZSignalLocalY.push(INCLZ[i].y);
+        }
       }
       if (frecuenciaChecked) {
-        frecuenciaSignalLocalX.push(frecuencia[i].x);
-        frecuenciaSignalLocalY.push(frecuencia[i].y);
+        for (let i = 0; i < HRLM.length; i += 1) {
+          frecuenciaSignalLocalX.push(HRLM[i].x);
+          frecuenciaSignalLocalY.push(HRLM[i].y);
+        }
       }
-    }
+      if (temperaturaChecked) {
+        for (let i = 0; i < TC.length; i += 1) {
+          temperaturaSignalLocalX.push(TC[i].x);
+          temperaturaSignalLocalY.push(TC[i].y);
+        }
+      }
     if (sensoresSelected >= 1) {
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);
@@ -301,12 +374,23 @@ const ResultadosContainer = () => {
       setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
-      setAcelerometroDataX(acelerometroSignalLocalX);
-      setAcelerometroDataY(acelerometroSignalLocalY);
+      setAcelerometroInclXDataX(acelerometroInclXDataX);
+      setAcelerometroInclXDataX(acelerometroInclXDataY);
+
+      setAcelerometroInclYDataX(acelerometroInclYDataX);
+      setAcelerometroInclYDataX(acelerometroInclYDataY);
+
+      setAcelerometroInclZDataX(acelerometroInclZDataX);
+      setAcelerometroInclZDataX(acelerometroInclZDataY);
     }
     if (frecuenciaChecked) {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
+    }
+
+    if (temperaturaChecked) {
+      setTemperaturaDataX(temperaturaDataX);
+      setTemperaturaDataY(temperaturaDataY);
     }
     setSignalRetrieved(true);
   };
@@ -333,8 +417,14 @@ const ResultadosContainer = () => {
     if (frecuenciaChecked) {
       dataAux.push(trace6);
     }
-    if (acelerometroChecked) {
+    if (temperaturaChecked) {
       dataAux.push(trace7);
+    }
+    if (acelerometroChecked) {
+      dataAux.push(trace8);
+      dataAux.push(trace9);
+      dataAux.push(trace10);
+
     }
     // setDataReady(dataArr);
     // impar aumenta las columns
@@ -360,6 +450,10 @@ const ResultadosContainer = () => {
     if (totalSensores >= 7) {
       dynamicRows = 2;
       dynamicColumns = 4;
+    }
+    if (totalSensores >= 9) {
+      dynamicRows = 2;
+      dynamicColumns = 5;
     }
     const objGrid = {
       rows: dynamicRows,

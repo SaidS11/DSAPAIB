@@ -10,15 +10,22 @@ import {
   setExtraSensorsChecked,
   setCleanAllSensors,
   setTemperaturaIsChecked,
+  setMongoInsertObject,
+  setTotalSensores,
 } from '../../../redux/slices/SeñalesSlice';
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
-import { apiEndpoint, ardMessage } from '../Utilities/Constants';
+import { apiEndpoint, ardMessage, completeAdqObject } from '../Utilities/Constants';
 import Button from '@mui/material/Button';
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
 import { setDuracionProtocolo } from 'redux/slices/ConfiguracionSlice';
+
+function esFlotante(numero: number) {
+  return !Number.isInteger(numero);
+}
+
 
 function parseEMG(arreglo: Array<Object>) {
 
@@ -141,8 +148,14 @@ const VideoDemoContainer = () => {
       console.log("Duracion", v!.duration);
     },true);
     console.log("Duracion", v!.duration);
+    const validacionDeFlotantes = esFlotante(v!.duration);
+    if(validacionDeFlotantes) {
+      const redondeado = Math.ceil(v!.duration);
+      appDispatch(setDuracionProtocolo(redondeado));
 
-    appDispatch(setDuracionProtocolo(v!.duration));
+    } else {
+      appDispatch(setDuracionProtocolo(v!.duration));
+    }
 
     appDispatch(setCleanAllSensors(true));
     // const resp = await window.electron.ipcRenderer.sensoStop();
@@ -197,7 +210,20 @@ const VideoDemoContainer = () => {
     appDispatch(setAcelerometroIsChecked(acelerometro));
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
     appDispatch(setTemperaturaIsChecked(temperatura));
-
+    let cantidadTotalSensores = cantidadEmgs;
+    if(gsr) {
+      cantidadTotalSensores = cantidadTotalSensores + 1
+    }
+    if(frecuencia_cardiaca) {
+      cantidadTotalSensores = cantidadTotalSensores + 1
+    }
+    if(acelerometro) {
+      cantidadTotalSensores = cantidadTotalSensores + 3
+    }
+    if(temperatura) {
+      cantidadTotalSensores = cantidadTotalSensores + 1
+    }
+    appDispatch(setTotalSensores(cantidadTotalSensores));
     appDispatch(
       setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
@@ -241,7 +267,26 @@ const VideoDemoContainer = () => {
 
  
   const onClickStart = async () => {
-    console.log("START")
+
+    
+    console.log("START");
+    // const adqObj: any = completeAdqObject;
+    // const transformedObj: any = {};
+    // for (const key in adqObj) {
+    //   if (adqObj.hasOwnProperty(key)) {
+    //     const newArray = adqObj[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
+    //     transformedObj[key] = newArray;
+    //   }
+    // }
+    // const objWrapper = {
+    //   signals: transformedObj
+    // }
+    // appDispatch(setMongoInsertObject(objWrapper));
+    // navigate('/resultados');
+
+
+
+
     setBloqueoDeBoton(true);
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
@@ -468,16 +513,26 @@ const VideoDemoContainer = () => {
           setBaudSelected2={setBaudSelected2}
         />
       )}
+      <div>
+
+      </div>
       <section className="display-center">
         <h3>
-          Para probar si los sensores funcionan correctamente presione Comenzar
+          Para probar si los sensores funcionan correctamente presione "Probar Sensores"
         </h3>
+      </section>
+      <section className="display-center">
+        <h5>
+          Comenzara una adquisición de 5 segundos y posteriormente se mostraran los resultados obtenidos
+        </h5>
+      </section>
+      <section className="display-center">
         <Button
-          sx={styleButtonBiggerGreen}
+          sx={styleButton}
           style={{ fontSize: '20px' }}
           onClick={onClickStart}
         >
-          Comenzar
+          Probar Sensores
         </Button>
       </section>
       {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData} arduinoData={arduinoDataArg} />)}

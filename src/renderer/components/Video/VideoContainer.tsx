@@ -151,7 +151,8 @@ const VideoContainer = () => {
   const adquisicion = async ()=> {
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=16&cantidadEmgs=${cantidadEmgs}`);
+    // No mandar decimales y redondedar hacia arriba
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=${duracion}&cantidadEmgs=${cantidadEmgs}`);
 
     const data = await startNidaq.json();
 
@@ -292,11 +293,19 @@ const VideoContainer = () => {
       }
 
       const objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
+      const transformedObj: any = {};
 
-
-      const objWrapper = {
-        signals: objetoAdquirido
+      for (const key in objetoAdquirido) {
+        if (objetoAdquirido.hasOwnProperty(key)) {
+          const newArray = objetoAdquirido[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
+          transformedObj[key] = newArray;
+        }
       }
+      const objWrapper = {
+        signals: transformedObj
+      }
+
+
       console.log("Wrapped", objWrapper);
       appDispatch(setMongoInsertObject(objWrapper));
       appDispatch(setArduinoDataAdquirida(objetoArduinoMultiple));
