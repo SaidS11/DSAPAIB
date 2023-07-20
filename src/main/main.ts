@@ -2772,7 +2772,8 @@ app2.get('/obtenerObjDeCsv', async (req: Request, res: Response, next: any) => {
         if(isNaN(num)) {
           num = 0;
         }
-        objeto[clave] = num;
+        const resultadoVerdadero = num / 1500;
+        objeto[clave] = resultadoVerdadero;
       }
 
       objetos.push(objeto);

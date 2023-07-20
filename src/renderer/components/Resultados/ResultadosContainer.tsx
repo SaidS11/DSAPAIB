@@ -393,7 +393,7 @@ const ResultadosContainer = () => {
       console.log("DATOS TEMP", temperaturaDataX, temperaturaDataY)
 
       setTemperaturaDataX(temperaturaSignalLocalX);
-      setTemperaturaDataY(temperaturaSignalLocalX);
+      setTemperaturaDataY(temperaturaSignalLocalY);
     }
     setSignalRetrieved(true);
   };

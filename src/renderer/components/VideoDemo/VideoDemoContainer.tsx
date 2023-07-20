@@ -399,9 +399,11 @@ const VideoDemoContainer = () => {
         const arduino2Data = registrosCompletos2;
         const returnObj = parseArduinoData(arduino2Data)
         objetoArduino2 = returnObj;
-        objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
+        // Comentado por operaciones
+        // objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
       }
   
+      
   
       // Limpieza de claves no permitidas
       const posiblesClaves = ['INCLX', 'INCLY', 'INCLZ', 'HRLM', 'TC', 'GSR']
@@ -439,6 +441,38 @@ const VideoDemoContainer = () => {
           delete objetoArduino2[clave];
         }
       }
+
+
+      // Aplicar operaciones al acelerometro
+
+      // Mejorar logica de pop
+      if(objetoArduino2.INCLY.length > objetoArduino2.INCLX.length) {
+        objetoArduino2.INCLY.pop()
+      }
+      if(objetoArduino2.INCLZ.length > objetoArduino2.INCLX.length) {
+        objetoArduino2.INCLZ.pop()
+      }
+      const resultArrayX = [];
+      const resultArrayY = [];
+      const resultArrayZ = [];
+
+      for (let i = 0; i < objetoArduino2.INCLX.length; i++) {
+        const resultX = Math.atan(objetoArduino2.INCLX[i] / Math.sqrt((objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+        const resultY = Math.atan(objetoArduino2.INCLY[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+        const resultZ = Math.atan(objetoArduino2.INCLZ[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]))) * (180 / 3.14);
+
+        
+        resultArrayX.push(resultX);
+        resultArrayY.push(resultY);
+        resultArrayZ.push(resultZ);
+        
+      }
+      objetoArduino2.INCLX = resultArrayX;
+      objetoArduino2.INCLY = resultArrayY;
+      objetoArduino2.INCLZ = resultArrayZ;
+
+
+      objetoArduinoMultiple = {...objetoArduinoMultiple, ...objetoArduino2};
   
       console.log("OBJ", objetoArduinoMultiple);
   
