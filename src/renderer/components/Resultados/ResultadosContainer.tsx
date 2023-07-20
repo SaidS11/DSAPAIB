@@ -375,14 +375,14 @@ const ResultadosContainer = () => {
     }
     if (acelerometroChecked) {
       console.log("DATOS ACELEROMETRO", acelerometroInclXDataX, acelerometroInclXDataY)
-      setAcelerometroInclXDataX(acelerometroInclXDataX);
-      setAcelerometroInclXDataY(acelerometroInclXDataY);
+      setAcelerometroInclXDataX(acelerometroInclXSignalLocalX);
+      setAcelerometroInclXDataY(acelerometroInclXSignalLocalY);
 
-      setAcelerometroInclYDataX(acelerometroInclYDataX);
-      setAcelerometroInclYDataY(acelerometroInclYDataY);
+      setAcelerometroInclYDataX(acelerometroInclYSignalLocalX);
+      setAcelerometroInclYDataY(acelerometroInclYSignalLocalY);
 
-      setAcelerometroInclZDataX(acelerometroInclZDataX);
-      setAcelerometroInclZDataY(acelerometroInclZDataY);
+      setAcelerometroInclZDataX(acelerometroInclZSignalLocalX);
+      setAcelerometroInclZDataY(acelerometroInclZSignalLocalY);
     }
     if (frecuenciaChecked) {
       setFrecuenciaDataX(frecuenciaSignalLocalX);
@@ -392,8 +392,8 @@ const ResultadosContainer = () => {
     if (temperaturaChecked) {
       console.log("DATOS TEMP", temperaturaDataX, temperaturaDataY)
 
-      setTemperaturaDataX(temperaturaDataX);
-      setTemperaturaDataY(temperaturaDataY);
+      setTemperaturaDataX(temperaturaSignalLocalX);
+      setTemperaturaDataY(temperaturaSignalLocalX);
     }
     setSignalRetrieved(true);
   };
