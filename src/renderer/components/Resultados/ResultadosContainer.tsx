@@ -374,6 +374,7 @@ const ResultadosContainer = () => {
       setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
+      console.log("DATOS ACELEROMETRO", acelerometroInclXDataX, acelerometroInclXDataY)
       setAcelerometroInclXDataX(acelerometroInclXDataX);
       setAcelerometroInclXDataY(acelerometroInclXDataY);
 
@@ -389,6 +390,8 @@ const ResultadosContainer = () => {
     }
 
     if (temperaturaChecked) {
+      console.log("DATOS TEMP", temperaturaDataX, temperaturaDataY)
+
       setTemperaturaDataX(temperaturaDataX);
       setTemperaturaDataY(temperaturaDataY);
     }
