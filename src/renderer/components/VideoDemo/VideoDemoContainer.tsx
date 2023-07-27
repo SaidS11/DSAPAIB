@@ -397,6 +397,9 @@ const VideoDemoContainer = () => {
     if (cantidadArduinos > 1) {
       console.log("Mas de 1 arduino");
 
+      console.log("ARREGLO TIME 1", arreglo[2]);
+      console.log("ARREGLO TIME 2", arreglo[3]);
+
       const encontrado = arreglo[0].some((elemento: string) => elemento.includes("INCLY"));
 
       let arregloArduinoConAcelerometro;
