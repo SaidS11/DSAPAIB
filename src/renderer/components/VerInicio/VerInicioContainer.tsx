@@ -14,6 +14,8 @@ const InicioContainer = () =>{
   const onClickAnalisis = () => {
     navigate('/verAnalisis');
   };
+  console.log("TIME", `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
+
   return (
     <div>
       <VerInicio onClickPacientes={onClickPacientes} onClickProtocolo={onClickProtocolo} onClickAnalisis={onClickAnalisis} />

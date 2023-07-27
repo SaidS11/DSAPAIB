@@ -2327,6 +2327,9 @@ ipcMain.handle('sensoresStop', sensoresStop);
 const arreglo1: Array<String> = [];
 const arreglo2: Array<String> = [];
 
+const arreglo1TimeStamp: Array<string> = [];
+const arreglo2TimeStamp: Array<string> = [];
+
 // let arduinoParser2 = serialPortArduino2.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 ipcMain.on('multiplesSensores', async (event) => {
   // const resp = await sensores();
@@ -2377,11 +2380,22 @@ app2.get('/multiplesArduinos', async (req: Request, res: Response) => {
   arduinoParser2.on('data', async (chunk: any) => {
     console.log(chunk + ' sensor2');
     arreglo2.push(chunk);
+    // const objTime = {
+    //   valor: chunk,
+    //   time: new Date()
+    // }
+    arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
   });
 
   arduinoParser.on('data', async (chunk: any) => {
     console.log(chunk + ' sensor1');
     arreglo1.push(chunk);
+    // const objTime2 = {
+    //   valor: chunk,
+    
+    //   time: new Date()
+    // }
+    arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
   });
 });
 
@@ -2411,7 +2425,7 @@ app2.get('/stopArduinos', async (req: Request, res: Response) => {
       arduinoParser2.pause();
     }
   }
-  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2] }));
+  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
 });
 
 // ipcMain.handle('sensoresStop', async (event) => {

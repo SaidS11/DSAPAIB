@@ -127,7 +127,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x1',
         yaxis: 'y1',
         type: 'scatter',
-        line: { color: 'black' },
+        line: { color: 'blue' },
         mode: 'markers+lines',
         name: 'EMG1',
     };
@@ -140,7 +140,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         type: 'scatter',
         // mode: 'lines+markers',
         // mode:'markers',
-        line: { color: 'blue' },
+        line: { color: 'skyblue' },
         // With each click a push to the colors array must be added to keep adding colors
         mode: 'markers+lines',
         name: 'EMG2',
@@ -152,7 +152,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x3',
         yaxis: 'y3',
         type: 'scatter',
-        line: { color: 'yellow' },
+        line: { color: 'cyan' },
         mode: 'markers+lines',
         name: 'EMG3',
     };
@@ -164,7 +164,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x4',
         yaxis: 'y4',
         type: 'scatter',
-        line: { color: 'green' },
+        line: { color: 'black' },
         mode: 'markers+lines',
         name: 'EMG4',
     };
@@ -175,7 +175,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x5',
         yaxis: 'y5',
         type: 'scatter',
-        line: { color: 'brown' },
+        line: { color: 'gray' },
         mode: 'markers+lines',
         name: 'GSR',
     };
@@ -186,7 +186,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x6',
         yaxis: 'y6',
         type: 'scatter',
-        line: { color: 'orange' },
+        line: { color: 'red' },
         mode: 'markers+lines',
         name: 'TC',
     };
@@ -197,7 +197,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x7',
         yaxis: 'y7',
         type: 'scatter',
-        line: { color: 'red' },
+        line: { color: 'orange' },
         mode: 'markers+lines',
         name: 'HRLM',
     };
@@ -208,7 +208,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x8',
         yaxis: 'y8',
         type: 'scatter',
-        line: { color: 'skyblue' },
+        line: { color: 'yellow' },
         mode: 'markers+lines',
         name: 'INCLX',
     };
@@ -219,7 +219,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x9',
         yaxis: 'y9',
         type: 'scatter',
-        line: { color: 'cyan' },
+        line: { color: 'green' },
         mode: 'markers+lines',
         name: 'INCLY',
     };
@@ -230,7 +230,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x10',
         yaxis: 'y10',
         type: 'scatter',
-        line: { color: 'gray' },
+        line: { color: 'brown' },
         mode: 'markers+lines',
         name: 'INCLZ',
     };

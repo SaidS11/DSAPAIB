@@ -106,6 +106,13 @@ const VideoContainer = () => {
     (state) => state.config.duracionProtocolo
   );
 
+  const formatoRegEx = useCustomSelector(
+    (state) => state.señales.regExSinAcelerometro
+  );
+
+  const gsrIsChecked = useCustomSelector(
+    (state) => state.señales.gsrIsChecked
+  );
   console.log("Duracion", duracion);
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
@@ -191,7 +198,7 @@ const VideoContainer = () => {
       }
 
       const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
-        const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
+        const formatoCompleto = formatoRegEx;
         return formatoCompleto.test(registro);
       });
   
@@ -212,10 +219,11 @@ const VideoContainer = () => {
       if (cantidadArduinos >= 1) {
         const arduino1Data = registrosCompletos;
         const returnObj = parseArduinoData(arduino1Data)
+        if(gsrIsChecked) {
+          const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
+          returnObj.GSR = nuevoGsr
+        }
 
-        const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
-
-        returnObj.GSR = nuevoGsr
         objetoArduino1 = returnObj;
         objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
       }
@@ -223,7 +231,8 @@ const VideoContainer = () => {
         const arduino2Data = registrosCompletos2;
         const returnObj = parseArduinoData(arduino2Data)
         objetoArduino2 = returnObj;
-        objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
+        // Comentado por operaciones
+        // objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
       }
   
   
@@ -263,6 +272,39 @@ const VideoContainer = () => {
           delete objetoArduino2[clave];
         }
       }
+      
+      // Aplicar operaciones al acelerometro
+      const diferenciaYRespectoaX = objetoArduino2.INCLY.length - objetoArduino2.INCLX.length;
+      const diferenciaZRespectoaX = objetoArduino2.INCLZ.length - objetoArduino2.INCLX.length;
+
+      for(let i = 0; i <= diferenciaYRespectoaX; i += 1) {
+        objetoArduino2.INCLY.pop()
+      }
+      for(let i = 0; i <= diferenciaZRespectoaX; i += 1) {
+        objetoArduino2.INCLZ.pop()
+      }
+
+      const resultArrayX = [];
+      const resultArrayY = [];
+      const resultArrayZ = [];
+
+      for (let i = 0; i < objetoArduino2.INCLX.length; i++) {
+        const resultX = Math.atan(objetoArduino2.INCLX[i] / Math.sqrt((objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+        const resultY = Math.atan(objetoArduino2.INCLY[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+        const resultZ = Math.atan(objetoArduino2.INCLZ[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]))) * (180 / 3.14);
+
+        
+        resultArrayX.push(resultX);
+        resultArrayY.push(resultY);
+        resultArrayZ.push(resultZ);
+        
+      }
+      objetoArduino2.INCLX = resultArrayX;
+      objetoArduino2.INCLY = resultArrayY;
+      objetoArduino2.INCLZ = resultArrayZ;
+
+
+      objetoArduinoMultiple = {...objetoArduinoMultiple, ...objetoArduino2};
   
       console.log("OBJ", objetoArduinoMultiple);
   

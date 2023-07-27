@@ -97,13 +97,13 @@ const Pacientes = (props: PacientesContentProps) => {
         <section>
           <h2> Seleccione un paciente de la lista o agregue uno</h2>
         </section>
-        <section style={{ marginLeft: 'auto' }}>
+        <section style={{ marginLeft: "3%" }}>
           <span
             className="icon-user-plus"
             onClick={onClickNavigate}
             onKeyDown={onClickNavigate}
             role="presentation"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: 'pointer', color: 'green' }}
           />
         </section>
       </div>
@@ -115,6 +115,7 @@ const Pacientes = (props: PacientesContentProps) => {
           setGlobalFilter={setGlobalFilter}
         />
       </div>
+      <br />
       <div
         style={{
           width: '100%',

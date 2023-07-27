@@ -12,6 +12,7 @@ import {
   setTemperaturaIsChecked,
   setMongoInsertObject,
   setTotalSensores,
+  setRegExSinAcelerometro,
 } from '../../../redux/slices/SeñalesSlice';
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
@@ -60,6 +61,16 @@ function calcularValorCorrectoGsr(arreglo: Array<number>) {
 
   console.log("RETURNED", nuevoArreglo);
   return nuevoArreglo;
+}
+
+function calcularTimeGsr(arreglo: Array<number>) {
+  const nuevosValores = [];
+
+  for (let i = 0; i < arreglo.length; i += 10) {
+    nuevosValores.push(arreglo[i]);
+  }
+
+  return nuevosValores;
 }
 
 
@@ -119,6 +130,14 @@ const VideoDemoContainer = () => {
   const [portSelected, setPortSelected] = useState('');
   const [baudSelected2, setBaudSelected2] = useState(9600);
   const [portSelected2, setPortSelected2] = useState('');
+  const [formatoParsedSinAcelerometro, setFormatoParsedSinAcelerometro] = useState<RegExp | null>(null);
+  const [gsrLocalChecked, setGsrLocalChecked] = useState(false);
+  const [acelerometroLocalChecked, setAcelerometroLocalChecked] = useState(false);
+  const [tempLocalChecked, setTempLocalChecked] = useState(false);
+  const [frecuenciaLocalChecked, setFrecuenciaLocalChecked] = useState(false);
+
+
+
   // TESTS DONE
   const [open, setOpen] = useState(true);
   const [cantidadArduinos, setCantidadArduinos] = useState(0);
@@ -208,26 +227,37 @@ const VideoDemoContainer = () => {
     );
     appDispatch(setCantidadSensores(cantidadEmgs));
     appDispatch(setGsrIsChecked(gsr));
+    setGsrLocalChecked(gsr);
     appDispatch(setAcelerometroIsChecked(acelerometro));
+    setAcelerometroLocalChecked(acelerometro);
     appDispatch(setFrecuenciaIsChecked(frecuencia_cardiaca));
+    setFrecuenciaLocalChecked(frecuencia_cardiaca);
     appDispatch(setTemperaturaIsChecked(temperatura));
+    setTempLocalChecked(temperatura);
     let cantidadTotalSensores = cantidadEmgs;
+    let regAux: RegExp = /\bEMPTY: \d+\b/;
     if(gsr) {
       cantidadTotalSensores = cantidadTotalSensores + 1
+      regAux = /\bGSR: \d+\b/;
     }
     if(frecuencia_cardiaca) {
       cantidadTotalSensores = cantidadTotalSensores + 1
+      regAux = /\bTC: \d+\.\d+, GSR: \d+\b/;
+
     }
     if(acelerometro) {
       cantidadTotalSensores = cantidadTotalSensores + 3
     }
     if(temperatura) {
       cantidadTotalSensores = cantidadTotalSensores + 1
+      regAux = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
     }
     appDispatch(setTotalSensores(cantidadTotalSensores));
     appDispatch(
       setExtraSensorsChecked([gsr, acelerometro, frecuencia_cardiaca])
     );
+    setFormatoParsedSinAcelerometro(regAux);
+    appDispatch(setRegExSinAcelerometro(regAux));
     appDispatch(setIsLoading(false));
 
     return resp;
@@ -301,7 +331,18 @@ const VideoDemoContainer = () => {
     }
 
     // TESTS
+    // const transformedObj: any = {};
+    // for (const key in completeAdqObject) {
+    //   if (completeAdqObject.hasOwnProperty(key)) {
+    //     const newArray = completeAdqObject[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
+    //     transformedObj[key] = newArray;
+    //   }
+    // }
+    // const objWrapper = {
+    //   signals: transformedObj
+    // }
 
+    // console.log("OBJ", objWrapper)
     
 
     // let returnedEmg;
@@ -342,6 +383,7 @@ const VideoDemoContainer = () => {
   const stopArduinos = async () => {
 
     console.log("Stopping");
+    appDispatch(setIsLoading(true));
     const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
     const arduinoSTOP = await stopArduinos.json();
 
@@ -354,26 +396,37 @@ const VideoDemoContainer = () => {
 
     if (cantidadArduinos > 1) {
       console.log("Mas de 1 arduino");
+
       const encontrado = arreglo[0].some((elemento: string) => elemento.includes("INCLY"));
 
       let arregloArduinoConAcelerometro;
       let arregloArduinoSinAcelerometro;
 
+      let timestampArduinoConAcelerometro;
+      let timestampArduinoSinAcelerometro;
+
+
       if(encontrado) {
         arregloArduinoConAcelerometro = arreglo[0];
+        timestampArduinoConAcelerometro = arreglo[2];
         arregloArduinoSinAcelerometro = arreglo[1];
+        timestampArduinoSinAcelerometro = arreglo[3];
+
       } else {
         arregloArduinoConAcelerometro = arreglo[1];
+        timestampArduinoSinAcelerometro = arreglo[3];
         arregloArduinoSinAcelerometro = arreglo[0];
+        timestampArduinoConAcelerometro = arreglo[2];
+
       }
 
-      const registrosCompletos = arreglo[0].filter((registro: string) => {
-        const formatoCompleto = /\bHRLM: \d+, TC: \d+\.\d+, GSR: \d+\b/;
+      const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
+        const formatoCompleto = formatoParsedSinAcelerometro ||  /\bEMPTY: \d+\b/;
         return formatoCompleto.test(registro);
       });
   
   
-      const registrosCompletos2 = arreglo[1].filter((registro: string) => {
+      const registrosCompletos2 = arregloArduinoConAcelerometro.filter((registro: string) => {
         const formatoCompleto = /INCLX: -?\d+(?:\.\d+)?, INCLY: -?\d+(?:\.\d+)?, INCLZ: -?\d+(?:\.\d+)?/;
         return formatoCompleto.test(registro);
       });
@@ -389,10 +442,11 @@ const VideoDemoContainer = () => {
       if (cantidadArduinos >= 1) {
         const arduino1Data = registrosCompletos;
         const returnObj = parseArduinoData(arduino1Data)
+        if(gsrLocalChecked) {
+          const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
+          returnObj.GSR = nuevoGsr
+        }
 
-        const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
-
-        returnObj.GSR = nuevoGsr
         objetoArduino1 = returnObj;
         objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
       }
@@ -445,14 +499,25 @@ const VideoDemoContainer = () => {
 
 
       // Aplicar operaciones al acelerometro
-
-      // Mejorar logica de pop
-      if(objetoArduino2.INCLY.length > objetoArduino2.INCLX.length) {
+      const diferenciaYRespectoaX = objetoArduino2.INCLY.length - objetoArduino2.INCLX.length;
+      const diferenciaZRespectoaX = objetoArduino2.INCLZ.length - objetoArduino2.INCLX.length;
+      let totalAEliminarAcelerometroTime;
+      if (diferenciaYRespectoaX === diferenciaZRespectoaX) {
+        totalAEliminarAcelerometroTime = diferenciaYRespectoaX
+      }
+      else {
+        totalAEliminarAcelerometroTime = diferenciaYRespectoaX > diferenciaZRespectoaX ? diferenciaYRespectoaX : diferenciaZRespectoaX;
+      }
+      for(let i = 0; i <= diferenciaYRespectoaX; i += 1) {
         objetoArduino2.INCLY.pop()
       }
-      if(objetoArduino2.INCLZ.length > objetoArduino2.INCLX.length) {
+      for(let i = 0; i <= diferenciaZRespectoaX; i += 1) {
         objetoArduino2.INCLZ.pop()
       }
+      for(let i = 0; i <= totalAEliminarAcelerometroTime; i += 1) {
+        arregloArduinoConAcelerometro.pop()
+      }
+
       const resultArrayX = [];
       const resultArrayY = [];
       const resultArrayZ = [];
@@ -501,13 +566,36 @@ const VideoDemoContainer = () => {
 
         // setEmgData(parseEMG(test));
         returnedEmg = parseEMG(dataEmg.message)
+
         console.log("EMG", returnedEmg);
       }
 
-      const objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
+      let objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
 
-      console.log("OBJETO FINAL", objetoAdquirido);
+      console.log("OBJETO FINAL SIN TIEMPO ARDUINOS", objetoAdquirido);
 
+      const timeObj: any = {}
+      if(gsrLocalChecked) {
+        timeObj.tiempoGSR =  calcularTimeGsr(arregloArduinoSinAcelerometro);
+      }
+
+      if(tempLocalChecked) {
+        timeObj.tiempoTC =  arregloArduinoSinAcelerometro;
+
+      }
+      if (frecuenciaLocalChecked) {
+        timeObj.tiempoHRLM =  arregloArduinoSinAcelerometro;
+
+      }
+      if(acelerometroLocalChecked) {
+        timeObj.tiempoINCLX =  arregloArduinoConAcelerometro;
+        timeObj.tiempoINCLY =  arregloArduinoConAcelerometro;
+        timeObj.tiempoINCLZ =  arregloArduinoConAcelerometro;
+
+
+      } 
+
+      objetoAdquirido = {...objetoAdquirido, ...timeObj};
       const objWrapper = {
         signals: objetoAdquirido
       }
@@ -518,11 +606,15 @@ const VideoDemoContainer = () => {
       setArduinoDataArg(objetoArduinoMultiple);
       setEmgData(returnedEmg);
       setDataIsReady(true);
+      appDispatch(setIsLoading(false));
+
 
     } 
 
     else if (confObj[0].acelerometro) {
       console.log("  ");
+    } else if (confObj[0].gsr) {
+
     }
 
     

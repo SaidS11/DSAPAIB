@@ -49,6 +49,7 @@ import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloCont
 import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
 import ProbarSensoresBlank from './components/ProbarSensores/ProbarSensoresBlank';
 import SensoresAdquisicionContainer from './components/SensoresAdquisicion/SensoresAdquisicionContainer';
+import { height } from '@mui/system';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
@@ -64,10 +65,10 @@ export default function App() {
   console.log(isLogged);
   if (isLogged) {
     return (
-      <div>
+      <div style={{  backgroundColor: "#efefef",  height: "100%"}}>
         <NavegacionContainer />
         <CssBaseline />
-        <Container maxWidth={false}>
+        <Container maxWidth={false}  >
           <br />
           <Routes>
             <Route path="/blank" element={<Blank />} />

@@ -4,6 +4,7 @@ import time
 import os
 import nidaqmx
 import sys
+from datetime import datetime
 # import zlib
 
 # ser = serial.Serial('COM5', 9600, timeout=1)
@@ -42,7 +43,9 @@ def funcion_a_ejecutar():
             returnedList.append({"emg1": line[0]})
             returnedList.append({"emg2": line[1]})  
             returnedList.append({"emg3": line[2]})  
-            returnedList.append({"emg4": line[3]})  
+            returnedList.append({"emg4": line[3]}) 
+            returnedList.append({"timeEmg": datetime.now().strftime("%H:%M:%S")})  
+
 
 
 

@@ -96,9 +96,7 @@ const GlobalFilter = ({
 
   return (
     <div className="search">
-      <div className="searchIcon">
-        <SearchIcon />
-      </div>
+        <SearchIcon style={{ marginTop: "10px" }} />
       <InputBase
         value={globalFilter || ''}
         onChange={(e) => {
@@ -111,6 +109,7 @@ const GlobalFilter = ({
         // }}
         className="inputRoot"
         inputProps={{ 'aria-label': 'search' }}
+        style={{ borderBottom: "solid black" }}
       />
     </div>
   );

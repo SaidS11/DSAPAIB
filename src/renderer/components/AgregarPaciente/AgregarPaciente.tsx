@@ -25,15 +25,15 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
   };
 
   return (
-    <div>
+    <div >
       <section className="display-center">
         <h1>Añadir Paciente</h1>
       </section>
       <section className="display-center">
         <h3>Rellene los datos del paciente</h3>
       </section>
-      <div className="display-center">
-        <form className="analisis-form" onSubmit={onClickNav}>
+      <div className="display-center" >
+        <form className="analisis-form" style={{  backgroundColor: "white" }} onSubmit={onClickNav}>
           <section className="display-flexAgregar">
             <h4>Nombre:</h4>
             <input

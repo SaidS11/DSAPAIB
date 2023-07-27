@@ -8,6 +8,8 @@
 }
 body {
   margin: 0px;
+  background-color: #3498db;
+  height: 100%;
 }
 .general-style {
   position: relative;

@@ -30,7 +30,7 @@ import styleButton, {
   styleButtonBiggerGreen,
   styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
-import { DataSignalsMongo } from '../Utilities/Constants';
+import { DataSignalsMongo, signalReadyToStore } from '../Utilities/Constants';
 
 export type PlotSelectionState = PlotSelectionEvent & {
   selections?: Partial<Shape>[];
@@ -277,20 +277,35 @@ const Caracterizar = (props: CaracterizarProps) => {
     console.log("SIGNAL", respuesta);
     appDispatch(setIsLoading(false));
 
-    const { emg1 } = respuesta[0].signals;
-    const { emg2 } = respuesta[0].signals;
-    const { emg3 } = respuesta[0].signals;
-    const { emg4 } = respuesta[0].signals;
 
-    const { GSR } = respuesta[0].signals;
-    const { TC } = respuesta[0].signals;
-    const { HRLM } = respuesta[0].signals;
+    // const { emg1 } = respuesta[0].signals;
+    // const { emg2 } = respuesta[0].signals;
+    // const { emg3 } = respuesta[0].signals;
+    // const { emg4 } = respuesta[0].signals;
+
+    // const { GSR } = respuesta[0].signals;
+    // const { TC } = respuesta[0].signals;
+    // const { HRLM } = respuesta[0].signals;
     
-    const { INCLX } = respuesta[0].signals;
-    const { INCLY } = respuesta[0].signals;
-    const { INCLZ } = respuesta[0].signals;
+    // const { INCLX } = respuesta[0].signals;
+    // const { INCLY } = respuesta[0].signals;
+    // const { INCLZ } = respuesta[0].signals;
+
+    const { emg1 } = signalReadyToStore.signals;
+    const { emg2 } = signalReadyToStore.signals;
+    const { emg3 } = signalReadyToStore.signals;
+    const { emg4 } = signalReadyToStore.signals;
+
+    const { GSR } = signalReadyToStore.signals;
+    const { TC } = signalReadyToStore.signals;
+    const { HRLM } = signalReadyToStore.signals;
+    
+    const { INCLX } = signalReadyToStore.signals;
+    const { INCLY } = signalReadyToStore.signals;
+    const { INCLZ } = signalReadyToStore.signals;
 
 
+    console.log("TEST OBJ", signalReadyToStore.signals);
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -325,50 +340,67 @@ const Caracterizar = (props: CaracterizarProps) => {
     const temperaturaSignalLocalX = [];
     const temperaturaSignalLocalY = [];
 
-    for (let i = 0; i < emg1.length; i += 1) {
       if (sensoresSelected >= 1) {
-        xArrayEmg1.push(emg1[i].x);
-        yArrayEmg1.push(emg1[i].y);
+        for (let i = 0; i < emg1.length; i += 1) {
+          xArrayEmg1.push(emg1[i].x);
+          yArrayEmg1.push(emg1[i].y);
+        }
+
       }
       if (sensoresSelected >= 2) {
-        xArray2Emg2.push(emg2[i].x);
-        yArray2Emg2.push(emg2[i].y);
-        colors2.push('blue');
+        for (let i = 0; i < emg2.length; i += 1) {
+          xArray2Emg2.push(emg2[i].x);
+          yArray2Emg2.push(emg2[i].y);
+          colors2.push('blue');
+        }
+
       }
       if (sensoresSelected >= 3) {
-        xArray3Emg3.push(emg3[i].x);
-        yArray3Emg3.push(emg3[i].y);
-        colors3.push('yellow');
+        for (let i = 0; i < emg3.length; i += 1) {
+          xArray3Emg3.push(emg3[i].x);
+          yArray3Emg3.push(emg3[i].y);
+          colors3.push('yellow');
+        }
       }
       if (sensoresSelected >= 4) {
-        xArray4Emg4.push(emg4[i].x);
-        yArray4Emg4.push(emg4[i].y);
-        colors4.push('green');
+        for (let i = 0; i < emg4.length; i += 1) {
+          xArray4Emg4.push(emg4[i].x);
+          yArray4Emg4.push(emg4[i].y);
+          colors4.push('green');
+        }
       }
 
+    
       if (gsrChecked) {
-        gsrSignalLocalX.push(GSR[i].x);
-        gsrSignalLocalY.push(GSR[i].y);
+        for (let i = 0; i < GSR.length; i += 1) {
+          gsrSignalLocalX.push(GSR[i].x);
+          gsrSignalLocalY.push(GSR[i].y);
+        }
       }
       if (acelerometroChecked) {
-        acelerometroSignalLocalDeXEjeX.push(INCLX[i].x);
-        acelerometroSignalLocalDeXEjeY.push(INCLX[i].y);
-
-        acelerometroSignalLocalDeYEjeX.push(INCLY[i].x);
-        acelerometroSignalLocalDeYEjeY.push(INCLY[i].y);
-
-        acelerometroSignalLocalDeZEjeX.push(INCLZ[i].x);
-        acelerometroSignalLocalDeZEjeY.push(INCLZ[i].y);
+        for (let i = 0; i < INCLX.length; i += 1) {
+          acelerometroSignalLocalDeXEjeX.push(INCLX[i].x);
+          acelerometroSignalLocalDeXEjeY.push(INCLX[i].y);
+  
+          acelerometroSignalLocalDeYEjeX.push(INCLY[i].x);
+          acelerometroSignalLocalDeYEjeY.push(INCLY[i].y);
+  
+          acelerometroSignalLocalDeZEjeX.push(INCLZ[i].x);
+          acelerometroSignalLocalDeZEjeY.push(INCLZ[i].y);
+        }
       }
       if (frecuenciaChecked) {
-        frecuenciaSignalLocalX.push(HRLM[i].x);
-        frecuenciaSignalLocalY.push(HRLM[i].y);
+        for (let i = 0; i < HRLM.length; i += 1) {
+          frecuenciaSignalLocalX.push(HRLM[i].x);
+          frecuenciaSignalLocalY.push(HRLM[i].y);
+        }
       }
       if (temperaturaChecked) {
-        temperaturaSignalLocalX.push(TC[i].x);
-        temperaturaSignalLocalY.push(TC[i].y);
+        for (let i = 0; i < TC.length; i += 1) {
+          temperaturaSignalLocalX.push(TC[i].x);
+          temperaturaSignalLocalY.push(TC[i].y);
+        }
       }
-    }
     if (sensoresSelected >= 1) {
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);

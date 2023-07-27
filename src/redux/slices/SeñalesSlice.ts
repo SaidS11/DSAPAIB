@@ -44,6 +44,7 @@ export interface ISeñales {
   realTimeSignal: any;
   emgDataAdquirida: any;
   arduinoDataAdquirida: any;
+  regExSinAcelerometro: any;
 }
 
 const initialState: ISeñales = {
@@ -84,6 +85,7 @@ const initialState: ISeñales = {
   realTimeSignal: {},
   emgDataAdquirida: {},
   arduinoDataAdquirida: {},
+  regExSinAcelerometro: '',
 };
 
 export const SeñalesSlice = createSlice({
@@ -285,6 +287,9 @@ export const SeñalesSlice = createSlice({
     setArduinoDataAdquirida: (state, action: PayloadAction<ISeñales['arduinoDataAdquirida']>) => {
       state.arduinoDataAdquirida = action.payload;
     },
+    setRegExSinAcelerometro: (state, action: PayloadAction<ISeñales['regExSinAcelerometro']>) => {
+      state.regExSinAcelerometro = action.payload;
+    },
   },
 });
 
@@ -322,5 +327,6 @@ export const {
   setRealTimeSignal,
   setEmgDataAdquirida,
   setArduinoDataAdquirida,
+  setRegExSinAcelerometro,
 } = SeñalesSlice.actions;
 export default SeñalesSlice.reducer;

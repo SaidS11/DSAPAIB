@@ -78,3 +78,39 @@ const LoginContainer = () => {
 };
 
 export default LoginContainer;
+
+
+
+
+// function obtenerPosicionesEnRango(arreglo, tiempoInicio, tiempoFin) {
+//   const inicio = convertirATiempoEnSegundos(tiempoInicio);
+//   const fin = convertirATiempoEnSegundos(tiempoFin);
+
+//   return arreglo.reduce((posicionesEnRango, tiempo, index) => {
+//     const tiempoEnSegundos = convertirATiempoEnSegundos(tiempo);
+
+//     if (tiempoEnSegundos >= inicio && tiempoEnSegundos <= fin) {
+//       posicionesEnRango.push(index);
+//     }
+
+//     return posicionesEnRango;
+//   }, []);
+// }
+
+// function convertirATiempoEnSegundos(tiempo) {
+//   const [horas, minutos, segundos] = tiempo.split(':').map(Number);
+//   return horas * 3600 + minutos * 60 + segundos;
+// }
+
+// // Ejemplo de uso:
+// const Arreglo = [
+//   '21:07:50', '21:07:51', '21:07:52', '21:07:53', '21:07:54',
+//   '21:07:55', '21:07:56', '21:07:57', '21:07:58', '21:07:59',
+//   '21:08:00'
+// ];
+
+// const tiempoInicio = '21:07:55';
+// const tiempoFin = '21:08:00';
+
+// const posicionesEnRango = obtenerPosicionesEnRango(Arreglo, tiempoInicio, tiempoFin);
+// console.log(posicionesEnRango); // Output: [5, 6, 7, 8, 9, 10]

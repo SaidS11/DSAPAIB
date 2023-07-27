@@ -132,7 +132,7 @@ const ResultadosContainer = () => {
     xaxis: 'x1',
     yaxis: 'y1',
     type: 'scatter',
-    line: { color: 'black' },
+    line: { color: 'blue' },
     // marker: { color: colors1 },
     // mode: 'markers+lines',
     name: 'EMG1',
@@ -148,7 +148,7 @@ const ResultadosContainer = () => {
     type: 'scatter',
     // mode: 'lines+markers',
     // mode:'markers',
-    line: { color: 'blue' },
+    line: { color: 'skyblue' },
     // With each click a push to the colors array must be added to keep adding colors
     // marker: { color: colors2 },
     // mode: 'markers+lines',
@@ -163,7 +163,7 @@ const ResultadosContainer = () => {
     xaxis: 'x3',
     yaxis: 'y3',
     type: 'scatter',
-    line: { color: 'yellow' },
+    line: { color: 'cyan' },
     // marker: { color: colors3 },
     // mode: 'markers+lines',
     name: 'EMG3',
@@ -177,7 +177,7 @@ const ResultadosContainer = () => {
     xaxis: 'x4',
     yaxis: 'y4',
     type: 'scatter',
-    line: { color: 'green' },
+    line: { color: 'black' },
     // marker: { color: colors4 },
     // mode: 'markers+lines',
     name: 'EMG4',
@@ -191,6 +191,7 @@ const ResultadosContainer = () => {
     xaxis: 'x5',
     yaxis: 'y5',
     type: 'scatter',
+    line: { color: 'gray' },
     // mode: 'markers+lines',
     name: 'Gsr',
   };
@@ -203,6 +204,7 @@ const ResultadosContainer = () => {
     xaxis: 'x6',
     yaxis: 'y6',
     type: 'scatter',
+    line: { color: 'red' },
     // mode: 'markers+lines',
     name: 'Frecuencia',
   };
@@ -213,6 +215,7 @@ const ResultadosContainer = () => {
     xaxis: 'x7',
     yaxis: 'y7',
     type: 'scatter',
+    line: { color: 'orange' },
     // mode: 'markers+lines',
     name: 'Temperatura',
   };
@@ -225,6 +228,7 @@ const ResultadosContainer = () => {
     xaxis: 'x8',
     yaxis: 'y8',
     type: 'scatter',
+    line: { color: 'yellow' },
     // mode: 'markers+lines',
     name: 'INCLX',
   };
@@ -237,6 +241,7 @@ const ResultadosContainer = () => {
     xaxis: 'x9',
     yaxis: 'y9',
     type: 'scatter',
+    line: { color: 'green' },
     name: 'INCLY',
   };
   const trace10 = {
@@ -245,6 +250,7 @@ const ResultadosContainer = () => {
     xaxis: 'x10',
     yaxis: 'y10',
     type: 'scatter',
+    line: { color: 'brown' },
     name: 'INCLZ',
   };
 
