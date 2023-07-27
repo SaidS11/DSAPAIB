@@ -518,7 +518,7 @@ const VideoDemoContainer = () => {
         objetoArduino2.INCLZ.pop()
       }
       for(let i = 0; i <= totalAEliminarAcelerometroTime; i += 1) {
-        arregloArduinoConAcelerometro.pop()
+        timestampArduinoConAcelerometro.pop()
       }
 
       const resultArrayX = [];
@@ -583,17 +583,17 @@ const VideoDemoContainer = () => {
       }
 
       if(tempLocalChecked) {
-        timeObj.tiempoTC =  arregloArduinoSinAcelerometro;
+        timeObj.tiempoTC =  timestampArduinoSinAcelerometro;
 
       }
       if (frecuenciaLocalChecked) {
-        timeObj.tiempoHRLM =  arregloArduinoSinAcelerometro;
+        timeObj.tiempoHRLM =  timestampArduinoSinAcelerometro;
 
       }
       if(acelerometroLocalChecked) {
-        timeObj.tiempoINCLX =  arregloArduinoConAcelerometro;
-        timeObj.tiempoINCLY =  arregloArduinoConAcelerometro;
-        timeObj.tiempoINCLZ =  arregloArduinoConAcelerometro;
+        timeObj.tiempoINCLX =  timestampArduinoConAcelerometro;
+        timeObj.tiempoINCLY =  timestampArduinoConAcelerometro;
+        timeObj.tiempoINCLZ =  timestampArduinoConAcelerometro;
 
 
       } 

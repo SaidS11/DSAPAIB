@@ -2782,12 +2782,17 @@ app2.get('/obtenerObjDeCsv', async (req: Request, res: Response, next: any) => {
         if (valor !== undefined) {
           valor = valor.trim();
         }
-        let num = parseFloat(valor);
-        if(isNaN(num)) {
-          num = 0;
+        if (clave !== "timeEmg") {
+          let num = parseFloat(valor);
+          if(isNaN(num)) {
+            num = 0;
+          }
+          const resultadoVerdadero = num / 1500;
+          objeto[clave] = resultadoVerdadero;
         }
-        const resultadoVerdadero = num / 1500;
-        objeto[clave] = resultadoVerdadero;
+        else {
+          objeto[clave] = valor;
+        }
       }
 
       objetos.push(objeto);
