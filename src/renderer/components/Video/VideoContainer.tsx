@@ -7,6 +7,7 @@ import Video from './Video';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import { apiEndpoint } from '../Utilities/Constants';
 import { setArduinoDataAdquirida, setEmgDataAdquirida, setMongoInsertObject } from 'redux/slices/SeñalesSlice';
+import { calcularTimeGsr, igualarArreglos, limpiarNulos } from '../VideoDemo/VideoDemoContainer';
 
 interface ConfLocal {
   emgs: number;
@@ -113,6 +114,15 @@ const VideoContainer = () => {
   const gsrIsChecked = useCustomSelector(
     (state) => state.señales.gsrIsChecked
   );
+  const tempIsChecked = useCustomSelector(
+    (state) => state.señales.temperaturaIsChecked
+  );
+  const frecuenciaIsChecked = useCustomSelector(
+    (state) => state.señales.frecuenciaIsChecked
+  );
+  const acelerometroIsChecked = useCustomSelector(
+    (state) => state.señales.acelerometroIsChecked
+  );
   console.log("Duracion", duracion);
   const confObj = useCustomSelector(
     (state) => state.config.configCompleta
@@ -189,12 +199,19 @@ const VideoContainer = () => {
       let arregloArduinoConAcelerometro;
       let arregloArduinoSinAcelerometro;
 
+      let timestampArduinoConAcelerometro;
+      let timestampArduinoSinAcelerometro;
+
       if(encontrado) {
         arregloArduinoConAcelerometro = arreglo[0];
+        timestampArduinoConAcelerometro = arreglo[2];
         arregloArduinoSinAcelerometro = arreglo[1];
+        timestampArduinoSinAcelerometro = arreglo[3];
       } else {
         arregloArduinoConAcelerometro = arreglo[1];
+        timestampArduinoSinAcelerometro = arreglo[3];
         arregloArduinoSinAcelerometro = arreglo[0];
+        timestampArduinoConAcelerometro = arreglo[2];
       }
 
       const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
@@ -276,12 +293,21 @@ const VideoContainer = () => {
       // Aplicar operaciones al acelerometro
       const diferenciaYRespectoaX = objetoArduino2.INCLY.length - objetoArduino2.INCLX.length;
       const diferenciaZRespectoaX = objetoArduino2.INCLZ.length - objetoArduino2.INCLX.length;
-
+      let totalAEliminarAcelerometroTime;
+      if (diferenciaYRespectoaX === diferenciaZRespectoaX) {
+        totalAEliminarAcelerometroTime = diferenciaYRespectoaX
+      }
+      else {
+        totalAEliminarAcelerometroTime = diferenciaYRespectoaX > diferenciaZRespectoaX ? diferenciaYRespectoaX : diferenciaZRespectoaX;
+      }
       for(let i = 0; i <= diferenciaYRespectoaX; i += 1) {
         objetoArduino2.INCLY.pop()
       }
       for(let i = 0; i <= diferenciaZRespectoaX; i += 1) {
         objetoArduino2.INCLZ.pop()
+      }
+      for(let i = 0; i <= totalAEliminarAcelerometroTime; i += 1) {
+        timestampArduinoConAcelerometro.pop()
       }
 
       const resultArrayX = [];
@@ -335,14 +361,107 @@ const VideoContainer = () => {
       }
 
       const objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
-      const transformedObj: any = {};
 
-      for (const key in objetoAdquirido) {
-        if (objetoAdquirido.hasOwnProperty(key)) {
-          const newArray = objetoAdquirido[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
+      const timeObj: any = {}
+      if(gsrIsChecked) {
+        timeObj.tiempoGSR =  calcularTimeGsr(timestampArduinoSinAcelerometro);
+      }
+
+      if(tempIsChecked) {
+        timeObj.tiempoTC =  timestampArduinoSinAcelerometro;
+      }
+      if (frecuenciaIsChecked) {
+        timeObj.tiempoHRLM =  timestampArduinoSinAcelerometro;
+      }
+      if(acelerometroIsChecked) {
+        timeObj.tiempoINCLX =  timestampArduinoConAcelerometro;
+        timeObj.tiempoINCLY =  timestampArduinoConAcelerometro;
+        timeObj.tiempoINCLZ =  timestampArduinoConAcelerometro;
+      } 
+
+      const objetoUnido = {...objetoAdquirido, ...timeObj};
+
+      // Clean signals and make lengths equal
+
+    for (const key in objetoUnido) {
+      if (objetoUnido.hasOwnProperty(key)) {
+        const arr = objetoUnido[key];
+        // Verificar si el valor es un arreglo
+        if (Array.isArray(arr)) {
+          // Reemplazar los valores null por 0 en el arreglo
+          objetoUnido[key] = limpiarNulos(arr);
+        }
+      }
+    }
+    if(objetoUnido.emg1.length !== objetoUnido.emg2.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["emg1"], objetoUnido["emg2"]);
+      objetoUnido.emg1 = arreglo
+      objetoUnido.emg2 = arreglo2
+    }
+    if(objetoUnido.emg1.length !== objetoUnido.emg3.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["emg1"], objetoUnido["emg3"]);
+      objetoUnido.emg1 = arreglo
+      objetoUnido.emg3 = arreglo2
+    }
+    if(objetoUnido.emg1.length !== objetoUnido.emg4.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["emg1"], objetoUnido["emg4"]);
+      objetoUnido.emg1 = arreglo
+      objetoUnido.emg4 = arreglo2
+    }
+    if(objetoUnido.emg1.length !== objetoUnido.tiempoEmg.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["emg1"], objetoUnido["tiempoEmg"]);
+      objetoUnido.emg1 = arreglo
+      objetoUnido.emg2 = arreglo
+      objetoUnido.emg3 = arreglo
+      objetoUnido.emg4 = arreglo
+
+      objetoUnido.tiempoEmg = arreglo2
+    }
+
+
+    if(objetoUnido.GSR.length !== objetoUnido.tiempoGSR.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["GSR"], objetoUnido["tiempoGSR"]);
+      objetoUnido.GSR = arreglo
+      objetoUnido.tiempoGSR = arreglo2
+    }
+
+    if(objetoUnido.HRLM.length !== objetoUnido.tiempoHRLM.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["HRLM"], objetoUnido["tiempoHRLM"]);
+      objetoUnido.HRLM = arreglo
+      objetoUnido.tiempoHRLM = arreglo2
+    }
+
+    if(objetoUnido.INCLX.length !== objetoUnido.tiempoINCLX.length) {
+      const [arregloINCLX, arregloTime] = igualarArreglos(objetoUnido["INCLX"], objetoUnido["tiempoINCLX"]);
+      const [arregloINCLY, arregloTime2] = igualarArreglos(objetoUnido["INCLY"], objetoUnido["tiempoINCLX"]);
+      const [arregloINCLZ, arregloTime3] = igualarArreglos(objetoUnido["INCLZ"], objetoUnido["tiempoINCLX"]);
+
+      objetoUnido.INCLX = arregloINCLX
+      objetoUnido.INCLY = arregloINCLY
+      objetoUnido.INCLZ = arregloINCLZ
+      objetoUnido.tiempoINCLX = arregloTime
+    }
+
+    if(objetoUnido.TC.length !== objetoUnido.tiempoTC.length) {
+      const [arreglo, arreglo2] = igualarArreglos(objetoUnido["TC"], objetoUnido["tiempoTC"]);
+      objetoUnido.TC = arreglo
+      objetoUnido.tiempoTC = arreglo2
+    }
+    console.log("PREV OBJ", objetoUnido);
+
+    const transformedObj: any = {};
+    for (const key in objetoUnido) {
+      if (objetoUnido.hasOwnProperty(key)) {
+        if(key.includes("tiempo")) {
+          const value = objetoUnido[key]
+          transformedObj[key] = value
+        } else {
+          const newArray = objetoUnido[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
           transformedObj[key] = newArray;
         }
       }
+    }
+
       const objWrapper = {
         signals: transformedObj
       }
@@ -352,7 +471,7 @@ const VideoContainer = () => {
       appDispatch(setMongoInsertObject(objWrapper));
       appDispatch(setArduinoDataAdquirida(objetoArduinoMultiple));
       appDispatch(setEmgDataAdquirida(returnedEmg));
-     navigate('/resultados');
+      navigate('/resultados');
       // navigate('/procesamientoPrevio');
 
     } 

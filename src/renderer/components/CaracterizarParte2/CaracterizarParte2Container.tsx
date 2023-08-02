@@ -274,7 +274,7 @@ const CaracterizarParte2Container = () => {
         ).toString();
         ventanaAcelerometroX.push([ventana, sumVentana, mediaAbsoluta]);
       }
-      ventanasArrayAcelerometroX.push(ventanaSeñalAcelerometroX);
+      ventanasArrayAcelerometroX.push(ventanaAcelerometroX);
     }
 
     for (let i = 0; i < cantidadSujetos; i += 1) {
@@ -287,9 +287,9 @@ const CaracterizarParte2Container = () => {
         const mediaAbsoluta = (
           sumVentana / ventanaSeñalAcelerometroY[i][c].length
         ).toString();
-        ventanaAcelerometroX.push([ventana, sumVentana, mediaAbsoluta]);
+        ventanaAcelerometroY.push([ventana, sumVentana, mediaAbsoluta]);
       }
-      ventanasArrayAcelerometroY.push(ventanaSeñalAcelerometroY);
+      ventanasArrayAcelerometroY.push(ventanaAcelerometroY);
     }
 
     for (let i = 0; i < cantidadSujetos; i += 1) {
@@ -304,7 +304,7 @@ const CaracterizarParte2Container = () => {
         ).toString();
         ventanaAcelerometroZ.push([ventana, sumVentana, mediaAbsoluta]);
       }
-      ventanasArrayAcelerometroZ.push(ventanaSeñalAcelerometroZ);
+      ventanasArrayAcelerometroZ.push(ventanaAcelerometroZ);
     }
   }
 

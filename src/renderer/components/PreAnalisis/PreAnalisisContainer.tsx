@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setPythonResponse } from '../../../redux/slices/ResponsesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setErrorDetails, setFallosAlCargar, setIsLoading } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import PreAnalisis from './PreAnalisis';
 import PreAnalisisBlank from './PreAnalisisBlank';
+import { apiEndpoint } from '../Utilities/Constants';
 
 const PreAnalisisContainer = () => {
   const appDispatch = useCustomDispatch();
@@ -37,32 +38,79 @@ const PreAnalisisContainer = () => {
   async function startAnalysis(tipo: string, params: string, nombre: string) {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
-
-    if (predictMode) {
-      window.electron.ipcRenderer.analisisPython(
-        'Class',
-        tipo,
-        params,
-        nombre,
-        '0',
-        '0',
-        strData
-      );
-    } else {
-      const { iteraciones, porcentaje } = paramsArg as any;
-      // const reducedPercentage = parseInt(porcentaje) / 100;
-      const strPercentage = porcentaje.toString();
-      console.log('THis is STR', strPercentage);
-      window.electron.ipcRenderer.analisisPython(
-        'Train',
-        tipo,
-        params,
-        nombre,
-        iteraciones,
-        strPercentage,
-        strData
-      );
+    const { iteraciones, porcentaje } = paramsArg as any;
+    const strPercentage = porcentaje.toString();
+    const predictPayload = {
+        "tipo": 'Class',
+        "tipoIA": tipo,
+        "params": params,
+        "nombre": nombre,
+        "iteraciones": '0',
+        "reducedPercentage": '0',
+        "datos": strData
     }
+
+    const trainPayload = {
+      "tipo": 'Train',
+      "tipoIA": tipo,
+      "params": params,
+      "nombre": nombre,
+      "iteraciones": iteraciones,
+      "reducedPercentage": strPercentage,
+      "datos": strData
+  }
+  
+  let response;
+  if (predictMode) {
+    response = await fetch(`${apiEndpoint}/analisisPython`, {
+      method: 'POST',
+      body: JSON.stringify(predictPayload),
+      headers: {'Content-Type': 'application/json'}
+    });
+  } else {
+    response = await fetch(`${apiEndpoint}/analisisPython`, {
+      method: 'POST',
+      body: JSON.stringify(trainPayload),
+      headers: {'Content-Type': 'application/json'}
+    });
+  }
+  appDispatch(setIsLoading(false));
+  if(response.status === 500) {
+    const respBody = await response.json();
+    console.log("JSON", respBody);
+    appDispatch(setFallosAlCargar(true));
+    appDispatch(setErrorDetails(`Error al procesar la información: ${respBody.message}`));
+    navigate('/guardarModelo');
+  }
+  if(response.status === 200) {
+    const respBody = await response.json();
+    console.log("JSON", respBody);
+    
+  }
+    // if (predictMode) {
+    //   window.electron.ipcRenderer.analisisPython(
+    //     'Class',
+    //     tipo,
+    //     params,
+    //     nombre,
+    //     '0',
+    //     '0',
+    //     strData
+    //   );
+    // } else {
+    //   // const reducedPercentage = parseInt(porcentaje) / 100;
+    //   const strPercentage = porcentaje.toString();
+    //   console.log('THis is STR', strPercentage);
+    //   window.electron.ipcRenderer.analisisPython(
+    //     'Train',
+    //     tipo,
+    //     params,
+    //     nombre,
+    //     iteraciones,
+    //     strPercentage,
+    //     strData
+    //   );
+    // }
   }
   window.electron.ipcRenderer.analisisP((event: any, resp: any) => {
     console.log('Esta es', resp);

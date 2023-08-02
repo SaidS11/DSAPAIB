@@ -30,7 +30,8 @@ import styleButton, {
   styleButtonBiggerGreen,
   styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
-import { DataSignalsMongo, signalReadyToStore } from '../Utilities/Constants';
+import { DataSignalsMongo, adqWithTimeAndSignals } from '../Utilities/Constants';
+import { equivalenteSegunPosiciones, obtenerPosicionesEnRango } from '../Login/LoginContainer';
 
 export type PlotSelectionState = PlotSelectionEvent & {
   selections?: Partial<Shape>[];
@@ -59,24 +60,29 @@ const Caracterizar = (props: CaracterizarProps) => {
     temperaturaChecked,
   } = props;
 
-  const [colors1, setColors1] = useState(['#00000']);
+  const [colors1, setColors1] = useState(['gray']);
   const [colors2, setColors2] = useState(['blue']);
-  const [colors3, setColors3] = useState(['yellow']);
-  const [colors4, setColors4] = useState(['green']);
+  const [colors3, setColors3] = useState(['skyblue']);
+  const [colors4, setColors4] = useState(['cyan']);
 
   const [ventanasSeñal1Emg1, setVentanasSeñal1Emg1] = useState<any>([]);
   const [ventanasSeñal2Emg2, setVentanasSeñal2Emg2] = useState<any>([]);
   const [ventanasSeñal3Emg3, setVentanasSeñal3Emg3] = useState<any>([]);
   const [ventanasSeñal4Emg4, setVentanasSeñal4Emg4] = useState<any>([]);
+  
 
   const [gsrDataX, setGsrDataX] = useState([0]);
   const [gsrDataY, setGsrDataY] = useState([0]);
+  const [timeDataGSR, setTimeDataGSR] = useState([""]);
+
   const [ventanasSeñalGsr, setVentanasSeñalGsr] = useState<any>(
     []
   );
 
   const [acelerometroDataDeXEjeX, setAcelerometroDataDeXEjeX] = useState([0]);
   const [acelerometroDataDeXEjeY, setAcelerometroDataDeXEjeY] = useState([0]);
+  const [timeDataACE, setTimeDataACE] = useState([""]);
+
   const [ventanasSeñalAcelerometroDeX, setVentanasSeñalAcelerometroDeX] =
     useState<any>([]);
 
@@ -92,12 +98,16 @@ const Caracterizar = (props: CaracterizarProps) => {
 
   const [frecuenciaDataX, setFrecuenciaDataX] = useState([0]);
   const [frecuenciaDataY, setFrecuenciaDataY] = useState([0]);
+  const [timeDataHRLM, setTimeDataHRLM] = useState([""]);
+
   const [ventanasSeñalFrecuencia, setVentanasSeñalFrecuencia] = useState<any>(
     []
   );
 
   const [temperaturaDataX, setTemperaturaDataX] = useState([0]);
   const [temperaturaDataY, setTemperaturaDataY] = useState([0]);
+  const [timeDataTC, setTimeDataTC] = useState([""]);
+
   const [ventanasSeñalTemperatura, setVentanasSeñalTemperatura] = useState<any>(
     []
   );
@@ -145,6 +155,10 @@ const Caracterizar = (props: CaracterizarProps) => {
   // const [curSelected, setCurSelected] = useState(false);
   const appDispatch = useCustomDispatch();
   // const [color1, setColor1] = useState("red")
+  const [timeDataEmg, setTimeDataEmg] = useState([""]);
+
+
+
   const [dataXEmg1, setDataXEmg1] = useState([0]);
   const [dataYEmg1, setDataYEmg1] = useState([0]);
   const trace1 = {
@@ -153,7 +167,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     xaxis: 'x1',
     yaxis: 'y1',
     type: 'scatter',
-    line: { color: 'black' },
+    line: { color: 'gray' },
     marker: { color: colors1 },
     mode: 'markers+lines',
     name: 'EMG1',
@@ -184,7 +198,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     xaxis: 'x3',
     yaxis: 'y3',
     type: 'scatter',
-    line: { color: 'yellow' },
+    line: { color: 'skyblue' },
     marker: { color: colors3 },
     mode: 'markers+lines',
     name: 'EMG3',
@@ -198,7 +212,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     xaxis: 'x4',
     yaxis: 'y4',
     type: 'scatter',
-    line: { color: 'green' },
+    line: { color: 'cyan' },
     marker: { color: colors4 },
     mode: 'markers+lines',
     name: 'EMG4',
@@ -275,6 +289,8 @@ const Caracterizar = (props: CaracterizarProps) => {
     const respuesta =
       (await buscarElementoMongoFront()) as Array<DataSignalsMongo>;
     console.log("SIGNAL", respuesta);
+    console.log("VAR DATA", adqWithTimeAndSignals);
+
     appDispatch(setIsLoading(false));
 
 
@@ -291,21 +307,32 @@ const Caracterizar = (props: CaracterizarProps) => {
     // const { INCLY } = respuesta[0].signals;
     // const { INCLZ } = respuesta[0].signals;
 
-    const { emg1 } = signalReadyToStore.signals;
-    const { emg2 } = signalReadyToStore.signals;
-    const { emg3 } = signalReadyToStore.signals;
-    const { emg4 } = signalReadyToStore.signals;
+    const { emg1 } = adqWithTimeAndSignals.signals;
+    const { emg2 } = adqWithTimeAndSignals.signals;
+    const { emg3 } = adqWithTimeAndSignals.signals;
+    const { emg4 } = adqWithTimeAndSignals.signals;
 
-    const { GSR } = signalReadyToStore.signals;
-    const { TC } = signalReadyToStore.signals;
-    const { HRLM } = signalReadyToStore.signals;
+    const { GSR } = adqWithTimeAndSignals.signals;
+    const { TC } = adqWithTimeAndSignals.signals;
+    const { HRLM } = adqWithTimeAndSignals.signals;
     
-    const { INCLX } = signalReadyToStore.signals;
-    const { INCLY } = signalReadyToStore.signals;
-    const { INCLZ } = signalReadyToStore.signals;
+    const { INCLX } = adqWithTimeAndSignals.signals;
+    const { INCLY } = adqWithTimeAndSignals.signals;
+    const { INCLZ } = adqWithTimeAndSignals.signals;
+
+    // TIMES 
+    const { tiempoEmg } = adqWithTimeAndSignals.signals;
+    const { tiempoGSR } = adqWithTimeAndSignals.signals;
+    const { tiempoTC } = adqWithTimeAndSignals.signals;
+    const { tiempoHRLM } = adqWithTimeAndSignals.signals;
+    const { tiempoINCLX } = adqWithTimeAndSignals.signals;
+    const { tiempoINCLY } = adqWithTimeAndSignals.signals;
+    const { tiempoINCLZ } = adqWithTimeAndSignals.signals;
 
 
-    console.log("TEST OBJ", signalReadyToStore.signals);
+
+
+    // console.log("TEST OBJ", adqWithTimeAndSignals.signals);
 
     const xArrayEmg1 = [];
     const yArrayEmg1 = [];
@@ -344,6 +371,7 @@ const Caracterizar = (props: CaracterizarProps) => {
         for (let i = 0; i < emg1.length; i += 1) {
           xArrayEmg1.push(emg1[i].x);
           yArrayEmg1.push(emg1[i].y);
+          colors1.push('gray');
         }
 
       }
@@ -359,14 +387,14 @@ const Caracterizar = (props: CaracterizarProps) => {
         for (let i = 0; i < emg3.length; i += 1) {
           xArray3Emg3.push(emg3[i].x);
           yArray3Emg3.push(emg3[i].y);
-          colors3.push('yellow');
+          colors3.push('skyblue');
         }
       }
       if (sensoresSelected >= 4) {
         for (let i = 0; i < emg4.length; i += 1) {
           xArray4Emg4.push(emg4[i].x);
           yArray4Emg4.push(emg4[i].y);
-          colors4.push('green');
+          colors4.push('cyan');
         }
       }
 
@@ -404,6 +432,7 @@ const Caracterizar = (props: CaracterizarProps) => {
     if (sensoresSelected >= 1) {
       setDataXEmg1(xArrayEmg1);
       setDataYEmg1(yArrayEmg1);
+      setTimeDataEmg(tiempoEmg);
     }
 
     if (sensoresSelected >= 2) {
@@ -424,10 +453,12 @@ const Caracterizar = (props: CaracterizarProps) => {
     }
 
     if (gsrChecked) {
+      setTimeDataGSR(tiempoGSR);
       setGsrDataX(gsrSignalLocalX);
       setGsrDataY(gsrSignalLocalY);
     }
     if (acelerometroChecked) {
+      setTimeDataACE(tiempoINCLX);
       setAcelerometroDataDeXEjeX(acelerometroSignalLocalDeXEjeX);
       setAcelerometroDataDeXEjeY(acelerometroSignalLocalDeXEjeY);
 
@@ -438,10 +469,12 @@ const Caracterizar = (props: CaracterizarProps) => {
       setAcelerometroDataDeZEjeY(acelerometroSignalLocalDeZEjeY);
     }
     if (frecuenciaChecked) {
+      setTimeDataHRLM(tiempoHRLM);
       setFrecuenciaDataX(frecuenciaSignalLocalX);
       setFrecuenciaDataY(frecuenciaSignalLocalY);
     }
     if (temperaturaChecked) {
+      setTimeDataTC(tiempoTC);
       setTemperaturaDataX(temperaturaSignalLocalX);
       setTemperaturaDataY(temperaturaSignalLocalY);
 
@@ -520,7 +553,7 @@ const Caracterizar = (props: CaracterizarProps) => {
         const ventanasLocalEmg3 = [];
         const ventanasLocalEmg4 = [];
 
-        const ventanasGsrLocal = [];
+        const ventanasGsrLocal: { x: number[]; y: number[]; }[] = [];
         const ventanasFrecuenciaLocal = [];
         const ventanasTemperaturaLocal = [];
 
@@ -531,11 +564,19 @@ const Caracterizar = (props: CaracterizarProps) => {
 
 
         setSelectedLength(selection.length);
+        const primerIndice = selection[0];
+        const ultimoIndice = selection[selection.length -1]
+        const tiempoInicial = timeDataEmg[primerIndice];
+        const tiempoFinal = timeDataEmg[ultimoIndice];
+
+        // const posicionesEnRango = obtenerPosicionesEnRango(timeDataGSR, timeDataEmg[primerIndice], timeDataEmg[ultimoIndice]);
         for (let i = 0; i < dataX2Emg2.length; i += 1) {
           if (i === selection[0]) {
+
             if (selectedEmg === 'EMG1') {
               ventanasLocalEmg1.push({ x: dataXEmg1[i], y: dataYEmg1[i] });
               colorsLocal1[i] = 'red';
+
             } else if (selectedEmg === 'EMG2') {
               ventanasLocalEmg2.push({ x: dataX2Emg2[i], y: dataY2Emg2[i] });
               colorsLocal2[i] = 'red';
@@ -546,42 +587,6 @@ const Caracterizar = (props: CaracterizarProps) => {
               ventanasLocalEmg4.push({ x: dataX4Emg4[i], y: dataY4Emg4[i] });
               colorsLocal4[i] = 'red';
             }
-            if (gsrChecked) {
-              ventanasGsrLocal.push({
-                x: gsrDataX[i],
-                y: gsrDataY[i],
-              });
-            }
-            if (acelerometroChecked) {
-
-              ventanasAcelerometroLocalX.push({
-                x: acelerometroDataDeXEjeX[i],
-                y: acelerometroDataDeXEjeY[i],
-              })
-
-              ventanasAcelerometroLocalY.push({
-                x: acelerometroDataDeYEjeX[i],
-                y: acelerometroDataDeYEjeY[i],
-              })
-
-              ventanasAcelerometroLocalZ.push({
-                x: acelerometroDataDeZEjeX[i],
-                y: acelerometroDataDeZEjeY[i],
-              })
-            }
-            if (frecuenciaChecked) {
-              ventanasFrecuenciaLocal.push({
-                x: frecuenciaDataX[i],
-                y: frecuenciaDataY[i],
-              });
-            }
-
-            if (temperaturaChecked) {
-              ventanasTemperaturaLocal.push({
-                x: temperaturaDataX[i],
-                y: temperaturaDataY[i],
-              });
-            }
 
             selection.shift();
           }
@@ -589,6 +594,45 @@ const Caracterizar = (props: CaracterizarProps) => {
             break;
           }
         }
+        console.log("PREV GSR", ventanasGsrLocal);
+        if (gsrChecked) {
+          const posicionesEnRango = obtenerPosicionesEnRango(timeDataGSR, tiempoInicial, tiempoFinal);
+          const gsrRetorno = equivalenteSegunPosiciones(gsrDataX, gsrDataY, posicionesEnRango);
+
+          ventanasGsrLocal.push(...gsrRetorno);
+        }
+        console.log("After GSR", ventanasGsrLocal);
+
+        if (acelerometroChecked) {
+          const posicionesEnRango = obtenerPosicionesEnRango(timeDataACE, tiempoInicial, tiempoFinal);
+          const acelerometroRetornoX = equivalenteSegunPosiciones(acelerometroDataDeXEjeX, acelerometroDataDeXEjeY, posicionesEnRango);
+
+          ventanasAcelerometroLocalX.push(...acelerometroRetornoX);
+
+          const acelerometroRetornoYEjeX = equivalenteSegunPosiciones(acelerometroDataDeYEjeX, acelerometroDataDeYEjeY, posicionesEnRango);
+
+          ventanasAcelerometroLocalY.push(...acelerometroRetornoYEjeX);
+
+          const acelerometroRetornoZEjeX = equivalenteSegunPosiciones(acelerometroDataDeZEjeX, acelerometroDataDeZEjeY, posicionesEnRango);
+
+          ventanasAcelerometroLocalZ.push(...acelerometroRetornoZEjeX);
+        }
+        if (frecuenciaChecked) {
+          const posicionesEnRango = obtenerPosicionesEnRango(timeDataHRLM, tiempoInicial, tiempoFinal);
+          const frecuenciaRetornoX = equivalenteSegunPosiciones(frecuenciaDataX, frecuenciaDataY, posicionesEnRango);
+
+          ventanasFrecuenciaLocal.push(...frecuenciaRetornoX);
+        }
+
+        if (temperaturaChecked) {
+          const posicionesEnRango = obtenerPosicionesEnRango(timeDataTC, tiempoInicial, tiempoFinal);
+          const temperaturaRetornoX = equivalenteSegunPosiciones(frecuenciaDataX, frecuenciaDataY, posicionesEnRango);
+
+          ventanasTemperaturaLocal.push(...temperaturaRetornoX);
+        }
+        console.log("COLORS AFTER", colorsLocal1);
+
+        console.log("VENTANA", ventanasLocalEmg1)
         selection.length = 0;
         if (selectedEmg === 'EMG1') {
           const localArray = [...ventanasSeñal1Emg1];
@@ -649,7 +693,8 @@ const Caracterizar = (props: CaracterizarProps) => {
       alert('Seleccione una ventana primero');
     }
   };
-
+  console.log("GSR ACTUAL", ventanasSeñalGsr);
+  console.log("EMG ACTUAL", ventanasSeñal1Emg1);
   const onClickSave = () => {
     // Comprobacion del numero de ventanas, todos los sensores tienen que tener las
     // Mismas ventanas
@@ -755,11 +800,24 @@ const Caracterizar = (props: CaracterizarProps) => {
     retrieveSignal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log("SEÑAL EMG ACTUAL", ventanasSeñal1Emg1);
+  console.log("SEÑAL Colores ACTUAL", colors1);
+
+
   const onClickUndo = () => {
     setAllSelections((curr) => curr.slice(0, -1));
+    console.log("SEÑAL EMG PREVIA", ventanasSeñal1Emg1);
+    console.log("SEÑAL Colores PREVIA", colors1);
+    console.log("SELECTED LENGTH", selectedLength);
     if (lastEMG === 'EMG1') {
       setVentanasSeñal1Emg1((curr: any) => curr.slice(0, -1));
-      setColors1((curr) => curr.slice(0, -selectedLength));
+      const cleanedColors = colors1.map((color: string) => {
+        if (color === 'red') {
+          return 'gray';
+        }
+        return color;
+      });
+      setColors1([...cleanedColors]);
     } else if (lastEMG === 'EMG2') {
       setVentanasSeñal2Emg2((curr: any) => curr.slice(0, -1));
       const cleanedColors = colors2.map((color: string) => {

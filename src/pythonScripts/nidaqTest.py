@@ -44,7 +44,7 @@ def funcion_a_ejecutar():
             returnedList.append({"emg2": line[1]})  
             returnedList.append({"emg3": line[2]})  
             returnedList.append({"emg4": line[3]}) 
-            returnedList.append({"timeEmg": datetime.now().strftime("%H:%M:%S")})  
+            returnedList.append({"tiempoEmg": datetime.now().strftime("%H:%M:%S")})  
 
 
 

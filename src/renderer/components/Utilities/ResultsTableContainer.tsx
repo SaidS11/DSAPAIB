@@ -21,37 +21,56 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
   const frecuenciaChecked = useCustomSelector(
     (state) => state.señales.frecuenciaIsChecked
   );
+
+  const temperaturaChecked = useCustomSelector(
+    (state) => state.señales.temperaturaIsChecked
+  );
   interface Cols {
     nombre?: string;
     // EMG's
     colMediaABSEMG1?: string;
     colMedianaEMG1?: string;
     colRMSEMG1?: string;
-
+  
     colMediaABSEMG2?: string;
     colMedianaEMG2?: string;
     colRMSEMG2?: string;
-
+  
     colMediaABSEMG3?: string;
     colMedianaEMG3?: string;
     colRMSEMG3?: string;
-
+  
     colMediaABSEMG4?: string;
     colMedianaEMG4?: string;
     colRMSEMG4?: string;
-    // TEMP
-    colMediaABSAcelerometro?: string;
-    colMedianaAcelerometro?: string;
-    colRMSAcelerometro?: string;
+    // Acelerometro
+    colMediaABSAcelerometroX?: string;
+    colMedianaAcelerometroX?: string;
+    colRMSAcelerometroX?: string;
+  
+    colMediaABSAcelerometroY?: string;
+    colMedianaAcelerometroY?: string;
+    colRMSAcelerometroY?: string;
+  
+    colMediaABSAcelerometroZ?: string;
+    colMedianaAcelerometroZ?: string;
+    colRMSAcelerometroZ?: string;
+  
+    // Temp
+    colMediaABSTemp?: string;
+    colMedianaTemp?: string;
+    colRMSTemp?: string;
+  
     // GSR
     colMediaABSGsr?: string;
     colMedianaGsr?: string;
     colRMSGsr?: string;
+  
     // SPO2
     colMediaABSFrecuencia?: string;
     colMedianaFrecuencia?: string;
     colRMSFrecuencia?: string;
-
+  
     // Clase
     etiqueta?: string;
   }
@@ -104,9 +123,17 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
       }
       if (acelerometroChecked) {
         Object.assign(dataJson, {
-          colMediaABSAcelerometro: parsedRespObj.colMediaABSAcelerometro[i],
-          colMedianaAcelerometro: parsedRespObj.colMedianaAcelerometro[i],
-          colRMSAcelerometro: parsedRespObj.colRMSAcelerometro[i],
+          colMediaABSAcelerometroX: parsedRespObj.colMediaABSAcelerometroX[i],
+          colMedianaAcelerometroX: parsedRespObj.colMedianaAcelerometroX[i],
+          colRMSAcelerometroX: parsedRespObj.colRMSAcelerometroX[i],
+
+          colMediaABSAcelerometroY: parsedRespObj.colMediaABSAcelerometroY[i],
+          colMedianaAcelerometroY: parsedRespObj.colMedianaAcelerometroY[i],
+          colRMSAcelerometroY: parsedRespObj.colRMSAcelerometroY[i],
+
+          colMediaABSAcelerometroZ: parsedRespObj.colMediaABSAcelerometroZ[i],
+          colMedianaAcelerometroZ: parsedRespObj.colMedianaAcelerometroZ[i],
+          colRMSAcelerometroZ: parsedRespObj.colRMSAcelerometroZ[i],
         });
       }
 
@@ -115,6 +142,14 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
           colMediaABSFrecuencia: parsedRespObj.colMediaABSFrecuencia[i],
           colMedianaFrecuencia: parsedRespObj.colMedianaFrecuencia[i],
           colRMSFrecuencia: parsedRespObj.colRMSFrecuencia[i],
+        });
+      }
+
+      if (temperaturaChecked) {
+        Object.assign(dataJson, {
+          colMediaABSTemperatura: parsedRespObj.colMediaABSTemperatura[i],
+          colMedianaTemperatura: parsedRespObj.colMedianaTemperatura[i],
+          colRMSTemperatura: parsedRespObj.colRMSTemperatura[i],
         });
       }
 
@@ -194,15 +229,41 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
         columns: [
           {
             Header: 'Media absoluta',
-            accessor: `colMediaABSAcelerometro`,
+            accessor: `colMediaABSAcelerometroX`,
           },
           {
             Header: 'Mediana',
-            accessor: `colMedianaAcelerometro`,
+            accessor: `colMedianaAcelerometroX`,
           },
           {
             Header: 'RMS',
-            accessor: `colRMSAcelerometro`,
+            accessor: `colRMSAcelerometroX`,
+          },
+
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSAcelerometroY`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaAcelerometroY`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSAcelerometroY`,
+          },
+
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSAcelerometroZ`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaAcelerometroZ`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSAcelerometroZ`,
           },
         ],
       });
@@ -223,6 +284,25 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
           {
             Header: 'RMS',
             accessor: `colRMSFrecuencia`,
+          },
+        ],
+      });
+    }
+    if (temperaturaChecked) {
+      internalArray.push({
+        Header: 'Temperatura Promedio',
+        columns: [
+          {
+            Header: 'Media absoluta',
+            accessor: `colMediaABSTemperatura`,
+          },
+          {
+            Header: 'Mediana',
+            accessor: `colMedianaTemperatura`,
+          },
+          {
+            Header: 'RMS',
+            accessor: `colRMSTemperatura`,
           },
         ],
       });

@@ -95,7 +95,7 @@ const GuardarModeloContainer = () => {
   };
 
   const loadModels = useCallback(async () => {
-    console.log('Fui llamado Modelsdsad', algoritmoTipo);
+    console.log('Fui llamado Models', algoritmoTipo);
     appDispatch(setIsLoading(true));
     let respModelo;
     if (predictMode) {

@@ -17,7 +17,7 @@ import {
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
-import { apiEndpoint, ardMessage, completeAdqObject } from '../Utilities/Constants';
+import { adqWithTimeWithoutSignals, apiEndpoint, ardMessage, completeAdqObject } from '../Utilities/Constants';
 import Button from '@mui/material/Button';
 import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
@@ -63,7 +63,7 @@ function calcularValorCorrectoGsr(arreglo: Array<number>) {
   return nuevoArreglo;
 }
 
-function calcularTimeGsr(arreglo: Array<number>) {
+export function calcularTimeGsr(arreglo: Array<number>) {
   const nuevosValores = [];
 
   for (let i = 0; i < arreglo.length; i += 10) {
@@ -73,6 +73,26 @@ function calcularTimeGsr(arreglo: Array<number>) {
   return nuevosValores;
 }
 
+export function limpiarNulos(arreglo: Array<number>) {
+  return arreglo.map((value: number) => (value === null ? 0 : value));
+}
+
+export function igualarArreglos(arreglo: Array<number>, arreglo2: Array<number>) {
+  // Determinar el largo del arreglo más pequeño
+  const minLength = Math.min(arreglo.length, arreglo2.length);
+
+  // Recortar el arreglo arreglo si es más largo que el arreglo arreglo2
+  if (arreglo.length > minLength) {
+    arreglo = arreglo.slice(0, minLength);
+  }
+
+  // Recortar el arreglo arreglo2 si es más largo que el arreglo arreglo
+  if (arreglo2.length > minLength) {
+    arreglo2 = arreglo2.slice(0, minLength);
+  }
+
+  return [arreglo, arreglo2];
+}
 
 function parseArduinoData(arreglo: any) {
   const objetoTransformado: any = {};
@@ -331,11 +351,82 @@ const VideoDemoContainer = () => {
     }
 
     // TESTS
+
+    // Clean signals and make lengths equal
+
+    // for (const key in adqWithTimeWithoutSignals) {
+    //   if (adqWithTimeWithoutSignals.hasOwnProperty(key)) {
+    //     const arr = adqWithTimeWithoutSignals[key];
+    //     // Verificar si el valor es un arreglo
+    //     if (Array.isArray(arr)) {
+    //       // Reemplazar los valores null por 0 en el arreglo
+    //       adqWithTimeWithoutSignals[key] = limpiarNulos(arr);
+    //     }
+    //   }
+    // }
+    // if(adqWithTimeWithoutSignals.emg1.length !== adqWithTimeWithoutSignals.emg2.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["emg1"], adqWithTimeWithoutSignals["emg2"]);
+    //   adqWithTimeWithoutSignals.emg1 = arreglo
+    //   adqWithTimeWithoutSignals.emg2 = arreglo2
+    // }
+    // if(adqWithTimeWithoutSignals.emg1.length !== adqWithTimeWithoutSignals.emg3.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["emg1"], adqWithTimeWithoutSignals["emg3"]);
+    //   adqWithTimeWithoutSignals.emg1 = arreglo
+    //   adqWithTimeWithoutSignals.emg3 = arreglo2
+    // }
+    // if(adqWithTimeWithoutSignals.emg1.length !== adqWithTimeWithoutSignals.emg4.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["emg1"], adqWithTimeWithoutSignals["emg4"]);
+    //   adqWithTimeWithoutSignals.emg1 = arreglo
+    //   adqWithTimeWithoutSignals.emg4 = arreglo2
+    // }
+    // if(adqWithTimeWithoutSignals.emg1.length !== adqWithTimeWithoutSignals.tiempoEmg.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["emg1"], adqWithTimeWithoutSignals["tiempoEmg"]);
+    //   adqWithTimeWithoutSignals.emg1 = arreglo
+    //   adqWithTimeWithoutSignals.emg2 = arreglo
+    //   adqWithTimeWithoutSignals.emg3 = arreglo
+    //   adqWithTimeWithoutSignals.emg4 = arreglo
+
+    //   adqWithTimeWithoutSignals.tiempoEmg = arreglo2
+    // }
+
+
+    // if(adqWithTimeWithoutSignals.GSR.length !== adqWithTimeWithoutSignals.tiempoGSR.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["GSR"], adqWithTimeWithoutSignals["tiempoGSR"]);
+    //   adqWithTimeWithoutSignals.GSR = arreglo
+    //   adqWithTimeWithoutSignals.tiempoGSR = arreglo2
+    // }
+
+    // if(adqWithTimeWithoutSignals.HRLM.length !== adqWithTimeWithoutSignals.tiempoHRLM.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["HRLM"], adqWithTimeWithoutSignals["tiempoHRLM"]);
+    //   adqWithTimeWithoutSignals.HRLM = arreglo
+    //   adqWithTimeWithoutSignals.tiempoHRLM = arreglo2
+    // }
+
+    // if(adqWithTimeWithoutSignals.INCLX.length !== adqWithTimeWithoutSignals.tiempoINCLX.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["INCLX"], adqWithTimeWithoutSignals["tiempoINCLX"]);
+    //   adqWithTimeWithoutSignals.INCLX = arreglo
+    //   adqWithTimeWithoutSignals.INCLY = arreglo
+    //   adqWithTimeWithoutSignals.INCLZ = arreglo
+    //   adqWithTimeWithoutSignals.tiempoINCLX = arreglo2
+    // }
+
+    // if(adqWithTimeWithoutSignals.TC.length !== adqWithTimeWithoutSignals.tiempoTC.length) {
+    //   const [arreglo, arreglo2] = igualarArreglos(adqWithTimeWithoutSignals["TC"], adqWithTimeWithoutSignals["tiempoTC"]);
+    //   adqWithTimeWithoutSignals.TC = arreglo
+    //   adqWithTimeWithoutSignals.tiempoTC = arreglo2
+    // }
+    // console.log("PREV OBJ", adqWithTimeWithoutSignals);
+
     // const transformedObj: any = {};
-    // for (const key in completeAdqObject) {
-    //   if (completeAdqObject.hasOwnProperty(key)) {
-    //     const newArray = completeAdqObject[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
-    //     transformedObj[key] = newArray;
+    // for (const key in adqWithTimeWithoutSignals) {
+    //   if (adqWithTimeWithoutSignals.hasOwnProperty(key)) {
+    //     if(key.includes("tiempo")) {
+    //       const value = adqWithTimeWithoutSignals[key]
+    //       transformedObj[key] = value
+    //     } else {
+    //       const newArray = adqWithTimeWithoutSignals[key].map((value: any, index: any) => ({ x: index + 1, y: value }));
+    //       transformedObj[key] = newArray;
+    //     }
     //   }
     // }
     // const objWrapper = {
@@ -584,18 +675,14 @@ const VideoDemoContainer = () => {
 
       if(tempLocalChecked) {
         timeObj.tiempoTC =  timestampArduinoSinAcelerometro;
-
       }
       if (frecuenciaLocalChecked) {
         timeObj.tiempoHRLM =  timestampArduinoSinAcelerometro;
-
       }
       if(acelerometroLocalChecked) {
         timeObj.tiempoINCLX =  timestampArduinoConAcelerometro;
         timeObj.tiempoINCLY =  timestampArduinoConAcelerometro;
         timeObj.tiempoINCLZ =  timestampArduinoConAcelerometro;
-
-
       } 
 
       objetoAdquirido = {...objetoAdquirido, ...timeObj};

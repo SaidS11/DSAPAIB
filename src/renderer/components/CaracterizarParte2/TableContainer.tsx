@@ -62,6 +62,7 @@ interface Cols {
 }
 
 function calcularMediana(datos: Array<number>) {
+  console.log("THIS IS THE DATA ", datos);
   // Ordena el conjunto de datos
   datos.sort(function (a, b) {
     return a - b;
@@ -156,7 +157,6 @@ const TableContainer = (props: TableContainerProps) => {
 
   const appDispatch = useCustomDispatch();
 
-  console.log('Actual', ventanasArrayEmg1);
 
   const returnFixed = (num: string) => {
     let localNum;
@@ -184,6 +184,8 @@ const TableContainer = (props: TableContainerProps) => {
       );
       const dataJson = {};
       if (cantidadSensores >= 1) {
+        console.log('Actual EMG1', ventanasArrayEmg1);
+
         Object.assign(dataJson, {
           colMediaABSEMG1: returnFixed(
             ventanasArrayEmg1[numeroDeSujeto][i][2]
@@ -197,6 +199,8 @@ const TableContainer = (props: TableContainerProps) => {
         });
       }
       if (cantidadSensores >= 2) {
+        console.log('Actual EMG2', ventanasArrayEmg2);
+
         Object.assign(dataJson, {
           colMediaABSEMG2: returnFixed(
             ventanasArrayEmg2[numeroDeSujeto][i][2]
@@ -210,6 +214,8 @@ const TableContainer = (props: TableContainerProps) => {
         });
       }
       if (cantidadSensores >= 3) {
+        console.log('Actual EMG3', ventanasArrayEmg3);
+
         Object.assign(dataJson, {
           colMediaABSEMG3: returnFixed(
             ventanasArrayEmg3[numeroDeSujeto][i][2]
@@ -223,6 +229,8 @@ const TableContainer = (props: TableContainerProps) => {
         });
       }
       if (cantidadSensores >= 4) {
+        console.log('Actual EMG4', ventanasArrayEmg4);
+
         Object.assign(dataJson, {
           colMediaABSEMG4: returnFixed(
             ventanasArrayEmg4[numeroDeSujeto][i][2]
@@ -236,6 +244,9 @@ const TableContainer = (props: TableContainerProps) => {
         });
       }
       if (gsrChecked) {
+        console.log('Actual GSR', ventanasArrayGsr);
+
+
         Object.assign(dataJson, {
           colMediaABSGsr: returnFixed(
             ventanasArrayGsr[numeroDeSujeto][i][2]
@@ -249,6 +260,18 @@ const TableContainer = (props: TableContainerProps) => {
         });
       }
       if (acelerometroChecked) {
+        console.log('Actual ACELEROX', ventanasArrayAcelerometroX);
+
+        console.log('Actual ACELEROY ', ventanasArrayAcelerometroY);
+        
+        console.log("X ABS", ventanasArrayAcelerometroX[numeroDeSujeto][i][2]);
+        console.log("X", ventanasArrayAcelerometroX[numeroDeSujeto]);
+
+        console.log("CONSTR", numeroDeSujeto, i, 2);
+        console.log("Y ", ventanasArrayAcelerometroY[numeroDeSujeto]);
+
+        console.log("Y ABS", ventanasArrayAcelerometroY[numeroDeSujeto][i][2]);
+
         Object.assign(dataJson, {
           colMediaABSAcelerometroX: returnFixed(
             ventanasArrayAcelerometroX[numeroDeSujeto][i][2]

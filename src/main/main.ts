@@ -44,7 +44,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 };
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
@@ -2611,6 +2611,103 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
   }
 });
 
+app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
+  const { 
+    tipo,
+    tipoIA,
+    params,
+    nombre,
+    iteraciones,
+    reducedPercentage,
+    datos } = req.body;
+
+  console.log('PARAMS', tipo,
+  tipoIA,
+  params,
+  nombre,
+  iteraciones,
+  reducedPercentage,
+  datos);
+
+  const direc = __dirname;
+  const regex = /\//i;
+  const direcParsed = direc.replace(regex, '/');
+  const direcFinal = direcParsed.slice(0, -4);
+
+  const options = {
+    args: [
+      tipo,
+      tipoIA,
+      params,
+      nombre,
+      iteraciones,
+      reducedPercentage,
+      datos,
+    ],
+  };
+
+  // res.send(JSON.stringify({ status: 200, message: 'asdddddddddddddddddd' }));
+  // try {
+  //   PythonShell.run(
+  //     `${direcFinal}/pythonScripts/analisis.py`,
+  //     options,
+  //     function (err, results) {
+  //       if (err) {
+  //         console.log('err', err);
+  //         // return "Error"
+  //       } else {
+  //         console.log(results);
+  //         // res = results![0]
+  //         console.log('Finisheddd');
+  //         mainWindow?.webContents.send('analisisP', results![0]);
+  //       }
+  //     }
+  //   );
+  // } catch (e: any) {
+  //   console.log('ERROR EN LA EJECUCION', e);
+  // }
+
+  const pythonProcess = spawn('python', [
+    `${direcFinal}/pythonScripts/analisis.py`,
+      tipo,
+      tipoIA,
+      params,
+      nombre,
+      iteraciones,
+      reducedPercentage,
+      datos,
+  ]);
+
+  pythonProcess.on('exit', function (code: any, signal: any) {
+    const result = pythonProcess.stdout?.toString()?.trim();
+    const error = pythonProcess.stderr?.toString()?.trim();
+    const strResult = result;
+    console.log("RESULT", result);
+    console.log(
+      'child process exited with ' + `code ${code} and signal ${signal}`
+    );
+    if (error) {
+      res.send(
+        JSON.stringify({
+          status: 500,
+          message:
+            'child process exited with ' + `code ${code} and signal ${signal}`,
+        })
+      );
+    } else {
+      res.send(
+        JSON.stringify({
+          status: 200,
+          message:
+            'child process exited with ' + `code ${code} and signal ${signal}`,
+        })
+      );
+    }
+  });
+
+});
+
+
 ipcMain.handle(
   'arduinoTest',
   async (event, duration: string, cantidadEmgs: string) => {
@@ -2782,7 +2879,7 @@ app2.get('/obtenerObjDeCsv', async (req: Request, res: Response, next: any) => {
         if (valor !== undefined) {
           valor = valor.trim();
         }
-        if (clave !== "timeEmg") {
+        if (clave !== "tiempoEmg") {
           let num = parseFloat(valor);
           if(isNaN(num)) {
             num = 0;

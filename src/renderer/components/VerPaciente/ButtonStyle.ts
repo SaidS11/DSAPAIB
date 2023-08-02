@@ -230,7 +230,8 @@ export const styleButtonBiggerRed = {
   marginLeft: '10px',
   textTransform: 'unset',
   '&:hover': {
-    color: '#4372ca',
+    color: 'red',
+    backgroundColor: 'white',
   },
 };
 

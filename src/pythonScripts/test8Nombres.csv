@@ -1,7 +1,9 @@
-colMediaABSEMG1,colMedianaEMG1,colRMSEMG1,colMediaABSEMG2,colMedianaEMG2,colRMSEMG2,colMediaABSEMG3,colMedianaEMG3,colRMSEMG3,colMediaABSEMG4,colMedianaEMG4,colRMSEMG4,colMediaABSFrecuencia,colMedianaFrecuencia,colRMSFrecuencia,etiqueta,nombre
-5.25,5.5,5.45,5,5,5.39,5,5,5.39,5.60,6,5.90,5.25,5.5,5.45,Diabetico,Isaac Rayas Chacon
-15.20,15,15.30,16.50,16.5,16.59,16.50,16.5,16.59,16.50,16.5,16.54,15.20,15,15.30,Diabetico,Isaac Rayas Chacon
-4.50,4.5,4.81,6.60,7,6.86,5.50,5.5,5.76,5.50,5.5,5.76,4.50,4.5,4.81,Diabetico,Carlos Silva Chacon
-16,16,16.06,17,17,17.06,17,17,17.06,16.50,16.5,16.59,16,16,16.06,Diabetico,Carlos Silva Chacon
-5,5,5.39,5.50,5.5,5.76,5.50,5.5,5.96,4.50,4.5,4.64,5,5,5.39,Sano,Probando pr pr
-16,16,16.06,16.50,16.5,16.59,16,16,16.06,16,16,16.12,16,16,16.06,Sano,Probando pr pr
+colMediaABSEMG1,colMedianaEMG1,colRMSEMG1,colMediaABSEMG2,colMedianaEMG2,colRMSEMG2,colMediaABSEMG3,colMedianaEMG3,colRMSEMG3,colMediaABSEMG4,colMedianaEMG4,colRMSEMG4,colMediaABSGsr,colMedianaGsr,colRMSGsr,colMediaABSAcelerometroX,colMedianaAcelerometroX,colRMSAcelerometroX,colMediaABSAcelerometroY,colMedianaAcelerometroY,colRMSAcelerometroY,colMediaABSAcelerometroZ,colMedianaAcelerometroZ,colRMSAcelerometroZ,colMediaABSFrecuencia,colMedianaFrecuencia,colRMSFrecuencia,colMediaABSTemperatura,colMedianaTemperatura,colRMSTemperatura,etiqueta,nombre
+81.56,82.5,84.26,82.44,83,83.33,87.18,88.5,88.63,63.19,62.5,64.98,10,10,10.03,40,40,40.12,40,40,40.12,40,40,40.12,92,92,92.28,92,92,92.28,Diabetico,Martha Garcia Lopez
+964.80,965.5,964.91,1087.50,1088.5,1087.62,1062.29,1062,1062.42,1072.42,1073,1072.61,20,20,20.02,85,85,85.04,85,85,85.04,85,85,85.04,192,192,192.14,192,192,192.14,Diabetico,Martha Garcia Lopez
+102.18,104,103.81,247.10,246.5,247.57,280.73,276,281.53,164.38,167,165.25,10,10,10.03,40,40,40.12,40,40,40.12,40,40,40.12,92,92,92.28,92,92,92.28,Diabetico,Isaac Rayas Chacon
+1031.24,1032,1031.29,503.50,504,503.62,864.35,863,864.48,716.76,716,717.02,20,20,20.02,85,85,85.04,85,85,85.04,85,85,85.04,192,192,192.14,192,192,192.14,Diabetico,Isaac Rayas Chacon
+156.76,154.5,158.94,97.90,95,100.01,188.67,190,189.30,142.77,142,143.08,11,11,11.09,46,46,46.48,46,46,46.48,46,46,46.48,104.50,104.5,105.49,104.50,104.5,105.49,Sano,Probando pr pr
+670.47,669.5,670.80,737.80,738,737.90,898,897,898.14,833.65,836.5,833.82,16,16,16.06,69,69,69.32,69,69,69.32,69,69,69.32,154.50,154.5,155.17,154.50,154.5,155.17,Sano,Probando pr pr
+138.63,138.5,139.13,143.31,144,144.41,401,398,401.32,174.07,173,174.70,10,10,10.03,40,40,40.12,40,40,40.12,40,40,40.12,92,92,92.28,92,92,92.28,Sano,Sujeto Prueba 1
+986.26,986.5,986.52,968.25,967.5,968.40,738.56,737.5,738.83,683.07,682,683.33,20,20,20.02,85,85,85.04,85,85,85.04,85,85,85.04,192,192,192.14,192,192,192.14,Sano,Sujeto Prueba 1
