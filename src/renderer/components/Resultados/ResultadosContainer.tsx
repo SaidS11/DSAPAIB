@@ -9,6 +9,7 @@ import {
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import Resultados from './Resultados';
 import SaveEtiquetaModal from '../Utilities/SaveEtiquetaModal';
+import { apiEndpoint } from '../Utilities/Constants';
 
 interface ConfLocal {
   emgs: number;
@@ -492,7 +493,7 @@ const ResultadosContainer = () => {
     appDispatch(setIsLoading(false));
   }, []);
 
-  const onClickCrear = (e: React.FormEvent<HTMLFormElement>) => {
+  const onClickCrear = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // navigate('/escogerConfiguracion');
     const form = document.querySelector('form') as HTMLFormElement | undefined;
@@ -507,7 +508,25 @@ const ResultadosContainer = () => {
       appDispatch(setMongoInsertObject(objCopy));
       const jsonDocument = JSON.stringify(objCopy);
       appDispatch(setIsLoading(true));
-      window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
+      const response = await fetch(`${apiEndpoint}/insertarElementoMongo`, {
+        method: 'POST',
+        body: jsonDocument,
+        headers: {'Content-Type': 'application/json'}
+      });
+      if(response.status === 200) {
+        const respBody = await response.json();
+        console.log("JSON", respBody);
+        appDispatch(setIsLoading(false));
+        appDispatch(setIsUploaded(true));
+         navigate('/verPaciente');  
+      }
+      else if(response.status === 500) {
+        const respBody = await response.json();
+        console.log("JSON", respBody);
+        appDispatch(setFailUpload(true));
+        appDispatch(setIsLoading(false));
+      }
+      // window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
       // navigate('/verPaciente');
     }
   };
