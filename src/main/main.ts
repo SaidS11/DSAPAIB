@@ -2809,7 +2809,7 @@ const convertObjToCsv = (signals: any) => {
 };
 
 app2.use(express.json({ limit: '300000mb' }));
-app2.use(express.urlencoded({ limit: '300000mb' }));
+app2.use(express.urlencoded({ limit: '300000mb', extended: true, parameterLimit: 1000000 }));
 
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
