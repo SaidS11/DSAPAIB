@@ -508,26 +508,26 @@ const ResultadosContainer = () => {
       appDispatch(setMongoInsertObject(objCopy));
       const jsonDocument = JSON.stringify(objCopy);
       appDispatch(setIsLoading(true));
-      console.log("JSON TO BE SEND", jsonDocument);
-      const response = await fetch(`${apiEndpoint}/insertarElementoMongo`, {
-        method: 'POST',
-        body: jsonDocument,
-        headers: {'Content-Type': 'application/json'}
-      });
-      if(response.status === 200) {
-        const respBody = await response.json();
-        console.log("JSON", respBody);
-        appDispatch(setIsLoading(false));
-        appDispatch(setIsUploaded(true));
-         navigate('/verPaciente');  
-      }
-      else if(response.status === 500) {
-        const respBody = await response.json();
-        console.log("JSON", respBody);
-        appDispatch(setFailUpload(true));
-        appDispatch(setIsLoading(false));
-      }
-      // window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
+      // console.log("JSON TO BE SEND", jsonDocument);
+      // const response = await fetch(`${apiEndpoint}/insertarElementoMongo`, {
+      //   method: 'POST',
+      //   body: jsonDocument,
+      //   headers: {'Content-Type': 'application/json'}
+      // });
+      // if(response.status === 200) {
+      //   const respBody = await response.json();
+      //   console.log("JSON", respBody);
+      //   appDispatch(setIsLoading(false));
+      //   appDispatch(setIsUploaded(true));
+      //    navigate('/verPaciente');  
+      // }
+      // else if(response.status === 500) {
+      //   const respBody = await response.json();
+      //   console.log("JSON", respBody);
+      //   appDispatch(setFailUpload(true));
+      //   appDispatch(setIsLoading(false));
+      // }
+      window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
       // navigate('/verPaciente');
     }
   };

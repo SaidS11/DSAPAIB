@@ -679,6 +679,31 @@ app2.post('/insertarElementoMongo', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error al insertar datos' });
   }
 });
+
+async function insertarElementoMongo(query: string) {
+  try {
+    const queryJSON = JSON.parse(query);
+    await client.connect();
+    const result = await client
+      .db('Modular')
+      .collection('Señales')
+      .insertOne(queryJSON);
+    console.log(
+      `${result.insertedCount} documents inserted with _id: ${result.insertedId}`
+    );
+    return result;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+ipcMain.on('insertarElementoMongo', async (event, archivo: string) => {
+  const resp = await insertarElementoMongo(archivo);
+  console.log(resp);
+  mainWindow?.webContents.send('insertarElementoM', resp);
+});
 // ///////////////////////
 // async function buscarElementoMongo2(query: string) {
 //   try {
