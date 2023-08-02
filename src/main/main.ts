@@ -2808,8 +2808,8 @@ const convertObjToCsv = (signals: any) => {
   return csv;
 };
 
-app2.use(express.json({ limit: '50000mb' }));
-app2.use(express.urlencoded({ limit: '50000mb' }));
+app2.use(express.json({ limit: '300000mb' }));
+app2.use(express.urlencoded({ limit: '300000mb' }));
 
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {

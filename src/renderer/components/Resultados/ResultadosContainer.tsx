@@ -508,6 +508,7 @@ const ResultadosContainer = () => {
       appDispatch(setMongoInsertObject(objCopy));
       const jsonDocument = JSON.stringify(objCopy);
       appDispatch(setIsLoading(true));
+      console.log("JSON TO BE SEND", jsonDocument);
       const response = await fetch(`${apiEndpoint}/insertarElementoMongo`, {
         method: 'POST',
         body: jsonDocument,
