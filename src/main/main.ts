@@ -668,7 +668,7 @@ app2.post('/insertarElementoMongo', async (req: Request, res: Response) => {
   try {
     const json = req.body;
     const jsonstring = JSON.stringify(json);
-    console.log(jsonstring);
+    console.log("RECIBI", jsonstring);
     const result = await insertarElementoMongo2(jsonstring);
     if (result) {
       res.status(200).json({ message: 'Datos insertados' });
@@ -2808,8 +2808,8 @@ const convertObjToCsv = (signals: any) => {
   return csv;
 };
 
-app2.use(express.json({ limit: '5000mb' }));
-app2.use(express.urlencoded({ limit: '5000mb' }));
+app2.use(express.json({ limit: '50000mb' }));
+app2.use(express.urlencoded({ limit: '50000mb' }));
 
 app2.post('/generarCsv', async (req: Request, res: Response) => {
   try {
