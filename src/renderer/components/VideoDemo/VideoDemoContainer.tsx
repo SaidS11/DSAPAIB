@@ -355,15 +355,16 @@ const VideoDemoContainer = () => {
         appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
         return;
       }
+      stopArduinos();
 
-      try {
-        stopArduinos();
-      } 
-      catch(error: any) {
-        appDispatch(setFallosAlCargar(true));
-        appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas: ${error}`));
-        return;
-      }
+      // try {
+      //   stopArduinos();
+      // } 
+      // catch(error: any) {
+      //   appDispatch(setFallosAlCargar(true));
+      //   appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas: ${error}`));
+      //   return;
+      // }
     }
     /// .....
 
