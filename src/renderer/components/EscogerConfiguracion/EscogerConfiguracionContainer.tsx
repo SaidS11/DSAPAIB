@@ -7,7 +7,7 @@ import {
   setConfigCompleta,
   setProtocoloNombre,
 } from '../../../redux/slices/ConfiguracionSlice';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setErrorDetails, setFallosAlCargar, setIsLoading } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch } from '../../../redux/hooks';
 // eslint-disable-next-line import/no-named-as-default
 import EscogerConfiguracion from './EscogerConfiguracion';
@@ -46,7 +46,8 @@ const EscogerConfiguracionContainer = () => {
 
   const onClickNav = () => {
     if (protocolo === '') {
-      alert('Seleccione uno primero');
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Error al obtener la información: Seleccione un protocolo`));
     } else {
       loadConf();
       // navigate('/colocacionMuestra');

@@ -193,6 +193,8 @@ const styleButton = {
   textTransform: 'unset',
   '&:hover': {
     color: '#4372ca',
+    transform: "scale(1.05)",
+    borderColor: "#4372ca"
   },
 };
 
@@ -212,6 +214,10 @@ export const styleButtonBigger = {
   textTransform: 'unset',
   '&:hover': {
     color: '#4372ca',
+    transform: "scale(1.05)",
+    borderColor: '#4372ca',
+
+
   },
 };
 
@@ -232,6 +238,10 @@ export const styleButtonBiggerRed = {
   '&:hover': {
     color: 'red',
     backgroundColor: 'white',
+    transform: "scale(1.05)",
+    borderColor: 'red',
+
+
   },
 };
 
@@ -250,7 +260,10 @@ export const styleButtonBiggerGreen = {
   marginLeft: '10px',
   textTransform: 'unset',
   '&:hover': {
-    color: '#4372ca',
+    transform: "scale(1.05)",
+    color: '#70e000',
+    backgroundColor: 'white',
+    borderColor: '#70e000',
   },
 };
 
@@ -269,6 +282,21 @@ export const styleButtonLogin = {
   '&:hover': {
     transform: "scale(1.05)",
     opacity: "1",
+  }
+};
+
+export const styleButtonMenuInicial = {
+  fontSize: '25px', 
+  border: '1px solid black', 
+  backgroundColor: 'rgb(18,10,143)', 
+  color: 'white', 
+  width: '400px', 
+  borderRadius: '20px',
+  '&:hover': {
+    transform: "scale(1.05)",
+    backgroundColor: "white",
+    color: "rgb(18,10,143)",
+    borderColor: "rgb(18,10,143)"
   }
 };
 
@@ -310,3 +338,13 @@ export const checkBoxConfigAcelerometro = {
 };
 
 export default styleButton;
+
+
+export const styleAddIcon = {
+  cursor: "pointer",
+  color: "green",
+  transform: "scale(1.1)",
+  '&:hover': {
+    transform: "scale(1.3)",
+  },
+};

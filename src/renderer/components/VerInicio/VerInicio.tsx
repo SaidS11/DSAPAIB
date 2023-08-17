@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { styleButtonMenuInicial } from '../VerPaciente/ButtonStyle';
 import './VerInicio.css';
 import Button from '@mui/material/Button';
 
@@ -18,10 +19,13 @@ export const Inicio = (props: InicioProps) => {
 
       <br />
       <div className='display-center'>
-        <h3>Este sistema es utilizado para monitorear el pie diabetico</h3>
+        <h3>Este sistema es utilizado para analizar diversas patologías</h3>
       </div>
       <div className='display-center'>
-        <h3>usando una variedad de sensores.</h3>
+        <h3>usando una variedad de sensores para la adquisición</h3>
+      </div>
+      <div className='display-center'>
+        <h3>e inteligencia artificial para la clasificación.</h3>
       </div>
       <br />
       <div className='display-center'>
@@ -29,15 +33,15 @@ export const Inicio = (props: InicioProps) => {
       </div>
       <br />
       <div className='display-center'>
-        <Button onClick={onClickPacientes} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Pacientes</Button>
+        <Button onClick={onClickPacientes} sx={styleButtonMenuInicial}>Pacientes</Button>
       </div>
       <br />
       <div className='display-center'>
-        <Button onClick={onClickProtocolo} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Protocolo</Button>
+        <Button onClick={onClickProtocolo} sx={styleButtonMenuInicial}>Protocolo</Button>
       </div>
       <br />
       <div className='display-center'>
-        <Button onClick={onClickAnalisis} style={{fontSize: '25px', border: '1px solid black', backgroundColor: 'rgb(18,10,143)', color: 'white', width: '400px', borderRadius: '20px'}}>Análisis</Button>
+        <Button onClick={onClickAnalisis} sx={styleButtonMenuInicial}>Análisis</Button>
       </div>
       <div className='display-center'>
         <h5 style={{marginTop: '3%'}}>Universidad de Guadalajara 2023</h5>

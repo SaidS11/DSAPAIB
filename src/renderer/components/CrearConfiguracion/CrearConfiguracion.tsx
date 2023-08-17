@@ -7,8 +7,17 @@ import { InputLabel, FormControl, MenuItem, TextField } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Dispatch, SetStateAction } from 'react';
 import {
-  styleButtonBiggerGreen, checkBoxConfig,
+  styleButtonBiggerGreen, checkBoxConfig, styleAddIcon,
 } from '../VerPaciente/ButtonStyle';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 export interface CrearConfigProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
@@ -36,86 +45,128 @@ const CrearConfiguracion = (props: CrearConfigProps) => {
     return emgs;
   }
 
+  const defaultTheme = createTheme();
+
+
     return (
         <div>
           <section className="display-center">
             <h1>Crear Configuración</h1>
           </section>
-          <div className='display-center'>
-          <form className="analisis-form" onSubmit={onClickNav}>
-            <section className="display-flex">
-              <h4>Nombre:</h4>
-              <input className="first-input" type="text" name="nombreConfig" required/>
-            </section>
-            <section className="display-flex">
-              <h4>Descripción:</h4>
-              <textarea className="second-input" name="descripcion" required/>
-            </section>
-            <section className="display-flexAgregar">
-              <h4>Canales {variable}:</h4>
-              {/* <select className="third-input-canales" name="canales" required>
-                {numofEmgs()}
-              </select> */}
-              <section  className="list-box-sexo">
-                <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Canales</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="canales"
-                  label="Canales"
-                  value={canales}
-                  onChange={handleChangeCanales}
-                  required
+          <ThemeProvider theme={defaultTheme}>
+              <Container component="main" maxWidth="sm">
+                <CssBaseline />
+                <Box
+                  sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
                 >
-                  {numofEmgs()}
-                </Select>
-                </FormControl>
-              </section>
-            </section>
-            <section className='display-flex'>
-                <h4>Sensores Adicionales y formatos de captura permitidos según el sensor</h4>
-            </section>
-            <div className='display-margin'>
-              <div >
-                <h4>Temperatura:</h4>
-                <h4>Frecuencia Cardiaca:</h4>
-                <h4>Gsr:</h4>
-                <h4>Acelerometro:</h4>
-              </div>
-              <div>
-                <Checkbox sx={checkBoxConfig} name="temperatura" value="1"  />
-                <Checkbox sx={checkBoxConfig} name="frecuencia" value="1"  />
-                <Checkbox sx={checkBoxConfig} name="gsr" value="1"  />
-                <Checkbox sx={checkBoxConfig} name="acelerometro" value="1"  />
-              </div>
-              <div>
-                <h4>tc</h4>
-                <h4>hlrm</h4>
-                <h4>gsr</h4>
-                <h4>inclx, incly, inclz</h4>
-              </div>
-            </div>
-            <section className='display-flexAgregar'>
-                <h4>Cantidad de arduinos necesarios para la adquisición</h4>
-                <input
-                  type="number"
-                  id="arduinos"
-                  name="arduinos"
-                  min="1"
-                  max="2"
-                  required
-                />
-            </section>
+                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <SettingsIcon sx={styleAddIcon} style={{color: "white"}}/>
+                  </Avatar>
+                  <Typography component="h1" variant="h5" >
+                  Llene los datos de la configuración
+                  </Typography>
+                  <Box component="form" onSubmit={onClickNav} sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          id="nombreConfig"
+                          name="nombreConfig"
+                          label="Nombre"
+                          autoFocus
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          type="descripcion"
+                          id="descripcion"
+                          label="Descripción"
+                          name="descripcion"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Typography component="h1" variant="h6" >
+                        Numero de Canales
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">EMG</InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="canales"
+                            label="EMG"
+                            value={canales}
+                            onChange={handleChangeCanales}
+                            required
+                          >
+                            {numofEmgs()}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography component="h1" variant="h5" >
+                        Sensores Adicionales y claves de captura permitidos según el sensor
+                        </Typography>
+                      </Grid>
 
-            <section className='display-center'>
-              <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"
-            component="label" >Continuar
-              <input hidden type="submit" />
-              </Button>
-            </section>
-          </form>
-          </div>
+                      <Grid item xs={12}>
+                        <div className='display-margin'>
+                          <div >
+                            <h4>Temperatura:</h4>
+                            <h4>Frecuencia Cardiaca:</h4>
+                            <h4>Gsr:</h4>
+                            <h4>Acelerometro:</h4>
+                          </div>
+                          <div>
+                            <Checkbox sx={checkBoxConfig} name="temperatura" value="1"  />
+                            <Checkbox sx={checkBoxConfig} name="frecuencia" value="1"  />
+                            <Checkbox sx={checkBoxConfig} name="gsr" value="1"  />
+                            <Checkbox sx={checkBoxConfig} name="acelerometro" value="1"  />
+                          </div>
+                          <div>
+                            <h4>TC</h4>
+                            <h4>HRLM</h4>
+                            <h4>GSR</h4>
+                            <h4>INCLX, INCLY, INCLY</h4>
+                          </div>
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography component="h1" variant="h5" >
+                        Cantidad de arduinos necesarios para la adquisición
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <input
+                          type="number"
+                          id="arduinos"
+                          name="arduinos"
+                          min="1"
+                          max="2"
+                          required
+                        />
+                      </Grid>
+
+                    </Grid>
+                    <br/>
+                    <section className='display-center'>
+                      <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"
+                  component="label">Continuar <input hidden type="submit" /></Button>
+                    </section>
+                  </Box>
+                </Box>
+              </Container>
+            </ThemeProvider>
           <br />
         </div>
       );

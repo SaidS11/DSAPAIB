@@ -118,11 +118,13 @@
     "@mui/material": "^5.11.15",
     "@mui/styled-engine-sc": "^5.11.0",
     "@mui/system": "^5.11.2",
+    "@mui/x-date-pickers": "^6.11.0",
     "@reduxjs/toolkit": "^1.9.1",
     "@serialport/parser-readline": "^10.5.0",
     "aws-sdk": "^2.1290.0",
     "bootstrap": "^5.2.3",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.9",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
     "electron-updater": "^5.2.3",
@@ -290,7 +292,8 @@
     "patterns": [
       "!**/**",
       "src/main/**",
-      "!src/main/archivosCsv/**"
+      "!src/main/archivosCsv/**",
+      "!src/main/public/**"
     ],
     "logLevel": "quiet"
   }

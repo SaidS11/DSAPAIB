@@ -9,10 +9,21 @@ import TextField from '@mui/material/TextField';
 import { Algoritmo } from '../Utilities/Constants';
 import GeneralTable from '../ComenzarAnalisisEntrenamiento/AlgorithmTable';
 import {
+  styleAddIcon,
   styleButtonBiggerGreen,
   styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
 import EnhancedTable from './EnhancedTable';
+
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 
 interface Cols {
   col1: string;
@@ -111,96 +122,141 @@ const GuardarModelo = (props: GuardarModeloProps) => {
   //   );
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [data]);
+  const defaultTheme = createTheme();
 
   return (
     <div>
       <section className="display-center">
         <h2>Es momento de escoger el algoritmo a utilizar y el modelo. </h2>
       </section>
-      <section className="display-center">
-        <h2>
-          Si ya existen modelos podra seleccionar uno, de lo contrario podra
-          asignar un nombre nuevo
-        </h2>
-      </section>
-      <section className="display-center">
-        <h3>Al final, puede cambiar el modelo y reiniciar el proceso.</h3>
-      </section>
-      <section className="display-flexAgregar">
-        <h3>Algoritmo: </h3>
-        <section className="list-box-sexo">
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Algoritmo</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              name="algoritmo"
-              value={algoritmo}
-              label="Algoritmo"
-              onChange={handleChange}
-              required
-            >
-              {numOfAlgos()}
-            </Select>
-          </FormControl>
-        </section>
-      </section>
-      {algoritmo !== '' && (
-        <section className="display-flexAgregar" style={{ display: 'block' }}>
-          <h3>Datos del algoritmo: </h3>
-          <br />
-          {retrieveAlgoData}
-        </section>
-      )}
-
-      {modelosEncontrados === false && algoritmo !== '' && (
-        <section className="display-flexAgregar" style={{ display: 'block' }}>
-          <h3>No existen modelos asociados a este algoritmo </h3>
-          <h3>Asigne un nombre al nuevo modelo.</h3>
-          <TextField
-            required
-            id="outlined-basic"
-            label="Nombre"
-            variant="outlined"
-            onChange={handleChangeNombre}
-          />
-          <br />
-        </section>
-      )}
-      {modelosEncontrados === true && algoritmo !== '' && (
-        <section className="display-flexAgregar" style={{ display: 'block' }}>
-          <h3>Modelos asociados al algoritmo. </h3>
-          <h4>Tome en cuenta que solo puede seleccionar 1 modelo. </h4>
-          {/* {tableWrapper} */}
-          <EnhancedTable
-            columns={columns}
-            data={data}
-            selectedProtocol={selectedProtocol}
-            setData={setData}
-            algoritmo={algoritmo}
-            algoritmoTipo={algoritmoTipo}
-          />
-        </section>
-      )}
-      <div className="display-center">
-        <section className="display-center">
-          <Button
-            sx={styleButtonBiggerGreen}
-            style={{ marginTop: '10px', fontSize: '20px' }}
-            onClick={onClickContinue}
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            Continuar
-          </Button>
-          <Button
-            sx={styleButtonBiggerRed}
-            style={{ marginTop: '10px', fontSize: '20px' }}
-            onClick={onClickBack}
-          >
-            Regresar
-          </Button>
-        </section>
-        <br />
-      </div>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <DeveloperBoardIcon sx={styleAddIcon} style={{color: "white"}}/>
+            </Avatar>
+            <Typography component="h1" variant="h5" >
+            Si ya existen modelos podra seleccionar uno, de lo contrario podra
+            asignar un nombre nuevo
+            </Typography>
+            <Typography component="h1" variant="h5" >
+            Al final, puede cambiar el modelo y reiniciar el proceso.
+            </Typography>
+            <Box sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Seleccione el algoritmo:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Algoritmo</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="algoritmo"
+                      value={algoritmo}
+                      label="Algoritmo"
+                      onChange={handleChange}
+                      required
+                    >
+                      {numOfAlgos()}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                {algoritmo !== '' && (
+                  <><Grid item xs={12}>
+                    <Typography component="h1" variant="h6">
+                      Datos del algoritmo:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                      {retrieveAlgoData}
+                  </Grid></>
+                )}
+                {modelosEncontrados === false && algoritmo !== '' && (
+                  <>
+                  <Grid item xs={12}>
+                    <Typography component="h1" variant="h6">
+                    No existen modelos asociados a este algoritmo:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography component="h1" variant="h6">
+                    Asigne un nombre al nuevo modelo.
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      id="outlined-basic"
+                      label="Nombre"
+                      variant="outlined"
+                      onChange={handleChangeNombre}
+                    />
+                  </Grid>
+                  </>
+              )}
+              {modelosEncontrados === true && algoritmo !== '' && (
+                <>
+                <Grid item xs={12}>
+                  <Typography component="h1" variant="h6">
+                  Modelos asociados al algoritmo.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography component="h1" variant="h6">
+                  Tome en cuenta que solo puede seleccionar 1 modelo.
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                <EnhancedTable
+                    columns={columns}
+                    data={data}
+                    selectedProtocol={selectedProtocol}
+                    setData={setData}
+                    algoritmo={algoritmo}
+                    algoritmoTipo={algoritmoTipo}
+                  />
+                </Grid>
+                </>
+                
+              )}               
+              </Grid>
+              <br/>
+              <div className="display-center">
+                <section className="display-center">
+                  <Button
+                    sx={styleButtonBiggerGreen}
+                    style={{ marginTop: '10px', fontSize: '20px' }}
+                    onClick={onClickContinue}
+                  >
+                    Continuar
+                  </Button>
+                  <Button
+                    sx={styleButtonBiggerRed}
+                    style={{ marginTop: '10px', fontSize: '20px' }}
+                    onClick={onClickBack}
+                  >
+                    Regresar
+                  </Button>
+                </section>
+                <br />
+              </div>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+      
       <br />
     </div>
   );

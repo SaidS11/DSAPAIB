@@ -16,8 +16,19 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
-import { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
+import { styleAddIcon, styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import EnhancedTable from '../ComenzarAnalisisEntrenamiento/EnhancedTable';
+import BatchPredictionIcon from '@mui/icons-material/BatchPrediction';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
+
 
 interface PrediccionProps {
   options: TableOptions<{ col1: string, col2: string }>;
@@ -79,73 +90,93 @@ const Prediccion = (
     return <span className="icon-arrow-long-down" />;
   };
 
+  const defaultTheme = createTheme();
+
+
   return (
     <div>
       <div className="display-center">
         <h1>Predicción</h1>
       </div>
-      <div className='display-center'>
-        <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
-          <br />
-          <section className="display-center" style={{ marginRight: "5%", marginLeft: "5%" }}>
-              <h4>
-                Seleccione el protocolo del que desea obtener los registros.
-              </h4>
-          </section>
-          {/* <section className="display-flex">
-            <h3>Nombre: </h3>{' '}
-            <input className="first-input" type="text"  name="nombrePrediccion" required />
-          </section>
-          <section className="display-flex">
-            <h3>Descripción: </h3>{' '}
-            <textarea className="second-input" name="descripcion" required/>
-          </section> */}
-          <section className="display-flexAgregar">
-            <h3>Protocolo Adquisición: </h3>{' '}
-            <section className="list-box-sexo">
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="protocolo"
-                  value={protocolo}
-                  label="Protocolo"
-                  onChange={handleChangeProtocol}
-                  required
-                >
-                  {setProtocols()}
-                </Select>
-              </FormControl>
-            </section>
-          </section>
-          <div
-            style={{
-              width: '90%',
-              overflow: 'auto',
-              maxHeight: '60vh',
-              marginLeft: '80px',
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            <EnhancedTable
-            columns={columnsData}
-            data={tableData}
-          />
-          </div>
-          <div className="display-center" style={{ marginTop: '10px' }}>
-            <h5>Registros Recuperados: </h5>{' '}
-            <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{tableData.length}</h5>
-          </div>
-          <div
-            className="display-center"
-            style={{ marginTop: '5px', marginBottom: '30px' }}
-          >
-            <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
-              <input hidden type="submit" />
-            </Button>
-          </div>
-      </form>
-      </div>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <BatchPredictionIcon sx={styleAddIcon} style={{color: "white"}}/>
+            </Avatar>
+            <Typography component="h1" variant="h5" >
+            Seleccione el protocolo del que desea obtener los registros sin etiquetar.
+            </Typography>
+            <Box component="form" onSubmit={onClickNav} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>                
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Protocolo de Adquisición:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="protocolo"
+                    value={protocolo}
+                    label="Protocolo"
+                    onChange={handleChangeProtocol}
+                    required
+                  >
+                    {setProtocols()}
+                  </Select>
+                </FormControl>
+                </Grid>
+                <br/>
+                <Grid item xs={12}>
+                </Grid>
+                <Grid item xs={12}>
+                  <div
+                    style={{
+                      width: '100%',
+                      overflow: 'auto',
+                      maxHeight: '60vh',
+                    }}
+                  >
+                    <EnhancedTable
+                    columns={columnsData}
+                    data={tableData}
+                  />
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                    Registros Recuperados:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  
+                    {tableData.length}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <br/>
+              <section className='display-center'>
+              <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
+                <input hidden type="submit" />
+              </Button>
+              </section>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+      <br/>
     </div>
   );
 };

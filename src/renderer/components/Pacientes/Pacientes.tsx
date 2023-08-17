@@ -19,11 +19,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TableSortLabel from '@mui/material/TableSortLabel';
 // import Button from "@material-ui/core/Button";
 import '../../../../assets/Iconos/style.css';
 import './Table.css';
 import GlobalFilter from '../ComenzarAnalisisEntrenamiento/GlobalFilter';
+import { styleAddIcon } from '../VerPaciente/ButtonStyle';
 
 interface PacientesContentProps {
   filterInput: string;
@@ -91,6 +93,7 @@ const Pacientes = (props: PacientesContentProps) => {
     }
     return <span className="icon-arrow-long-down" />;
   };
+  
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -98,13 +101,7 @@ const Pacientes = (props: PacientesContentProps) => {
           <h2> Seleccione un paciente de la lista o agregue uno</h2>
         </section>
         <section style={{ marginLeft: "3%" }}>
-          <span
-            className="icon-user-plus"
-            onClick={onClickNavigate}
-            onKeyDown={onClickNavigate}
-            role="presentation"
-            style={{ cursor: 'pointer', color: 'green' }}
-          />
+          <PersonAddIcon onClick={onClickNavigate} sx={styleAddIcon} />
         </section>
       </div>
       <div style={{ display: 'flex' }}>
@@ -124,7 +121,7 @@ const Pacientes = (props: PacientesContentProps) => {
         }}
       >
         <TableContainer>
-          <MaUTable stickyHeader aria-label="sticky table" {...getTableProps()}>
+          <MaUTable stickyHeader aria-label="sticky table" {...getTableProps()} style={{ border: "1px solid rgba(224, 224, 224, 1)" }}>
             <TableHead className="head1">
               {headerGroups.map((headerGroup) => (
                 <TableRow {...headerGroup.getHeaderGroupProps()}>

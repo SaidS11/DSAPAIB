@@ -327,7 +327,9 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
   };
 
   return (
-    <ResultsTable options={options} dataInitial={data} columns={columns} />
+    <div>
+      <ResultsTable options={options} dataInitial={data} columns={columns} />
+    </div>
   );
 };
 

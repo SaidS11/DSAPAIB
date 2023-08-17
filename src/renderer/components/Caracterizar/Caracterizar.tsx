@@ -23,6 +23,8 @@ import {
   setVentanasArrayFrecuencia,
 } from '../../../redux/slices/SeñalesSlice';
 import {
+  setErrorDetails,
+  setFallosAlCargar,
   setIsLoading,
   setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
@@ -291,7 +293,6 @@ const Caracterizar = (props: CaracterizarProps) => {
     console.log("SIGNAL", respuesta);
     console.log("VAR DATA", adqWithTimeAndSignals);
 
-    appDispatch(setIsLoading(false));
 
 
     // const { emg1 } = respuesta[0].signals;
@@ -479,6 +480,9 @@ const Caracterizar = (props: CaracterizarProps) => {
       setTemperaturaDataY(temperaturaSignalLocalY);
 
     }
+
+    appDispatch(setIsLoading(false));
+
   };
 
   const numOfPlots = () => {
@@ -703,9 +707,9 @@ const Caracterizar = (props: CaracterizarProps) => {
       ventanasSeñal2Emg2.length !== ventanasSeñal3Emg3.length ||
       ventanasSeñal3Emg3.length !== ventanasSeñal4Emg4.length
     ) {
-      alert(
-        'El número de ventanas seleccionadas tiene que ser igual en todos los sensores'
-      );
+
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails('El número de ventanas seleccionadas tiene que ser igual en todos los sensores'));
       return;
     }
     if (

@@ -13,6 +13,8 @@ import { setPythonResponse } from '../../../redux/slices/ResponsesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import {
+  setErrorDetails,
+  setFallosAlCargar,
   setIsLoading,
   setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
@@ -24,6 +26,39 @@ interface Config {
   modelo: string;
   algoritmo: string;
 }
+
+interface paciente {
+  col1: string;
+  col2: string;
+}
+
+
+function encontrarMenosComun(arr: paciente[]): { valor: string | null, ocurrencias: number } {
+  const contador = new Map<string, number>();
+
+  // Contar las ocurrencias de cada valor en "col2"
+  arr.forEach((item) => {
+    const valorCol2 = item.col2;
+    contador.set(valorCol2, (contador.get(valorCol2) || 0) + 1);
+  });
+
+  let valorMenosComun: string | null = null;
+  let minOcurrencias = Number.POSITIVE_INFINITY;
+
+  // Encontrar el valor con la menor ocurrencia
+  contador.forEach((ocurrencias, valor) => {
+    if (ocurrencias < minOcurrencias) {
+      minOcurrencias = ocurrencias;
+      valorMenosComun = valor;
+    }
+  });
+
+  return { valor: valorMenosComun, ocurrencias: minOcurrencias };
+}
+
+
+
+
 // 'Error|n_splits=3 cannot be greater than the number of members in each class.'
 
 const ComenzarAnalisisEntrenamientoContainer = () => {
@@ -70,7 +105,7 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
 
   async function loadPacientes() {
     appDispatch(setIsLoading(true));
-    const document = { protocol: protocolo };
+    const document = { protocol: protocolo, etiqueta: { $ne: "" } };
     const jsonDocument = JSON.stringify(document);
     console.log('JSON', jsonDocument);
     try {
@@ -95,7 +130,8 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
       setData(datarRetrieved);
     } catch (error: any) {
       console.log('er', error);
-      alert(`Error while retrieving data${error}`);
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Error al obtener la información, intentelo de nuevo: ${error}`));
     }
     appDispatch(setIsLoading(false));
   }
@@ -187,20 +223,40 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
     const numIteraciones = parseInt(dataF.iteraciones.toString());
-    if (selectedPatients.length <= 0) {
-      alert('Seleccione al menos un paciente');
+    // console.log("DATOS", dataF)
+    console.log("Pacientes", selectedPatients);
+
+    const { valor, ocurrencias } = encontrarMenosComun(selectedPatients);
+    
+    
+    if (selectedPatients.length <= 1) {
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails('Seleccione al menos dos pacientes'));
     }
-    // else if (selectedPatients.length > numIteraciones) {
-    //   alert('Los K folds no pueden ser menores al numero de pacientes seleccionados');
-    // }
+    else if (numIteraciones >= selectedPatients.length ) {
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails('Los K folds no pueden ser menores o iguales al numero de pacientes seleccionados'));
+    }
     else {
-      console.log('la data', dataF);
-      appDispatch(setPredictMode(false));
-      appDispatch(setAnalisisParams(dataF));
-      appDispatch(setSignalsIteration(0));
-      appDispatch(setCantidadSujetos(selectedPatients.length));
-      appDispatch(setCantidadSujetosRespaldo(selectedPatients.length));
-      navigate('/caracterizar');
+      if (valor !== null) {
+        if (ocurrencias < 2) {
+          appDispatch(setFallosAlCargar(true));
+          appDispatch(setErrorDetails(`La clase con menos candidatos: ${valor}, no puede tener menos de 2 miembros`));
+        }
+        else if (ocurrencias === selectedPatients.length) {
+          appDispatch(setFallosAlCargar(true));
+          appDispatch(setErrorDetails(`Debe seleccionar al menos 2 clases distintas`));
+        }
+        else {
+          console.log('la data', dataF);
+          appDispatch(setPredictMode(false));
+          appDispatch(setAnalisisParams(dataF));
+          appDispatch(setSignalsIteration(0));
+          appDispatch(setCantidadSujetos(selectedPatients.length));
+          appDispatch(setCantidadSujetosRespaldo(selectedPatients.length));
+          navigate('/caracterizar');
+        }
+      } 
     }
   };
   useEffect(() => {

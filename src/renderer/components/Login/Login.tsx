@@ -32,7 +32,7 @@ export const Login = (props: LoginProps) => {
                 className="input-styled"
                 type="text"
                 name="username"
-                placeholder="username"
+                placeholder="Usuario"
                 id="user"
               />
               <br />
@@ -44,17 +44,17 @@ export const Login = (props: LoginProps) => {
                   className="input-styled"
                   type={passwordShown ? "text" : "password"}
                   name="password"
-                  placeholder="password"
+                  placeholder="Contraseña"
                   id="password"
                 />
                 {
                   !passwordShown && 
-                <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px"}}>
+                <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px", color: "#302b63"}}>
                   <VisibilityIcon/>
                 </Button>
                 } {
                   passwordShown && 
-                <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px"}}>
+                <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px", color: "#302b63"}}>
                   <VisibilityOffIcon/>
                 </Button>
                 }

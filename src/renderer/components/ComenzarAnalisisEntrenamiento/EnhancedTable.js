@@ -92,6 +92,8 @@ const EnhancedTable = ({
   data,
   // setSelectedPatientsLocal,
 }) => {
+
+
   const {
     getTableProps,
     headerGroups,
@@ -176,8 +178,8 @@ const EnhancedTable = ({
         setGlobalFilter={setGlobalFilter}
         globalFilter={globalFilter}
       />
-      <MaUTable {...getTableProps()}>
-        <TableHead>
+      <MaUTable {...getTableProps()} >
+        <TableHead >
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (

@@ -62,6 +62,11 @@ const ResultadosContainer = () => {
     (state) => state.señales.temperaturaIsChecked
   );
 
+  const datosPaciente = useCustomSelector((state) => state.datos.datosPaciente);
+
+  const protocolo = useCustomSelector((state) => state.config.protocoloNombre);
+
+
 
   const [gsrDataX, setGsrDataX] = useState([0]);
   const [gsrDataY, setGsrDataY] = useState([0]);
@@ -505,6 +510,10 @@ const ResultadosContainer = () => {
       const objCopy = { ...objetoMongo };
       const etiquetaLocal = dataR.etiqueta as string;
       objCopy.etiqueta = etiquetaLocal;
+      const nombreCompleto = `${datosPaciente[0].col1} ${datosPaciente[0].col2} ${datosPaciente[0].col3}`;
+
+      objCopy.name = nombreCompleto;
+      objCopy.protocol = protocolo;
       appDispatch(setMongoInsertObject(objCopy));
       const jsonDocument = JSON.stringify(objCopy);
       appDispatch(setIsLoading(true));

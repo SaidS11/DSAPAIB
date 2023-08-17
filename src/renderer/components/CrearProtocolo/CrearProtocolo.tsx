@@ -1,11 +1,22 @@
 /* eslint-disable prettier/prettier */
+import { Dispatch, SetStateAction } from 'react';
+import {
+  styleAddIcon,
+  styleButtonBiggerGreen,
+} from '../VerPaciente/ButtonStyle';
 import Button from '@mui/material/Button';
 import { InputLabel, FormControl, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Dispatch, SetStateAction } from 'react';
-import {
-  styleButtonBiggerGreen,
-} from '../VerPaciente/ButtonStyle';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+
 
 export interface CrearProtocoloProps {
   onClickCrear: (arg0: React.FormEvent<HTMLFormElement>) => void;
@@ -36,50 +47,83 @@ const CrearProtocolo = (props: CrearProtocoloProps) => {
     }
     return <option value={0} />;
   };
+
+  const defaultTheme = createTheme();
+
     return (
         <div>
-          <section className="display-center">
-            <h1>Crear Protocolo</h1>
-          </section>
-          <div className='display-center'>
-            <form className="analisis-form" onSubmit={onClickCrear}>
-              <section className="display-flex">
-                <h4>Nombre:</h4>
-                <input className="first-input" type="text" name="nombre" required/>
-              </section>
-              <section className="display-flex">
-                <h4>Descripción:</h4>
-                <textarea className="second-input" name="descripcion" required/>
-              </section>
-              <section className="display-flexAgregar">
-                <h4>Configuración:</h4>
-                {/* <select className="third-input-canales" name="config" required>
-                  {setConfig()}
-                </select> */}
-                <section  className="list-box-sexo">
-                  <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Configuración</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="configuracion"
-                    label="Configuración"
-                    value={configuration}
-                    onChange={handleChangeConfiguration}
-                    required
-                  >
-                    {setConfig()}
-                  </Select>
-                </FormControl>
-                </section>
-              </section>
-              <section className='display-center'>
-                <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"
-            component="label">Crear <input hidden type="submit" /></Button>
-              </section>
-            </form>
-          </div>
-          
+            <section className="display-center">
+              <h1>Crear Protocolo</h1>
+            </section>
+            <ThemeProvider theme={defaultTheme}>
+              <Container component="main" maxWidth="sm">
+                <CssBaseline />
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <AddIcon sx={styleAddIcon} style={{color: "white"}}/>
+                  </Avatar>
+                  <Typography component="h1" variant="h5" >
+                  Llene los datos del protocolo
+                  </Typography>
+                  <Box component="form" onSubmit={onClickCrear} sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          id="nombre"
+                          name="nombre"
+                          label="Nombre"
+                          autoFocus
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                          required
+                          fullWidth
+                          type="descripcion"
+                          id="descripcion"
+                          label="Descripción"
+                          name="descripcion"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Typography component="h1" variant="h6" >
+                        Seleccione la configuración:
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Configuración</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              name="configuracion"
+                              label="Configuración"
+                              value={configuration}
+                              onChange={handleChangeConfiguration}
+                              required
+                            >
+                              {setConfig()}
+                            </Select>
+                          </FormControl>
+                      </Grid>
+                    </Grid>
+                    <br/>
+                    <section className='display-center'>
+                      <Button sx={styleButtonBiggerGreen} style={{marginTop: '10px', fontSize: '20px'}} variant="contained"
+                  component="label">Crear <input hidden type="submit" /></Button>
+                    </section>
+                  </Box>
+                </Box>
+              </Container>
+            </ThemeProvider>
         </div>
       );
 };

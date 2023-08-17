@@ -9,7 +9,7 @@ import ComenzarAnalisisEntrenamientoContainer from './components/ComenzarAnalisi
 import PrediccionContainer from './components/Prediccion/PrediccionContainer';
 import VerProtocoloContainer from './components/VerProtocolo/VerProtocoloContainer';
 import VerProtocolo2Container from './components/VerProtocolo2/VerProtocolo2Container';
-import VerImplementacionContainer from './components/VerImplementacion/VerImplementacionContainer';
+import VerAlgoritmoDetalleContainer from './components/VerAlgoritmoDetalle/VerAlgoritmoDetalleContainer';
 import ProbarSensoresContainer from './components/ProbarSensores/ProbarSensoresContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import PacientesContainer from './components/Pacientes/PacientesContainer';
@@ -41,9 +41,9 @@ import { useCustomSelector } from '../redux/hooks';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import CrearImplementacionContainer from './components/CrearImplementacion/CrearImplementacionContainer';
+import VerAlgoritmoContainer from './components/VerAlgoritmo/VerAlgoritmoContainer';
+import VerImplementacionDetalleContainer from './components/VerImplementacionDetalle/VerImplementacionDetalleContainer';
 import VerImplementacionesContainer from './components/VerImplementaciones/VerImplementacionesContainer';
-import VerModeloContainer from './components/VerModelo/VerModeloContainer';
-import VerModelosContainer from './components/VerModelos/VerModelosContainer';
 import Test from './components/CaracterizarParte2/Test';
 import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloContainer';
 import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
@@ -65,7 +65,7 @@ export default function App() {
   console.log(isLogged);
   if (isLogged) {
     return (
-      <div style={{  backgroundColor: "#efefef",  height: "100%"}}>
+      <div style={{ height: "100%"}}>
         <NavegacionContainer />
         <CssBaseline />
         <Container maxWidth={false}  >
@@ -119,10 +119,10 @@ export default function App() {
               path="/crearImplementacion"
               element={<CrearImplementacionContainer />}
             />
-            <Route path="/verModelo" element={<VerModeloContainer />} />
+            <Route path="/verModelo" element={<VerImplementacionDetalleContainer />} />
             <Route
               path="/verImplementaciones"
-              element={<VerModelosContainer />}
+              element={<VerImplementacionesContainer />}
             />
             <Route path="/verProtocolo" element={<VerProtocoloContainer />} />
             <Route
@@ -176,12 +176,12 @@ export default function App() {
             <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
             <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
             <Route
-              path="/verImplementaciones"
-              element={<VerImplementacionesContainer />}
+              path="/verAlgoritmos"
+              element={<VerAlgoritmoContainer />}
             />
             <Route
-              path="/verImplementacion"
-              element={<VerImplementacionContainer />}
+              path="/verAlgoritmoDetalle"
+              element={<VerAlgoritmoDetalleContainer />}
             />
           </Routes>
           <>{loading && <Loading />}</>

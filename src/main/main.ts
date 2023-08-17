@@ -44,7 +44,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 }; 
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
@@ -2692,7 +2692,7 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
   //   console.log('ERROR EN LA EJECUCION', e);
   // }
 
-  const pythonProcess = spawn('python', [
+  const pythonProcess = await spawnSync('python', [
     `${direcFinal}/pythonScripts/analisis.py`,
       tipo,
       tipoIA,
@@ -2703,32 +2703,32 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
       datos,
   ]);
 
-  pythonProcess.on('exit', function (code: any, signal: any) {
-    const result = pythonProcess.stdout?.toString()?.trim();
-    const error = pythonProcess.stderr?.toString()?.trim();
-    const strResult = result;
+  const result = pythonProcess.stdout?.toString()?.trim();
+  const error = pythonProcess.stderr?.toString()?.trim();
+
+  let retrieved;
+  fs.readFile(`${direcFinal}/pythonScripts/resultados.txt`, 'utf8', function(err, data){
+      
+    console.log("DATOS", data);
+    console.log("Err", err);
     console.log("RESULT", result);
-    console.log(
-      'child process exited with ' + `code ${code} and signal ${signal}`
-    );
-    if (error) {
-      res.send(
-        JSON.stringify({
-          status: 500,
-          message:
-            'child process exited with ' + `code ${code} and signal ${signal}`,
-        })
-      );
+
+    const arregloDeValores = data.split("|");
+
+    const posiblesesultados: string[] = ["Tree", "KNN", "SVM"];
+    // Display the file content
+    retrieved = data;
+    if (posiblesesultados.includes(arregloDeValores[0])) {
+      console.log("OK", retrieved);
+      res.send({ status: 200, message: retrieved })
     } else {
-      res.send(
-        JSON.stringify({
-          status: 200,
-          message:
-            'child process exited with ' + `code ${code} and signal ${signal}`,
-        })
-      );
+      console.log("ERROR", error);
+      console.log("ERROR RETR", retrieved);
+  
+      res.send(JSON.stringify({ status: 500, message: retrieved }))
     }
   });
+  
 
 });
 

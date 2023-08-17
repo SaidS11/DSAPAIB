@@ -23,17 +23,7 @@ const PreAnalisisContainer = () => {
   console.log('DATOS PREVIOS', datos);
   const strData = JSON.stringify(datos);
   console.log('DATOS STR', strData);
-  async function preAn() {
-    appDispatch(setIsLoading(true));
-    console.log('Getting message');
-    window.electron.ipcRenderer.preAnalisisPython(strData);
-  }
-  window.electron.ipcRenderer.preAnalisisP((event: unknown, resp: string) => {
-    console.log('Esta es', resp);
-    // appDispatch(setPythonResponse(resp));
-    appDispatch(setIsLoading(false));
-    // navigate('/preAnalisis');
-  });
+
 
   async function startAnalysis(tipo: string, params: string, nombre: string) {
     appDispatch(setIsLoading(true));
@@ -61,32 +51,45 @@ const PreAnalisisContainer = () => {
   }
   
   let response;
+  console.log("PREDICT MODE", predictMode);
   if (predictMode) {
+    console.log("PAYLOAD a enviar", predictPayload);
+
     response = await fetch(`${apiEndpoint}/analisisPython`, {
       method: 'POST',
       body: JSON.stringify(predictPayload),
       headers: {'Content-Type': 'application/json'}
     });
   } else {
+    console.log("PAYLOAD a enviar", trainPayload);
     response = await fetch(`${apiEndpoint}/analisisPython`, {
       method: 'POST',
       body: JSON.stringify(trainPayload),
       headers: {'Content-Type': 'application/json'}
     });
   }
-  appDispatch(setIsLoading(false));
-  if(response.status === 500) {
-    const respBody = await response.json();
-    console.log("JSON", respBody);
+  const respBody = await response.json();
+  if(respBody.status === 500) {
+    
+    console.log("JSON Error", respBody);
+    appDispatch(setIsLoading(false));
     appDispatch(setFallosAlCargar(true));
-    appDispatch(setErrorDetails(`Error al procesar la información: ${respBody.message}`));
+    if (respBody.message.length > 180) {
+      appDispatch(setErrorDetails(`Error al procesar la información`));
+    } else {
+      appDispatch(setErrorDetails(`Error al procesar la información: ${respBody.message}`));
+    }
     navigate('/guardarModelo');
   }
-  if(response.status === 200) {
-    const respBody = await response.json();
-    console.log("JSON", respBody);
+  if(respBody.status === 200) {
+    console.log("JSON OK", respBody);
+    console.log("Response", respBody.message);
+    appDispatch(setPythonResponse(respBody.message));
+    appDispatch(setIsLoading(false));
+    navigate('/resultadoEntrenar');
     
   }
+
     // if (predictMode) {
     //   window.electron.ipcRenderer.analisisPython(
     //     'Class',

@@ -19,7 +19,7 @@ import json
 from joblib import dump, load
 import os
 
-def classificationTree(nombre, headers):
+def classificationTree(nombre, headers, ruta_actual, nombreArchivoResultante):
     # or load through local csv
     ruta_actual = os.path.dirname(__file__)
     nombre_archivo = "test8Nombres.csv"
@@ -52,17 +52,17 @@ def classificationTree(nombre, headers):
 
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
-    # print(my_path)
-    print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "0.99" +
     "|" "0.99" +
     "|" + resulJson +
-    "|" + "true")
-    sys.stdout.flush()
+    "|" + "true"))
 
-def classKNN(nombre, headers):
+def classKNN(nombre, headers, ruta_actual, nombreArchivoResultante):
     # or load through local csv
     ruta_actual = os.path.dirname(__file__)
     nombre_archivo = "test8Nombres.csv"
@@ -89,16 +89,16 @@ def classKNN(nombre, headers):
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
     # print(my_path)
-    print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "0.99" +
     "|" "0.99" +
     "|" + resulJson +
-    "|" + "true")
-    sys.stdout.flush()
+    "|" + "true"))
 
-def classSVM(nombre, headers):
+def classSVM(nombre, headers, ruta_actual, nombreArchivoResultante):
     ruta_actual = os.path.dirname(__file__)
     nombre_archivo = "test8Nombres.csv"
     data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
@@ -122,17 +122,17 @@ def classSVM(nombre, headers):
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
     # print(my_path)
-    print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "0.99" +
     "|" "0.99" +
     "|" + resulJson +
-    "|" + "true")
-    sys.stdout.flush()
+    "|" + "true"))
 
 
-def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
+def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante):
     maxDepth =  modelArgs["profundidad"]
     randomState = modelArgs["estado"]
     # or load through local csv
@@ -189,17 +189,16 @@ def trainTree(modelArgs, nombre, iteraciones, reducedPercentage, headers):
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
 
-
-    print("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+                f.write(str("Tree"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
     "|" + resulJson +
-    "|" + f"{'true' if existente else 'false'}")
-    sys.stdout.flush()
+    "|" + f"{'true' if existente else 'false'}"))
 
-def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
+def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante):
     vecinos = modelArgs["vecinos"]
     # or load through local csv
     ruta_actual = os.path.dirname(__file__)
@@ -244,16 +243,16 @@ def trainKNN(modelArgs, nombre, iteraciones, reducedPercentage, headers):
 
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
-    print("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("KNN"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
     "|" + resulJson +
-    "|" + f"{'true' if existente else 'false'}")
-    sys.stdout.flush() 
+    "|" + f"{'true' if existente else 'false'}"))
 
-def trainSVM(modelArgs, iteraciones, reducedPercentage):
+def trainSVM(modelArgs, iteraciones, reducedPercentage, ruta_actual, nombreArchivoResultante):
     kernelArg = modelArgs["kernel"]
     # or load through local csv
    # or load through local csv
@@ -301,59 +300,60 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage):
 
     datos_nuevos['etiqueta'] = y_pred
     resulJson = datos_nuevos.to_json(compression="str")
-    print("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
     "|" + "{:.2f}".format(scores.mean()) +
     "|" "{:.2f}".format(scores.std()) +
     "|" + resulJson +
-    "|" + f"{'true' if existente else 'false'}")
-    sys.stdout.flush() 
+    "|" + f"{'true' if existente else 'false'}"))
 
 if __name__ == '__main__':
-    first = sys.argv[1]
-    second = sys.argv[2]
-    params = sys.argv[3]
-    nombre = sys.argv[4]
-    iteraciones = int(sys.argv[5])
-    porcentaje = int(sys.argv[6])
-    datosConNombre = sys.argv[7]
-    reducedPercentage = porcentaje / 100
-    jsonParams = json.loads(params)
-
-    # datosConNombre = '[[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Karla"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Karla"}],[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"}],[{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 1"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 1"}], [{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 2"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 2"}]]'
-    parsed = json.loads(datosConNombre)
-    newList = list()
-
-    for i in range(len(parsed)):
-        for c in range(len(parsed[i])):
-            newList.append(parsed[i][c])
-
-    df = pd.DataFrame.from_dict(newList) 
-    ruta_actual = os.path.dirname(__file__)
-    nombre_archivo = "test8Nombres.csv"
-    df.to_csv(os.path.join(ruta_actual, nombre_archivo), index=False, header=True)
-    
-
-    headers = list(parsed[0][0].keys())
-    headers.remove('etiqueta')
-    headers.remove('nombre')
-    
-
     try:
+        first = sys.argv[1]
+        second = sys.argv[2]
+        params = sys.argv[3]
+        nombre = sys.argv[4]
+        iteraciones = int(sys.argv[5])
+        porcentaje = int(sys.argv[6])
+        datosConNombre = sys.argv[7]
+        reducedPercentage = porcentaje / 100
+        jsonParams = json.loads(params)
+
+        # datosConNombre = '[[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Karla"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Karla"}],[{"colMediaABSEMG1":"3.33","colMedianaEMG1":"3","colRMSEMG1":"3.56","colMediaABSEMG2":"8.5","colMedianaEMG2":"8.5","colRMSEMG2":"8.57","colMediaABSGsr":"3.33","colMedianaGsr":"3","colRMSGsr":"3.56","colMediaABSTemp":"3.33","colMedianaTemp":"3","colRMSTemp":"3.56","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"},{"colMediaABSEMG1":"10.75","colMedianaEMG1":"10.5","colRMSEMG1":"10.85","colMediaABSEMG2":"16","colMedianaEMG2":"16","colRMSEMG2":"16.06","colMediaABSGsr":"10.75","colMedianaGsr":"10.5","colRMSGsr":"10.85","colMediaABSTemp":"10.75","colMedianaTemp":"10.5","colRMSTemp":"10.85","etiqueta":"diabetico","nombre": "Martha Garcia Lopez"}],[{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 1"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 1"}], [{"colMediaABSEMG1":"2.50","colMedianaEMG1":"2.5","colRMSEMG1":"2.55","colMediaABSEMG2":"4.5","colMedianaEMG2":"4.5","colRMSEMG2":"4.81","colMediaABSGsr":"2.50","colMedianaGsr":"2.5","colRMSGsr":"2.55","colMediaABSTemp":"2.50","colMedianaTemp":"2.5","colRMSTemp":"2.55","etiqueta":"sano","nombre": "Sujeto Prueba 2"},{"colMediaABSEMG1":8,"colMedianaEMG1":"8","colRMSEMG1":"8.12","colMediaABSEMG2":"14.5","colMedianaEMG2":"14.5","colRMSEMG2":"14.60","colMediaABSGsr":8,"colMedianaGsr":"8","colRMSGsr":"8.12","colMediaABSTemp":8,"colMedianaTemp":"8","colRMSTemp":"8.12","etiqueta":"sano","nombre": "Sujeto Prueba 2"}]]'
+        parsed = json.loads(datosConNombre)
+        newList = list()
+
+        for i in range(len(parsed)):
+            for c in range(len(parsed[i])):
+                newList.append(parsed[i][c])
+
+        df = pd.DataFrame.from_dict(newList) 
+        ruta_actual = os.path.dirname(__file__)
+        nombre_archivo = "test8Nombres.csv"
+        df.to_csv(os.path.join(ruta_actual, nombre_archivo), index=False, header=True)
+        
+
+        headers = list(parsed[0][0].keys())
+        headers.remove('etiqueta')
+        headers.remove('nombre')
+        nombreArchivoResultante = "resultados.txt"
+    
         if (first == "Train"):
             if (second == "Tree"):
-                trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+                trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante)
             if(second == "KNN"):
-                trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+                trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante)
             if(second == "SVM"):
-                trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers)
+                trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante)
         if (first == "Class"):
             if (second == "Tree"):
-                classificationTree(nombre, headers)
+                classificationTree(nombre, headers, ruta_actual, nombreArchivoResultante)
             if(second == "KNN"):
-                classKNN(nombre, headers)
+                classKNN(nombre, headers, ruta_actual, nombreArchivoResultante)
             if(second == "SVM"):
                 classSVM(nombre, headers)
     except  Exception as e:
-        print("Error" + "|" + str(e))
+        with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str(e))

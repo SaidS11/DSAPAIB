@@ -4,14 +4,23 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import React from 'react';
+import TextField from '@mui/material/TextField';
 import {
-  styleButtonBiggerGreen,
-  styleButtonBiggerRed,
+  styleAddIcon,
 } from '../VerPaciente/ButtonStyle';
 import './AgregarPaciente.css';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export interface AgregarPacienteProps {
   onClickNav: (arg0: React.FormEvent<HTMLFormElement>) => void;
+
 }
 
 const AgregarPaciente = (props: AgregarPacienteProps) => {
@@ -24,16 +33,217 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
     setSexo(event.target.value as string);
   };
 
+  const defaultTheme = createTheme();
+
+  const inlineHover = {
+    '&:hover': {
+      backgroundColor: "white",
+      color: "blue"
+    }
+  }
+
   return (
     <div >
       <section className="display-center">
         <h1>Añadir Paciente</h1>
       </section>
-      <section className="display-center">
-        <h3>Rellene los datos del paciente</h3>
-      </section>
-      <div className="display-center" >
+      <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="sm">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <PersonAddIcon sx={styleAddIcon} style={{color: "white"}}/>
+          </Avatar>
+          <Typography component="h1" variant="h5">
+          Rellene los datos del paciente
+          </Typography>
+          <Box component="form" onSubmit={onClickNav} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  required
+                  fullWidth
+                  id="nombrePaciente"
+                  name="nombrePaciente"
+                  label="Nombres"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Apellido Paterno"
+                  id="apellidoPaterno"
+                  name="apellidoPaterno"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Apellido Materno"
+                  id="apellidoMaterno"
+                  name="apellidoMaterno"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Seleccione el Sexo:
+                  </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="sexo"
+                      value={sexo}
+                      label="Sexo"
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    >
+                      <MenuItem value="Masculino">Masculino</MenuItem>
+                      <MenuItem value="Femenino">Femenino</MenuItem>
+                    </Select>
+                  </FormControl>
+              </Grid>
+              {/* <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker label={"MM/DD/YYYY"} disableFuture orientation="landscape"
+                    value={value}
+                    onChange={(newValue) => setValue(newValue)}
+                    slotProps={{
+                      textField: {
+                        helperText: 'Fecha de Nacimiento',
+                      },
+                    }}
+                    />
+                </LocalizationProvider>
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Email:
+                  </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  type="email"
+                  id="email"
+                  label="Email"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Telefono:
+                  </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="telefono"
+                  label="Telefono"
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  id="telefono"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Peso en kg:
+                  </Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Peso"
+                  id="peso"
+                  name="peso"
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Estatura en cm:
+                  </Typography>
+              </Grid> 
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Estatura"
+                  id="estatura"
+                  name="estatura"
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Fecha de Nacimiento:
+                  </Typography>
+              </Grid> 
+              <Grid item xs={12} sm={6}>
+                <input
+                  type="date"
+                  id="fechaNacimiento"
+                  name="fechaNacimiento"
+                  min="1900-01-01"
+                  max="2022-12-31"
+                  required
+                />
+
+              </Grid>
+            </Grid>
+            <br/>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2, 
+                border: '1px solid #ccc',
+                "&:hover": {
+                backgroundColor: "white",
+                color: "#1565c0",
+                transform: "scale(1.05)",
+                borderColor: "#1565c0"
+              } }}
+              // sx={styleButtonBiggerGreen}
+            >
+              Confirmar
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
+      {/* <div className="display-center" >
         <form className="analisis-form" style={{  backgroundColor: "white" }} onSubmit={onClickNav}>
+        <section className="display-flexAgregar">
+          <TextField label="Nombre" variant="standard" 
+          id="nombrePaciente2"
+          name="nombrePaciente2"
+          fullWidth 
+          required
+          />
+        </section>
           <section className="display-flexAgregar">
             <h4>Nombre:</h4>
             <input
@@ -44,6 +254,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
               required
             />
           </section>
+          
           <section className="display-flexAgregar">
             <h4>Apellido Paterno:</h4>
             <input
@@ -140,7 +351,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
             <Button sx={styleButtonBiggerRed}>Regresar</Button>
           </section>
         </form>
-      </div>
+      </div> */}
       <br />
     </div>
   );

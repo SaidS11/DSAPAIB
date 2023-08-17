@@ -16,6 +16,8 @@ import { setPythonResponse } from '../../../redux/slices/ResponsesSlice';
 import { setAnalisisParams } from '../../../redux/slices/ConfiguracionSlice';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import {
+  setErrorDetails,
+  setFallosAlCargar,
   setIsLoading,
   setSignalsIteration,
 } from '../../../redux/slices/StatusSlice';
@@ -52,7 +54,7 @@ const PrediccionContainer = () => {
 
   async function loadPacientes() {
     appDispatch(setIsLoading(true));
-    const document = { protocol: protocolo };
+    const document = { protocol: protocolo, etiqueta: ""};
     const jsonDocument = JSON.stringify(document);
     try {
         const pacientes = (await window.electron.ipcRenderer.buscarElementoM(
@@ -66,7 +68,12 @@ const PrediccionContainer = () => {
         }
         setData(datarRetrieved);
     } catch (error: any) {
-      alert("Error while retrieving data");
+      appDispatch(setFallosAlCargar(true));
+      if (error.length > 150) {
+        appDispatch(setErrorDetails(`Error al obtener la información, intentelo de nuevo`));
+      } else {
+        appDispatch(setErrorDetails(`Error al obtener la información, intentelo de nuevo: ${error}`));
+      }
     }
     appDispatch(setIsLoading(false));
   }
@@ -114,34 +121,7 @@ const PrediccionContainer = () => {
     data,
     columns,
   };
-  // async function loadSensores() {
-  //   console.log('Getting message');
-  //   window.Bridge.sensores();
-  // }
-  // window.Bridge.senso((event: any, resp: any) => {
-  //   console.log("Los sensores", resp);
-  //   // let buffer = '';
-  //   // let sum = 0;
-  //   // let gsrAverage = 0;
-  //   // let hr = 0;
-  //   // for (let i = 0; i < 10; i++) {
-  //   //   buffer = '';
-  //   //   buffer += resp;
-  //   //   console.log(buffer);
-  //   //   sum += parseInt(buffer);
-  //   // }
-  //   // gsrAverage = sum / 10;
-  //   // console.log('Gsr Average', gsrAverage);
-  //   // hr = ((1024 + 2 * gsrAverage) * 1000) / (512 - gsrAverage);
-  //   // console.log('GSR', hr);
-  // });
-  // async function stopSensores() {
-  //   console.log('Getting message stop');
-  //   window.Bridge.sensoresStop();
-  // }
-  // window.Bridge.sensoStop((event: any, resp: any) => {
-  //   console.log(resp);
-  // });
+  
 
 
 

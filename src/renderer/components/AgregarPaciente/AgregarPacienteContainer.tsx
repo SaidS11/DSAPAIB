@@ -13,6 +13,8 @@ import {
 } from '../../../redux/slices/PacienteSlice';
 import AgregarPaciente from './AgregarPaciente';
 import { apiEndpoint } from '../Utilities/Constants';
+import dayjs, { Dayjs } from 'dayjs';
+import { useState } from 'react';
 
 interface Cols {
   col1: string;
@@ -109,18 +111,19 @@ const AgregarPacienteContainer = () => {
   //     navigate('/verPaciente');
   //   }
   // });
-
   const onClickNav = async (e: React.FormEvent<HTMLFormElement>) => {
-    appDispatch(setIsLoading(true));
+    // appDispatch(setIsLoading(true));
     e.preventDefault();
     /* navigate('/escogerConfiguracion'); */
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const formData = Object.fromEntries(new FormData(form).entries());
-    const dataPaciente = formData as unknown;
-    await insertData(dataPaciente);
-    appDispatch(setIsLoading(false));
-    navigate('/verPaciente');
+    const dataPaciente = formData as object;
+    console.log("DATA", dataPaciente);
+
+    // await insertData(dataPaciente);
+    // appDispatch(setIsLoading(false));
+    // navigate('/verPaciente');
   };
   return (
     <div>

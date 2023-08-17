@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, CardContent, Typography } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -9,6 +9,13 @@ import {
   styleButtonBiggerGreen,
 } from '../VerPaciente/ButtonStyle';
 import './ColocacionMuestra.css';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+
 
 export interface ColocacionProps {
   onClickNav: () => void;
@@ -25,6 +32,8 @@ const ColocacionMuestra = (props: ColocacionProps) => {
     const num = parseInt(event.target.value, 10);
     setProtocolo(event.target.value as string);
   };
+  const defaultTheme = createTheme();
+  console.log("URL", url);
   // Agregar carga de imagen setload
   return (
     <div>
@@ -37,16 +46,53 @@ const ColocacionMuestra = (props: ColocacionProps) => {
           equipo
         </h3>
       </section>
-      <section
-        className="display-center"
-        style={{ margin: 'auto', maxWidth: '50%' }}
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="lg">
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Card >
+                    <CardMedia
+                      component="img"
+                      image={url}
+                      // image="http://localhost:8000/grafica1.png"
+                      alt="Imagen Protocolo"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        Imagen de muestra
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        No olvide conectar los dispositivos a utilizar para la captura
+                      </Typography>
+                    </CardContent>
+                </ Card>
+              </Grid>
+            </Grid>
+            </Box>
+              
+          </Box>
+        </Container>
+      </ThemeProvider>
+      {/* <div
+        className="display-center wrapper"
       >
         <img
           src={url}
-          alt="imagen-protocolo"
-          style={{ maxHeight: '100%', maxWidth: '100%' }}
+          alt="Imagen Protocolo"
+          className="img-style"
+          // className="display-center image-wrapper"
+
+
         />
-      </section>
+      </div> */}
       <section className="display-center space-divEscogerColocacionM">
         <Button sx={styleButtonBiggerGreen} onClick={onClickNav}>
           Confirmar

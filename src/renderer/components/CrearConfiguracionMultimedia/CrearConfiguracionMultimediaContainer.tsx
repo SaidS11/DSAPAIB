@@ -26,6 +26,7 @@ const CrearConfiguracionMultimediaContainer = () => {
   const primerConfig = useCustomSelector((state) => state.config.configPrimerPaso) as ConfigurationInterface;
   console.log(primerConfig);
   const appDispatch = useCustomDispatch();
+
   const fileName = '';
   let fileNameVideo = '';
 
@@ -196,8 +197,9 @@ const CrearConfiguracionMultimediaContainer = () => {
         }
       }
       else {
-        console.log('nada');
-        alert('Seleccione los archivos');
+        console.log("DISPATCH");
+        appDispatch(setFallosAlCargar(true));
+        appDispatch(setErrorDetails('Seleccione los archivos adecuados'));
       }
 
       // async function insertConf(data: any) {
@@ -255,7 +257,9 @@ const CrearConfiguracionMultimediaContainer = () => {
       }); */
     }
     else {
-      alert('Seleccione los archivos');
+      console.log("DISPATCH");
+        appDispatch(setFallosAlCargar(true));
+        appDispatch(setErrorDetails('Seleccione los archivos adecuados'));
     }
   };
   return <CrearConfiguracionMultimedia onClickBack={onClickBack} onClickUpload={onClickUpload} />;

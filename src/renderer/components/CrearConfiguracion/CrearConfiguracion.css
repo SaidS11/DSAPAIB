@@ -25,7 +25,6 @@
 
 .display-margin {
   display: flex;
-  margin-left: 3%;
   /* float:left; */
 }
 
@@ -95,3 +94,8 @@
 .second-radio {
   margin-left: 115px;
 }
+
+
+
+
+

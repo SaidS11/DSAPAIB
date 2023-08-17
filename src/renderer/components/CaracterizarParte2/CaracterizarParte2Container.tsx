@@ -353,6 +353,7 @@ const CaracterizarParte2Container = () => {
           frecuenciaChecked={frecuenciaChecked}
           temperaturaChecked={temperaturaChecked}
         />
+        <br />
       </div>
     );
   }

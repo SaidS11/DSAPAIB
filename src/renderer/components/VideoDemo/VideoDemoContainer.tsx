@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
-import { setIsLoading } from '../../../redux/slices/StatusSlice';
+import { setErrorDetails, setFailUpload, setFallosAlCargar, setIsLoading, setIsUploaded } from '../../../redux/slices/StatusSlice';
 import {
   setCantidadSensores,
   setGsrIsChecked,
@@ -17,7 +17,7 @@ import {
 import VideoDemo from './VideoDemo';
 import SensoresAdquisicionContainer from '../SensoresAdquisicion/SensoresAdquisicionContainer';
 import ModalSensoresAdquisicion from '../SensoresAdquisicion/ModalSensoresAdquisicion';
-import { adqWithTimeWithoutSignals, apiEndpoint, ardMessage, completeAdqObject } from '../Utilities/Constants';
+import { adqWithTimeWithoutSignals, apiEndpoint, ardMessage, completeAdqObject, mongoInsertString } from '../Utilities/Constants';
 import Button from '@mui/material/Button';
 import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
@@ -176,9 +176,11 @@ const VideoDemoContainer = () => {
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
 
+  const datosPaciente = useCustomSelector((state) => state.datos.datosPaciente);
+
+  const protocolo = useCustomSelector((state) => state.config.protocoloNombre);
+
   const cantidadEmgs = confObj[0].emgs;
-
-
 
 
   const onClickNav = async () => {
@@ -296,7 +298,8 @@ const VideoDemoContainer = () => {
           // setIsReady(true);
           window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
         } else {
-          alert('Seleccione puertos distintos')
+          appDispatch(setFallosAlCargar(true));
+          appDispatch(setErrorDetails('Seleccione puertos distintos'));
         }
         // window.Bridge.sensoresNewTest()
       } else {
@@ -337,8 +340,8 @@ const VideoDemoContainer = () => {
 
 
 
-
-    setBloqueoDeBoton(true);
+    /// .....
+    // setBloqueoDeBoton(true);
     const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
     // Comprobacion de emgs sino hay timer para controlar arduinos
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
@@ -347,10 +350,37 @@ const VideoDemoContainer = () => {
 
     if(data.message !== null) {
       console.log("READY", data.message);
+      if(data.message.includes("null")) {
+        appDispatch(setFallosAlCargar(true));
+        appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
+        return;
+      }
       stopArduinos();
+
+      // try {
+      //   stopArduinos();
+      // } 
+      // catch(error: any) {
+      //   appDispatch(setFallosAlCargar(true));
+      //   appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas: ${error}`));
+      //   return;
+      // }
     }
+    /// .....
 
     // TESTS
+
+
+    // const jsonObj = JSON.parse(mongoInsertString);
+
+    // const nombreCompleto = `${datosPaciente[0].col1} ${datosPaciente[0].col2} ${datosPaciente[0].col3}`;
+    // jsonObj.name = nombreCompleto;
+    // jsonObj.protocol = protocolo;
+    // console.log("Parsed", jsonObj);
+
+    // const jsonDocument = JSON.stringify(jsonObj);
+    // window.electron.ipcRenderer.insertarElementoMongo(jsonDocument);
+    
 
     // Clean signals and make lengths equal
 
@@ -471,244 +501,265 @@ const VideoDemoContainer = () => {
     // setDataIsReady(true);
   };
 
+
+  window.electron.ipcRenderer.insertarElementoM((event: any, resp: any) => {
+    if (resp[0] === 0) {
+      appDispatch(setFailUpload(true));
+      appDispatch(setIsLoading(false));
+    } else {
+      appDispatch(setIsLoading(false));
+      appDispatch(setIsUploaded(true));
+      navigate('/verPaciente');
+    }
+  });
+
   const stopArduinos = async () => {
+    try {
+      console.log("Stopping");
+      appDispatch(setIsLoading(true));
+      const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
+      const arduinoSTOP = await stopArduinos.json();
 
-    console.log("Stopping");
-    appDispatch(setIsLoading(true));
-    const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
-    const arduinoSTOP = await stopArduinos.json();
+      console.log("ARDUINO STOP", arduinoSTOP.message);
 
-    console.log("ARDUINO STOP", arduinoSTOP.message);
+      const arreglo = arduinoSTOP.message
 
-    const arreglo = arduinoSTOP.message
-
-    
-    // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
-
-    if (cantidadArduinos > 1) {
-      console.log("Mas de 1 arduino");
-
-      console.log("ARREGLO TIME 1", arreglo[2]);
-      console.log("ARREGLO TIME 2", arreglo[3]);
-
-      const encontrado = arreglo[0].some((elemento: string) => elemento.includes("INCLY"));
-
-      let arregloArduinoConAcelerometro;
-      let arregloArduinoSinAcelerometro;
-
-      let timestampArduinoConAcelerometro;
-      let timestampArduinoSinAcelerometro;
-
-
-      if(encontrado) {
-        arregloArduinoConAcelerometro = arreglo[0];
-        timestampArduinoConAcelerometro = arreglo[2];
-        arregloArduinoSinAcelerometro = arreglo[1];
-        timestampArduinoSinAcelerometro = arreglo[3];
-
-      } else {
-        arregloArduinoConAcelerometro = arreglo[1];
-        timestampArduinoSinAcelerometro = arreglo[3];
-        arregloArduinoSinAcelerometro = arreglo[0];
-        timestampArduinoConAcelerometro = arreglo[2];
-
-      }
-
-      const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
-        const formatoCompleto = formatoParsedSinAcelerometro ||  /\bEMPTY: \d+\b/;
-        return formatoCompleto.test(registro);
-      });
-  
-  
-      const registrosCompletos2 = arregloArduinoConAcelerometro.filter((registro: string) => {
-        const formatoCompleto = /INCLX: -?\d+(?:\.\d+)?, INCLY: -?\d+(?:\.\d+)?, INCLZ: -?\d+(?:\.\d+)?/;
-        return formatoCompleto.test(registro);
-      });
-  
       
-      // Combinacion de ambos arduinos para guardar las señales posteriormente
-      let objetoArduinoMultiple: any = {};
-      // Objeto con los datos del primer Arduino 
-      let objetoArduino1;
-      // Objeto con los datos del segundo Arduino 
-      let objetoArduino2;
-  
-      if (cantidadArduinos >= 1) {
-        const arduino1Data = registrosCompletos;
-        const returnObj = parseArduinoData(arduino1Data)
+      // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
+
+      if (cantidadArduinos > 1) {
+        console.log("Mas de 1 arduino");
+
+        console.log("ARREGLO TIME 1", arreglo[2]);
+        console.log("ARREGLO TIME 2", arreglo[3]);
+
+        const encontrado = arreglo[0].some((elemento: string) => elemento.includes("INCLY"));
+
+        let arregloArduinoConAcelerometro;
+        let arregloArduinoSinAcelerometro;
+
+        let timestampArduinoConAcelerometro;
+        let timestampArduinoSinAcelerometro;
+
+
+        if(encontrado) {
+          arregloArduinoConAcelerometro = arreglo[0];
+          timestampArduinoConAcelerometro = arreglo[2];
+          arregloArduinoSinAcelerometro = arreglo[1];
+          timestampArduinoSinAcelerometro = arreglo[3];
+
+        } else {
+          arregloArduinoConAcelerometro = arreglo[1];
+          timestampArduinoSinAcelerometro = arreglo[3];
+          arregloArduinoSinAcelerometro = arreglo[0];
+          timestampArduinoConAcelerometro = arreglo[2];
+
+        }
+
+        const registrosCompletos = arregloArduinoSinAcelerometro.filter((registro: string) => {
+          const formatoCompleto = formatoParsedSinAcelerometro ||  /\bEMPTY: \d+\b/;
+          return formatoCompleto.test(registro);
+        });
+    
+    
+        const registrosCompletos2 = arregloArduinoConAcelerometro.filter((registro: string) => {
+          const formatoCompleto = /INCLX: -?\d+(?:\.\d+)?, INCLY: -?\d+(?:\.\d+)?, INCLZ: -?\d+(?:\.\d+)?/;
+          return formatoCompleto.test(registro);
+        });
+    
+        
+        // Combinacion de ambos arduinos para guardar las señales posteriormente
+        let objetoArduinoMultiple: any = {};
+        // Objeto con los datos del primer Arduino 
+        let objetoArduino1;
+        // Objeto con los datos del segundo Arduino 
+        let objetoArduino2;
+    
+        if (cantidadArduinos >= 1) {
+          const arduino1Data = registrosCompletos;
+          const returnObj = parseArduinoData(arduino1Data)
+          if(gsrLocalChecked) {
+            const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
+            returnObj.GSR = nuevoGsr
+          }
+
+          objetoArduino1 = returnObj;
+          objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
+        }
+        if (cantidadArduinos >= 2) {
+          const arduino2Data = registrosCompletos2;
+          const returnObj = parseArduinoData(arduino2Data)
+          objetoArduino2 = returnObj;
+          // Comentado por operaciones
+          // objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
+        }
+    
+        
+    
+        // Limpieza de claves no permitidas
+        const posiblesClaves = ['INCLX', 'INCLY', 'INCLZ', 'HRLM', 'TC', 'GSR']
+      
+        // Obtener las claves del objeto
+        const clavesObjeto = Object.keys(objetoArduinoMultiple);
+    
+        // Iterar sobre las claves del objeto
+        for (let clave of clavesObjeto) {
+          // Verificar si la clave no está en el arreglo
+          if (!posiblesClaves.includes(clave)) {
+            // Eliminar la clave y su valor asociado del objeto
+            delete objetoArduinoMultiple[clave];
+          }
+        }
+    
+        const clavesObjetoArduino1 = Object.keys(objetoArduino1);
+    
+        // Iterar sobre las claves del objeto
+        for (let clave of clavesObjetoArduino1) {
+          // Verificar si la clave no está en el arreglo
+          if (!posiblesClaves.includes(clave)) {
+            // Eliminar la clave y su valor asociado del objeto
+            delete objetoArduino1[clave];
+          }
+        }
+    
+        const clavesObjetoArduino2 = Object.keys(objetoArduino2);
+    
+        // Iterar sobre las claves del objeto
+        for (let clave of clavesObjetoArduino2) {
+          // Verificar si la clave no está en el arreglo
+          if (!posiblesClaves.includes(clave)) {
+            // Eliminar la clave y su valor asociado del objeto
+            delete objetoArduino2[clave];
+          }
+        }
+
+
+        // Aplicar operaciones al acelerometro
+        const diferenciaYRespectoaX = objetoArduino2.INCLY.length - objetoArduino2.INCLX.length;
+        const diferenciaZRespectoaX = objetoArduino2.INCLZ.length - objetoArduino2.INCLX.length;
+        let totalAEliminarAcelerometroTime;
+        if (diferenciaYRespectoaX === diferenciaZRespectoaX) {
+          totalAEliminarAcelerometroTime = diferenciaYRespectoaX
+        }
+        else {
+          totalAEliminarAcelerometroTime = diferenciaYRespectoaX > diferenciaZRespectoaX ? diferenciaYRespectoaX : diferenciaZRespectoaX;
+        }
+        for(let i = 0; i <= diferenciaYRespectoaX; i += 1) {
+          objetoArduino2.INCLY.pop()
+        }
+        for(let i = 0; i <= diferenciaZRespectoaX; i += 1) {
+          objetoArduino2.INCLZ.pop()
+        }
+        for(let i = 0; i <= totalAEliminarAcelerometroTime; i += 1) {
+          timestampArduinoConAcelerometro.pop()
+        }
+
+        const resultArrayX = [];
+        const resultArrayY = [];
+        const resultArrayZ = [];
+
+        for (let i = 0; i < objetoArduino2.INCLX.length; i++) {
+          const resultX = Math.atan(objetoArduino2.INCLX[i] / Math.sqrt((objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+          const resultY = Math.atan(objetoArduino2.INCLY[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
+          const resultZ = Math.atan(objetoArduino2.INCLZ[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]))) * (180 / 3.14);
+
+          
+          resultArrayX.push(resultX);
+          resultArrayY.push(resultY);
+          resultArrayZ.push(resultZ);
+          
+        }
+        objetoArduino2.INCLX = resultArrayX;
+        objetoArduino2.INCLY = resultArrayY;
+        objetoArduino2.INCLZ = resultArrayZ;
+
+
+        objetoArduinoMultiple = {...objetoArduinoMultiple, ...objetoArduino2};
+    
+        console.log("OBJ", objetoArduinoMultiple);
+    
+        const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino1Data.csv"}`, {
+          method: 'POST',
+          body: JSON.stringify(objetoArduino1),
+          headers: {'Content-Type': 'application/json'}
+        });
+    
+        const insertImplementacion2 = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino2Data.csv"}`, {
+          method: 'POST',
+          body: JSON.stringify(objetoArduino2),
+          headers: {'Content-Type': 'application/json'}
+        });
+
+        let returnedEmg;
+
+        if(cantidadEmgs > 0) {
+
+          const objFromCsv = await fetch(`${apiEndpoint}/obtenerObjDeCsv`);
+
+          const dataEmg = await objFromCsv.json()
+
+          console.log("RESP", dataEmg.message);
+
+          // setEmgData(parseEMG(test));
+          returnedEmg = parseEMG(dataEmg.message)
+
+          console.log("EMG", returnedEmg);
+        }
+
+        let objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
+
+        console.log("OBJETO FINAL SIN TIEMPO ARDUINOS", objetoAdquirido);
+
+        const timeObj: any = {}
         if(gsrLocalChecked) {
-          const nuevoGsr = calcularValorCorrectoGsr(returnObj.GSR)
-          returnObj.GSR = nuevoGsr
+          timeObj.tiempoGSR =  calcularTimeGsr(timestampArduinoSinAcelerometro);
         }
 
-        objetoArduino1 = returnObj;
-        objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
-      }
-      if (cantidadArduinos >= 2) {
-        const arduino2Data = registrosCompletos2;
-        const returnObj = parseArduinoData(arduino2Data)
-        objetoArduino2 = returnObj;
-        // Comentado por operaciones
-        // objetoArduinoMultiple = {...objetoArduinoMultiple, ...returnObj};
-      }
-  
-      
-  
-      // Limpieza de claves no permitidas
-      const posiblesClaves = ['INCLX', 'INCLY', 'INCLZ', 'HRLM', 'TC', 'GSR']
-    
-      // Obtener las claves del objeto
-      const clavesObjeto = Object.keys(objetoArduinoMultiple);
-  
-      // Iterar sobre las claves del objeto
-      for (let clave of clavesObjeto) {
-        // Verificar si la clave no está en el arreglo
-        if (!posiblesClaves.includes(clave)) {
-          // Eliminar la clave y su valor asociado del objeto
-          delete objetoArduinoMultiple[clave];
+        if(tempLocalChecked) {
+          timeObj.tiempoTC =  timestampArduinoSinAcelerometro;
         }
-      }
-  
-      const clavesObjetoArduino1 = Object.keys(objetoArduino1);
-  
-      // Iterar sobre las claves del objeto
-      for (let clave of clavesObjetoArduino1) {
-        // Verificar si la clave no está en el arreglo
-        if (!posiblesClaves.includes(clave)) {
-          // Eliminar la clave y su valor asociado del objeto
-          delete objetoArduino1[clave];
+        if (frecuenciaLocalChecked) {
+          timeObj.tiempoHRLM =  timestampArduinoSinAcelerometro;
         }
-      }
-  
-      const clavesObjetoArduino2 = Object.keys(objetoArduino2);
-  
-      // Iterar sobre las claves del objeto
-      for (let clave of clavesObjetoArduino2) {
-        // Verificar si la clave no está en el arreglo
-        if (!posiblesClaves.includes(clave)) {
-          // Eliminar la clave y su valor asociado del objeto
-          delete objetoArduino2[clave];
+        if(acelerometroLocalChecked) {
+          timeObj.tiempoINCLX =  timestampArduinoConAcelerometro;
+          timeObj.tiempoINCLY =  timestampArduinoConAcelerometro;
+          timeObj.tiempoINCLZ =  timestampArduinoConAcelerometro;
+        } 
+
+        objetoAdquirido = {...objetoAdquirido, ...timeObj};
+        const objWrapper = {
+          signals: objetoAdquirido
         }
-      }
+
+        console.log("Wrapped OBJ", objWrapper);
+
+        setBloqueoDeBoton(false);
+        setArduinoDataArg(objetoArduinoMultiple);
+        setEmgData(returnedEmg);
+        setDataIsReady(true);
+        appDispatch(setIsLoading(false));
 
 
-      // Aplicar operaciones al acelerometro
-      const diferenciaYRespectoaX = objetoArduino2.INCLY.length - objetoArduino2.INCLX.length;
-      const diferenciaZRespectoaX = objetoArduino2.INCLZ.length - objetoArduino2.INCLX.length;
-      let totalAEliminarAcelerometroTime;
-      if (diferenciaYRespectoaX === diferenciaZRespectoaX) {
-        totalAEliminarAcelerometroTime = diferenciaYRespectoaX
-      }
-      else {
-        totalAEliminarAcelerometroTime = diferenciaYRespectoaX > diferenciaZRespectoaX ? diferenciaYRespectoaX : diferenciaZRespectoaX;
-      }
-      for(let i = 0; i <= diferenciaYRespectoaX; i += 1) {
-        objetoArduino2.INCLY.pop()
-      }
-      for(let i = 0; i <= diferenciaZRespectoaX; i += 1) {
-        objetoArduino2.INCLZ.pop()
-      }
-      for(let i = 0; i <= totalAEliminarAcelerometroTime; i += 1) {
-        timestampArduinoConAcelerometro.pop()
-      }
-
-      const resultArrayX = [];
-      const resultArrayY = [];
-      const resultArrayZ = [];
-
-      for (let i = 0; i < objetoArduino2.INCLX.length; i++) {
-        const resultX = Math.atan(objetoArduino2.INCLX[i] / Math.sqrt((objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
-        const resultY = Math.atan(objetoArduino2.INCLY[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLZ[i] * objetoArduino2.INCLZ[i]))) * (180 / 3.14);
-        const resultZ = Math.atan(objetoArduino2.INCLZ[i] / Math.sqrt((objetoArduino2.INCLX[i] * objetoArduino2.INCLX[i]) + (objetoArduino2.INCLY[i] * objetoArduino2.INCLY[i]))) * (180 / 3.14);
-
-        
-        resultArrayX.push(resultX);
-        resultArrayY.push(resultY);
-        resultArrayZ.push(resultZ);
-        
-      }
-      objetoArduino2.INCLX = resultArrayX;
-      objetoArduino2.INCLY = resultArrayY;
-      objetoArduino2.INCLZ = resultArrayZ;
-
-
-      objetoArduinoMultiple = {...objetoArduinoMultiple, ...objetoArduino2};
-  
-      console.log("OBJ", objetoArduinoMultiple);
-  
-      const insertImplementacion = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino1Data.csv"}`, {
-        method: 'POST',
-        body: JSON.stringify(objetoArduino1),
-        headers: {'Content-Type': 'application/json'}
-      });
-  
-      const insertImplementacion2 = await fetch(`${apiEndpoint}/generarCsv?nombre=${"arduino2Data.csv"}`, {
-        method: 'POST',
-        body: JSON.stringify(objetoArduino2),
-        headers: {'Content-Type': 'application/json'}
-      });
-
-      let returnedEmg;
-
-      if(cantidadEmgs > 0) {
-
-        const objFromCsv = await fetch(`${apiEndpoint}/obtenerObjDeCsv`);
-
-        const dataEmg = await objFromCsv.json()
-
-        console.log("RESP", dataEmg.message);
-
-        // setEmgData(parseEMG(test));
-        returnedEmg = parseEMG(dataEmg.message)
-
-        console.log("EMG", returnedEmg);
-      }
-
-      let objetoAdquirido = {...returnedEmg, ...objetoArduinoMultiple}
-
-      console.log("OBJETO FINAL SIN TIEMPO ARDUINOS", objetoAdquirido);
-
-      const timeObj: any = {}
-      if(gsrLocalChecked) {
-        timeObj.tiempoGSR =  calcularTimeGsr(timestampArduinoSinAcelerometro);
-      }
-
-      if(tempLocalChecked) {
-        timeObj.tiempoTC =  timestampArduinoSinAcelerometro;
-      }
-      if (frecuenciaLocalChecked) {
-        timeObj.tiempoHRLM =  timestampArduinoSinAcelerometro;
-      }
-      if(acelerometroLocalChecked) {
-        timeObj.tiempoINCLX =  timestampArduinoConAcelerometro;
-        timeObj.tiempoINCLY =  timestampArduinoConAcelerometro;
-        timeObj.tiempoINCLZ =  timestampArduinoConAcelerometro;
       } 
 
-      objetoAdquirido = {...objetoAdquirido, ...timeObj};
-      const objWrapper = {
-        signals: objetoAdquirido
+      else if (confObj[0].acelerometro) {
+        console.log("  ");
+      } else if (confObj[0].gsr) {
+
       }
 
-      console.log("Wrapped OBJ", objWrapper);
-
-      setBloqueoDeBoton(false);
-      setArduinoDataArg(objetoArduinoMultiple);
-      setEmgData(returnedEmg);
-      setDataIsReady(true);
-      appDispatch(setIsLoading(false));
-
-
     } 
-
-    else if (confObj[0].acelerometro) {
-      console.log("  ");
-    } else if (confObj[0].gsr) {
-
+    catch(error: any) {
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas: ${error}`));
+      return;
     }
+    
 
     
   };
+  
 
   return (
     <div>
@@ -748,6 +799,7 @@ const VideoDemoContainer = () => {
           sx={styleButton}
           style={{ fontSize: '20px' }}
           onClick={onClickStart}
+          disabled={bloqueoDeBoton}
         >
           Probar Sensores
         </Button>

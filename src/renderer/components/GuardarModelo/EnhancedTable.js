@@ -99,9 +99,7 @@ const EnhancedTable = ({
   algoritmoTipo,
   // setSelectedPatientsLocal,
 }) => {
-  const [isSelected, setIsSelected] = useState([]);
-  const [first, setFirst] = useState(true);
-  // const selectedPatients = useCustomSelector((state) => state.config.selectedModels);
+
   const {
     getTableProps,
     headerGroups,

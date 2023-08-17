@@ -47,7 +47,7 @@ const CrearImplementacionContainer = () => {
   //   }
   // });
   const onClickNav = async (e: React.FormEvent<HTMLFormElement>) => {
-    appDispatch(setIsLoading(true));
+    // appDispatch(setIsLoading(true));
     e.preventDefault();
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
@@ -58,24 +58,24 @@ const CrearImplementacionContainer = () => {
         estado: dataF.estado
       }
       console.log(params);
-      await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
+      // await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
     }
-    if (dataF.algoritmo === 'Red Neuronal') {
+    if (dataF.algoritmo === 'K-Nearest Neighbor') {
       const params = {
         vecinos: dataF.vecinos,
       }
       console.log(params);
-      await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
+      // await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
     }
     if (dataF.algoritmo === 'Maquina de Soporte Vectorial') {
       const params = {
         kernel: dataF.kernel,
       }
       console.log(params);
-      await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
+      // await insertData(dataF.nombreModelo as string, dataF.descripcion as string, dataF.algoritmo as string, params)
     }
-    appDispatch(setIsLoading(true));
-    navigate('/verImplementaciones')
+    appDispatch(setIsLoading(false));
+    // navigate('/verImplementaciones')
 
 
   };

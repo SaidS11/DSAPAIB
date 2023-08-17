@@ -86,7 +86,7 @@ const CrearProtocoloContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const dataForm = Object.fromEntries(new FormData(form).entries());
-    // console.log('la data', dataForm);
+    console.log('la data', dataForm);
     const dataProtocol = dataForm as unknown as InsertProtocolInterface
     await insertData(dataProtocol);
     appDispatch(setIsLoading(false));

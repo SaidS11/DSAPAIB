@@ -1,7 +1,13 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import { Button } from '@mui/material';
+import { Button, CardActionArea } from '@mui/material';
 import ReactPlayer from 'react-player';
 import { styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 
 import './Video.css';
 
@@ -9,18 +15,49 @@ export interface VideoProps {
   onClickNav: () => void;
   url: string;
   onClickCancel: () => void;
+  isPlaying: boolean;
 }
 
 const Video = (props: VideoProps) => {
-  const { onClickNav, url, onClickCancel } = props;
+  const { onClickNav, url, onClickCancel, isPlaying } = props;
+  const defaultTheme = createTheme();
+
   return (
     <div>
       <section className="display-center">
         <h1>Captura de Datos</h1>
       </section>
       <section className="display-center">
-        <h3>La captura comenzara cuando se de clic en el boton</h3>
+        <h3>La captura comenzara automaticamente</h3>
       </section>
+      {/* <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="lg">
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Card >
+                  <CardActionArea>
+                    <CardMedia
+                      component='video'
+                      image={url}
+                      controls
+                    />
+                  </CardActionArea>
+                </ Card>
+              </Grid>
+            </Grid>
+            </Box>
+              
+          </Box>
+        </Container>
+      </ThemeProvider> */}
       <section className="display-center">
         {/* <Button
           sx={styleButtonBiggerGreen}
@@ -33,7 +70,7 @@ const Video = (props: VideoProps) => {
           url={url}
           width="auto"
           onEnded={() => onClickNav()}
-          playing
+          playing={isPlaying}
           // onPlay={() => }
           // onEnded={() => onClickNav()}
         />

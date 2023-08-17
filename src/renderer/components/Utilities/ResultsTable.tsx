@@ -2,11 +2,24 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-syntax */
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, usePagination } from 'react-table';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import React, { useState } from 'react';
+import MaUTable from '@mui/material/Table';
+import PropTypes from 'prop-types';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 interface Cols {
   nombre?: string;
@@ -59,8 +72,11 @@ const initialHidden = (cols: any) => {
   return helperArray;
 };
 const ResultsTable = (props: ResultsProps) => {
-  const { dataInitial, columns } = props;
+  const { dataInitial, columns , options} = props;
   const [currentLabel, setCurrentLabel] = useState('Expandir');
+
+  const defaultTheme = createTheme();
+
 
   function prepareShortData() {
     if (currentLabel === 'Expandir') {
@@ -108,16 +124,18 @@ const ResultsTable = (props: ResultsProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentLabel]
   );
-  // const data: Cols[] = dataParsed;
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
+    page,
     allColumns,
     visibleColumns,
   } = useTable(
+    // options,
     {
       columns,
       data,
@@ -129,8 +147,11 @@ const ResultsTable = (props: ResultsProps) => {
         // hiddenColumns: ["nombre"]
       },
     },
-    useSortBy
+    useSortBy,
+    usePagination,
   );
+    console.log("Columnas Vi", visibleColumns);
+    console.log("All column", allColumns)
 
   const setStatus = () => {
     if (visibleColumns.length === 2) {
@@ -155,78 +176,91 @@ const ResultsTable = (props: ResultsProps) => {
         direction={column.isSortedDesc ? 'desc' : 'asc'}
       />
     );
-    // if (column.isSortedDesc ?? false) {
-    //   return <span className="icon-arrow-long-up" />;
-    // }
-    // return <span className="icon-arrow-long-down" />;
-  };
 
+  };
+  console.log("THIS");
   return (
-    <div>
-      <div>
-        <div>
-          {/* <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} onClick={setStatus}>
-                  {currentLabel}
-              </Button> */}
-          <FormControlLabel
+    <ThemeProvider theme={defaultTheme}>
+       <Container maxWidth="sm">
+
+        <CssBaseline />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+      
+      <FormControlLabel
             control={<Switch />}
             onChange={setStatus}
             label={currentLabel}
           />
-        </div>
-      </div>
-      <div
-        style={{
-          width: '100%',
-          overflow: 'auto',
-          maxHeight: '70vh',
-        }}
-      >
-        <table {...getTableProps()} className="tableCustom">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className="tableHeader"
-                    style={{ textAlign: 'center' }}
-                  >
-                    {column.render('Header')}
-                    <span>{column.isSorted ? sortedColumn(column) : null}</span>
-                    {/* {column.id !== 'selection' ? (
+
+        <Box sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+          <Grid item xs={12}>
+
+          <TableContainer >
+          <MaUTable {...getTableProps()} >
+            <TableHead >
+              {headerGroups.map((headerGroup) => (
+                <TableRow {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <TableCell
+                      {...(column.id === 'selection'
+                        ? column.getHeaderProps()
+                        : column.getHeaderProps(column.getSortByToggleProps()))}
+                        sx={{border: "1px solid rgba(224, 224, 224, 1)"}}
+                    >
+                      {column.render('Header')}
+                      {column.id !== 'selection' ? (
                         <TableSortLabel
                           active={column.isSorted}
                           // react-table has a unsorted state which is not treated here
                           direction={column.isSortedDesc ? 'desc' : 'asc'}
                         />
-                      ) : null} */}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  className={
-                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                  }
-                  style={{ textAlign: 'center', width: '300px' }}
-                >
-                  {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                      ) : null}
+                    </TableCell>
                   ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {page.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <TableRow {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <TableCell {...cell.getCellProps()}
+                        sx={{border: "1px solid rgba(224, 224, 224, 1)"}}
+                        >
+                          {cell.render('Cell')}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </MaUTable>
+        </TableContainer>
+          </Grid>
+
+          </Grid>
+          
+       
+        </Box>
+        </Box>
+
+
+        </Container>
+
+      </ThemeProvider>
+
+    
   );
 };
 

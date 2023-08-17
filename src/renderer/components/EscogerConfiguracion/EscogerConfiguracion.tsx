@@ -80,7 +80,6 @@ const EscogerConfiguracion = (props: LoginProps) => {
           Ver
         </Button>
       </section>
-      <br />
       <section className="display-center space-divEscoger">
         <Button sx={styleButtonBigger} onClick={onClickAdd}>
           Agregar Protocolo

@@ -20,8 +20,17 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Algoritmo } from '../Utilities/Constants';
 import EnhancedTable from './EnhancedTable';
-import { styleButtonBiggerGreen, styleButtonBigger } from '../VerPaciente/ButtonStyle';
+import { styleButtonBiggerGreen, styleButtonBigger,styleAddIcon } from '../VerPaciente/ButtonStyle';
 import GeneralTable from './AlgorithmTable';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 
 interface ComenzarAnalisisEntrenamientoProps {
   tableData: any;
@@ -117,167 +126,163 @@ const ComenzarAnalisisEntrenamiento = (
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modelo]);
+  const defaultTheme = createTheme();
 
   return (
     <div>
       <div className="display-center">
         <h1>Entrenamiento</h1>
       </div>
-      <div className='display-center'>
-        <form className="analisis-form" onSubmit={onClickNav} style={{ width: "70%" }}>
-        <br />
-          <section className="display-center" style={{ marginRight: "5%", marginLeft: "5%" }}>
-            <h4>
-              Seleccione el protocolo del que desea obtener los registros. A continuación personalice los parametros del modelo a entrenar.
-            </h4>
-          </section>
-          {/* <section className="display-flexAgregar">
-            <h3>Nombre: </h3>
-            <input className="first-input" type="text"  name="nombre" required />
-          </section>
-          <section className="display-flexAgregar">
-            <h3>Descripción: </h3>
-            <textarea className="second-input" name="descripcion" required/>
-          </section> */}
-          <section className="display-flexAgregar">
-            <h3>Protocolo Adquisición: </h3>
-            <section className="list-box-sexo">
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="protocolo"
-                  value={protocolo}
-                  label="Protocolo"
-                  onChange={handleChangeProtocol}
-                  required
-                >
-                  {setProtocols()}
-                </Select>
-              </FormControl>
-            </section>
-          </section>
-          {/* <section className="display-flexAgregar">
-            <h3>Algoritmo: </h3>
-            <section className="list-box-sexo">
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Algoritmo</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="algoritmo"
-                  value={modelo}
-                  label="Algoritmo"
-                  onChange={handleChange}
-                  required
-                >
-                  {numOfAlgos()}
-                </Select>
-              </FormControl>
-            </section>
-          
-          </section> */}
-          {modelo !== '' &&
-          <section className="display-flexAgregar" style={{display: "block"}}>
-            <h3>Datos del algoritmo: </h3>
-            <br />
-            {retrieveAlgoData}
-          </section>
-          }
-          <section className="display-flexAgregar">
-            <h3>Numero de K(Folds): </h3>
-            <input type="number" name="iteraciones" required min="1" max="500" />
-          </section>
-          <section className="display-flexAgregar">
-            <h3>Porcentaje de Datos de Prueba: </h3>
-            <input type="number" name="porcentaje" required min="10" max="90" />
-          </section>
-          <section className="display-flexAgregar">
-          <FormControl>
-            <FormLabel id="demo-controlled-radio-buttons-group">Ventaneo</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-controlled-radio-buttons-group"
-              name="controlled-radio-buttons-group"
-              value={valueVentaneo}
-              onChange={handleChangeVentaneo}
-            >
-              <FormControlLabel value="automatico" control={<Radio />} label="Automatico" disabled />
-              <FormControlLabel value="manual" control={<Radio />} label="Manual" />
-            </RadioGroup>
-          </FormControl>
-          </section>
-          <br />
-        
-      <div className='display-center'>
-          <h2>Parámetros de la selección:</h2>
-      </div>
-      <section className="display-flexAgregar">
-          <h4>Sexo: </h4>
-          <section className="list-box-sexo">
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                name="sexo"
-                value={filtroSexo}
-                label="Sexo"
-                onChange={handleChangeFiltroSexo}
-              >
-                <MenuItem key='Cualquiera' value='Cualquiera'>Cualquiera</MenuItem>
-                <MenuItem key='Hombre' value='Hombre'>Hombre</MenuItem>
-                <MenuItem key='Mujer' value='Mujer'>Mujer</MenuItem>
-              </Select>
-            </FormControl>
-          </section>
-          {/* <h4>Edad (años): </h4>
-          <select>
-            <option>Cualquiera</option>
-            <option>10 a 15</option>
-            <option>15 a 20</option>
-            <option>20 a 25</option>
-            <option>25 a 30</option>
-            <option>30 a 35</option>
-            <option>35 a 40</option>
-            <option>40 a 45</option>
-            <option>45 a 50</option>
-            <option>Más de 50</option>
-          </select> */}
-        </section>
-        <br />
-      <div
-        style={{
-          width: '90%',
-          overflow: 'auto',
-          maxHeight: '60vh',
-          marginLeft: '80px',
-        }}
-      >
-        <EnhancedTable
-        columns={columnsData}
-        data={tableData}
-      />
-      </div>
-      <div className="display-center" style={{ marginTop: '10px' }}>
-        <h5>Registros Recuperados: </h5>{' '}
-        <h5 style={{ fontWeight: '600', marginLeft: '5px' }}>{tableData.length}</h5>
-      </div>
-      {/* <div className="display-center" style={{ marginTop: '10px' }}>
-        <Button sx={styleButtonBigger} onClick={() => toggleModal('body')} style={ modelo === '' ? {backgroundColor: "grey", pointerEvents: "none" } : {}}>
-          {modelo === '' ? 'Seleccione registros antes de ver detalles' : 'Información acerca de los datos'}
-        </Button>
-      </div> */}
-      <div
-        className="display-center"
-        style={{ marginTop: '5px', marginBottom: '30px' }}
-      >
-        <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
-          <input hidden type="submit" />
-        </Button>
-      </div>
-      </form>
-      </div>
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <PrecisionManufacturingIcon sx={styleAddIcon} style={{color: "white"}}/>
+            </Avatar>
+            <Typography component="h1" variant="h5" >
+            Seleccione el protocolo del que desea obtener los registros. A continuación personalice los parametros del modelo a entrenar.
+            </Typography>
+            <Box component="form" onSubmit={onClickNav} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>                
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Protocolo de Adquisición:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Protocolo</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="protocolo"
+                    value={protocolo}
+                    label="protocolo"
+                    onChange={handleChangeProtocol}
+                    required
+                  >
+                    {setProtocols()}
+                  </Select>
+                </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Numero de K(Folds):
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="iteraciones"
+                    label="Iteraciones"
+                    name="iteraciones"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Porcentaje de Datos de Prueba:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="porcentaje"
+                    label="Porcentaje"
+                    name="porcentaje"
+                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl>
+                    <FormLabel id="demo-controlled-radio-buttons-group">Ventaneo</FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="ventaneo"
+                      value={valueVentaneo}
+                      onChange={handleChangeVentaneo}
+                    >
+                      <FormControlLabel value="automatico" control={<Radio />} label="Automatico" disabled />
+                      <FormControlLabel value="manual" control={<Radio />} label="Manual" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography component="h1" variant="h6" >
+                  Parametros de Selección
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Sexo:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="sexo"
+                      value={filtroSexo}
+                      label="Sexo"
+                      onChange={handleChangeFiltroSexo}
+                    >
+                      <MenuItem key='Cualquiera' value='Cualquiera'>Cualquiera</MenuItem>
+                      <MenuItem key='Hombre' value='Hombre'>Hombre</MenuItem>
+                      <MenuItem key='Mujer' value='Mujer'>Mujer</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <br/>
+                <Grid item xs={12}>
+                </Grid>
+                <Grid item xs={12}>
+                  <div
+                    style={{
+                      width: '100%',
+                      overflow: 'auto',
+                      maxHeight: '60vh',
+                    }}
+                  >
+                    <EnhancedTable
+                    columns={columnsData}
+                    data={tableData}
+                  />
+                  </div>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                    Registros Recuperados:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  
+                    {tableData.length}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <br/>
+              <section className='display-center'>
+              <Button sx={styleButtonBiggerGreen} style={{ marginTop: '10px', fontSize: '20px', width: "100px" }} variant="contained" component="label">Avanzar
+                <input hidden type="submit" />
+              </Button>
+              </section>
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+      <br/>
     </div>
   );
 };

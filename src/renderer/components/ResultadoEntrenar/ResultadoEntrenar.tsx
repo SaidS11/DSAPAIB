@@ -10,9 +10,21 @@ import {
   styleButtonBiggerRed,
   styleButtonBiggerGreen,
   styleButtonBigger,
+  styleAddIcon,
 } from '../VerPaciente/ButtonStyle';
 import ResultsTableContainer from '../Utilities/ResultsTableContainer';
 import './ResultadoEntrenar.css';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+
+
 
 export interface ResultadoEntrenarProps {
   onClickSave: () => void;
@@ -51,9 +63,152 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     predictMode,
   } = props;
   const navigate = useNavigate();
+  const defaultTheme = createTheme();
 
   return (
     <div>
+      <ThemeProvider theme={defaultTheme}>
+        <Container maxWidth="sm">
+
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <AddIcon sx={styleAddIcon} style={{color: "white"}}/>
+            </Avatar>
+            <Typography component="h1" variant="h5" >
+            Analice o guarde los resultados
+            </Typography>
+            <Typography component="h1" variant="h4" >
+            Proceso de Clasificación
+            </Typography>
+            <Typography component="h1" variant="h5" >
+            Tabla con resultados por sujeto
+            </Typography>
+            <Box sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item>
+                <div>
+                  <ResultsTableContainer stringObjData={respAnalisis} />
+                </div>
+                </Grid>
+              </Grid>
+            </Box>
+
+          </Box>
+        </Container>
+        <Container component="main" maxWidth="sm">
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                
+                <Grid item xs={12}>
+                  <Typography component="h1" variant="h5" >
+                  Métricas:
+                  </Typography>
+                  </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Protocolo:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {analisis.protocolo}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Implementación Usada:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {analisis.algoritmo}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography component="h1" variant="h6" >
+                  {crossParsed}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Precisión:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {precision}%
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  F1:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {f1}%
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  Recall:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {recall}%
+                  </Typography>
+                </Grid>
+              </Grid>
+              <br/>
+              <section className="display-center">
+                <Button
+                  sx={styleButtonBigger}
+                  onClick={() => toggleModalVerMas('body')}
+                >
+                  Ver Más
+                </Button>
+              </section>
+              {!predictMode && (
+                <section className="display-center">
+                  <Button sx={styleButtonBiggerGreen} onClick={onClickSave}>
+                    Guardar Modelo
+                  </Button>
+                  <Button sx={styleButtonBigger} onClick={onClickCambiar}>
+                    Cambiar Algoritmo
+                  </Button>
+                  <Button sx={styleButtonBiggerRed} onClick={onClickBack}>
+                    Cancelar
+                  </Button>
+                </section>
+              )}{' '}
+              {predictMode && (
+                <section className="display-center">
+                  <Button sx={styleButtonBiggerRed}>Cancelar</Button>
+                </section>
+              )}
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
       <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>

@@ -36,18 +36,18 @@ function Navegacion(props: NavProps) {
               </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Análisis" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
+              {/* <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
                 Crear Analisis
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item onClick={() => onClickNav('prediccion')}>
                 Predicción
               </NavDropdown.Item>
               <NavDropdown.Item onClick={() => onClickNav('entrenar')}>
                 Entrenamiento
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('verAnalisis')}>
+              {/* <NavDropdown.Item onClick={() => onClickNav('verAnalisis')}>
                 Ver Análisis
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
             <NavDropdown
               title="Protocolo Adquisición"
@@ -78,12 +78,12 @@ function Navegacion(props: NavProps) {
                 Ver Configuraciones
               </NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title="Algoritmo" id="collasible-nav-dropdown">
-              <NavDropdown.Item
+            <NavDropdown title="Implementación" id="collasible-nav-dropdown">
+              {/* <NavDropdown.Item
                 onClick={() => onClickNav('verImplementaciones')}
               >
                 Ver Algoritmo
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item
                 onClick={() => onClickNav('verImplementaciones')}
               >

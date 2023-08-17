@@ -43,7 +43,7 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
         <h3>Tabla con la selección de ventanas</h3>
       </section>
       {...componentArray}
-      <section className="display-center" style={{ marginTop: '5%' }}>
+      <section className="display-center">
         Datos obtenidos tras calcular con las ventanas seleccionadas por cada
         sensor.
       </section>
@@ -78,6 +78,8 @@ const CaracterizarParte2 = (props: CaracterizarParte2Props) => {
           Cancelar
         </Button>
       </section>
+      <br />
+
     </div>
   );
 };
