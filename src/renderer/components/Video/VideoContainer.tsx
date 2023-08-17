@@ -176,14 +176,14 @@ const VideoContainer = () => {
 
     if(data.message !== null) {
       console.log("READY", data.message);
-      if(data.message.includes("null")) {
-        console.log("Error en nulo EMG");
-        appDispatch(setFallosAlCargar(true));
-        appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
-        setIsPlaying(false);
-        navigate('/verPaciente');
-        return;
-      }
+      // if(data.message.includes("null")) {
+      //   console.log("Error en nulo EMG");
+      //   appDispatch(setFallosAlCargar(true));
+      //   appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
+      //   setIsPlaying(false);
+      //   navigate('/verPaciente');
+      //   return;
+      // }
       stopArduinos();
       
     }

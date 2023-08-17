@@ -350,11 +350,11 @@ const VideoDemoContainer = () => {
 
     if(data.message !== null) {
       console.log("READY", data.message);
-      if(data.message.includes("null")) {
-        appDispatch(setFallosAlCargar(true));
-        appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
-        return;
-      }
+      // if(data.message.includes("null")) {
+      //   appDispatch(setFallosAlCargar(true));
+      //   appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas`));
+      //   return;
+      // }
       stopArduinos();
 
       // try {
