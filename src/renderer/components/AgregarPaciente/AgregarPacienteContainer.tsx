@@ -112,7 +112,7 @@ const AgregarPacienteContainer = () => {
   //   }
   // });
   const onClickNav = async (e: React.FormEvent<HTMLFormElement>) => {
-    // appDispatch(setIsLoading(true));
+    appDispatch(setIsLoading(true));
     e.preventDefault();
     /* navigate('/escogerConfiguracion'); */
     const form = document.querySelector('form') as HTMLFormElement | undefined;
@@ -121,9 +121,9 @@ const AgregarPacienteContainer = () => {
     const dataPaciente = formData as object;
     console.log("DATA", dataPaciente);
 
-    // await insertData(dataPaciente);
-    // appDispatch(setIsLoading(false));
-    // navigate('/verPaciente');
+    await insertData(dataPaciente);
+    appDispatch(setIsLoading(false));
+    navigate('/verPaciente');
   };
   return (
     <div>

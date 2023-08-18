@@ -13,6 +13,7 @@
  */
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import * as fsPromises from 'fs/promises';
 import { Worker } from 'worker_threads';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -44,7 +45,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 }; 
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
@@ -2636,6 +2637,17 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
   }
 });
 
+async function checkFileExists(filePath: string): Promise<string> {
+  try {
+    await fsPromises.access(filePath, fsPromises.constants.F_OK); // Esperamos a que se complete la comprobación
+    console.log('El archivo existe.');
+    return "true";
+  } catch (err) {
+    console.error('El archivo no existe.');
+    return "false";
+  }
+}
+
 app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
   const { 
     tipo,
@@ -2692,6 +2704,17 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
   //   console.log('ERROR EN LA EJECUCION', e);
   // }
 
+  const filePath = `${direcFinal}/pythonScripts/Modelos/${nombre}.joblib`;
+  let existente = await checkFileExists(filePath);
+  // fs.access(filePath, fs.constants.F_OK, (err) => {
+  //   if (err) {
+  //     console.log('El archivo no existe.');
+  //   } else {
+  //     console.log('El archivo existe.');
+  //     existente = "true";
+  //   }
+  // });
+  console.log("ESTE ES EL VALOR DE EXISTENTE", existente);
   const pythonProcess = await spawnSync('python', [
     `${direcFinal}/pythonScripts/analisis.py`,
       tipo,
@@ -2701,6 +2724,7 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
       iteraciones,
       reducedPercentage,
       datos,
+      existente,
   ]);
 
   const result = pythonProcess.stdout?.toString()?.trim();

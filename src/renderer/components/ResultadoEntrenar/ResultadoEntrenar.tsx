@@ -68,7 +68,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
   return (
     <div>
       <ThemeProvider theme={defaultTheme}>
-        <Container maxWidth="sm">
+        <Container maxWidth="lg">
 
           <CssBaseline />
           <Box
@@ -76,6 +76,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              overflow: 'hidden',
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -90,14 +91,8 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
             <Typography component="h1" variant="h5" >
             Tabla con resultados por sujeto
             </Typography>
-            <Box sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item>
-                <div>
-                  <ResultsTableContainer stringObjData={respAnalisis} />
-                </div>
-                </Grid>
-              </Grid>
+            <Box component="div" sx={{ overflow: 'hidden' }}>
+              <ResultsTableContainer stringObjData={respAnalisis} />
             </Box>
 
           </Box>
@@ -209,7 +204,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           </Box>
         </Container>
       </ThemeProvider>
-      <section className="display-center">
+      {/* <section className="display-center">
         <h3>Analice o guarde los resultados</h3>
       </section>
       <section className="display-center">
@@ -237,9 +232,6 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
           <h5>Nombre del modelo generado:</h5>
           <h5>NA</h5>
         </section>
-        {/* <section className="display-flexResultadosA">
-          <h5>Despues de las iteraciones seleccionadas:</h5>
-        </section> */}
         <section className="display-flexResultadosA">
           <h5>{crossParsed}</h5>
         </section>
@@ -281,7 +273,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
         <section className="display-center">
           <Button sx={styleButtonBiggerRed}>Cancelar</Button>
         </section>
-      )}
+      )} */}
       <br />
     </div>
   );

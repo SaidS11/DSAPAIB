@@ -8,7 +8,7 @@ import {
   setFailUpload,
   setIsUploaded,
 } from 'redux/slices/StatusSlice';
-import { useCustomDispatch } from '../../../redux/hooks';
+import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import { setMongoInsertObject } from '../../../redux/slices/SeñalesSlice';
 import { MongoInsertObjectInterface } from './Constants';
 import {
@@ -37,12 +37,18 @@ export interface ModalProps {
 export default function SaveEtiquetaModal(props: ModalProps) {
   const { toggleModalGuardar, open, objMongo } = props;
   const appDispatch = useCustomDispatch();
+  const datosPaciente = useCustomSelector((state) => state.datos.datosPaciente);
+  const protocolo = useCustomSelector((state) => state.config.protocoloNombre);
+
   const navigate = useNavigate();
 
   const navigateToModels = () => {
     const objCopy = { ...objMongo };
     const etiquetaLocal = '';
     objCopy.etiqueta = etiquetaLocal;
+    const nombreCompleto = `${datosPaciente[0].col1} ${datosPaciente[0].col2} ${datosPaciente[0].col3}`;
+    objCopy.name = nombreCompleto;
+    objCopy.protocol = protocolo;
     appDispatch(setMongoInsertObject(objCopy));
     const jsonDocument = JSON.stringify(objCopy);
     appDispatch(setIsLoading(true));

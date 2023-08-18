@@ -73,13 +73,13 @@ const initialHidden = (cols: any) => {
 };
 const ResultsTable = (props: ResultsProps) => {
   const { dataInitial, columns , options} = props;
-  const [currentLabel, setCurrentLabel] = useState('Expandir');
+  const [currentLabel, setCurrentLabel] = useState('Expander');
 
   const defaultTheme = createTheme();
 
 
   function prepareShortData() {
-    if (currentLabel === 'Expandir') {
+    if (currentLabel === 'Expander') {
       const shortData: { nombre: any; etiqueta: any }[] = [];
       const tablaHash = new Map();
       dataInitial.map((registro: any) => {
@@ -165,7 +165,7 @@ const ResultsTable = (props: ResultsProps) => {
           column.toggleHidden(true);
         }
       });
-      setCurrentLabel('Expandir');
+      setCurrentLabel('Expander');
     }
   };
   const sortedColumn = (column: any) => {
@@ -181,14 +181,16 @@ const ResultsTable = (props: ResultsProps) => {
   console.log("THIS");
   return (
     <ThemeProvider theme={defaultTheme}>
-       <Container maxWidth="sm">
+       <Container maxWidth="lg">
 
         <CssBaseline />
         <Box
+        component="div"
           sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            overflow: 'hidden',
           }}
         >
       
@@ -198,9 +200,6 @@ const ResultsTable = (props: ResultsProps) => {
             label={currentLabel}
           />
 
-        <Box sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-          <Grid item xs={12}>
 
           <TableContainer >
           <MaUTable {...getTableProps()} >
@@ -247,12 +246,6 @@ const ResultsTable = (props: ResultsProps) => {
             </TableBody>
           </MaUTable>
         </TableContainer>
-          </Grid>
-
-          </Grid>
-          
-       
-        </Box>
         </Box>
 
 

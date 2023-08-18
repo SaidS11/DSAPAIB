@@ -2,6 +2,15 @@ import { Column } from 'react-table';
 import React from 'react';
 import { useCustomSelector } from '../../../redux/hooks';
 import ResultsTable from './ResultsTable';
+import Avatar from '@mui/material/Avatar';
+import CssBaseline from '@mui/material/CssBaseline';
+import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 
 interface ResultsTableContainerInterface {
   stringObjData: string;
@@ -291,6 +300,7 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
     if (temperaturaChecked) {
       internalArray.push({
         Header: 'Temperatura Promedio',
+        show: false,
         columns: [
           {
             Header: 'Media absoluta',
@@ -326,10 +336,26 @@ const ResultsTableContainer = (props: ResultsTableContainerInterface) => {
     columns,
   };
 
+  const defaultTheme = createTheme();
+
+
   return (
-    <div>
-      <ResultsTable options={options} dataInitial={data} columns={columns} />
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="lg">
+        <CssBaseline />
+        <Box
+        component="div"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          <ResultsTable options={options} dataInitial={data} columns={columns} />
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 };
 

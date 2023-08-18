@@ -94,6 +94,8 @@ const ResultadoEntrenarContainer = () => {
       body: JSON.stringify(modeloObj),
       headers: { 'Content-Type': 'application/json' },
     });
+    console.log("RESPUESTA UPD", updateModelo);
+
     if (updateModelo.status === 500) {
       appDispatch(setFallosAlCargar(true));
       appDispatch(
@@ -127,6 +129,7 @@ const ResultadoEntrenarContainer = () => {
       body: JSON.stringify(implementacionObj),
       headers: { 'Content-Type': 'application/json' },
     });
+    console.log("RESPUESTA", insertModeloRequest);
     if (insertModeloRequest.status === 500) {
       appDispatch(setFallosAlCargar(true));
       appDispatch(

@@ -29,7 +29,7 @@ const PreAnalisisContainer = () => {
     appDispatch(setIsLoading(true));
     console.log('Getting message');
     const { iteraciones, porcentaje } = paramsArg as any;
-    const strPercentage = porcentaje.toString();
+    
     const predictPayload = {
         "tipo": 'Class',
         "tipoIA": tipo,
@@ -40,15 +40,7 @@ const PreAnalisisContainer = () => {
         "datos": strData
     }
 
-    const trainPayload = {
-      "tipo": 'Train',
-      "tipoIA": tipo,
-      "params": params,
-      "nombre": nombre,
-      "iteraciones": iteraciones,
-      "reducedPercentage": strPercentage,
-      "datos": strData
-  }
+    
   
   let response;
   console.log("PREDICT MODE", predictMode);
@@ -61,6 +53,16 @@ const PreAnalisisContainer = () => {
       headers: {'Content-Type': 'application/json'}
     });
   } else {
+      const strPercentage = porcentaje.toString();
+      const trainPayload = {
+        "tipo": 'Train',
+        "tipoIA": tipo,
+        "params": params,
+        "nombre": nombre,
+        "iteraciones": iteraciones,
+        "reducedPercentage": strPercentage,
+        "datos": strData
+    }
     console.log("PAYLOAD a enviar", trainPayload);
     response = await fetch(`${apiEndpoint}/analisisPython`, {
       method: 'POST',
