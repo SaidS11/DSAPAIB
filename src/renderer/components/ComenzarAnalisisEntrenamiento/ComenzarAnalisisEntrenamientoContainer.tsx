@@ -215,6 +215,7 @@ const ComenzarAnalisisEntrenamientoContainer = () => {
     loadPacientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [protocolo]);
+  
   console.log('lennn', selectedPatients.length);
   console.log('LocalState', selectedPatients);
 

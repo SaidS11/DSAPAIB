@@ -162,12 +162,12 @@ export default function App() {
               path="/probarSensoresBlank"
               element={<ProbarSensoresBlank />}
             />
-            <Route
+            {/* <Route
               path="/sensoresAdquisicion"
               element={
                 <SensoresAdquisicionContainer mode="" shouldStop={false} />
               }
-            />
+            /> */}
             {/* <Route
               path="/modalSensores"
               element={<ModalSensoresAdquisicion />}
