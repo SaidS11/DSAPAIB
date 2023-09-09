@@ -27,14 +27,11 @@ function Navegacion(props: NavProps) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <NavDropdown title="Inicio" id="collasible-nav-dropdown">
-              <NavDropdown.Item onClick={() => onClickNav('')}>
+            <Nav.Item>
+              <Nav.Link  onClick={() => onClickNav('')}>
                 Inicio
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => onClickNav('probarSensores')}>
-                Probar Sensores
-              </NavDropdown.Item>
-            </NavDropdown>
+              </Nav.Link>
+            </Nav.Item>
             <NavDropdown title="Análisis" id="collasible-nav-dropdown">
               {/* <NavDropdown.Item onClick={() => onClickNav('crearAnalisis')}>
                 Crear Analisis
@@ -103,3 +100,7 @@ function Navegacion(props: NavProps) {
 }
 
 export default Navegacion;
+
+ {/* <NavDropdown.Item onClick={() => onClickNav('probarSensores')}>
+                Probar Sensores
+              </NavDropdown.Item> */}

@@ -67,11 +67,13 @@ const GuardarModelo = (props: GuardarModeloProps) => {
   const [nombre, setNombre] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
-    const num = parseInt(event.target.value, 10);
+    console.log("nom", event.target.value)
     setAlgoritmo(event.target.value as string);
   };
 
   const handleChangeNombre = (event: { target: { value: string } }) => {
+    console.log("nom2", event.target.value)
+
     setNombre(event.target.value as string);
   };
 

@@ -16,6 +16,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 
 import '../../../../assets/Iconos/style.css';
+import { Table, TableContainer, Paper, TableHead, TableRow, TableCell, TableSortLabel, TableBody } from '@mui/material';
 
 interface VerProtocoloProps {
   options: TableOptions<{ col1: string }>;
@@ -53,34 +54,37 @@ const VerProtocolo = (props: VerProtocoloProps) => {
               <Box sx={{ mt: 3 }}>
                 <Grid container spacing={2}> 
                   <Grid item xs={12}>
-                    <div 
-                      style={{
-                        width: '100%',
-                        overflow: 'auto',
-                        maxHeight: '60vh',
-                      }}
-                    >
-                      <table {...getTableProps()} className="tableCustom"  style={{border: "1px solid rgba(224, 224, 224, 1)"}}>
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                                  className="tableHeader"
-                                >
-                                  {column.render('Header')}
-                                  <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                          {rows.map((row) => {
+                  <Grid item xs={12}>
+                  <TableContainer component={Paper} sx={{ maxHeight: "60vh", overflow: "auto"}}>
+                    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+                      <TableHead>
+                        {headerGroups.map((headerGroup) => (
+                          <TableRow {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column) => (
+                              <TableCell
+                                {...(column.id === 'selection'
+                                  ? column.getHeaderProps()
+                                  : column.getHeaderProps(column.getSortByToggleProps()))}
+                                  sx={{border: "1px solid rgba(224, 224, 224, 1)", fontWeight: "bold"}}
+                              >
+                                {column.render('Header')}
+                                {column.id !== 'selection' ? (
+                                  <TableSortLabel
+                                    active={column.isSorted}
+                                    // react-table has a unsorted state which is not treated here
+                                    direction={column.isSortedDesc ? 'desc' : 'asc'}
+                                  />
+                                ) : null}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableHead>
+                      <TableBody>
+                      {rows.map((row) => {
                             prepareRow(row);
                             return (
-                              <tr
+                              <TableRow
                                 {...row.getRowProps()}
                                 onClick={() => onClickRow(row)}
                                 className={
@@ -88,14 +92,15 @@ const VerProtocolo = (props: VerProtocoloProps) => {
                                 }
                               >
                                 {row.cells.map((cell) => (
-                                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                  <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
                                 ))}
-                              </tr>
+                              </TableRow>
                             );
                           })}
-                        </tbody>
-                      </table>
-                    </div>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  </Grid>
                   </Grid>
                 </Grid>
               </Box>

@@ -138,10 +138,7 @@ const SensoresAdquisicionGraficarContainer = (props: SensoresGraficaContainerInt
         xaxis: 'x2',
         yaxis: 'y2',
         type: 'scatter',
-        // mode: 'lines+markers',
-        // mode:'markers',
         line: { color: 'skyblue' },
-        // With each click a push to the colors array must be added to keep adding colors
         mode: 'markers+lines',
         name: 'EMG2',
     };

@@ -16,13 +16,14 @@ import ResultsTableContainer from '../Utilities/ResultsTableContainer';
 import './ResultadoEntrenar.css';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
-import AddIcon from '@mui/icons-material/Add';
+import TaskIcon from '@mui/icons-material/Task';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import { useCustomSelector } from 'redux/hooks';
 
 
 
@@ -65,6 +66,10 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
   const navigate = useNavigate();
   const defaultTheme = createTheme();
 
+  const implementacionUsada = useCustomSelector(
+    (state) => state.config.selectedModels
+  );
+
   return (
     <div>
       <ThemeProvider theme={defaultTheme}>
@@ -80,7 +85,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <AddIcon sx={styleAddIcon} style={{color: "white"}}/>
+              <TaskIcon sx={styleAddIcon} style={{color: "white"}}/>
             </Avatar>
             <Typography component="h1" variant="h5" >
             Analice o guarde los resultados
@@ -127,6 +132,11 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
                 <Grid item xs={12} sm={6}>
                   <Typography component="h1" variant="h6" >
                   Implementación Usada:
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography component="h1" variant="h6" >
+                  {implementacionUsada[0].col1}
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>

@@ -7,132 +7,108 @@ import {
   styleButtonBiggerGreen,
   styleButtonBiggerRed,
 } from '../VerPaciente/ButtonStyle';
+import { numOfPlotsToRender } from '../Utilities/Constants';
+
 
 const SensoresAdquisicion = ({
   sensoresSelected,
-  onClickStart,
-  onClickStop,
   data,
-  dataXEmg1,
-  dataYEmg1,
-  dataXEmg2,
-  dataYEmg2,
-  dataXEmg3,
-  dataYEmg3,
-  dataXEmg4,
-  dataYEmg4,
   dataXGsr,
   dataYGsr,
+
   dataXFrecuencia,
   dataYFrecuencia,
-  dataXAcelerometro,
-  dataYAcelerometro,
-  onClickStopNew,
-  onClickStartNew,
+
+  dataXTemperatura,
+  dataYTemperatura,
+
+  dataXInlcX,
+  dataYInlcX,
+
+  dataXInlcY,
+  dataYInlcY,
+
+  dataXInlcZ,
+  dataYInlcZ,
+
+  gsrIschecked,
+  tempIschecked,
+  frecuenciaIschecked,
+  acelerometroIschecked,
 }) => {
-  // const { onClickAdd } = props;
-  /* const dataX = [];
-  const dataY = [];
-  console.log(dataX); */
-  // const [dataXParam, setDataXParam] = useState([0]);
-  // const [dataYParam, setDataYParam] = useState([0]);
-  // console.log("Plot");
-  const [dataX, setDataX] = useState([0]);
-  const [dataY, setDataY] = useState([0]);
-  const [localUpdater, setLocalUpdater] = useState(false);
-  const [colors, setColors] = useState([
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-    '#00000',
-  ]);
-  const [color1, setColor1] = useState('red');
+
+
   // console.log("This is X", dataXEmg1);
+
   const trace1 = {
-    x: dataXEmg1,
-    y: dataYEmg1,
-    type: 'scatter',
-  };
-
-  const [dataX2, setDataX2] = useState([0]);
-  const [dataY2, setDataY2] = useState([0]);
-  const trace2 = {
-    x: dataXEmg2,
-    y: dataYEmg2,
-    xaxis: 'x2',
-    yaxis: 'y2',
-    type: 'scatter',
-    // mode: 'lines+markers',
-    // mode:'markers',
-    line: { color: 'black' },
-    // Wit each click a push to the colors array must be ,ade to keep adding colors
-    // marker: { color: colors },
-  };
-
-  const [dataX3, setDataX3] = useState([0]);
-  const [dataY3, setDataY3] = useState([0]);
-  const trace3 = {
-    x: dataXEmg3,
-    y: dataYEmg3,
-    xaxis: 'x3',
-    yaxis: 'y3',
-    type: 'scatter',
-  };
-
-  const [dataX4, setDataX4] = useState([0]);
-  const [dataY4, setDataY4] = useState([0]);
-  const trace4 = {
-    x: dataXEmg4,
-    y: dataYEmg4,
-    xaxis: 'x4',
-    yaxis: 'y4',
-    type: 'scatter',
-  };
-
-  const [dataX5, setDataX5] = useState([0]);
-  const [dataY5, setDataY5] = useState([0]);
-  const trace5 = {
-    x: dataX5,
-    y: dataY5,
+    x: dataXGsr,
+    y: dataYGsr,
     xaxis: 'x5',
     yaxis: 'y5',
     type: 'scatter',
+    line: { color: 'gray' },
+    mode: 'markers+lines',
+    name: 'GSR',
   };
 
-  const [dataX6, setDataX6] = useState([0]);
-  const [dataY6, setDataY6] = useState([0]);
-  const trace6 = {
-    x: dataX6,
-    y: dataY6,
+
+  const trace2 = {
+    x: dataXTemperatura,
+    y: dataYTemperatura,
     xaxis: 'x6',
     yaxis: 'y6',
     type: 'scatter',
+    line: { color: 'red' },
+    mode: 'markers+lines',
+    name: 'TC',
   };
 
-  const [dataX7, setDataX7] = useState([0]);
-  const [dataY7, setDataY7] = useState([0]);
-  const trace7 = {
-    x: dataX7,
-    y: dataY7,
+  const trace3 = {
+    x: dataXFrecuencia,
+    y: dataYFrecuencia,
     xaxis: 'x7',
     yaxis: 'y7',
     type: 'scatter',
+    line: { color: 'orange' },
+    mode: 'markers+lines',
+    name: 'HRLM',
   };
 
-  const [dataX8, setDataX8] = useState([0]);
-  const [dataY8, setDataY8] = useState([0]);
-  const trace8 = {
-    x: dataX8,
-    y: dataY8,
+  const trace4 = {
+    x: dataXInlcX,
+    y: dataYInlcX,
     xaxis: 'x8',
     yaxis: 'y8',
     type: 'scatter',
+    line: { color: 'yellow' },
+    mode: 'markers+lines',
+    name: 'INCLX',
   };
+
+  const trace5 = {
+    x: dataXInlcY,
+    y: dataYInlcY,
+      xaxis: 'x9',
+      yaxis: 'y9',
+      type: 'scatter',
+      line: { color: 'green' },
+      mode: 'markers+lines',
+      name: 'INCLY',
+  };
+
+  const trace6 = {
+      x: dataXInlcZ,
+      y: dataYInlcZ,
+      xaxis: 'x10',
+      yaxis: 'y10',
+      type: 'scatter',
+      line: { color: 'brown' },
+      mode: 'markers+lines',
+      name: 'INCLZ',
+  };
+
+  
+  const dataArr = [];
 
   // const dataArr = [
   //   trace1,
@@ -141,20 +117,25 @@ const SensoresAdquisicion = ({
   //   trace4,
   //   trace5,
   //   trace6,
-  //   trace7,
-  //   trace8,
   // ];
 
-  const dataArr = [
-    trace1,
-    trace2,
-    trace3,
-    trace4,
-    trace5,
-    trace6,
-    trace7,
-    trace8,
-  ];
+  if(gsrIsChecked) {
+    dataArr.push(trace1)
+  }
+
+  if(temperaturaIsChecked) {
+      dataArr.push(trace2)
+  }
+
+  if(frecuenciaCardiacaIsChecked) {
+      dataArr.push(trace3)
+  }
+
+  if(acelerometroIsChecked) {
+      dataArr.push(trace4)
+      dataArr.push(trace5)
+      dataArr.push(trace6)
+  }
 
   const numOfPlots = () => {
     const times = 8 - sensoresSelected;
@@ -192,24 +173,13 @@ const SensoresAdquisicion = ({
     };
     return objGrid;
   };
-  const gridLayout = numOfPlots();
-  const processSelections = (segment) => {
-    let pn = '';
-    let tn = '';
-    const colorsL = [...colors];
 
-    for (let i = 0; i < segment.points.length; i += 1) {
-      pn = segment.points[i].pointNumber;
-      tn = segment.points[i].curveNumber;
-    }
-    setColors([...colorsL]);
-  };
+  const gridLayout = numOfPlotsToRender(sensoresSelected);
 
   return (
     <div>
       <Plot
         data={dataArr}
-        // data={[data]}
         layout={{
           title: 'Sensores',
           autosize: true,
@@ -219,26 +189,8 @@ const SensoresAdquisicion = ({
         config={{ scrollZoom: true, displayModeBar: false }}
         useResizeHandler
         style={{ height: '100%', width: '100%' }}
-        onSelected={(selection) => processSelections(selection)}
-        // onRestyle={(d) => console.log('Res', d)}
         divId="myDiv"
       />
-      <section className="display-center">
-        <Button
-          sx={styleButtonBiggerGreen}
-          style={{ fontSize: '15px' }}
-          onClick={onClickStart}
-        >
-          Comenzar Lectura
-        </Button>
-        <Button
-          sx={styleButtonBiggerRed}
-          style={{ fontSize: '15px' }}
-          onClick={onClickStop}
-        >
-          Detener Lectura
-        </Button>
-      </section>
     </div>
   );
 };

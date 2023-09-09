@@ -22,6 +22,10 @@ import Button from '@mui/material/Button';
 import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
 import { setDuracionProtocolo } from 'redux/slices/ConfiguracionSlice';
+import io from 'socket.io-client';
+
+const socket = io("http://localhost:4000");
+const socket2 = io("http://localhost:4000")
 
 function esFlotante(numero: number) {
   return !Number.isInteger(numero);
@@ -155,6 +159,10 @@ const VideoDemoContainer = () => {
   const [acelerometroLocalChecked, setAcelerometroLocalChecked] = useState(false);
   const [tempLocalChecked, setTempLocalChecked] = useState(false);
   const [frecuenciaLocalChecked, setFrecuenciaLocalChecked] = useState(false);
+  const [dataToGraph, setDataToGraph] = useState("");
+  const [shouldStop, setShouldStop] = useState(false);
+
+
 
 
 
@@ -176,6 +184,12 @@ const VideoDemoContainer = () => {
     (state) => state.config.configCompleta
   ) as Array<ConfLocal>;
 
+  const emgsTotal = useCustomSelector((state) => state.señales.cantidadSensores);
+
+  const totalSensores = useCustomSelector((state) => state.señales.totalSensores);
+
+
+  const cantidadAGraficarTiempoReal = totalSensores - emgsTotal;
   const datosPaciente = useCustomSelector((state) => state.datos.datosPaciente);
 
   const protocolo = useCustomSelector((state) => state.config.protocoloNombre);
@@ -289,14 +303,40 @@ const VideoDemoContainer = () => {
     appDispatch(setCleanAllSensors(true));
   }, []);
 
-
-  const toggleModal = () => {
+  const cancelModal = () => {
+    navigate('/verPaciente');
+  }
+  const toggleModal = async () => {
     if (cantidadArduinos > 1){
       if ((portSelected !== '' && baudSelected !== 0) && (portSelected2 !== '' && baudSelected2 !== 0)) {
         if(portSelected !== portSelected2) {
-          setOpen(!open);
           // setIsReady(true);
-          window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
+          appDispatch(setIsLoading(true));
+          const arduinosBody = {
+            opcion: portSelected,
+            baud: baudSelected,
+            opcion2: portSelected2,
+            baud2: baudSelected2
+          }
+          const cargarArduinos = await fetch(`${apiEndpoint}/loadMultiplePorts`, {
+            method: 'POST',
+            body: JSON.stringify(arduinosBody),
+            headers: {'Content-Type': 'application/json'}
+          });
+
+          if (cargarArduinos.status === 200) {
+            setOpen(!open);
+
+          } else {
+            const datosErr = await cargarArduinos.json()
+            appDispatch(setFallosAlCargar(true));
+            appDispatch(setErrorDetails(datosErr.error));
+
+          }
+          appDispatch(setIsLoading(false));
+
+          
+          // window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
         } else {
           appDispatch(setFallosAlCargar(true));
           appDispatch(setErrorDetails('Seleccione puertos distintos'));
@@ -304,7 +344,8 @@ const VideoDemoContainer = () => {
         // window.Bridge.sensoresNewTest()
       } else {
         // Sustituir con modal de error
-        alert('Seleccione una cantidad');
+        appDispatch(setFallosAlCargar(true));
+        appDispatch(setErrorDetails('Seleccione una cantidad'));
       }
     } else {
       if (portSelected !== '' && baudSelected !== 0) {
@@ -314,7 +355,8 @@ const VideoDemoContainer = () => {
         // window.Bridge.sensoresNewTest()
       } else {
         // Sustituir con modal de error
-        alert('Seleccione una cantidad');
+        appDispatch(setFallosAlCargar(true));
+        appDispatch(setErrorDetails('Seleccione una cantidad'));
       }
     }
   };
@@ -342,7 +384,27 @@ const VideoDemoContainer = () => {
 
     /// .....
     // setBloqueoDeBoton(true);
-    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+
+    let auxString = "";
+
+    socket.emit('message', 'socket1')
+    socket.on('message', (message: any)=>{
+        console.log(message)
+        auxString = message;
+        socket.emit('message', 'socket1')
+    })
+
+    socket2.emit('message2', 'socket2')
+    socket2.on('message2', (message)=>{
+        console.log(message)
+        auxString = auxString + message
+        socket2.emit('message2', 'socket2')
+    })
+    setDataToGraph(auxString);
+
+    // Codigo superior reemplaza la llamada a la API
+    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+
     // Comprobacion de emgs sino hay timer para controlar arduinos
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
 
@@ -365,6 +427,8 @@ const VideoDemoContainer = () => {
       //   appDispatch(setErrorDetails(`Error al obtener la información, compruebe que las conexiones sean correctas: ${error}`));
       //   return;
       // }
+    } else {
+      const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
     }
     /// .....
 
@@ -502,27 +566,37 @@ const VideoDemoContainer = () => {
   };
 
 
-  window.electron.ipcRenderer.insertarElementoM((event: any, resp: any) => {
-    if (resp[0] === 0) {
-      appDispatch(setFailUpload(true));
-      appDispatch(setIsLoading(false));
-    } else {
-      appDispatch(setIsLoading(false));
-      appDispatch(setIsUploaded(true));
-      navigate('/verPaciente');
-    }
-  });
-
   const stopArduinos = async () => {
     try {
+
       console.log("Stopping");
       appDispatch(setIsLoading(true));
-      const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
-      const arduinoSTOP = await stopArduinos.json();
 
-      console.log("ARDUINO STOP", arduinoSTOP.message);
+      // Reemplaza las llamadas a la api que detienen los arduinos
+      
+      socket.emit('end');
+      socket.on('last', (message: any)=>{
+        console.log('last')
+        console.log(message)
+      })
 
-      const arreglo = arduinoSTOP.message
+      socket2.emit('end2');
+
+      let arreglo: any;
+      socket2.on('last2', (message)=>{
+        console.log('last2')
+        arreglo = message;
+        console.log(message)
+      })
+      console.log("ARDUINO STOP", arreglo);
+      setShouldStop(true);
+      // const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
+
+      // const arduinoSTOP = await stopArduinos.json();
+
+      // console.log("ARDUINO STOP", arduinoSTOP.message);
+
+      // const arreglo = arduinoSTOP.message
 
       
       // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
@@ -773,6 +847,7 @@ const VideoDemoContainer = () => {
       {open && (
         <ModalSensoresAdquisicion
           toggleModal={toggleModal}
+          cancelModal={cancelModal}
           open={open}
           arduinos={cantidadArduinos}
           setPortSelected={setPortSelected}
@@ -805,7 +880,10 @@ const VideoDemoContainer = () => {
         </Button>
       </section>
       {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData} arduinoData={arduinoDataArg} />)}
-      {/* <SensoresAdquisicionContainer mode="TEST" shouldStop={false} /> */}
+      {/* {
+        !dataIsReady && <SensoresAdquisicionContainer dataToGraph={dataToGraph} shouldStop={shouldStop} cantidadAGraficarTiempoReal={cantidadAGraficarTiempoReal} />
+      } */}
+      
       <br />
     </div>
   );

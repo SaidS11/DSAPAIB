@@ -10,7 +10,7 @@ import {
   useFilters,
   HeaderGroup,
 } from 'react-table';
-import { InputLabel, FormControl, MenuItem } from '@mui/material';
+import { InputLabel, FormControl, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { styleButtonBiggerGreen, styleAddIcon } from '../VerPaciente/ButtonStyle';
 import Select from '@mui/material/Select';
 import Avatar from '@mui/material/Avatar';
@@ -109,48 +109,52 @@ const VerProtocolo2 = (
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
-                      <div
-                        style={{
-                          width: '100%',
-                          overflow: 'auto',
-                          maxHeight: '60vh',
-                        }}
-                      >
-                        <table {...getTableProps()} className="tableCustom" style={{border: "1px solid rgba(224, 224, 224, 1)"}}>
-                          <thead>
+                      <Grid item xs={12} >
+                      <TableContainer component={Paper} sx={{ maxHeight: "60vh", overflow: "auto"}}>
+                        <Table stickyHeader  sx={{ minWidth: 650 }} aria-label="simple table">
+                          <TableHead>
                             {headerGroups.map((headerGroup) => (
-                              <tr {...headerGroup.getHeaderGroupProps()}>
+                              <TableRow {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                  <th
-                                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                                    className="tableHeader"
+                                  <TableCell
+                                    {...(column.id === 'selection'
+                                      ? column.getHeaderProps()
+                                      : column.getHeaderProps(column.getSortByToggleProps()))}
+                                      sx={{border: "1px solid rgba(224, 224, 224, 1)", fontWeight: "bold"}}
                                   >
                                     {column.render('Header')}
-                                    <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                                  </th>
+                                    {column.id !== 'selection' ? (
+                                      <TableSortLabel
+                                        active={column.isSorted}
+                                        // react-table has a unsorted state which is not treated here
+                                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                                      />
+                                    ) : null}
+                                  </TableCell>
                                 ))}
-                              </tr>
+                              </TableRow>
                             ))}
-                          </thead>
-                          <tbody {...getTableBodyProps()}>
-                            {rows.map((row) => {
-                              prepareRow(row);
-                              return (
-                                <tr
-                                  {...row.getRowProps()}
-                                  className={
-                                    row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
-                                  }
-                                >
-                                  {row.cells.map((cell) => (
-                                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                                  ))}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </div>
+                          </TableHead>
+                          <TableBody>
+                          {rows.map((row) => {
+                                prepareRow(row);
+                                return (
+                                  <TableRow
+                                    {...row.getRowProps()}
+                                    className={
+                                      row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
+                                    }
+                                  >
+                                    {row.cells.map((cell) => (
+                                      <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                                    ))}
+                                  </TableRow>
+                                );
+                              })}
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                      </Grid>
                       </Grid>
                       <Grid item xs={12}>
                         <Typography component="h1" variant="h5" >

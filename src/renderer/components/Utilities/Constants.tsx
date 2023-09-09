@@ -17,6 +17,7 @@ export interface PacientesAnalisisMongo {
   name: string;
   etiqueta: string;
   protocol?: string;
+  signals?: object;
 }
 
 export interface FormularioEntrenamiento {

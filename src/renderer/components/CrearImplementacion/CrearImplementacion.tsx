@@ -112,7 +112,7 @@ const CrearImplementacion = (
                         >
                       <MenuItem value="Arbol de Decisión">Arbol de Decisión</MenuItem>
                       <MenuItem value="K-Nearest Neighbor">K-Nearest Neighbor</MenuItem>
-                      {/* <MenuItem value="Red Neuronal">Red Neuronal</MenuItem> */}
+                      <MenuItem value="Red Neuronal">Red Neuronal</MenuItem>
                       <MenuItem value="Maquina de Soporte Vectorial">Maquina de Soporte Vectorial</MenuItem>
                     </Select>
                   </FormControl>
@@ -194,6 +194,43 @@ const CrearImplementacion = (
                           <MenuItem value="precomputed">Precomputed</MenuItem>
                         </Select>
                       </FormControl>
+                    </Grid></>
+                }
+
+                {tipo === "Red Neuronal" &&
+                <>
+                  <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="neuronas"
+                        label="Neuronas en la capa oculta"
+                        name="neuronas"
+                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography component="h1" variant="h6">
+                      Seleccione la función de activación:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                      {/* <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">
+                          Función
+                        </InputLabel>
+                        <Select labelId="demo-simple-select-label"
+                          id="demo-simple-select" onChange={handleChangeFuncion}
+                          name="funcion"
+                          value={funcion}
+                          label="funcion"
+                          required
+                        >
+                          <MenuItem value="linear">Logistic</MenuItem>
+                          <MenuItem value="poly">Tanh</MenuItem>
+                          <MenuItem value="rbf">Identity</MenuItem>
+                          <MenuItem value="sigmoid">relu</MenuItem>
+                        </Select>
+                      </FormControl> */}
                     </Grid></>
                 }
               </Grid>

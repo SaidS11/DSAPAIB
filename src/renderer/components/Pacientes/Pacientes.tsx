@@ -113,14 +113,7 @@ const Pacientes = (props: PacientesContentProps) => {
         />
       </div>
       <br />
-      <div
-        style={{
-          width: '100%',
-          overflow: 'auto',
-          maxHeight: '70vh',
-        }}
-      >
-        <TableContainer>
+        <TableContainer sx={{ maxHeight: "70vh", overflow: "auto"}}>
           <MaUTable stickyHeader aria-label="sticky table" {...getTableProps()} style={{ border: "1px solid rgba(224, 224, 224, 1)" }}>
             <TableHead className="head1">
               {headerGroups.map((headerGroup) => (
@@ -177,7 +170,6 @@ const Pacientes = (props: PacientesContentProps) => {
             </TableBody>
           </MaUTable>
         </TableContainer>
-      </div>
     </div>
   );
 };

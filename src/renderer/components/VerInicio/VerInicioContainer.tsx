@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import VerInicio from './VerInicio';
 import { useCustomDispatch } from 'redux/hooks';
 import { setPythonResponse } from 'redux/slices/ResponsesSlice';
-import { setAcelerometroIsChecked, setCantidadSensores, setFrecuenciaIsChecked, setGsrIsChecked, setTemperaturaIsChecked } from 'redux/slices/SeñalesSlice';
+import { setAcelerometroIsChecked, setCantidadSensores, setFrecuenciaIsChecked, setGsrIsChecked, setMongoInsertObject, setTemperaturaIsChecked, setTotalSensores } from 'redux/slices/SeñalesSlice';
+import { adqWithTimeAndSignals } from '../Utilities/Constants';
+import io from 'socket.io-client';
+
+const socket = io("http://localhost:4000");
+const socket2 = io("http://localhost:4000")
+
 
 
 const InicioContainer = () =>{
@@ -22,10 +28,52 @@ const InicioContainer = () =>{
     navigate('/resultadoEntrenar');
   };
   const onClickProtocolo = () => {
+    // appDispatch(setGsrIsChecked(true));
+    // appDispatch(setTemperaturaIsChecked(true));
+    // appDispatch(setFrecuenciaIsChecked(true));
+    // appDispatch(setAcelerometroIsChecked(true));
+    // appDispatch(setCantidadSensores(4));
+    // appDispatch(setTotalSensores(10));
+
+    // appDispatch(setMongoInsertObject(adqWithTimeAndSignals));
+    
+    // navigate('/resultados');
+
     navigate('/verProtocolo');
+    
+    // socket.emit('end');
+    // socket.on('last', (message: any)=>{
+    //   console.log('last')
+    //   console.log(message)
+    // })
+
+    // socket2.emit('end2');
+    // socket2.on('last2', (message)=>{
+    //   console.log('last2')
+    //   console.log(message)
+    // })
+
   };
   const onClickAnalisis = () => {
-    navigate('/verAnalisis');
+    navigate('/prediccion');
+
+    // socket.emit('message', 'socket1')
+    // socket.on('message', (message: any)=>{
+    //     console.log(message)
+    //     socket.emit('message', 'socket1')
+    // })
+
+    
+
+    // socket2.emit('message2', 'socket2')
+    // // When the server pongs we receive the message and get in a kind of
+    // // 'while' that keep sending and receiving information
+    // socket2.on('message2', (message)=>{
+    //     console.log(message)
+    //     socket2.emit('message2', 'socket2')
+    // })
+
+    
   };
   console.log("TIME", `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`);
 

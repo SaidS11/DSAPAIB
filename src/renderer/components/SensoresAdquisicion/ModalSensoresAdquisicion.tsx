@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useEffect, useMemo } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { styleButtonBigger } from '../VerPaciente/ButtonStyle';
+import { styleButtonBigger, styleButtonBiggerRed } from '../VerPaciente/ButtonStyle';
 
 const style = {
   position: 'absolute' as const,
@@ -24,6 +24,7 @@ const style = {
 };
 export interface ModalProps {
   toggleModal: () => void;
+  cancelModal: () => void;
   open: boolean;
   arduinos: number;
   setPortSelected: React.Dispatch<React.SetStateAction<string>>;
@@ -33,7 +34,7 @@ export interface ModalProps {
 }
 
 export default function ModalSensoresAdquisicion(props: ModalProps) {
-  const { toggleModal, open, arduinos, setPortSelected, setBaudSelected, setBaudSelected2, setPortSelected2 } = props;
+  const { toggleModal, cancelModal, open, arduinos, setPortSelected, setBaudSelected, setBaudSelected2, setPortSelected2 } = props;
   const [puerto, setPuerto] = React.useState('');
   const [baudRate, setBaudRate] = React.useState('9600');
   const [puerto2, setPuerto2] = React.useState('');
@@ -225,6 +226,9 @@ export default function ModalSensoresAdquisicion(props: ModalProps) {
           
           <Button sx={styleButtonBigger} onClick={toggleModal}>
             Confirmar
+          </Button>
+          <Button sx={styleButtonBiggerRed} onClick={cancelModal}>
+            Cancelar
           </Button>
         </Box>
       </Modal>

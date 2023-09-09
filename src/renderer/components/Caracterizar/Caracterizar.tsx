@@ -718,7 +718,8 @@ const Caracterizar = (props: CaracterizarProps) => {
       ventanasSeñal3Emg3.length === 0 ||
       ventanasSeñal4Emg4.length === 0
     ) {
-      alert('Seleccione al menos una ventana por sensor');
+      appDispatch(setFallosAlCargar(true));
+      appDispatch(setErrorDetails(`Seleccione al menos una ventana por sensor`));
       return;
     }
 

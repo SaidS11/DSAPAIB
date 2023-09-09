@@ -171,54 +171,57 @@ const EnhancedTable = ({
   );
   // Render the UI for your table
   return (
-    <TableContainer>
+    <div>
       <TableToolbar
         numSelected={Object.keys(selectedRowIds).length}
         preGlobalFilteredRows={preGlobalFilteredRows}
         setGlobalFilter={setGlobalFilter}
         globalFilter={globalFilter}
       />
-      <MaUTable {...getTableProps()} >
-        <TableHead >
-          {headerGroups.map((headerGroup) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell
-                  {...(column.id === 'selection'
-                    ? column.getHeaderProps()
-                    : column.getHeaderProps(column.getSortByToggleProps()))}
-                >
-                  {column.render('Header')}
-                  {column.id !== 'selection' ? (
-                    <TableSortLabel
-                      active={column.isSorted}
-                      // react-table has a unsorted state which is not treated here
-                      direction={column.isSortedDesc ? 'desc' : 'asc'}
-                    />
-                  ) : null}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {page.map((row, i) => {
-            prepareRow(row);
-            return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell {...cell.getCellProps()}>
-                      {cell.render('Cell')}
-                    </TableCell>
-                  );
-                })}
+      <TableContainer  sx={{ maxHeight: "60vh", overflow: "auto"}}>
+        
+        <MaUTable stickyHeader {...getTableProps()} >
+          <TableHead >
+            {headerGroups.map((headerGroup) => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <TableCell
+                    {...(column.id === 'selection'
+                      ? column.getHeaderProps()
+                      : column.getHeaderProps(column.getSortByToggleProps()))}
+                  >
+                    {column.render('Header')}
+                    {column.id !== 'selection' ? (
+                      <TableSortLabel
+                        active={column.isSorted}
+                        // react-table has a unsorted state which is not treated here
+                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                      />
+                    ) : null}
+                  </TableCell>
+                ))}
               </TableRow>
-            );
-          })}
-        </TableBody>
-      </MaUTable>
-    </TableContainer>
+            ))}
+          </TableHead>
+          <TableBody>
+            {page.map((row, i) => {
+              prepareRow(row);
+              return (
+                <TableRow {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <TableCell {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </MaUTable>
+      </TableContainer>
+    </div>
   );
 };
 

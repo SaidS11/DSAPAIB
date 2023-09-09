@@ -247,18 +247,11 @@ const ComenzarAnalisisEntrenamiento = (
                 <Grid item xs={12}>
                 </Grid>
                 <Grid item xs={12}>
-                  <div
-                    style={{
-                      width: '100%',
-                      overflow: 'auto',
-                      maxHeight: '60vh',
-                    }}
-                  >
+
                     <EnhancedTable
                     columns={columnsData}
                     data={tableData}
                   />
-                  </div>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Typography component="h1" variant="h6" >

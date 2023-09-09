@@ -90,7 +90,6 @@ const ResultadosContainer = () => {
   const [grid, setGrid] = useState<any>([]);
   const [data, setData] = useState([]);
 
-  const sensores = confObj[0].emgs;
 
   const onClickProbar = () => {
     if (probando === false) {
@@ -555,6 +554,8 @@ const ResultadosContainer = () => {
   if (isDataReady === false) {
     return <div />;
   }
+  console.log("DATA", data);
+  console.log("ARR", grid)
   return (
     <div>
       <Resultados

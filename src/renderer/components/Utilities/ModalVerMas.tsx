@@ -63,7 +63,7 @@ export default function ModalVerMas(props: ModalProps) {
               alt="Confusion"
             />
           </section>
-          <section className="display-center">
+          {/* <section className="display-center">
             <h1>Información Acerca de los Datos</h1>
           </section>
           <section className="display-center">
@@ -89,7 +89,7 @@ export default function ModalVerMas(props: ModalProps) {
               width="40%"
               alt="Violin"
             />
-          </section>
+          </section> */}
         </DialogContent>
       </BootstrapDialog>
     </div>

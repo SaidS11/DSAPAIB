@@ -23,6 +23,15 @@ import styleButton, {styleAddIcon} from './ButtonStyle';
 import Typography from '@mui/material/Typography';
 import './VerPaciente.css';
 import { CustomDisabledTextField } from '../Utilities/Constants';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableSortLabel from '@mui/material/TableSortLabel';
+
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 interface Cols {
   col1: string;
@@ -36,10 +45,11 @@ interface VerPacienteProps {
   datosArray: Cols[];
   onClickCaptura: () => void;
   onClickIrInicio: () => void;
+  onClickRow: (arg0: any) => void;
 }
 
 const VerPaciente = (props: VerPacienteProps) => {
-  const { options, datosArray, onClickCaptura, onClickIrInicio } = props;
+  const { options, datosArray, onClickCaptura, onClickIrInicio, onClickRow } = props;
   // const classes = TableStylesList();
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable(options, useFilters, useSortBy);
@@ -173,48 +183,51 @@ const VerPaciente = (props: VerPacienteProps) => {
                   </Grid>
 
                   <Grid item xs={12}>
-                    <div
-                      style={{
-                        width: '100%',
-                        overflow: 'auto',
-                        maxHeight: '20vh',
-                      }}
-                    >
-                      <table {...getTableProps()} className="tableCustom" style={{border: "1px solid rgba(224, 224, 224, 1)"}}>
-                        <thead>
-                          {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                              {headerGroup.headers.map((column) => (
-                                <th
-                                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                                  className="tableHeader"
-                                >
-                                  {column.render('Header')}
-                                  <span>{column.isSorted ? sortedColumn(column) : ''}</span>
-                                </th>
-                              ))}
-                            </tr>
-                          ))}
-                        </thead>
-                        <tbody {...getTableBodyProps()}>
-                          {rows.map((row) => {
+                  <TableContainer component={Paper} sx={{ maxHeight: "30vh", overflow: "auto"}}>
+                    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="simple table">
+                      <TableHead>
+                        {headerGroups.map((headerGroup) => (
+                          <TableRow {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map((column) => (
+                              <TableCell
+                                {...(column.id === 'selection'
+                                  ? column.getHeaderProps()
+                                  : column.getHeaderProps(column.getSortByToggleProps()))}
+                                  sx={{border: "1px solid rgba(224, 224, 224, 1)", fontWeight: "bold"}}
+                              >
+                                {column.render('Header')}
+                                {column.id !== 'selection' ? (
+                                  <TableSortLabel
+                                    active={column.isSorted}
+                                    // react-table has a unsorted state which is not treated here
+                                    direction={column.isSortedDesc ? 'desc' : 'asc'}
+                                  />
+                                ) : null}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableHead>
+                      <TableBody>
+                      {rows.map((row) => {
                             prepareRow(row);
                             return (
-                              <tr
+                              <TableRow
                                 {...row.getRowProps()}
+                                onClick={() => onClickRow(row)}
                                 className={
                                   row.index % 2 === 0 ? 'tableElementOdd' : 'tableElementEven'
                                 }
                               >
                                 {row.cells.map((cell) => (
-                                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                  <TableCell {...cell.getCellProps()}>{cell.render('Cell')} <span className="icon-file-excel" style={{ transform: "scale(1.2)"}}></span></TableCell>
                                 ))}
-                              </tr>
+                              </TableRow>
                             );
                           })}
-                        </tbody>
-                      </table>
-                    </div>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                   </Grid>
                 </Grid>
                 <br/>

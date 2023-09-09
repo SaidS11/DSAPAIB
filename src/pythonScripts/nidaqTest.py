@@ -40,6 +40,9 @@ def funcion_a_ejecutar():
             task.ai_channels.add_ai_voltage_chan("Dev1/ai3")
             line = task.read()
 
+
+            ## No hay necesidad de filtrar los canales que no se usen porque aun que no haya
+            ## emg conectado se leera un canal con ruido
             returnedList.append({"emg1": line[0]})
             returnedList.append({"emg2": line[1]})  
             returnedList.append({"emg3": line[2]})  

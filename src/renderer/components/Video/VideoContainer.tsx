@@ -186,6 +186,8 @@ const VideoContainer = () => {
       // }
       stopArduinos();
       
+    } else {
+      const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
     }
     
   }
@@ -483,6 +485,7 @@ const VideoContainer = () => {
         appDispatch(setArduinoDataAdquirida(objetoArduinoMultiple));
         appDispatch(setEmgDataAdquirida(returnedEmg));
         navigate('/resultados');
+        
         // navigate('/procesamientoPrevio');
 
       } 

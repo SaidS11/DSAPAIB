@@ -31,6 +31,8 @@ import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import * as http from 'http';
+import { Server } from 'socket.io';
 // --------------------Conexion PostgreAWS--------------
 // const credenciales = {
 //   user: 'postgres',
@@ -45,12 +47,14 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 }; 
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
 const app2: Express = express();
+const server = http.createServer(app2)
+const io =  new Server(server)
 
 app2.listen(8000, () => {
   console.log('El servidor está escuchando en el puerto 8000');
@@ -61,6 +65,9 @@ app2.use(cors());
 
 // Configurar el middleware para servir archivos estáticos
 app2.use(express.static(path.join(__dirname, 'public')));
+
+server.listen(4000)
+console.log('Server on port', 4000)
 
 /// ////////////////
 async function insertarDatosAnalisis(
@@ -901,6 +908,7 @@ const createWindow = async () => {
       nodeIntegration: false,
       contextIsolation: true,
       nodeIntegrationInWorker: true,
+      webSecurity: false,
     },
   });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -2177,7 +2185,7 @@ ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
     }
     serialPortArduino1 = new SerialPort({
       // path: `\\\\.\\` + opcion,
-      path: opcion,
+      path: 'COM40',
       baudRate: baud,
       dataBits: 8,
       stopBits: 1,
@@ -2202,9 +2210,81 @@ ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
     );
     arduinoPorts = [serialPortArduino1, serialPortArduino2];
   } catch (error) {
-    console.log('ERROR  ', error);
+    console.log('ERROR  WHILE OPEN', error);
   }
 });
+
+
+
+app2.post('/loadMultiplePorts', async (req: Request, res: Response) => {
+
+  const { opcion, baud, opcion2, baud2 } = req.body;
+
+
+  try {
+    if (serialPortArduino1.isOpen) {
+      serialPortArduino1.close();
+      serialPortArduino1.destroy();
+    }
+    if (serialPortArduino2.isOpen) {
+      serialPortArduino2.close();
+      serialPortArduino2.destroy();
+    }
+
+    serialPortArduino1 = await new SerialPort({
+      // path: `\\\\.\\` + opcion,
+      // path: 'COM40',
+      path: opcion,
+      baudRate: baud,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none',
+      autoOpen: true,
+    }, (error) => {
+      if (error) {
+        console.error(`El puerto 1 no esta disponible.`);
+        res.status(500).json({ error: `Error al abrir el puerto: ${opcion}` });
+      } else {
+        console.log(`El puerto 1 esta disponible.`);
+      }
+    });
+
+    serialPortArduino2 = await new SerialPort({
+      // path: `\\\\.\\` + opcion,
+      path: opcion2,
+      baudRate: baud2,
+      dataBits: 8,
+      stopBits: 1,
+      parity: 'none',
+      autoOpen: true,
+    }, (error) => {
+      if (error) {
+        console.error(`El puerto 2 no esta disponible.`);
+        res.status(500).json({ error: `Error al abrir el puerto: ${opcion2}` });
+      } else {
+        console.log(`El puerto 2 esta disponible.`);        
+      }
+    });
+
+  
+    arduinoParser = serialPortArduino1.pipe(
+      new ReadlineParser({ delimiter: '\r\n' })
+    );
+    arduinoParser2 = serialPortArduino2.pipe(
+      new ReadlineParser({ delimiter: '\r\n' })
+    );
+    arduinoPorts = [serialPortArduino1, serialPortArduino2];
+
+
+  } catch (error) {
+    console.log('ERROR  WHILE OPEN', error);
+    res.send(JSON.stringify({ status: 500, message: "Error al abrir el puerto" }));
+
+  }
+  
+});
+
+
 let startFlag = false;
 // parser.on('data', (chunk) => {
 //   console.log("Starting Test");
@@ -2394,6 +2474,105 @@ ipcMain.on('multiplesSensores', async (event) => {
   });
 });
 
+
+
+const arr: any = []
+const arr2: any = []
+
+io.on('connection', socket =>{
+    console.log('User connected')
+
+    // var x = 0
+    // socket.on('message', (data) =>{
+    //     console.log(data)
+    //     x = x + 3
+    //     arr.push(x)
+    //     socket.emit('message', x)
+    // })
+
+    // var y = 0
+    // socket.on('message2', (data) =>{
+    //     console.log(data)
+    //     y = y + 10
+    //     arr2.push(y)
+    //     socket.emit('message2', y)
+    // })
+
+    // socket.on('end',  ()=>{
+    //     console.log('User disconected')
+    //     socket.emit('last', arr)
+    //     arr.length = 0
+    //     socket.disconnect(true);
+    // });
+
+    // socket.on('end2',  ()=>{
+    //     console.log('User disconected')
+    //     socket.emit('last2', arr2)
+    //     arr2.length = 0
+    //     socket.disconnect(true);
+    // });
+    console.log('Port1 is open?', arduinoPorts[0].isOpen);
+    console.log('Port2 is open?', arduinoPorts[1].isOpen);
+
+    console.log('Inner sensor Multiple ');
+
+    arduinoParser.resume();
+    arduinoParser2.resume();
+
+    
+
+    
+
+    socket.on('message', (data) =>{
+        arduinoParser.on('data', async (chunk: any) => {
+          console.log(chunk + ' sensor1');
+          arreglo1.push(chunk);
+          // const objTime2 = {
+          //   valor: chunk,
+          
+          //   time: new Date()
+          // }
+          arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+          socket.emit('message', chunk)
+        });
+    })
+    socket.on('message2', (data) =>{
+      arduinoParser2.on('data', async (chunk: any) => {
+        console.log(chunk + ' sensor2');
+        arreglo2.push(chunk);
+        // const objTime = {
+        //   valor: chunk,
+        //   time: new Date()
+        // }
+        arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+        socket.emit('message2', chunk)
+      });
+    })
+        
+    socket.on('end',  ()=>{
+        console.log('User disconected')
+        arduinoPorts[0].close();
+        arduinoParser.pause();
+        arreglo1.length = 0;
+
+        arreglo1TimeStamp.length = 0;
+
+        socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+        socket.disconnect(true);
+    });
+
+    socket.on('end2',  ()=>{
+        console.log('User disconected 2')
+        arduinoPorts[1].close();
+        arduinoParser2.pause();
+
+        arreglo2.length = 0;
+        arreglo2TimeStamp.length = 0;
+        socket.emit('last2', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+        socket.disconnect(true);
+    });
+})
+
 app2.get('/multiplesArduinos', async (req: Request, res: Response) => {
   console.log('Port1 is open?', arduinoPorts[0].isOpen);
   console.log('Port2 is open?', arduinoPorts[1].isOpen);
@@ -2451,6 +2630,11 @@ app2.get('/stopArduinos', async (req: Request, res: Response) => {
       arduinoParser2.pause();
     }
   }
+  arreglo1.length = 0;
+  arreglo2.length = 0;
+  arreglo1TimeStamp.length = 0;
+  arreglo2TimeStamp.length = 0;
+
   res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
 });
 

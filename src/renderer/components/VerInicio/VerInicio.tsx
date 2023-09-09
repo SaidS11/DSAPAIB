@@ -41,7 +41,7 @@ export const Inicio = (props: InicioProps) => {
       </div>
       <br />
       <div className='display-center'>
-        <Button onClick={onClickAnalisis} sx={styleButtonMenuInicial}>Análisis</Button>
+        <Button onClick={onClickAnalisis} sx={styleButtonMenuInicial}>Predicción</Button>
       </div>
       <div className='display-center'>
         <h5 style={{marginTop: '3%'}}>Universidad de Guadalajara 2023</h5>
