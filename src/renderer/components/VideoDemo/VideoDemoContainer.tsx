@@ -409,6 +409,7 @@ const VideoDemoContainer = () => {
     })
     setDataToGraph(auxString);
 
+
     // Codigo superior reemplaza la llamada a la API
     // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
 
@@ -896,9 +897,9 @@ const VideoDemoContainer = () => {
         </Button>
       </section>
       {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData} arduinoData={arduinoDataArg} />)}
-      {/* {
+      {
         !dataIsReady && <SensoresAdquisicionContainer dataToGraph={dataToGraph} shouldStop={shouldStop} cantidadAGraficarTiempoReal={cantidadAGraficarTiempoReal} />
-      } */}
+      }
       
       <br />
     </div>
