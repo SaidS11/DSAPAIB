@@ -154,6 +154,9 @@ const PreAnalisisContainer = () => {
         startAnalysis('Tree', params, nombre);
       }
       if (resp[0].algoritmo_ia === 'Red Neuronal') {
+        startAnalysis('Red', params, nombre);
+      }
+      if (resp[0].algoritmo_ia === 'K-Nearest Neighbor') {
         startAnalysis('KNN', params, nombre);
       }
       if (resp[0].algoritmo_ia === 'Maquina de Soporte Vectorial') {

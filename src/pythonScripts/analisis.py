@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import scikitplot as skplt
 from pandas.plotting import parallel_coordinates
+from sklearn.neural_network import MLPClassifier
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn import metrics
 from sklearn.naive_bayes import GaussianNB
@@ -128,8 +129,41 @@ def classSVM(nombre, headers, ruta_actual, nombreArchivoResultante):
     resulJson = datos_nuevos.to_json(compression="str")
     # print(my_path)
     with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
-            f.write(str("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction, 
-                                                                         y_pred))+
+            f.write(str("SVM"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,                                                                      y_pred))+
+    "|"+ "{:.3f}".format(metrics.f1_score(y_pred, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_pred, prediction, average='macro')) + 
+    "|" + "0.99" +
+    "|" "0.99" +
+    "|" + resulJson +
+    "|" + "true"))
+            
+def classRed(nombre, headers, ruta_actual, nombreArchivoResultante):
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    # number of instances in each class
+    data.groupby('species').size()
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    # number of instances in each class
+    data.groupby('etiqueta').size()
+
+    # Model development
+    X_test = data[headers]
+    script_dir = os.path.dirname(__file__)
+    clf = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+    prediction=clf.predict(X_test)
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    X_nuevos = datos_nuevos[headers]
+    y_pred = clf.predict(X_nuevos)
+
+    skplt.metrics.plot_confusion_matrix(y_pred, prediction, normalize=True)
+    plt.savefig(os.path.join(script_dir,"Confusion.png"))
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+    # print(my_path)
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("Red"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,                                                 y_pred))+
     "|"+ "{:.3f}".format(metrics.f1_score(y_pred, prediction, average='micro')) + 
     "|"+ "{:.3f}".format(metrics.recall_score(y_pred, prediction, average='macro')) + 
     "|" + "0.99" +
@@ -331,6 +365,72 @@ def trainSVM(modelArgs, iteraciones, reducedPercentage, ruta_actual, nombreArchi
     "|" "{:.2f}".format(scores.std()) +
     "|" + resulJson +
     "|" + archivoExistente))
+            
+
+def trainRed(modelArgs, iteraciones, reducedPercentage, ruta_actual, nombreArchivoResultante, archivoExistente):
+    neuronas = modelArgs["neuronas"]
+    activacion = modelArgs["funcion"]
+    tasa = modelArgs["tasa"]
+
+    # or load through local csv
+   # or load through local csv
+    ruta_actual = os.path.dirname(__file__)
+    nombre_archivo = "test8Nombres.csv"
+    data = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    # number of instances in each class
+    # number of instances in each class
+    data.groupby('etiqueta').size()
+    train, test = train_test_split(data, test_size = reducedPercentage, stratify = data['etiqueta'], random_state = 42)
+
+    # Model development
+    X_train = train[headers]
+    y_train = train.etiqueta
+    X_test = test[headers]
+    y_test = test.etiqueta
+    # SVC with linear kernel
+    # for SVC, may be impractical beyond tens of thousands of samples
+    #almacenar matriz de confusion y promediarla al final
+    existente = False
+    script_dir = os.path.dirname(__file__)
+    # if os.path.exists(f'{script_dir}/Modelos/{nombre}.joblib'):
+    #     linear_svc = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+    #     existente = True
+    # else:
+    #     linear_svc = SVC(kernel=kernelArg).fit(X_train, y_train)
+
+    if (archivoExistente == "true"):
+        redNeuronal = load(f'{script_dir}/Modelos/{nombre}.joblib') 
+    else:
+        redNeuronal = MLPClassifier(hidden_layer_sizes=neuronas, activation=activacion, learning_rate_init=tasa).fit(X_train, y_train)
+    cv_results = cross_validate(redNeuronal, X_train, y_train, cv=iteraciones, return_estimator=True)
+    promedio = list()
+    for i in range(len(cv_results['estimator'])):
+        promedio.append(cv_results['test_score'][i])
+    avg = sum(promedio) / len(promedio)
+    closest = min(promedio, key=lambda x:abs(x-avg))
+    for i in range(len(cv_results['estimator'])):
+        if cv_results['test_score'][i] == closest:
+            avgModel = cv_results['estimator'][i]
+    scores = cross_val_score(avgModel, X_train, y_train, cv=iteraciones)
+    prediction=avgModel.predict(X_test)
+    script_dir = os.path.dirname(__file__)
+    dump(avgModel, f'{script_dir}/Modelos/{nombre}.joblib')
+    skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
+    plt.savefig(os.path.join(script_dir,"Confusion.png"))
+    datos_nuevos = pd.read_csv(os.path.join(ruta_actual, nombre_archivo))
+    X_nuevos = datos_nuevos[headers]
+    y_pred = avgModel.predict(X_nuevos)
+
+    datos_nuevos['etiqueta'] = y_pred
+    resulJson = datos_nuevos.to_json(compression="str")
+    with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
+            f.write(str("Red"+"|"+"{:.3f}".format(metrics.accuracy_score(prediction,y_test))+
+    "|"+ "{:.3f}".format(metrics.f1_score(y_test, prediction, average='micro')) + 
+    "|"+ "{:.3f}".format(metrics.recall_score(y_test, prediction, average='macro')) + 
+    "|" + "{:.2f}".format(scores.mean()) +
+    "|" "{:.2f}".format(scores.std()) +
+    "|" + resulJson +
+    "|" + archivoExistente))
 
     # "|" + f"{'true' if existente else 'false'}"))
 
@@ -374,6 +474,8 @@ if __name__ == '__main__':
                 trainKNN(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
             if(second == "SVM"):
                 trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
+            if(second == "Red"):
+                trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
         if (first == "Class"):
             if (second == "Tree"):
                 classificationTree(nombre, headers, ruta_actual, nombreArchivoResultante)
@@ -381,6 +483,8 @@ if __name__ == '__main__':
                 classKNN(nombre, headers, ruta_actual, nombreArchivoResultante)
             if(second == "SVM"):
                 classSVM(nombre, headers, ruta_actual, nombreArchivoResultante)
+            if(second == "Red"):
+                classTree(nombre, headers, ruta_actual, nombreArchivoResultante)
     except  Exception as e:
         with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
             f.write(str(e))

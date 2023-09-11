@@ -23,14 +23,17 @@ const style = {
 export interface ModalProps {
   toggleModalGuardar: () => void;
   open: boolean;
+  nombreSeleccionado: string;
+  eliminar: () => void;
 }
 
 export default function SaveModelModal(props: ModalProps) {
-  const { toggleModalGuardar, open } = props;
+  const { toggleModalGuardar, open, nombreSeleccionado, eliminar } = props;
   const navigate = useNavigate();
 
   const navigateToModels = () => {
     navigate('/guardarModelo');
+    eliminar();
   };
 
   return (

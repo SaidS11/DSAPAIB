@@ -75,6 +75,18 @@ const ResultadoEntrenarContainer = () => {
     setOpen2(!open2);
   };
 
+
+  const eliminar = async () => {
+    const modeloObj = {
+      nombre: nombreSeleccionado,
+    };
+    const updateModelo = await fetch(`${apiEndpoint}/deleteModelo`, {
+      method: 'DELETE',
+      body: JSON.stringify(modeloObj),
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   async function actualizarModelo() {
     const customResults = {
       Precisión: precision,
@@ -185,7 +197,8 @@ const ResultadoEntrenarContainer = () => {
     }
   };
   const onClickBack = () => {
-    // navigate('/entrenar');
+    eliminar();
+    navigate('/entrenar');
   };
   const onClickCambiar = () => {
     if (isSaved !== true) {
@@ -213,6 +226,7 @@ const ResultadoEntrenarContainer = () => {
         toggleModalVerMas={toggleModalVerMas}
         onClickCambiar={onClickCambiar}
         predictMode={predictMode}
+        eliminar={eliminar}
       />
       {open && (
         <ModalVerMas
@@ -223,7 +237,7 @@ const ResultadoEntrenarContainer = () => {
         />
       )}
       {open2 && (
-        <SaveModelModal toggleModalGuardar={toggleModalGuardar} open={open2} />
+        <SaveModelModal toggleModalGuardar={toggleModalGuardar} open={open2}  nombreSeleccionado={nombreSeleccionado} eliminar={eliminar}/>
       )}
     </div>
   );

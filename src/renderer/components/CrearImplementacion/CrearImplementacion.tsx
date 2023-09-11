@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { styleButtonBiggerGreen, styleAddIcon } from '../VerPaciente/ButtonStyle';
 import BuildIcon from '@mui/icons-material/Build';
 import { InputLabel, FormControl, MenuItem } from '@mui/material';
@@ -35,6 +35,10 @@ const CrearImplementacion = (
   };
   const [tipo, setTipo] = useState("");
   const [kernel, setKernel] = useState("");
+  const [funcion, setFuncion] = useState("");
+  const [capas, setCapas] = useState(0);
+
+
 
   const handleChange = (event: SelectChangeEvent) => {
     const word = event.target.value;
@@ -46,6 +50,47 @@ const CrearImplementacion = (
     const word = event.target.value;
     setKernel(word);
   };
+
+  const handleChangeFuncion = (event: SelectChangeEvent) => {
+    const word = event.target.value;
+    setFuncion(word);
+  };
+
+
+  const handleChangeCapas = (event: any) => {
+    const word = event.target.value;
+    console.log("Capas", word)
+    setCapas(parseInt(word));
+  };
+  
+  const neuronasComponente = useMemo(() => {
+    const listaDeInputs = [];
+    for(let i = 0; i< capas; i+=1) {
+      listaDeInputs.push(
+        <>
+        <Grid item xs={12} sm={6}>
+          <Typography component="h1" variant="h6" key={i} >
+            Capa N. {i + 1}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              fullWidth
+              id={`neurona ${i}`}
+              label={`Neuronas en la capa N. ${i+1}`}
+              name={`neurona ${i}`}
+              type="number"
+              inputProps={{ min: 1, max: 10 }}
+              key={i}
+              />
+          </Grid>
+      </>
+      )
+    }
+    return listaDeInputs;
+    
+  }, [capas])
 
   const defaultTheme = createTheme();
 
@@ -200,38 +245,67 @@ const CrearImplementacion = (
                 {tipo === "Red Neuronal" &&
                 <>
                   <Grid item xs={12} sm={6}>
+                    <Typography component="h1" variant="h6">
+                      Número de capas
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
                       <TextField
                         required
                         fullWidth
-                        id="neuronas"
-                        label="Neuronas en la capa oculta"
-                        name="neuronas"
-                        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
+                        id="capas"
+                        label="Capas"
+                        name="capas"
+                        type="number"
+                        inputProps={{ min: 1, max: 10 }}
+                        onChange={handleChangeCapas}
+                        />
                   </Grid>
+                  {neuronasComponente}
                   <Grid item xs={12} sm={6}>
                     <Typography component="h1" variant="h6">
                       Seleccione la función de activación:
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                      {/* <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
-                          Función
-                        </InputLabel>
-                        <Select labelId="demo-simple-select-label"
-                          id="demo-simple-select" onChange={handleChangeFuncion}
-                          name="funcion"
-                          value={funcion}
-                          label="funcion"
-                          required
-                        >
-                          <MenuItem value="linear">Logistic</MenuItem>
-                          <MenuItem value="poly">Tanh</MenuItem>
-                          <MenuItem value="rbf">Identity</MenuItem>
-                          <MenuItem value="sigmoid">relu</MenuItem>
-                        </Select>
-                      </FormControl> */}
-                    </Grid></>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Función
+                      </InputLabel>
+                      <Select labelId="demo-simple-select-label"
+                        id="demo-simple-select" onChange={handleChangeFuncion}
+                        name="funcion"
+                        value={funcion}
+                        label="funcion"
+                        required
+                      >
+                        <MenuItem value="linear">Logistic</MenuItem>
+                        <MenuItem value="poly">Tanh</MenuItem>
+                        <MenuItem value="rbf">Identity</MenuItem>
+                        <MenuItem value="sigmoid">relu</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <Typography component="h1" variant="h6">
+                      Tasa de aprendizaje inicial
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        id="tasa"
+                        label="Tasa"
+                        name="tasa"
+                        type="number"
+                        inputProps={{ min: 0.1, max: 1, step: 0.01 }}
+                        />
+                  </Grid>
+                    
+                    
+                    </>
                 }
               </Grid>
               <br/>

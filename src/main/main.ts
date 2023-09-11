@@ -47,7 +47,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'hola1234',
+  password: 'Modular124',
 }; 
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
@@ -118,6 +118,41 @@ app2.post('/insertarAnalisis', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error al insertar datos' });
   }
 });
+
+
+
+app2.delete('/deleteModelo', async (req: Request, res: Response) => {
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { nombre } = req.body;
+
+    const direc = __dirname;
+    const regex = /\//i;
+    const direcParsed = direc.replace(regex, '/');
+    const direcFinal = direcParsed.slice(0, -4);
+
+    const archivoAEliminar = `${direcFinal}/pythonScripts/Modelos/${nombre}.joblib`;
+
+
+    fs.unlink(archivoAEliminar, (error) => {
+      if (error) {
+        console.error(`Error al eliminar el archivo ${archivoAEliminar}: ${error.message}`);
+        res.status(500).json({ error: 'Error al eliminar' });
+
+      } else {
+        console.log(`El archivo ${archivoAEliminar} ha sido eliminado correctamente.`);
+        res.status(200).json({ message: 'Eliminado correctamente' });
+
+      }
+    });
+  } catch (error) {
+    console.error('Error al eliminar', error);
+    res.status(500).json({ error: 'Error al eliminar' });
+  }
+});
+
+
 /// //////////
 async function insertarDatosPaciente(
   usuario: string,

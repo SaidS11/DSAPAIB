@@ -43,6 +43,7 @@ export interface ResultadoEntrenarProps {
   toggleModalVerMas: any;
   onClickCambiar: () => void;
   predictMode: boolean;
+  eliminar: () => void;
 }
 
 const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
@@ -62,6 +63,7 @@ const ResultadoEntrenar = (props: ResultadoEntrenarProps) => {
     toggleModalVerMas,
     onClickCambiar,
     predictMode,
+    eliminar,
   } = props;
   const navigate = useNavigate();
   const defaultTheme = createTheme();
