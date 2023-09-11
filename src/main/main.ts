@@ -2613,10 +2613,10 @@ io.on('connection', socket =>{
         
         socket.emit('last2', data)
         socket.disconnect(true);
-        arreglo1.length = 0;
-        arreglo1TimeStamp.length = 0;
-        arreglo2.length = 0;
-        arreglo2TimeStamp.length = 0;
+        // arreglo1.length = 0;
+        // arreglo1TimeStamp.length = 0;
+        // arreglo2.length = 0;
+        // arreglo2TimeStamp.length = 0;
     });
 })
 
@@ -2677,12 +2677,26 @@ app2.get('/stopArduinos', async (req: Request, res: Response) => {
       arduinoParser2.pause();
     }
   }
+  
+  res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
+
   arreglo1.length = 0;
   arreglo2.length = 0;
   arreglo1TimeStamp.length = 0;
   arreglo2TimeStamp.length = 0;
+});
+
+
+app2.get('/stopArduinos2', async (req: Request, res: Response) => {
+  console.log('Closing');
+  
 
   res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
+
+  arreglo1.length = 0;
+  arreglo2.length = 0;
+  arreglo1TimeStamp.length = 0;
+  arreglo2TimeStamp.length = 0;
 });
 
 // ipcMain.handle('sensoresStop', async (event) => {
