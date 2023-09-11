@@ -60,10 +60,16 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   const appDispatch = useCustomDispatch();
 
-  const gsrIschecked = useCustomSelector((state) => state.señales.gsrIsChecked);
-  const tempIschecked = useCustomSelector((state) => state.señales.temperaturaIsChecked);
-  const frecuenciaIschecked = useCustomSelector((state) => state.señales.frecuenciaIsChecked);
-  const acelerometroIschecked = useCustomSelector((state) => state.señales.acelerometroIsChecked);
+  // const gsrIschecked = useCustomSelector((state) => state.señales.gsrIsChecked);
+  // const tempIschecked = useCustomSelector((state) => state.señales.temperaturaIsChecked);
+  // const frecuenciaIschecked = useCustomSelector((state) => state.señales.frecuenciaIsChecked);
+  // const acelerometroIschecked = useCustomSelector((state) => state.señales.acelerometroIsChecked);
+
+
+  const gsrIschecked = true
+  const tempIschecked = true
+  const frecuenciaIschecked = true
+  const acelerometroIschecked = true
 
 
 
