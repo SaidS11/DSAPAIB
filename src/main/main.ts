@@ -2597,7 +2597,7 @@ io.on('connection', socket =>{
         
 
         // socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
-        socket.emit('last', data)
+        socket.emit('last', arreglo1)
 
         socket.disconnect(true);
 
