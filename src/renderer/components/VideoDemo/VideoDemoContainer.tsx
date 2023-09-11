@@ -404,11 +404,13 @@ const VideoDemoContainer = () => {
     socket2.emit('message2', 'socket2')
     socket2.on('message2', (message)=>{
         // console.log(message)
-        auxString = auxString + message
+        // auxString = auxString + message
         socket2.emit('message2', 'socket2')
     })
+
+    console.log("AUX", auxString);
     setDataToGraph(auxString);
-    
+
     console.log("DATA SET", dataToGraph);
 
 
