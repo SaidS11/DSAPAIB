@@ -2220,7 +2220,7 @@ ipcMain.on('loadMultiplePorts', async (event, opcion, baud, opcion2, baud2) => {
     }
     serialPortArduino1 = new SerialPort({
       // path: `\\\\.\\` + opcion,
-      path: 'COM40',
+      path: opcion1,
       baudRate: baud,
       dataBits: 8,
       stopBits: 1,

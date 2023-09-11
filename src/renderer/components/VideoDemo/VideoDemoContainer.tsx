@@ -324,6 +324,7 @@ const VideoDemoContainer = () => {
             headers: {'Content-Type': 'application/json'}
           });
 
+          console.log("STATUS", cargarArduinos);
           if (cargarArduinos.status === 200) {
             setOpen(!open);
 
