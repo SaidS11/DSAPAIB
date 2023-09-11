@@ -396,14 +396,14 @@ const VideoDemoContainer = () => {
 
     socket.emit('message', 'socket1')
     socket.on('message', (message: any)=>{
-        // console.log(message)
+        console.log("Sensor 1", message)
         auxString = message;
         socket.emit('message', 'socket1')
     })
 
     socket2.emit('message2', 'socket2')
     socket2.on('message2', (message)=>{
-        // console.log(message)
+        console.log("Sensor 2",message)
         // auxString = auxString + message
         socket2.emit('message2', 'socket2')
     })
