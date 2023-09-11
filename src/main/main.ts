@@ -2588,23 +2588,27 @@ io.on('connection', socket =>{
         console.log('User disconected')
         arduinoPorts[0].close();
         arduinoParser.pause();
-        arreglo1.length = 0;
-
-        arreglo1TimeStamp.length = 0;
+        
 
         socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
         socket.disconnect(true);
+
+        
     });
 
     socket.on('end2',  ()=>{
         console.log('User disconected 2')
+        console.log('LARGO', arreglo1.length);
         arduinoPorts[1].close();
         arduinoParser2.pause();
 
-        arreglo2.length = 0;
-        arreglo2TimeStamp.length = 0;
+        
         socket.emit('last2', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
         socket.disconnect(true);
+        arreglo1.length = 0;
+        arreglo1TimeStamp.length = 0;
+        arreglo2.length = 0;
+        arreglo2TimeStamp.length = 0;
     });
 })
 

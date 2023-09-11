@@ -581,10 +581,16 @@ const VideoDemoContainer = () => {
       // Reemplaza las llamadas a la api que detienen los arduinos
       
       socket.emit('end');
+
+      let arreglo1: any;
+
       socket.on('last', (message: any)=>{
         console.log('last')
+        arreglo1 = message;
         console.log(message)
       })
+
+      console.log("ARDUINO STOP 1", arreglo1);
 
       socket2.emit('end2');
 
@@ -594,7 +600,7 @@ const VideoDemoContainer = () => {
         arreglo = message;
         console.log(message)
       })
-      console.log("ARDUINO STOP", arreglo);
+      console.log("ARDUINO STOP 2", arreglo);
       setShouldStop(true);
       // const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
 
