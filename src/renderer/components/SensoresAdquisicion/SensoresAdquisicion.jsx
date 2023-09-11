@@ -119,19 +119,19 @@ const SensoresAdquisicion = ({
   //   trace6,
   // ];
 
-  if(gsrIsChecked) {
+  if(true) {
     dataArr.push(trace1)
   }
 
-  if(temperaturaIsChecked) {
+  if(true) {
       dataArr.push(trace2)
   }
 
-  if(frecuenciaCardiacaIsChecked) {
+  if(true) {
       dataArr.push(trace3)
   }
 
-  if(acelerometroIsChecked) {
+  if(true) {
       dataArr.push(trace4)
       dataArr.push(trace5)
       dataArr.push(trace6)
