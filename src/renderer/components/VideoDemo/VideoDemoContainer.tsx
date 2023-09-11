@@ -311,33 +311,34 @@ const VideoDemoContainer = () => {
       if ((portSelected !== '' && baudSelected !== 0) && (portSelected2 !== '' && baudSelected2 !== 0)) {
         if(portSelected !== portSelected2) {
           // setIsReady(true);
-          appDispatch(setIsLoading(true));
-          const arduinosBody = {
-            opcion: portSelected,
-            baud: baudSelected,
-            opcion2: portSelected2,
-            baud2: baudSelected2
-          }
-          const cargarArduinos = await fetch(`${apiEndpoint}/loadMultiplePorts`, {
-            method: 'POST',
-            body: JSON.stringify(arduinosBody),
-            headers: {'Content-Type': 'application/json'}
-          });
+          // appDispatch(setIsLoading(true));
+          // const arduinosBody = {
+          //   opcion: portSelected,
+          //   baud: baudSelected,
+          //   opcion2: portSelected2,
+          //   baud2: baudSelected2
+          // }
+          // const cargarArduinos = await fetch(`${apiEndpoint}/loadMultiplePorts`, {
+          //   method: 'POST',
+          //   body: JSON.stringify(arduinosBody),
+          //   headers: {'Content-Type': 'application/json'}
+          // });
 
-          console.log("STATUS", cargarArduinos);
-          if (cargarArduinos.status === 200) {
-            setOpen(!open);
+          // console.log("STATUS", cargarArduinos);
+          // if (cargarArduinos.status === 200) {
+          //   setOpen(!open);
 
-          } else {
-            const datosErr = await cargarArduinos.json()
-            appDispatch(setFallosAlCargar(true));
-            appDispatch(setErrorDetails(datosErr.error));
+          // } else {
+          //   const datosErr = await cargarArduinos.json()
+          //   appDispatch(setFallosAlCargar(true));
+          //   appDispatch(setErrorDetails(datosErr.error));
 
-          }
-          appDispatch(setIsLoading(false));
+          // }
+
+          // appDispatch(setIsLoading(false));
 
           
-          // window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
+          window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
         } else {
           appDispatch(setFallosAlCargar(true));
           appDispatch(setErrorDetails('Seleccione puertos distintos'));
