@@ -594,13 +594,13 @@ const VideoDemoContainer = () => {
 
       socket2.emit('end2');
 
-      let arreglo: any;
+      // let arreglo: any;
       socket2.on('last2', (message)=>{
         console.log('last2')
-        arreglo = message;
+        // arreglo = message;
         // console.log(message)
       })
-      console.log("ARDUINO STOP 2", arreglo);
+      // console.log("ARDUINO STOP 2", arreglo);
       setShouldStop(true);
 
       const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos2`);
@@ -608,11 +608,11 @@ const VideoDemoContainer = () => {
 
       // const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos`);
 
-      // const arduinoSTOP = await stopArduinos.json();
+      const arduinoSTOP = await stopArduinos.json();
 
-      // console.log("ARDUINO STOP", arduinoSTOP.message);
+      console.log("ARDUINO STOP", arduinoSTOP.message);
 
-      // const arreglo = arduinoSTOP.message
+      const arreglo = arduinoSTOP.message
 
       
       // Comprobacion de cual arduino tiene las claves que nos interesan para aplicarle los metodos correspondientes
