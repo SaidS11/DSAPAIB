@@ -388,6 +388,10 @@ const VideoDemoContainer = () => {
     /// .....
     // setBloqueoDeBoton(true);
 
+    // Comprobacion de emgs sino hay timer para controlar arduinos
+    // Estp originalmente va abajo de lo de arduinos
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
+
     let auxString = "";
 
     socket.emit('message', 'socket1')
@@ -403,13 +407,12 @@ const VideoDemoContainer = () => {
         auxString = auxString + message
         socket2.emit('message2', 'socket2')
     })
-    setDataToGraph(auxString);
+    // setDataToGraph(auxString);
 
     // Codigo superior reemplaza la llamada a la API
     // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
 
-    // Comprobacion de emgs sino hay timer para controlar arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
+    
 
     const data = await startNidaq.json();
 
