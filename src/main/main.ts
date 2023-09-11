@@ -2584,13 +2584,21 @@ io.on('connection', socket =>{
       });
     })
         
+    const data = {
+      arreglo1: arreglo1,
+      arreglo2: arreglo2,
+      arreglo1TimeStamp: arreglo1TimeStamp,
+      arreglo2TimeStamp: arreglo2TimeStamp
+    }
     socket.on('end',  ()=>{
         console.log('User disconected')
         arduinoPorts[0].close();
         arduinoParser.pause();
         
 
-        socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+        // socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+        socket.emit('last', data)
+
         socket.disconnect(true);
 
         
@@ -2603,7 +2611,7 @@ io.on('connection', socket =>{
         arduinoParser2.pause();
 
         
-        socket.emit('last2', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+        socket.emit('last2', data)
         socket.disconnect(true);
         arreglo1.length = 0;
         arreglo1TimeStamp.length = 0;
