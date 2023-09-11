@@ -2570,18 +2570,29 @@ io.on('connection', socket =>{
           arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
           socket.emit('message', chunk)
         });
+
+        arduinoParser2.on('data', async (chunk: any) => {
+          console.log(chunk + ' sensor2');
+          arreglo2.push(chunk);
+          // const objTime = {
+          //   valor: chunk,
+          //   time: new Date()
+          // }
+          arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+          socket.emit('message2', chunk)
+        });
     })
     socket.on('message2', (data) =>{
-      arduinoParser2.on('data', async (chunk: any) => {
-        console.log(chunk + ' sensor2');
-        arreglo2.push(chunk);
-        // const objTime = {
-        //   valor: chunk,
-        //   time: new Date()
-        // }
-        arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
-        socket.emit('message2', chunk)
-      });
+      // arduinoParser2.on('data', async (chunk: any) => {
+      //   console.log(chunk + ' sensor2');
+      //   arreglo2.push(chunk);
+      //   // const objTime = {
+      //   //   valor: chunk,
+      //   //   time: new Date()
+      //   // }
+      //   arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+      //   socket.emit('message2', chunk)
+      // });
     })
         
     const data = {
