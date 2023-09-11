@@ -407,7 +407,7 @@ const VideoDemoContainer = () => {
         auxString = auxString + message
         socket2.emit('message2', 'socket2')
     })
-    // setDataToGraph(auxString);
+    setDataToGraph(auxString);
 
     // Codigo superior reemplaza la llamada a la API
     // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
