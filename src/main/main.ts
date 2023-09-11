@@ -2597,7 +2597,7 @@ io.on('connection', socket =>{
         
 
         // socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
-        socket.emit('last', arreglo1)
+        socket.emit('last', "Final")
 
         socket.disconnect(true);
 
@@ -2606,12 +2606,11 @@ io.on('connection', socket =>{
 
     socket.on('end2',  ()=>{
         console.log('User disconected 2')
-        console.log('LARGO', arreglo1.length);
         arduinoPorts[1].close();
         arduinoParser2.pause();
 
         
-        socket.emit('last2', data)
+        socket.emit('last2', "Final")
         socket.disconnect(true);
         // arreglo1.length = 0;
         // arreglo1TimeStamp.length = 0;
