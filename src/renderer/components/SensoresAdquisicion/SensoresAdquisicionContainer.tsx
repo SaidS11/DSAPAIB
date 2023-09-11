@@ -14,6 +14,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   const [isReady, setIsReady] = useState(false);
   
+  console.log("DATA", dataToGraph);
 
 
   const count = 30;

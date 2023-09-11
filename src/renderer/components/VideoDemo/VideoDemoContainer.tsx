@@ -408,6 +408,8 @@ const VideoDemoContainer = () => {
         socket2.emit('message2', 'socket2')
     })
     setDataToGraph(auxString);
+    
+    console.log("DATA SET", dataToGraph);
 
 
     // Codigo superior reemplaza la llamada a la API
