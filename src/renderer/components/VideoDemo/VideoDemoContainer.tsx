@@ -338,6 +338,7 @@ const VideoDemoContainer = () => {
           // appDispatch(setIsLoading(false));
 
           
+          setOpen(!open);
           window.Bridge.loadMultiplePorts(portSelected, baudSelected, portSelected2, baudSelected2);
         } else {
           appDispatch(setFallosAlCargar(true));
