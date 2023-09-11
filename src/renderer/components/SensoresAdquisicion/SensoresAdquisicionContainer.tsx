@@ -90,7 +90,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
 
   async function loadSensores() {
     setIsReady(true);
-
+    console.log("DATA", dataToGraph);
     const dataLocal = dataToGraph;
     const separado = dataLocal.split(',');
     const regexNumero = /(\d+)/;
@@ -157,6 +157,7 @@ const SensoresAdquisicionContainer = (props: SensoresAdquisicionInterface) => {
   let timeoutID: string | number | NodeJS.Timeout | undefined;
   function iniciarIntervalo() {
     timeoutID = setTimeout(function () {
+      loadSensores()
       intervalFunction();
       iniciarIntervalo(); // Vuelve a iniciar el intervalo
     }, 100); // Elige el tiempo deseado (en milisegundos) para el intervalo
