@@ -32,7 +32,7 @@ import cors from 'cors';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import * as http from 'http';
-import { Server } from 'socket.io';
+// import { Server } from 'socket.io';
 // --------------------Conexion PostgreAWS--------------
 // const credenciales = {
 //   user: 'postgres',
@@ -53,8 +53,13 @@ const credenciales = {
 // /////////////////POSTGRESQL///////////////////////
 // /////////////////INSERT///////////////////////
 const app2: Express = express();
-const server = http.createServer(app2)
-const io =  new Server(server)
+// const server = http.createServer(app2)
+// const io =  new Server(server)
+// server.listen(4000)
+// console.log('Server on port', 4000)
+
+
+
 
 app2.listen(8000, () => {
   console.log('El servidor está escuchando en el puerto 8000');
@@ -66,8 +71,6 @@ app2.use(cors());
 // Configurar el middleware para servir archivos estáticos
 app2.use(express.static(path.join(__dirname, 'public')));
 
-server.listen(4000)
-console.log('Server on port', 4000)
 
 /// ////////////////
 async function insertarDatosAnalisis(
@@ -943,7 +946,7 @@ const createWindow = async () => {
       nodeIntegration: false,
       contextIsolation: true,
       nodeIntegrationInWorker: true,
-      webSecurity: false,
+      // webSecurity: false,
     },
   });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
@@ -2514,121 +2517,121 @@ ipcMain.on('multiplesSensores', async (event) => {
 const arr: any = []
 const arr2: any = []
 
-io.on('connection', socket =>{
-    console.log('User connected')
+// io.on('connection', socket =>{
+//     console.log('User connected')
 
-    // var x = 0
-    // socket.on('message', (data) =>{
-    //     console.log(data)
-    //     x = x + 3
-    //     arr.push(x)
-    //     socket.emit('message', x)
-    // })
+//     // var x = 0
+//     // socket.on('message', (data) =>{
+//     //     console.log(data)
+//     //     x = x + 3
+//     //     arr.push(x)
+//     //     socket.emit('message', x)
+//     // })
 
-    // var y = 0
-    // socket.on('message2', (data) =>{
-    //     console.log(data)
-    //     y = y + 10
-    //     arr2.push(y)
-    //     socket.emit('message2', y)
-    // })
+//     // var y = 0
+//     // socket.on('message2', (data) =>{
+//     //     console.log(data)
+//     //     y = y + 10
+//     //     arr2.push(y)
+//     //     socket.emit('message2', y)
+//     // })
 
-    // socket.on('end',  ()=>{
-    //     console.log('User disconected')
-    //     socket.emit('last', arr)
-    //     arr.length = 0
-    //     socket.disconnect(true);
-    // });
+//     // socket.on('end',  ()=>{
+//     //     console.log('User disconected')
+//     //     socket.emit('last', arr)
+//     //     arr.length = 0
+//     //     socket.disconnect(true);
+//     // });
 
-    // socket.on('end2',  ()=>{
-    //     console.log('User disconected')
-    //     socket.emit('last2', arr2)
-    //     arr2.length = 0
-    //     socket.disconnect(true);
-    // });
-    console.log('Port1 is open?', arduinoPorts[0].isOpen);
-    console.log('Port2 is open?', arduinoPorts[1].isOpen);
+//     // socket.on('end2',  ()=>{
+//     //     console.log('User disconected')
+//     //     socket.emit('last2', arr2)
+//     //     arr2.length = 0
+//     //     socket.disconnect(true);
+//     // });
+//     console.log('Port1 is open?', arduinoPorts[0].isOpen);
+//     console.log('Port2 is open?', arduinoPorts[1].isOpen);
 
-    console.log('Inner sensor Multiple ');
+//     console.log('Inner sensor Multiple ');
 
-    arduinoParser.resume();
-    arduinoParser2.resume();
-
-    
+//     arduinoParser.resume();
+//     arduinoParser2.resume();
 
     
 
-    socket.on('message', (data) =>{
-        arduinoParser.on('data', async (chunk: any) => {
-          console.log(chunk + ' sensor1');
-          arreglo1.push(chunk);
-          // const objTime2 = {
-          //   valor: chunk,
+    
+
+//     socket.on('message', (data) =>{
+//         arduinoParser.on('data', async (chunk: any) => {
+//           console.log(chunk + ' sensor1');
+//           arreglo1.push(chunk);
+//           // const objTime2 = {
+//           //   valor: chunk,
           
-          //   time: new Date()
-          // }
-          arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
-          socket.emit('message', chunk)
-        });
+//           //   time: new Date()
+//           // }
+//           arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+//           socket.emit('message', chunk)
+//         });
 
-        arduinoParser2.on('data', async (chunk: any) => {
-          console.log(chunk + ' sensor2');
-          arreglo2.push(chunk);
-          // const objTime = {
-          //   valor: chunk,
-          //   time: new Date()
-          // }
-          arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
-          socket.emit('message2', chunk)
-        });
-    })
-    socket.on('message2', (data) =>{
-      // arduinoParser2.on('data', async (chunk: any) => {
-      //   console.log(chunk + ' sensor2');
-      //   arreglo2.push(chunk);
-      //   // const objTime = {
-      //   //   valor: chunk,
-      //   //   time: new Date()
-      //   // }
-      //   arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
-      //   socket.emit('message2', chunk)
-      // });
-    })
+//         arduinoParser2.on('data', async (chunk: any) => {
+//           console.log(chunk + ' sensor2');
+//           arreglo2.push(chunk);
+//           // const objTime = {
+//           //   valor: chunk,
+//           //   time: new Date()
+//           // }
+//           arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+//           socket.emit('message2', chunk)
+//         });
+//     })
+//     socket.on('message2', (data) =>{
+//       // arduinoParser2.on('data', async (chunk: any) => {
+//       //   console.log(chunk + ' sensor2');
+//       //   arreglo2.push(chunk);
+//       //   // const objTime = {
+//       //   //   valor: chunk,
+//       //   //   time: new Date()
+//       //   // }
+//       //   arreglo1TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
+//       //   socket.emit('message2', chunk)
+//       // });
+//     })
         
-    const data = {
-      arreglo1: arreglo1,
-      arreglo2: arreglo2,
-      arreglo1TimeStamp: arreglo1TimeStamp,
-      arreglo2TimeStamp: arreglo2TimeStamp
-    }
-    socket.on('end',  ()=>{
-        console.log('User disconected')
-        arduinoPorts[0].close();
-        arduinoParser.pause();
+//     const data = {
+//       arreglo1: arreglo1,
+//       arreglo2: arreglo2,
+//       arreglo1TimeStamp: arreglo1TimeStamp,
+//       arreglo2TimeStamp: arreglo2TimeStamp
+//     }
+//     socket.on('end',  ()=>{
+//         console.log('User disconected')
+//         arduinoPorts[0].close();
+//         arduinoParser.pause();
         
 
-        // socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
-        socket.emit('last', "Final")
+//         // socket.emit('last', [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp])
+//         socket.emit('last', "Final")
 
-        socket.disconnect(true);
-
-        
-    });
-
-    socket.on('end2',  ()=>{
-        console.log('User disconected 2')
-        arduinoPorts[1].close();
-        arduinoParser2.pause();
+//         socket.disconnect(true);
 
         
-        socket.emit('last2', "Final")
-        socket.disconnect(true);
-        // arreglo1.length = 0;
-        // arreglo1TimeStamp.length = 0;
-        // arreglo2.length = 0;
-        // arreglo2TimeStamp.length = 0;
-    });
-})
+//     });
+
+//     socket.on('end2',  ()=>{
+//         console.log('User disconected 2')
+//         arduinoPorts[1].close();
+//         arduinoParser2.pause();
+
+        
+//         socket.emit('last2', "Final")
+//         socket.disconnect(true);
+//         // arreglo1.length = 0;
+//         // arreglo1TimeStamp.length = 0;
+//         // arreglo2.length = 0;
+//         // arreglo2TimeStamp.length = 0;
+//     });
+// })
 
 app2.get('/multiplesArduinos', async (req: Request, res: Response) => {
   console.log('Port1 is open?', arduinoPorts[0].isOpen);

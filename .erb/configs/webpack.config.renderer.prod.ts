@@ -141,6 +141,9 @@ const configuration: webpack.Configuration = {
       'process.type': '"renderer"',
     }),
     new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
+    }),
   ],
 };
 

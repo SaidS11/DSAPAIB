@@ -5,10 +5,10 @@ import { useCustomDispatch } from 'redux/hooks';
 import { setPythonResponse } from 'redux/slices/ResponsesSlice';
 import { setAcelerometroIsChecked, setCantidadSensores, setFrecuenciaIsChecked, setGsrIsChecked, setMongoInsertObject, setTemperaturaIsChecked, setTotalSensores } from 'redux/slices/SeñalesSlice';
 import { adqWithTimeAndSignals } from '../Utilities/Constants';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-const socket = io("http://localhost:4000");
-const socket2 = io("http://localhost:4000")
+// const socket = io("http://localhost:4000");
+// const socket2 = io("http://localhost:4000")
 
 
 

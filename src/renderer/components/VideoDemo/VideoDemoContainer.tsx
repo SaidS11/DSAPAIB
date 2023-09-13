@@ -22,10 +22,10 @@ import Button from '@mui/material/Button';
 import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
 import { setDuracionProtocolo } from 'redux/slices/ConfiguracionSlice';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-const socket = io("http://localhost:4000");
-const socket2 = io("http://localhost:4000")
+// const socket = io("http://localhost:4000");
+// const socket2 = io("http://localhost:4000")
 
 function esFlotante(numero: number) {
   return !Number.isInteger(numero);
@@ -388,34 +388,36 @@ const VideoDemoContainer = () => {
     /// .....
     // setBloqueoDeBoton(true);
 
+    
+
+    // let auxString = "";
+
+    // socket.emit('message', 'socket1')
+    // socket.on('message', (message: any)=>{
+    //     console.log("Sensor 1", message)
+    //     auxString = message;
+    //     socket.emit('message', 'socket1')
+    // })
+
+    // socket2.emit('message2', 'socket2')
+    // socket2.on('message2', (message)=>{
+    //     console.log("Sensor 2",message)
+    //     // auxString = auxString + message
+    //     socket2.emit('message2', 'socket2')
+    // })
+
+    // console.log("AUX", auxString);
+    // setDataToGraph(auxString);
+
+    // console.log("DATA SET", dataToGraph);
+
+
     // Comprobacion de emgs sino hay timer para controlar arduinos
     // Estp originalmente va abajo de lo de arduinos
     const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
 
-    let auxString = "";
-
-    socket.emit('message', 'socket1')
-    socket.on('message', (message: any)=>{
-        console.log("Sensor 1", message)
-        auxString = message;
-        socket.emit('message', 'socket1')
-    })
-
-    socket2.emit('message2', 'socket2')
-    socket2.on('message2', (message)=>{
-        console.log("Sensor 2",message)
-        // auxString = auxString + message
-        socket2.emit('message2', 'socket2')
-    })
-
-    console.log("AUX", auxString);
-    setDataToGraph(auxString);
-
-    console.log("DATA SET", dataToGraph);
-
-
     // Codigo superior reemplaza la llamada a la API
-    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
 
     
 
@@ -585,26 +587,26 @@ const VideoDemoContainer = () => {
 
       // Reemplaza las llamadas a la api que detienen los arduinos
       
-      socket.emit('end');
+      // socket.emit('end');
 
-      let arreglo1: any;
+      // let arreglo1: any;
 
-      socket.on('last', (message: any)=>{
-        console.log('last')
-        arreglo1 = message;
-        // console.log(message)
-      })
+      // socket.on('last', (message: any)=>{
+      //   console.log('last')
+      //   arreglo1 = message;
+      //   // console.log(message)
+      // })
 
-      console.log("ARDUINO STOP 1", arreglo1);
+      // console.log("ARDUINO STOP 1", arreglo1);
 
-      socket2.emit('end2');
+      // socket2.emit('end2');
 
-      // let arreglo: any;
-      socket2.on('last2', (message)=>{
-        console.log('last2')
-        // arreglo = message;
-        // console.log(message)
-      })
+      // // let arreglo: any;
+      // socket2.on('last2', (message)=>{
+      //   console.log('last2')
+      //   // arreglo = message;
+      //   // console.log(message)
+      // })
       // console.log("ARDUINO STOP 2", arreglo);
       setShouldStop(true);
 
