@@ -388,10 +388,8 @@ const VideoDemoContainer = () => {
     /// .....
     // setBloqueoDeBoton(true);
 
-    // Comprobacion de emgs sino hay timer para controlar arduinos
-    // Estp originalmente va abajo de lo de arduinos
-    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
-
+   
+    /*
     let auxString = "";
 
     socket.emit('message', 'socket1')
@@ -409,13 +407,15 @@ const VideoDemoContainer = () => {
     })
 
     console.log("AUX", auxString);
-    setDataToGraph(auxString);
+    setDataToGraph(auxString);*/
 
-    console.log("DATA SET", dataToGraph);
 
 
     // Codigo superior reemplaza la llamada a la API
-    // const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+    const startArduinos = fetch(`${apiEndpoint}/multiplesArduinos`);
+ // Comprobacion de emgs sino hay timer para controlar arduinos
+    // Estp originalmente va abajo de lo de arduinos
+    const startNidaq = await fetch(`${apiEndpoint}/nidaq?duracion=5&cantidadEmgs=4`);
 
     
 
@@ -585,7 +585,7 @@ const VideoDemoContainer = () => {
 
       // Reemplaza las llamadas a la api que detienen los arduinos
       
-      socket.emit('end');
+      /*socket.emit('end');
 
       let arreglo1: any;
 
@@ -606,7 +606,7 @@ const VideoDemoContainer = () => {
         // console.log(message)
       })
       // console.log("ARDUINO STOP 2", arreglo);
-      setShouldStop(true);
+      setShouldStop(true);*/
 
       const stopArduinos = await fetch(`${apiEndpoint}/stopArduinos2`);
 
