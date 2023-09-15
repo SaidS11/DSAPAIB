@@ -22,10 +22,10 @@ import Button from '@mui/material/Button';
 import styleButton, { styleButtonBiggerGreen } from '../VerPaciente/ButtonStyle';
 import SensoresAdquisicionGraficarContainer from '../SensoresAdquisicion/SensoresAdquisicionGraficarContainer';
 import { setDuracionProtocolo } from 'redux/slices/ConfiguracionSlice';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-const socket = io("http://localhost:4000");
-const socket2 = io("http://localhost:4000")
+// const socket = io("http://localhost:4000");
+// const socket2 = io("http://localhost:4000")
 
 function esFlotante(numero: number) {
   return !Number.isInteger(numero);

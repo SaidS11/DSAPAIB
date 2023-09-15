@@ -424,9 +424,9 @@ const VideoContainer = () => {
       if(objetoUnido.emg1.length !== objetoUnido.tiempoEmg.length) {
         const [arreglo, arreglo2] = igualarArreglos(objetoUnido["emg1"], objetoUnido["tiempoEmg"]);
         objetoUnido.emg1 = arreglo
-        objetoUnido.emg2 = arreglo
-        objetoUnido.emg3 = arreglo
-        objetoUnido.emg4 = arreglo
+        // objetoUnido.emg2 = arreglo
+        // objetoUnido.emg3 = arreglo
+        // objetoUnido.emg4 = arreglo
 
         objetoUnido.tiempoEmg = arreglo2
       }
