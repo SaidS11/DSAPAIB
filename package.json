@@ -1,9 +1,6 @@
 {
   "version": "1.0.0",
   "main": "./src/main/main.ts",
-  "asarUnpack": [
-    "**/*.node"
-  ],
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -111,6 +108,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.0",
     "react-table": "^7.8.0",
+    "serialport": "^10.5.0",
     "sheetjs-style": "^0.15.8",
     "styled-components": "^5.3.6",
     "zlib": "^1.0.5"
