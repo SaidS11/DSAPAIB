@@ -901,9 +901,9 @@ const VideoDemoContainer = () => {
         </Button>
       </section>
       {dataIsReady && ( <SensoresAdquisicionGraficarContainer cantidadEmgs={cantidadEmgs} emgData={emgData} arduinoData={arduinoDataArg} />)}
-      {
+      {/* {
         !dataIsReady && <SensoresAdquisicionContainer dataToGraph={dataToGraph} shouldStop={shouldStop} cantidadAGraficarTiempoReal={cantidadAGraficarTiempoReal} />
-      }
+      } */}
       
       <br />
     </div>

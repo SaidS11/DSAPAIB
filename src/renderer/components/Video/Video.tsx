@@ -44,11 +44,15 @@ const Video = (props: VideoProps) => {
               <Grid item xs={12}>
                 <Card >
                   <CardActionArea>
-                    <CardMedia
-                      component='video'
-                      image={url}
-                      controls
-                    />
+                  <ReactPlayer
+                    // controls
+                    url={url}
+                    
+                    // onEnded={() => onClickNav()}
+                    // playing={isPlaying}
+                    // onPlay={() => }
+                    // onEnded={() => onClickNav()}
+                  />
                   </CardActionArea>
                 </ Card>
               </Grid>
@@ -58,7 +62,7 @@ const Video = (props: VideoProps) => {
           </Box>
         </Container>
       </ThemeProvider> */}
-      <section className="display-center">
+      <div className="display-center" style={{position: "relative", paddingTop: "50.25%"}}>
         {/* <Button
           sx={styleButtonBiggerGreen}
           onClick={() => console.log('mostrarvideo')}
@@ -67,14 +71,18 @@ const Video = (props: VideoProps) => {
         </Button> */}
         <ReactPlayer
           // controls
+          style={{position: "absolute",
+            top: "0",
+            left: "0"}}
           url={url}
-          width="auto"
+          width="100%"
+          height="100%"
           onEnded={() => onClickNav()}
           playing={isPlaying}
           // onPlay={() => }
           // onEnded={() => onClickNav()}
         />
-      </section>
+      </div>
       <section className="display-center">
         <Button sx={styleButtonBiggerRed} onClick={onClickCancel}>
           Cancelar

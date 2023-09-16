@@ -47,7 +47,7 @@ const credenciales = {
   user: 'postgres',
   host: 'localhost',
   database: 'ModularLocal',
-  password: 'Modular124',
+  password: 'hola1234',
 }; 
 // /////////////////////////////////////////////////////// Cagadero Pona/////////////////////////////////////////
 // /////////////////POSTGRESQL///////////////////////
