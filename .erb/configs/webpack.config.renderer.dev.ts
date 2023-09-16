@@ -124,6 +124,10 @@ const configuration: webpack.Configuration = {
             sourceType: 'var',
           }),
           new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+          new webpack.IgnorePlugin({
+            resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
+          }),
+      
         ]),
 
     new webpack.NoEmitOnErrorsPlugin(),

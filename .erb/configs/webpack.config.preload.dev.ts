@@ -54,6 +54,10 @@ const configuration: webpack.Configuration = {
       debug: true,
     }),
     new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
+    }),
+
   ],
 
   /**
