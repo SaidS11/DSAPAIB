@@ -475,7 +475,7 @@ if __name__ == '__main__':
             if(second == "SVM"):
                 trainSVM(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
             if(second == "Red"):
-                trainTree(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
+                trainRed(jsonParams, nombre, iteraciones, reducedPercentage, headers, ruta_actual, nombreArchivoResultante, archivoExistente)
         if (first == "Class"):
             if (second == "Tree"):
                 classificationTree(nombre, headers, ruta_actual, nombreArchivoResultante)
@@ -484,7 +484,7 @@ if __name__ == '__main__':
             if(second == "SVM"):
                 classSVM(nombre, headers, ruta_actual, nombreArchivoResultante)
             if(second == "Red"):
-                classTree(nombre, headers, ruta_actual, nombreArchivoResultante)
+                classRed(nombre, headers, ruta_actual, nombreArchivoResultante)
     except  Exception as e:
         with open(os.path.join(ruta_actual, nombreArchivoResultante), 'w') as f:
             f.write(str(e))
