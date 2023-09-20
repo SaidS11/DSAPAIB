@@ -7,7 +7,7 @@ import {
 } from 'electron';
 
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
-  selector?: string;
+  selector?: string; 
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
 }
 

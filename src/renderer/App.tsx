@@ -49,11 +49,15 @@ import GuardarModeloContainer from './components/GuardarModelo/GuardarModeloCont
 import ProcesamientoPrevioBlankContainer from './components/Video/ProcesamientoPrevioBlankContainer';
 import ProbarSensoresBlank from './components/ProbarSensores/ProbarSensoresBlank';
 import SensoresAdquisicionContainer from './components/SensoresAdquisicion/SensoresAdquisicionContainer';
+import AgregarDoctorContainer from './components/AgregarDoctor/AgregarDoctorContainer';
 import { height } from '@mui/system';
 
 export default function App() {
   const isLogged = useCustomSelector((state) => state.login.isLogged);
   const loading = useCustomSelector((state) => state.status.isLoading);
+  const flagCreateDoctor = useCustomSelector(
+    (state) => state.login.flagCreateDoctor
+  );
   const subidaExitosa = useCustomSelector((state) => state.status.isUploaded);
   const subidaFallo = useCustomSelector((state) => state.status.failUpload);
   const subidaExitosaS3 = useCustomSelector(
@@ -65,10 +69,10 @@ export default function App() {
   console.log(isLogged);
   if (isLogged) {
     return (
-      <div style={{ height: "100%"}}>
+      <div style={{ height: '100%' }}>
         <NavegacionContainer />
         <CssBaseline />
-        <Container maxWidth={false}  >
+        <Container maxWidth={false}>
           <br />
           <Routes>
             <Route path="/blank" element={<Blank />} />
@@ -119,7 +123,10 @@ export default function App() {
               path="/crearImplementacion"
               element={<CrearImplementacionContainer />}
             />
-            <Route path="/verModelo" element={<VerImplementacionDetalleContainer />} />
+            <Route
+              path="/verModelo"
+              element={<VerImplementacionDetalleContainer />}
+            />
             <Route
               path="/verImplementaciones"
               element={<VerImplementacionesContainer />}
@@ -175,14 +182,14 @@ export default function App() {
 
             <Route path="/verAnalisis" element={<VerAnalisisContainer />} />
             <Route path="/verAnalisis2" element={<VerAnalisis2Container />} />
-            <Route
-              path="/verAlgoritmos"
-              element={<VerAlgoritmoContainer />}
-            />
+            <Route path="/verAlgoritmos" element={<VerAlgoritmoContainer />} />
             <Route
               path="/verAlgoritmoDetalle"
               element={<VerAlgoritmoDetalleContainer />}
             />
+            {
+              //<Route path="/agregarDoctor" element={<AgregarDoctorContainer />} />
+            }
           </Routes>
           <>{loading && <Loading />}</>
           <>{subidaExitosa && <CreadoExitosamente />}</>
@@ -192,6 +199,21 @@ export default function App() {
         </Container>
       </div>
     );
+  } else if (flagCreateDoctor) {
+    return (
+      <>
+        <AgregarDoctorContainer />
+        <>{loading && <Loading />}</>
+        <>{subidaExitosa && <CreadoExitosamente />}</>
+        <>{subidaFallo && <ErrorCrear />}</>
+        <>{subidaExitosaS3 && <CargaExitosaModal />}</>
+        <>{fallosAlCargar && <ErrorModal />}</>
+      </>
+    );
   }
-  return <LoginContainer />;
+  return (
+    <>
+      <LoginContainer /> {fallosAlCargar && <ErrorModal />}
+    </>
+  );
 }

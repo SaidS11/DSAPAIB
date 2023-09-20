@@ -9,13 +9,15 @@ export interface LoginProps {
   onClickLogin: (arg0: React.FormEvent<HTMLFormElement>) => void;
   passwordShown: boolean
   togglePassword: (arg0: React.FormEvent<HTMLFormElement>) => void;
-  setPasswordShown: any
+  setPasswordShown: any;
+  onClickPasswForgotten: () => void;
+  onClickPasswForgottenNew: () => void;
 }
 
 export const Login = (props: LoginProps) => {
-  const { onClickLogin, passwordShown, togglePassword, setPasswordShown } = props;
+  const { onClickLogin, passwordShown, togglePassword, setPasswordShown, onClickPasswForgotten, onClickPasswForgottenNew} = props;
 
-  
+
 
   return (
     <div className="general-style">
@@ -26,7 +28,7 @@ export const Login = (props: LoginProps) => {
             <h1 id="my-h1login">Iniciar Sesión</h1>
           </div>
           <div className="login-form">
-            
+
               <h2 className="h2-styled">Usuario</h2>
               <input
                 className="input-styled"
@@ -38,7 +40,7 @@ export const Login = (props: LoginProps) => {
               <br />
               <br />
               <h2 className="h2-styled">Contraseña</h2>
-              
+
               <div style={{display: "flex", marginLeft: "7%"}}>
                 <input
                   className="input-styled"
@@ -48,12 +50,12 @@ export const Login = (props: LoginProps) => {
                   id="password"
                 />
                 {
-                  !passwordShown && 
+                  !passwordShown &&
                 <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px", color: "#302b63"}}>
                   <VisibilityIcon/>
                 </Button>
                 } {
-                  passwordShown && 
+                  passwordShown &&
                 <Button sx={styleButtonVisibility} onClick={() => setPasswordShown(!passwordShown)} style={{position: "absolute", padding: "10px", marginLeft: "200px", color: "#302b63"}}>
                   <VisibilityOffIcon/>
                 </Button>
@@ -64,7 +66,10 @@ export const Login = (props: LoginProps) => {
               <input hidden type="submit" />
             </Button>
             <div>
-              <h2 className="login-link">¿Olvido su contraseña?</h2>
+              <h2 className="login-link" onClick={onClickPasswForgotten}>Crear Cuenta</h2>
+            </div>
+            <div>
+              <h2 className="login-link" onClick={onClickPasswForgottenNew}>¿Olvido su contraseña?</h2>
             </div>
           </div>
           </form>

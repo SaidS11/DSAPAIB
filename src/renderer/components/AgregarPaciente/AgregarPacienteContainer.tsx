@@ -13,7 +13,6 @@ import {
 } from '../../../redux/slices/PacienteSlice';
 import AgregarPaciente from './AgregarPaciente';
 import { apiEndpoint } from '../Utilities/Constants';
-import dayjs, { Dayjs } from 'dayjs';
 import { useState } from 'react';
 
 interface Cols {
