@@ -33,6 +33,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import * as http from 'http';
 // import { Server } from 'socket.io';
+import nodemailer from 'nodemailer';
 // --------------------Conexion PostgreAWS--------------
 // const credenciales = {
 //   user: 'postgres',
@@ -151,7 +152,77 @@ app2.delete('/deleteModelo', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error al eliminar' });
   }
 });
+/// //////////
+async function insertarDatosDoctor(
+  usuario:string,
+  password:string,
+  email:string,
+  telefono:string,
+  fecha_nacimiento:string,
+  nombre:string,
+  apellidoP:string,
+  apellidoM:string,
+): Promise<boolean> {
+  try {
+    const client = new Client(credenciales);
+    await client.connect();
 
+    const query =
+      "INSERT INTO doctor (usuario, password, email, telefono, fecha_nacimiento, nombre, apellido_paterno, apellido_materno) VALUES ($1, crypt($2, gen_salt('bf')), $3, $4, $5, $6, $7, $8)";
+    const values = [
+      usuario,
+      password,
+      email,
+      telefono,
+      fecha_nacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+    ];
+    await client.query(query, values);
+    await client.end();
+
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.post('/insertarDoctor', async (req: Request, res: Response) => {
+  console.log(req.body)
+  try {
+    // Obtener los datos enviados en la solicitud
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const {
+      usuario,
+      password,
+      email,
+      telefono,
+      fecha_nacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+    } = req.body;
+    const result = await insertarDatosDoctor(
+      usuario,
+      password,
+      email,
+      telefono,
+      fecha_nacimiento,
+      nombre,
+      apellidoP,
+      apellidoM,
+    );
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+});
 
 /// //////////
 async function insertarDatosPaciente(
@@ -1514,6 +1585,145 @@ app2.get('/selectProtocoloDetalle', async (req: Request, res: Response) => {
 });
 
 // ////////////////
+async function selectCorreo(correo: any) {
+  try {
+    const result = await pool.query(
+      ' select * from doctor where email = $1 ',
+      [correo]
+    );
+    return result.rows;
+  } catch (error) {
+    console.log('Ha ocurrido un error', error);
+  } finally {
+    await client.close();
+  }
+}
+
+app2.get('/selectCorreo', async (req: Request, res: Response) => {
+  const correo = req.query.correo;
+  try {
+    const result = await selectCorreo(correo);
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(500).json({ error: 'Error Buscando Datos' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error buscando datoseee' });
+  }
+});
+
+/////////////////////
+
+const sendMail = async(mail: any, codigo: any) => {
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'modularmodular89@gmail.com',
+      pass: 'esbumoileykzhtzc' //Esta madre es un código para usar con la app
+      // la password normal es: modular123#
+    }
+  });
+
+  var mailOptions = {
+    from: 'modularmodular89@gmail.com',
+    to: mail,
+    subject: 'Código de verificacion',
+    html: `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+  </head>
+  <body>
+      <center><h1>¡Hola! Alguien ha pedido un restablecimiento de contraseña registrada a este correo.</h1><center/>
+      <center><h1>Este es tu código de verificación </h1><center/>
+      <center><h1><b style="font-size: 40px; color: red;">${codigo}</b></h1><center/>
+      <center><h1>Si no fuiste tú, ignora este mensaje</h1><center/>
+  </body>
+  </html>`
+  };
+
+  const respuesta = transporter.sendMail(mailOptions, (error: any, info: any) =>{
+    if (error) {
+      console.log(error);
+      return true
+    } else {
+      console.log('Email sent: ' + info.response);
+      return false
+    }
+  });
+  if (respuesta){
+    return true
+  }else{
+    return false
+  }
+  }
+  ///
+app2.get('/mandarCodigo', async (req: Request, res: Response) => {
+  const correo = req.query.correo;
+  const random = Math.random();
+  const scaledRandom1 = random * (9 - 0) + 0;
+  const random2 = Math.random();
+  const scaledRandom2 = random2 * (9 - 0) + 0;
+  const random3 = Math.random();
+  const scaledRandom3 = random3 * (9 - 0) + 0;
+  const scaledRandom = Math.ceil(scaledRandom1).toString() + Math.ceil(scaledRandom2).toString() + Math.ceil(scaledRandom3).toString()
+  const respuesta = await sendMail(correo, scaledRandom);
+  console.log(respuesta);
+  if(respuesta === false){
+    res.send(scaledRandom);
+  }else{
+    res.send(0);
+  }
+  //res.send(respuesta);
+
+});
+/////////
+
+async function actualizarContrasena(
+  password: string,
+  email: string,
+): Promise<boolean> {
+  const client = new Client(credenciales);
+  await client.connect();
+
+  try {
+    const query =
+      "UPDATE doctor set password = crypt($1, gen_salt('bf')) where email=$2";
+    const values = [password, email];
+    await client.query(query, values);
+    await client.end();
+
+    return true;
+  } catch (error) {
+    console.error('Error al insertar datos', error);
+    return false;
+  }
+}
+
+app2.put('/actualizarContrasena', async (req: Request, res: Response) => {
+  try{
+    console.log(req.body)
+    const {password, email} = req.body;
+    const result = await actualizarContrasena(password, email);
+    if (result) {
+      res.status(200).json({ message: 'Datos insertados correctamente ' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  }catch(error){
+    console.error('Error al insertar datos', error);
+    res.status(500).json({ error: 'Error al insertar datos' });
+  }
+
+
+})
+
+
+
+// ////////////////
 async function selectConfiguracionDetalle2(nombre: any) {
   try {
     const result = await pool.query(
@@ -2275,7 +2485,7 @@ app2.post('/loadMultiplePorts', async (req: Request, res: Response) => {
       stopBits: 1,
       parity: 'none',
       autoOpen: true,
-    }, (error) => {
+    }, (error: any) => {
       if (error) {
         console.error(`El puerto 1 no esta disponible.`);
         res.status(500).json({ error: `Error al abrir el puerto: ${opcion}` });
@@ -2292,16 +2502,16 @@ app2.post('/loadMultiplePorts', async (req: Request, res: Response) => {
       stopBits: 1,
       parity: 'none',
       autoOpen: true,
-    }, (error) => {
+    }, (error: any) => {
       if (error) {
         console.error(`El puerto 2 no esta disponible.`);
         res.status(500).json({ error: `Error al abrir el puerto: ${opcion2}` });
       } else {
-        console.log(`El puerto 2 esta disponible.`);        
+        console.log(`El puerto 2 esta disponible.`);
       }
     });
 
-  
+
     arduinoParser = serialPortArduino1.pipe(
       new ReadlineParser({ delimiter: '\r\n' })
     );
@@ -2316,7 +2526,7 @@ app2.post('/loadMultiplePorts', async (req: Request, res: Response) => {
     res.send(JSON.stringify({ status: 500, message: "Error al abrir el puerto" }));
 
   }
-  
+
 });
 
 
@@ -2554,9 +2764,9 @@ const arr2: any = []
 //     arduinoParser.resume();
 //     arduinoParser2.resume();
 
-    
 
-    
+
+
 
 //     socket.on('message', (data) =>{
 //         arduinoParser.on('data', async (chunk: any) => {
@@ -2654,7 +2864,7 @@ app2.get('/multiplesArduinos', async (req: Request, res: Response) => {
     arreglo1.push(chunk);
     // const objTime2 = {
     //   valor: chunk,
-    
+
     //   time: new Date()
     // }
     arreglo2TimeStamp.push(`${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`)
@@ -2687,7 +2897,7 @@ app2.get('/stopArduinos', async (req: Request, res: Response) => {
       arduinoParser2.pause();
     }
   }
-  
+
   res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
 
   arreglo1.length = 0;
@@ -2699,7 +2909,7 @@ app2.get('/stopArduinos', async (req: Request, res: Response) => {
 
 app2.get('/stopArduinos2', async (req: Request, res: Response) => {
   console.log('Closing');
-  
+
 
   res.send(JSON.stringify({ status: 200, message: [arreglo1, arreglo2, arreglo1TimeStamp, arreglo2TimeStamp] }));
 
@@ -2847,7 +3057,7 @@ ipcMain.handle(
       PythonShell.run(
         `${direcFinal}/pythonScripts/analisis.py`,
         options,
-        function (err, results) {
+        function (err: any, results: any) {
           if (err) {
             console.log('err', err);
             // return "Error"
@@ -2878,7 +3088,7 @@ ipcMain.handle('preAnalisisPython', async (event, datos: string) => {
     PythonShell.run(
       `${direcFinal}/pythonScripts/preAnalisis.py`,
       options,
-      function (err, results) {
+      function (err: any, results: any) {
         if (err) {
           console.log('err', err);
         } else {
@@ -2904,7 +3114,7 @@ async function checkFileExists(filePath: string): Promise<string> {
 }
 
 app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
-  const { 
+  const {
     tipo,
     tipoIA,
     params,
@@ -2987,7 +3197,7 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
 
   let retrieved;
   fs.readFile(`${direcFinal}/pythonScripts/resultados.txt`, 'utf8', function(err, data){
-      
+
     console.log("DATOS", data);
     console.log("Err", err);
     console.log("RESULT", result);
@@ -3003,11 +3213,11 @@ app2.post('/analisisPython', async (req: Request, res: Response, next: any) => {
     } else {
       console.log("ERROR", error);
       console.log("ERROR RETR", retrieved);
-  
+
       res.send(JSON.stringify({ status: 500, message: retrieved }))
     }
   });
-  
+
 
 });
 
@@ -3027,7 +3237,7 @@ ipcMain.handle(
       PythonShell.run(
         `${direcFinal}/pythonScripts/nidaqTest.py`,
         options,
-        function (err, results) {
+        function (err: any, results: any) {
           if (err) {
             console.log('err', err);
           } else {

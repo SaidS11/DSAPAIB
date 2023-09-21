@@ -7,55 +7,28 @@ import {
   setIsUploaded,
 } from '../../../redux/slices/StatusSlice';
 import { useCustomDispatch } from '../../../redux/hooks';
-import {
+/*import {
   setUsuarioPaciente,
   setDatosPaciente,
-} from '../../../redux/slices/PacienteSlice';
-import AgregarPaciente from './AgregarPaciente';
+} from '../../../redux/slices/PacienteSlice';*/
+import AgregarDoctor from './AgregarDoctor';
 import { apiEndpoint } from '../Utilities/Constants';
 import { useState } from 'react';
+import { setflagCreateDoctor } from 'redux/slices/LoginSlice';
 
-interface Cols {
-  col1: string;
-  col2: string;
-  col3: string;
-  col4: string;
-  col5: string;
-}
-
-interface PacienteInterface {
-  email: string;
-  telefono: string;
-  fechaNacimiento: Date;
-  nombrePaciente: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  sexo: string;
-  peso: number;
-  estatura: number;
-}
-
-const AgregarPacienteContainer = () => {
+const AgregarDoctorContainer = () => {
   const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
 
-  let dataPaciente: Cols[] = [];
   async function insertData(data: any) {
     const user =
-      data.nombrePaciente +
+      data.nombreDoctor.slice(0, 2).toString() +
       data.apellidoPaterno.slice(0, 2).toString() +
-      data.apellidoMaterno.slice(0, 2).toString() +
-      data.fechaNacimiento.slice(0, 4).toString();
-    dataPaciente.push({
-      col1: data.nombrePaciente,
-      col2: data.apellidoPaterno,
-      col3: data.apellidoMaterno,
-      col4: data.fechaNacimiento,
-      col5: data.email,
-    });
-    appDispatch(setUsuarioPaciente(user.toLowerCase()));
-    appDispatch(setDatosPaciente(dataPaciente));
-    dataPaciente = [];
+      data.apellidoMaterno.slice(0, 2).toString();
+
+    //appDispatch(setUsuarioPaciente(user.toLowerCase()));
+    // appDispatch(setDatosPaciente(dataPaciente));
+    // dataPaciente = [];
     // window.Bridge.insertPaciente(
     //   user.toLowerCase(),
     //   data.email,
@@ -65,37 +38,42 @@ const AgregarPacienteContainer = () => {
     //   data.apellidoPaterno,
     //   data.apellidoMaterno
     // );
-    const pacienteObj = {
-      usuario: user.toLowerCase(),
+    const doctorObj = {
+      usuario: user,
+      password: data.password,
       email: data.email,
       telefono: data.telefono,
-      fechaNacimiento: data.fechaNacimiento,
-      nombre: data.nombrePaciente,
+      fecha_nacimiento: data.fecha_nacimiento,
+      nombre: data.nombreDoctor,
       apellidoP: data.apellidoPaterno,
       apellidoM: data.apellidoMaterno,
-      sexo: data.sexo,
-      peso: data.peso,
-      estatura: data.estatura,
+
     };
+    console.log(doctorObj)
+
     const insertImplementacion = await fetch(
-      `${apiEndpoint}/insertarPaciente`,
+      `${apiEndpoint}/insertarDoctor`,
       {
         method: 'POST',
-        body: JSON.stringify(pacienteObj),
+        body: JSON.stringify(doctorObj),
         headers: { 'Content-Type': 'application/json' },
       }
     );
     if (insertImplementacion.status === 500) {
       // alert("Error al copiar los archivos: " + response.statusText);
+      // console.log('error')
       appDispatch(setFallosAlCargar(true));
       appDispatch(
         setErrorDetails(
-          `Error al agregar al paciente: ${insertImplementacion.statusText}`
+          `Error al agregar al doctor revise sus datos`
         )
+
       );
-      return;
+      return 500;
     }
+
     appDispatch(setIsUploaded(true));
+    return 200
   }
   // window.Bridge.insertP((event: any, resp: any) => {
   //   if (resp[0] === 0) {
@@ -117,18 +95,24 @@ const AgregarPacienteContainer = () => {
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     // console.log('el form', form);
     const formData = Object.fromEntries(new FormData(form).entries());
-    const dataPaciente = formData as object;
-    console.log("DATA", dataPaciente);
+    const dataDoctor = formData as object;
+    console.log("DATA", dataDoctor);
 
-    await insertData(dataPaciente);
-    appDispatch(setIsLoading(false));
-    navigate('/verPaciente');
+    let status = await insertData(dataDoctor);
+    if(status === 500){
+      appDispatch(setIsLoading(false));
+    }else{
+      appDispatch(setIsLoading(false));
+      appDispatch(setflagCreateDoctor(false));
+    }
+
+    //navigate('/login');
   };
   return (
     <div>
-      <AgregarPaciente onClickNav={onClickNav} />
+      <AgregarDoctor onClickNav={onClickNav} />
     </div>
   );
 };
 
-export default AgregarPacienteContainer;
+export default AgregarDoctorContainer;

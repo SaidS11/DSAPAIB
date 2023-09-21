@@ -5,11 +5,13 @@ import { RootState } from '../store';
 export interface IStatus {
   isLogged: boolean;
   loggedUser: string;
+  flagCreateDoctor: boolean;
 }
 
 const initialState: IStatus = {
   isLogged: false,
   loggedUser: '',
+  flagCreateDoctor: false,
 };
 
 export const LoginSlice = createSlice({
@@ -22,10 +24,14 @@ export const LoginSlice = createSlice({
     setLoggedUser: (state, action: PayloadAction<IStatus['loggedUser']>) => {
       state.loggedUser = action.payload;
     },
+    setflagCreateDoctor: (state, action: PayloadAction<IStatus['flagCreateDoctor']>) => {
+      state.flagCreateDoctor = action.payload;
+    },
   },
 });
 
-export const { setIsLogged, setLoggedUser } = LoginSlice.actions;
+export const { setIsLogged, setLoggedUser, setflagCreateDoctor} = LoginSlice.actions;
 export const selectIsLogged = (state: RootState) => state.login.isLogged;
 export const selectLoggedUser = (state: RootState) => state.login.loggedUser;
+export const selectFlagCreateDoctor = (state: RootState) => state.login.flagCreateDoctor;
 export default LoginSlice.reducer;

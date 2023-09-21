@@ -7,24 +7,34 @@ import { setIsLoading } from '../../../redux/slices/StatusSlice';
 import Login from './Login';
 import Loading from '../Loading/Loading';
 import ModalDatos from './ModalDatos';
+import ModalForgotPass from './ModalForgotPass';
 import { useCustomDispatch, useCustomSelector } from '../../../redux/hooks';
 import {
   setCantidadSujetos,
   setCantidadSujetosRespaldo,
 } from '../../../redux/slices/SeñalesSlice';
-import { setIsLogged, setLoggedUser } from '../../../redux/slices/LoginSlice';
+import { setIsLogged, setLoggedUser, setflagCreateDoctor } from '../../../redux/slices/LoginSlice';
+import { apiEndpoint } from '../Utilities/Constants';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginContainer = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const appDispatch = useCustomDispatch();
   const doctor = 'isrroman';
   const passw = 'Isrogo_2000';
   /* let doctor = '';
   let passw = ''; */
   const [open, setOpen] = useState(false);
+  const [openForgotPass, setOpenForgotPass] = useState(false);
   const loading = useCustomSelector((state) => state.status.isLoading);
+
   const toggleModal = () => {
     setOpen(!open);
+  };
+
+  const toggleModalForgotPass = () => {
+    setOpenForgotPass(!openForgotPass); 
   };
 
   async function loadData(doctorArg: string, passwordArg: string) {
@@ -46,7 +56,7 @@ const LoginContainer = () => {
     }
   });
 
-  const onClickLogin = async(e: React.FormEvent<HTMLFormElement>) => {    
+  const onClickLogin = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = document.querySelector('form') as HTMLFormElement | undefined;
     const dataF = Object.fromEntries(new FormData(form).entries());
@@ -68,10 +78,23 @@ const LoginContainer = () => {
     setPasswordShown(!passwordShown);
   };
 
+  const onClickPasswForgotten = () => {
+    console.log('clickforgotten')
+    appDispatch(setflagCreateDoctor(true));
+    // navigate('/agregarDoctor')
+  }
+
+  const onClickPasswForgottenNew = () => {
+    console.log('clickforgottennew');
+    setOpenForgotPass(true);
+    //appDispatch(setflagCreateDoctor(true));
+    // navigate('/agregarDoctor')
+  }
   return (
     <div>
-      <Login onClickLogin={onClickLogin} passwordShown={passwordShown} togglePassword={togglePassword} setPasswordShown={setPasswordShown} />
+      <Login onClickPasswForgottenNew={onClickPasswForgottenNew} onClickPasswForgotten={onClickPasswForgotten} onClickLogin={onClickLogin} passwordShown={passwordShown} togglePassword={togglePassword} setPasswordShown={setPasswordShown} />
       {open && <ModalDatos toggleModal={toggleModal} open={open} />}
+      {openForgotPass && <ModalForgotPass toggleModal={toggleModalForgotPass} open={openForgotPass} />}
       {loading && <Loading />}
     </div>
   );
@@ -111,7 +134,7 @@ export function equivalenteSegunPosiciones(arregloX: Array<number>, arregloY: Ar
     if (posicion >= 0 && posicion < arregloX.length) {
       arregloXAux.push(arregloX[posicion]);
       arregloYAux.push(arregloY[posicion]);
-    } 
+    }
   }
   for (let i = 0; i < arregloXAux.length; i += 1) {
     arregloRetorno.push({
