@@ -195,7 +195,11 @@
   "resolutions": {
     "node-abi": "^3.47.0"
   },
-  "overrides": { "electron-rebuild": { "node-abi": "^3.47.0" } },
+  "overrides": {
+    "electron-rebuild": {
+      "node-abi": "^3.47.0"
+    }
+  },
   "build": {
     "productName": "ElectronReact",
     "appId": "org.erb.ElectronReact",

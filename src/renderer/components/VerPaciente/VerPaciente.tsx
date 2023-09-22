@@ -81,6 +81,12 @@ const VerPaciente = (props: VerPacienteProps) => {
 
   const defaultTheme = createTheme();
   console.log("THIS IS DATA", datosArray);
+
+  const nombreCensurado = datosArray[0].col1.length > 0 ? '*'.repeat(datosArray[0].col1.length) : '******';
+  const apellidoPCensurado = datosArray[0].col2.length > 0 ? '*'.repeat(datosArray[0].col3.length) : '******';
+  const apellidoMCensurado = datosArray[0].col3.length > 0 ? '*'.repeat(datosArray[0].col4.length) : '******';
+
+
   return (
     <div>
       <div style={{}}>
@@ -115,7 +121,9 @@ const VerPaciente = (props: VerPacienteProps) => {
                       //   readOnly: true,
                       //   disableUnderline: true
                       // }}
-                      label={datosArray[0].col1}
+                      // label={datosArray[0].col1}
+                      label={nombreCensurado}
+
                       autoFocus
                     />
                   </Grid>
@@ -124,15 +132,18 @@ const VerPaciente = (props: VerPacienteProps) => {
                       fullWidth
                       disabled
 
-                      label={datosArray[0].col2}
+                      // label={datosArray[0].col2}
+                      label={apellidoPCensurado}
+
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CustomDisabledTextField
                       fullWidth
                       disabled
+                      label={apellidoMCensurado}
 
-                      label={datosArray[0].col3}
+                      // label={datosArray[0].col3}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -147,7 +158,9 @@ const VerPaciente = (props: VerPacienteProps) => {
                         fullWidth
                         disabled
 
-                        label='Masculino'
+                        // label='Masculino'
+                        label='No seleccionado'
+
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>

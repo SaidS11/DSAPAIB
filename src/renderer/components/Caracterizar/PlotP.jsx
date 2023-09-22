@@ -12,7 +12,9 @@ const PlotP = ({
     <Plot
       data={dataArr}
       layout={{
-        title: `Caracterizar el registro de: \n${selectedPatients[currentIteration].col1}`,
+        // title: `Caracterizar el registro de: \n${selectedPatients[currentIteration].col1}`,
+        title: `Caracterizar el registro de: ***** ***** ****`,
+
         autosize: true,
         grid: gridLayout,
         shapes: allSelections

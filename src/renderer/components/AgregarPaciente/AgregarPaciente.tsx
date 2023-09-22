@@ -115,7 +115,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
                       label="Sexo"
                       onChange={handleChange}
                       fullWidth
-                      required
+                      // required
                     >
                       <MenuItem value="Masculino">Masculino</MenuItem>
                       <MenuItem value="Femenino">Femenino</MenuItem>
@@ -158,7 +158,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  // required
                   fullWidth
                   name="telefono"
                   label="Telefono"
@@ -173,7 +173,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  // required
                   fullWidth
                   label="Peso"
                   id="peso"
@@ -188,7 +188,7 @@ const AgregarPaciente = (props: AgregarPacienteProps) => {
               </Grid> 
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  // required
                   fullWidth
                   label="Estatura"
                   id="estatura"

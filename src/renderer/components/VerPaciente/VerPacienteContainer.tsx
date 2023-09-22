@@ -33,7 +33,9 @@ const VerPacienteContainer = () => {
       )) as Array<PacientesAnalisisMongo>;
       for (let i = 0; i < pacientes.length; i += 1) {
         datarRetrieved.push({
-          col1: `${pacientes[i].name} Protocolo: ${pacientes[i].protocol} Etiqueta: ${pacientes[i].etiqueta}`,
+          // col1: `${pacientes[i].name} Protocolo: ${pacientes[i].protocol} Etiqueta: ${pacientes[i].etiqueta}`,
+          col1: `******* ***** **** Protocolo: ${pacientes[i].protocol} Etiqueta: ${pacientes[i].etiqueta}`,
+
         });
       }
       console.log('Retrieved', datarRetrieved);

@@ -81,9 +81,12 @@ const PacientesContainer = () => {
     if (resp.length > 0) {
       const fechaReturn = obtenerFecha(resp[0].fecha_nacimiento);
       dataPaciente.push({
-        col1: resp[0].nombre,
-        col2: resp[0].apellido_paterno,
-        col3: resp[0].apellido_materno,
+        // col1: resp[0].nombre,
+        // col2: resp[0].apellido_paterno,
+        // col3: resp[0].apellido_materno,
+        col1: '*****',
+        col2: '******',
+        col3: '********',
         col4: fechaReturn,
         col5: resp[0].email,
       });
@@ -104,9 +107,12 @@ const PacientesContainer = () => {
     for (let i = 0; i < pacientes.length; i += 1) {
       const fechaReturn = obtenerFecha(pacientes[i].fecha_nacimiento);
       datarRetrieved.push({
-        col1: pacientes[i].nombre,
-        col2: pacientes[i].apellido_paterno,
-        col3: pacientes[i].apellido_materno,
+        // col1: pacientes[i].nombre,
+        // col2: pacientes[i].apellido_paterno,
+        // col3: pacientes[i].apellido_materno,
+        col1: '*****',
+        col2: '******',
+        col3: '********',
         col4: fechaReturn,
         col5: pacientes[i].email,
       });
